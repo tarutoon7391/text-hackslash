@@ -541,6 +541,34 @@ footer {
   color: #aaaaaa;
 }
 
+/* ===== クラフト素材表示 ===== */
+.craft-recipe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.craft-mat {
+  padding: 1px 5px;
+  border: 1px solid;
+}
+
+.craft-mat.ok {
+  color: #00ff41;
+  border-color: #00cc33;
+}
+
+.craft-mat.ng {
+  color: #444;
+  border-color: #333;
+}
+
+.craft-mat-sep {
+  color: #555;
+}
+
 .inv-btn {
   background-color: #0a0a0a;
   color: #00ccff;
