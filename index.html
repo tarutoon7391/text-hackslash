@@ -12,66 +12,202 @@
 
 <div id="game-container">
 
-  <!-- ステータス表示パネル（プレイヤー・敵） -->
-  <div id="status-panel">
+  <!-- ========================================================
+       ロビー画面
+       ======================================================== -->
+  <div id="screen-lobby" class="screen">
 
-    <!-- プレイヤーステータス -->
-    <div class="status-box" id="player-box">
-      <h2>[ PLAYER ]</h2>
-      <div class="status-name" id="player-name">—</div>
-      <div class="hp-label" id="player-hp-label">HP: — / —</div>
-      <div class="hp-bar-outer">
-        <div class="hp-bar-inner" id="player-hp-bar" style="width:100%"></div>
+    <div class="screen-panel">
+      <h2 class="panel-title">[ LOBBY ]</h2>
+
+      <!-- プレイヤーステータス -->
+      <div id="lobby-player-status" class="lobby-status-box">
+        <!-- JS で動的に描画 -->
       </div>
-      <div class="status-detail" id="player-detail">ATK: — / DEF: — / LV: —</div>
-    </div>
 
-    <!-- 敵ステータス -->
-    <div class="status-box" id="enemy-box">
-      <h2>[ ENEMY ]</h2>
-      <div class="status-name" id="enemy-name">—</div>
-      <div class="hp-label" id="enemy-hp-label">HP: — / —</div>
-      <div class="hp-bar-outer">
-        <div class="hp-bar-inner" id="enemy-hp-bar" style="width:100%"></div>
+      <!-- ナビゲーションボタン -->
+      <div class="lobby-nav">
+        <button class="nav-btn" onclick="showScreen('dungeon-select'); renderDungeonSelect();">
+          🗺 ダンジョンへ
+        </button>
+        <button class="nav-btn" onclick="showScreen('inventory'); renderInventory();">
+          🎒 インベントリ
+        </button>
+        <button class="nav-btn" onclick="showScreen('skill-points'); renderSkillPoints();">
+          ⭐ スキルポイント
+        </button>
       </div>
-      <div class="status-detail" id="enemy-detail">ATK: — / DEF: — / EXP: —</div>
+
+      <!-- セーブ・ロードパネル -->
+      <div id="saveload-panel">
+        <h2>[ SAVE / LOAD ]</h2>
+        <div class="saveload-row">
+          <label for="password-input">🔑 パスワード:</label>
+          <input type="password" id="password-input" placeholder="パスワードを入力..." autocomplete="new-password" />
+          <button class="saveload-btn" id="btn-save" onclick="saveGame()">💾 セーブ</button>
+          <button class="saveload-btn" id="btn-load" onclick="loadGame()">📂 ロード</button>
+        </div>
+        <div id="saveload-msg"></div>
+      </div>
     </div>
 
-  </div>
+  </div><!-- /screen-lobby -->
 
-  <!-- バトルログエリア -->
-  <div id="log-area"></div>
+  <!-- ========================================================
+       ダンジョン選択画面
+       ======================================================== -->
+  <div id="screen-dungeon-select" class="screen" style="display:none">
 
-  <!-- アクションボタン -->
-  <div id="action-panel">
-    <button class="action-btn" id="btn-attack"  onclick="playerAction('attack')">⚔ 攻撃</button>
-    <button class="action-btn" id="btn-skill"   onclick="playerAction('skill')">✨ スキル</button>
-    <button class="action-btn" id="btn-flee"    onclick="playerAction('flee')">🚪 逃げる</button>
-  </div>
-
-  <!-- 次の戦闘 / ゲームオーバー後のリセットボタン -->
-  <button id="next-btn" onclick="nextBattle()">▶ 次の戦闘へ</button>
-
-  <!-- セーブ・ロードパネル -->
-  <div id="saveload-panel">
-    <h2>[ SAVE / LOAD ]</h2>
-    <div class="saveload-row">
-      <label for="password-input">🔑 パスワード:</label>
-      <input type="password" id="password-input" placeholder="パスワードを入力..." autocomplete="new-password" />
-      <button class="saveload-btn" id="btn-save" onclick="saveGame()">💾 セーブ</button>
-      <button class="saveload-btn" id="btn-load" onclick="loadGame()">📂 ロード</button>
+    <div class="screen-panel">
+      <h2 class="panel-title">[ DUNGEON SELECT ]</h2>
+      <div id="dungeon-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
     </div>
-    <!-- 通信結果メッセージ表示エリア -->
-    <div id="saveload-msg"></div>
-  </div>
 
-</div>
+  </div><!-- /screen-dungeon-select -->
+
+  <!-- ========================================================
+       戦闘画面
+       ======================================================== -->
+  <div id="screen-battle" class="screen" style="display:none">
+
+    <!-- ダンジョン情報バー -->
+    <div id="dungeon-info" class="dungeon-info-bar"></div>
+
+    <!-- ステータス表示パネル（プレイヤー・敵） -->
+    <div id="status-panel">
+
+      <!-- プレイヤーステータス -->
+      <div class="status-box" id="player-box">
+        <h2>[ PLAYER ]</h2>
+        <div class="status-name" id="player-name">—</div>
+        <div class="hp-label" id="player-hp-label">HP: — / —</div>
+        <div class="hp-bar-outer">
+          <div class="hp-bar-inner" id="player-hp-bar" style="width:100%"></div>
+        </div>
+        <div class="mp-label" id="player-mp-label">MP: — / —</div>
+        <div class="hp-bar-outer">
+          <div class="mp-bar-inner" id="player-mp-bar" style="width:100%"></div>
+        </div>
+        <div class="status-detail" id="player-detail">ATK: — / DEF: — / LV: —</div>
+      </div>
+
+      <!-- 敵ステータス -->
+      <div class="status-box" id="enemy-box">
+        <h2>[ ENEMY ]</h2>
+        <div class="status-name" id="enemy-name">—</div>
+        <div class="hp-label" id="enemy-hp-label">HP: — / —</div>
+        <div class="hp-bar-outer">
+          <div class="hp-bar-inner" id="enemy-hp-bar" style="width:100%"></div>
+        </div>
+        <div class="status-detail" id="enemy-detail">ATK: — / DEF: — / EXP: —</div>
+      </div>
+
+    </div>
+
+    <!-- バトルログエリア -->
+    <div id="log-area"></div>
+
+    <!-- スキル選択パネル（スキルボタン押下時に表示） -->
+    <div id="skill-panel" style="display:none"></div>
+
+    <!-- アクションボタン -->
+    <div id="action-panel">
+      <button class="action-btn" id="btn-attack" onclick="playerAction('attack')">⚔ 攻撃</button>
+      <button class="action-btn" id="btn-skill"  onclick="playerAction('skill')">✨ スキル</button>
+      <button class="action-btn" id="btn-flee"   onclick="playerAction('flee')">🚪 撤退</button>
+    </div>
+
+    <!-- ダンジョン進行ナビゲーション（次の敵へ / 撤退する） -->
+    <div id="dungeon-nav-panel" style="display:none">
+      <button class="nav-btn" id="btn-next-enemy">▶ 次の敵へ進む</button>
+      <button class="nav-btn back-btn" id="btn-retreat" onclick="retreatFromDungeon()">🏃 撤退する</button>
+    </div>
+
+  </div><!-- /screen-battle -->
+
+  <!-- ========================================================
+       インベントリ画面
+       ======================================================== -->
+  <div id="screen-inventory" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ INVENTORY ]</h2>
+
+      <!-- 所持素材 -->
+      <div class="inv-section">
+        <h3 class="inv-section-title">📦 所持素材</h3>
+        <div id="materials-list" class="materials-grid"></div>
+      </div>
+
+      <!-- 装備中一覧 -->
+      <div class="inv-section">
+        <h3 class="inv-section-title">🛡 現在の装備</h3>
+        <div id="equipped-list"></div>
+      </div>
+
+      <!-- クラフト / 装備リスト -->
+      <div class="inv-section">
+        <h3 class="inv-section-title">🔨 クラフト・装備一覧</h3>
+        <div id="craft-list"></div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-inventory -->
+
+  <!-- ========================================================
+       スキルポイント画面
+       ======================================================== -->
+  <div id="screen-skill-points" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ SKILL POINTS ]</h2>
+
+      <div class="sp-remaining" id="sp-remaining">残りポイント: 0 pt</div>
+
+      <div class="sp-stats">
+        <div class="sp-row">
+          <span id="sp-atk">攻撃力: —</span>
+          <button class="sp-btn" id="sp-btn-atk" onclick="spendSkillPoint('atk')">強化（ATK+3）</button>
+        </div>
+        <div class="sp-row">
+          <span id="sp-def">防御力: —</span>
+          <button class="sp-btn" id="sp-btn-def" onclick="spendSkillPoint('def')">強化（DEF+2）</button>
+        </div>
+        <div class="sp-row">
+          <span id="sp-hp">最大 HP: —</span>
+          <button class="sp-btn" id="sp-btn-hp" onclick="spendSkillPoint('hp')">強化（HP+10）</button>
+        </div>
+        <div class="sp-row">
+          <span id="sp-mp">最大 MP: —</span>
+          <button class="sp-btn" id="sp-btn-mp" onclick="spendSkillPoint('mp')">強化（MP+8）</button>
+        </div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-skill-points -->
+
+</div><!-- /game-container -->
 
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
-
-<!-- ui.js を先に読み込み、次に game.js、save.js の順で読み込む -->
+<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js -->
 <script src="js/ui.js"></script>
+<script src="js/equipment.js"></script>
+<script src="js/dungeon.js"></script>
+<script src="js/level.js"></script>
 <script src="js/game.js"></script>
 <script src="js/save.js"></script>
 

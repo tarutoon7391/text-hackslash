@@ -258,3 +258,358 @@ footer {
   color: #336633;
   letter-spacing: 2px;
 }
+
+/* ===== 画面管理 ===== */
+.screen {
+  width: 100%;
+}
+
+/* ===== ロビー画面 ===== */
+.screen-panel {
+  border: 1px solid #00ff41;
+  padding: 16px;
+  box-shadow: 0 0 8px #00ff4166;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.panel-title {
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 6px #00ff41;
+}
+
+.lobby-status-box {
+  border: 1px solid #00cc33;
+  padding: 10px;
+  background-color: #050505;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.lobby-stat-line {
+  margin: 1px 0;
+}
+
+/* ===== MP バー ===== */
+.mp-label {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #00ccff;
+}
+
+.mp-bar-inner {
+  height: 100%;
+  background-color: #00aaff;
+  transition: width 0.4s ease;
+}
+
+/* ===== ナビゲーションボタン ===== */
+.lobby-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-btn {
+  background-color: #0a0a0a;
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  padding: 10px 22px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background-color: #00ff4122;
+  box-shadow: 0 0 10px #00ff41;
+}
+
+.nav-btn.back-btn {
+  color: #ffaa00;
+  border-color: #ffaa00;
+}
+
+.nav-btn.back-btn:hover {
+  background-color: #ffaa0022;
+  box-shadow: 0 0 10px #ffaa00;
+}
+
+.screen-footer {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 4px;
+}
+
+/* ===== ダンジョン選択画面 ===== */
+.dungeon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #00cc33;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  background-color: #050505;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dungeon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dungeon-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00ff41;
+}
+
+.dungeon-meta {
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+
+.dungeon-enter-btn {
+  background-color: #0a0a0a;
+  color: #ffdd00;
+  border: 1px solid #ffdd00;
+  padding: 8px 18px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.dungeon-enter-btn:hover {
+  background-color: #ffdd0022;
+  box-shadow: 0 0 8px #ffdd00;
+}
+
+/* ===== 戦闘画面追加要素 ===== */
+.dungeon-info-bar {
+  font-size: 0.85rem;
+  color: #ffdd00;
+  padding: 4px 0;
+  letter-spacing: 1px;
+}
+
+/* スキルパネル */
+#skill-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #ffdd00;
+  background-color: #050505;
+}
+
+.skill-btn {
+  background-color: #0a0a0a;
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  padding: 8px 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.skill-btn:hover:not(:disabled) {
+  background-color: #00ff4122;
+  box-shadow: 0 0 8px #00ff41;
+}
+
+.skill-btn.disabled,
+.skill-btn:disabled {
+  color: #336633;
+  border-color: #336633;
+  cursor: not-allowed;
+}
+
+.skill-cancel-btn {
+  background-color: #0a0a0a;
+  color: #ff6666;
+  border: 1px solid #ff6666;
+  padding: 8px 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.skill-cancel-btn:hover {
+  background-color: #ff666622;
+  box-shadow: 0 0 6px #ff6666;
+}
+
+.skill-none {
+  color: #aaaaaa;
+  font-size: 0.85rem;
+  padding: 6px;
+}
+
+/* ダンジョン進行ナビ */
+#dungeon-nav-panel {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ===== インベントリ画面 ===== */
+.inv-section {
+  border: 1px solid #00cc33;
+  padding: 10px;
+  background-color: #050505;
+}
+
+.inv-section-title {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: #00ff41;
+  text-shadow: 0 0 4px #00ff41;
+}
+
+.materials-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mat-item {
+  border: 1px solid #00cc33;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  color: #00ff41;
+  background-color: #0a0a0a;
+}
+
+.inv-empty {
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.eq-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+}
+
+.eq-slot {
+  color: #aaaaaa;
+  min-width: 100px;
+}
+
+.craft-item {
+  border: 1px solid #00cc33;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background-color: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.craft-item.insufficient {
+  border-color: #333;
+}
+
+.craft-item.owned {
+  border-color: #0066aa;
+}
+
+.craft-name {
+  font-size: 0.9rem;
+  color: #00ff41;
+  font-weight: bold;
+}
+
+.craft-stats {
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+
+.inv-btn {
+  background-color: #0a0a0a;
+  color: #00ccff;
+  border: 1px solid #00ccff;
+  padding: 4px 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.inv-btn:hover:not(:disabled) {
+  background-color: #00ccff22;
+  box-shadow: 0 0 6px #00ccff;
+}
+
+.inv-btn.disabled,
+.inv-btn:disabled {
+  color: #335566;
+  border-color: #335566;
+  cursor: not-allowed;
+}
+
+/* ===== スキルポイント画面 ===== */
+.sp-remaining {
+  font-size: 1.1rem;
+  color: #ffdd00;
+  text-shadow: 0 0 6px #ffdd00;
+  padding: 6px 0;
+}
+
+.sp-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #00cc33;
+  padding: 8px 12px;
+  background-color: #050505;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.sp-btn {
+  background-color: #0a0a0a;
+  color: #ffdd00;
+  border: 1px solid #ffdd00;
+  padding: 6px 16px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+
+.sp-btn:hover:not(:disabled) {
+  background-color: #ffdd0022;
+  box-shadow: 0 0 8px #ffdd00;
+}
+
+.sp-btn:disabled {
+  color: #554400;
+  border-color: #554400;
+  cursor: not-allowed;
+}
