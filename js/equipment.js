@@ -441,6 +441,9 @@ function craftItem(eqId) {
   // インベントリに追加
   player.ownedEquipment.push(eqId);
 
+  // 図鑑: アイテム解鎖を記録する
+  recordItemUnlock(eq.name);
+
   // 画面を再描画
   renderInventory();
 }

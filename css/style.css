@@ -613,3 +613,157 @@ footer {
   border-color: #554400;
   cursor: not-allowed;
 }
+
+/* ===== 図鑑画面 ===== */
+.enc-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.enc-tab-btn {
+  background-color: #0a0a0a;
+  color: #aaaaaa;
+  border: 1px solid #444;
+  padding: 8px 18px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.enc-tab-btn.active {
+  color: #00ff41;
+  border-color: #00ff41;
+  box-shadow: 0 0 8px #00ff4166;
+}
+
+.enc-tab-btn:hover:not(.active) {
+  color: #00cc33;
+  border-color: #00cc33;
+  background-color: #00ff4111;
+}
+
+.enc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.enc-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #333;
+  padding: 7px 12px;
+  background-color: #050505;
+  font-size: 0.85rem;
+  cursor: default;
+}
+
+.enc-entry.unknown {
+  color: #444;
+}
+
+.enc-entry.encountered {
+  border-color: #447744;
+  cursor: pointer;
+}
+
+.enc-entry.encountered:hover {
+  background-color: #00ff4111;
+}
+
+.enc-entry.defeated {
+  border-color: #00cc33;
+  cursor: pointer;
+}
+
+.enc-entry.defeated:hover {
+  background-color: #00ff4122;
+  box-shadow: 0 0 6px #00ff4144;
+}
+
+.enc-entry.unlocked {
+  border-color: #00aacc;
+  cursor: pointer;
+}
+
+.enc-entry.unlocked:hover {
+  background-color: #00ccff11;
+  box-shadow: 0 0 6px #00ccff44;
+}
+
+.enc-name {
+  color: #00ff41;
+  font-weight: bold;
+}
+
+.enc-name.dim {
+  color: #447744;
+  font-weight: normal;
+}
+
+.enc-meta {
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+
+.enc-type-badge {
+  color: #00ccff;
+}
+
+/* ===== 図鑑 詳細モーダル ===== */
+.enc-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.enc-modal {
+  background-color: #0a0a0a;
+  border: 1px solid #00ff41;
+  box-shadow: 0 0 24px #00ff4166;
+  padding: 24px 28px;
+  min-width: 300px;
+  max-width: 480px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.enc-modal-title {
+  font-size: 1.1rem;
+  color: #00ff41;
+  text-shadow: 0 0 8px #00ff41;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #00cc33;
+  padding-bottom: 8px;
+}
+
+.enc-modal-row {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.enc-modal-label {
+  color: #aaaaaa;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.enc-modal-close {
+  align-self: flex-start;
+}

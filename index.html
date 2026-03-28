@@ -36,6 +36,9 @@
         <button class="nav-btn" onclick="showScreen('skill-points'); renderSkillPoints();">
           ⭐ スキルポイント
         </button>
+        <button class="nav-btn" onclick="showScreen('encyclopedia'); renderEncyclopedia();">
+          📖 図鑑
+        </button>
       </div>
 
       <!-- セーブ・ロードパネル -->
@@ -199,17 +202,57 @@
 
   </div><!-- /screen-skill-points -->
 
+  <!-- ========================================================
+       図鑑画面
+       ======================================================== -->
+  <div id="screen-encyclopedia" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ ENCYCLOPEDIA ]</h2>
+
+      <!-- タブ -->
+      <div class="enc-tabs">
+        <button class="enc-tab-btn active" id="enc-tab-monster" onclick="switchEncTab('monster')">
+          🐲 モンスター図鑑
+        </button>
+        <button class="enc-tab-btn" id="enc-tab-item" onclick="switchEncTab('item')">
+          💎 アイテム図鑑
+        </button>
+      </div>
+
+      <!-- モンスターリスト -->
+      <div id="enc-monster-list" class="enc-list"></div>
+
+      <!-- アイテムリスト -->
+      <div id="enc-item-list" class="enc-list" style="display:none"></div>
+
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-encyclopedia -->
+
 </div><!-- /game-container -->
+
+<!-- 図鑑詳細モーダル -->
+<div id="enc-modal-overlay" class="enc-modal-overlay" style="display:none" onclick="closeEncModal()">
+  <div class="enc-modal" onclick="event.stopPropagation()">
+    <div id="enc-modal-content"></div>
+    <button class="enc-modal-close nav-btn back-btn" onclick="closeEncModal()">✕ 閉じる</button>
+  </div>
+</div>
 
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
-<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js -->
+<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js -->
 <script src="js/ui.js"></script>
 <script src="js/equipment.js"></script>
 <script src="js/dungeon.js"></script>
 <script src="js/level.js"></script>
 <script src="js/game.js"></script>
 <script src="js/save.js"></script>
+<script src="js/encyclopedia.js"></script>
 
 </body>
 </html>

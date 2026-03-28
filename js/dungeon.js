@@ -229,6 +229,9 @@ function startNextDungeonBattle() {
   game.shieldActive   = null;
   game.enemyPoisoned  = null;
 
+  // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
+  recordMonsterEncounter(game.enemy.name);
+
   clearLog();
   log(`=== ${dungeon.name} に入った！ 全 ${DUNGEON_ENEMY_COUNT} 体を倒せ！ ===`, 'special');
   updateDungeonInfo();
@@ -337,6 +340,8 @@ function addDungeonMaterial(materialName) {
   } else {
     game.dungeon.materials.push({ name: materialName, count: 1 });
   }
+  // 図鑑: アイテム解鎖を記録する
+  recordItemUnlock(materialName);
 }
 
 /* ==============================================================
