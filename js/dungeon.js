@@ -19,19 +19,20 @@ const DUNGEON_DEFINITIONS = [
     name: 'スライムの洞窟',
     recommendedLevel: 1,
     normalEnemies: [
-      { name: 'スライム',       hp: 20,  maxHp: 20,  attack: 6,  defense: 2,  expReward: 10 },
-      { name: 'ビッグスライム', hp: 35,  maxHp: 35,  attack: 8,  defense: 4,  expReward: 18 },
-      { name: 'ブルースライム', hp: 25,  maxHp: 25,  attack: 7,  defense: 3,  expReward: 14 },
+      { name: 'スライム',       hp: 40,  maxHp: 40,  attack: 12, defense: 3,  expReward: 10 },
+      { name: 'ビッグスライム', hp: 65,  maxHp: 65,  attack: 14, defense: 6,  expReward: 18 },
+      { name: 'ブルースライム', hp: 50,  maxHp: 50,  attack: 13, defense: 4,  expReward: 14 },
     ],
-    rareEnemy: { name: 'メタルスライム', hp: 5,   maxHp: 5,   attack: 10, defense: 28, expReward: 80 },
-    boss: { name: 'キングスライム', hp: 130, maxHp: 130, attack: 15, defense: 8,  expReward: 150 },
+    rareEnemy: { name: 'メタルスライム', hp: 8,   maxHp: 8,   attack: 15, defense: 40, expReward: 80 },
+    boss: { name: 'キングスライム', hp: 250, maxHp: 250, attack: 25, defense: 12, expReward: 150 },
     rareChance: 0.15,
     drops: {
-      common:       '革',
-      rare:         'キラースライム核',
-      rareDropRate:  0.80,
-      boss:         'キングゼリー',
-      bossDropRate:  0.30,
+      common:         '革',
+      commonDropRate:  0.50,
+      rare:           'キラースライム核',
+      rareDropRate:    0.80,
+      boss:           'キングゼリー',
+      bossDropRate:    0.30,
     },
   },
 
@@ -43,19 +44,20 @@ const DUNGEON_DEFINITIONS = [
     name: 'ゴブリンの森',
     recommendedLevel: 4,
     normalEnemies: [
-      { name: 'ゴブリン',         hp: 45,  maxHp: 45,  attack: 18, defense: 6,  expReward: 30 },
-      { name: 'ゴブリンアーチャー', hp: 38, maxHp: 38,  attack: 22, defense: 4,  expReward: 28 },
-      { name: 'ゴブリン戦士',      hp: 60,  maxHp: 60,  attack: 16, defense: 10, expReward: 35 },
+      { name: 'ゴブリン',         hp: 80,  maxHp: 80,  attack: 28, defense: 10, expReward: 30 },
+      { name: 'ゴブリンアーチャー', hp: 70, maxHp: 70,  attack: 35, defense: 7,  expReward: 28 },
+      { name: 'ゴブリン戦士',      hp: 110, maxHp: 110, attack: 25, defense: 18, expReward: 35 },
     ],
-    rareEnemy: { name: 'ゴブリンシャーマン', hp: 40,  maxHp: 40,  attack: 32, defense: 5,  expReward: 110 },
-    boss: { name: 'ゴブリンキング',     hp: 220, maxHp: 220, attack: 32, defense: 18, expReward: 280 },
+    rareEnemy: { name: 'ゴブリンシャーマン', hp: 70,  maxHp: 70,  attack: 50, defense: 8,  expReward: 110 },
+    boss: { name: 'ゴブリンキング',     hp: 440, maxHp: 440, attack: 55, defense: 30, expReward: 280 },
     rareChance: 0.15,
     drops: {
-      common:       '鉄',
-      rare:         'シャーマンの杖',
-      rareDropRate:  0.80,
-      boss:         '王の紋章',
-      bossDropRate:  0.30,
+      common:         '鉄',
+      commonDropRate:  0.50,
+      rare:           'シャーマンの杖',
+      rareDropRate:    0.80,
+      boss:           '王の紋章',
+      bossDropRate:    0.30,
     },
   },
 
@@ -67,19 +69,20 @@ const DUNGEON_DEFINITIONS = [
     name: '骸骨の墓地',
     recommendedLevel: 7,
     normalEnemies: [
-      { name: 'スケルトン',         hp: 70,  maxHp: 70,  attack: 30, defense: 12, expReward: 55 },
-      { name: 'ゾンビ',             hp: 90,  maxHp: 90,  attack: 25, defense: 15, expReward: 50 },
-      { name: 'スケルトンアーチャー', hp: 55, maxHp: 55,  attack: 35, defense: 8,  expReward: 60 },
+      { name: 'スケルトン',         hp: 130, maxHp: 130, attack: 48, defense: 20, expReward: 55 },
+      { name: 'ゾンビ',             hp: 170, maxHp: 170, attack: 40, defense: 26, expReward: 50 },
+      { name: 'スケルトンアーチャー', hp: 100, maxHp: 100, attack: 56, defense: 14, expReward: 60 },
     ],
-    rareEnemy: { name: 'リッチ',      hp: 65,  maxHp: 65,  attack: 52, defense: 10, expReward: 160 },
-    boss: { name: 'デスナイト',  hp: 350, maxHp: 350, attack: 45, defense: 25, expReward: 380 },
+    rareEnemy: { name: 'リッチ',      hp: 120, maxHp: 120, attack: 80, defense: 16, expReward: 160 },
+    boss: { name: 'デスナイト',  hp: 680, maxHp: 680, attack: 72, defense: 42, expReward: 380 },
     rareChance: 0.15,
     drops: {
-      common:       '金',
-      rare:         '呪いの骨',
-      rareDropRate:  0.80,
-      boss:         '死神の鎌',
-      bossDropRate:  0.30,
+      common:         '金',
+      commonDropRate:  0.50,
+      rare:           '呪いの骨',
+      rareDropRate:    0.80,
+      boss:           '死神の鎌',
+      bossDropRate:    0.30,
     },
   },
 
@@ -91,19 +94,20 @@ const DUNGEON_DEFINITIONS = [
     name: '溶岩の洞窟',
     recommendedLevel: 11,
     normalEnemies: [
-      { name: 'サラマンダー',   hp: 110, maxHp: 110, attack: 50, defense: 20, expReward: 90 },
-      { name: 'マグマゴーレム', hp: 145, maxHp: 145, attack: 45, defense: 28, expReward: 95 },
-      { name: 'ファイアバット', hp: 80,  maxHp: 80,  attack: 55, defense: 15, expReward: 88 },
+      { name: 'サラマンダー',   hp: 200, maxHp: 200, attack: 78, defense: 32, expReward: 90 },
+      { name: 'マグマゴーレム', hp: 270, maxHp: 270, attack: 72, defense: 50, expReward: 95 },
+      { name: 'ファイアバット', hp: 150, maxHp: 150, attack: 88, defense: 25, expReward: 88 },
     ],
-    rareEnemy: { name: 'ラーヴァゴーレム', hp: 130, maxHp: 130, attack: 72, defense: 32, expReward: 220 },
-    boss: { name: 'フレイムドラゴン', hp: 550, maxHp: 550, attack: 78, defense: 42, expReward: 650 },
+    rareEnemy: { name: 'ラーヴァゴーレム', hp: 250, maxHp: 250, attack: 115, defense: 52, expReward: 220 },
+    boss: { name: 'フレイムドラゴン', hp: 1100, maxHp: 1100, attack: 130, defense: 70, expReward: 650 },
     rareChance: 0.15,
     drops: {
-      common:       'ダイヤ',
-      rare:         '溶岩石',
-      rareDropRate:  0.75,
-      boss:         '竜の炎石',
-      bossDropRate:  0.30,
+      common:         'ダイヤ',
+      commonDropRate:  0.50,
+      rare:           '溶岩石',
+      rareDropRate:    0.75,
+      boss:           '竜の炎石',
+      bossDropRate:    0.30,
     },
   },
 
@@ -115,19 +119,20 @@ const DUNGEON_DEFINITIONS = [
     name: '魔王の城',
     recommendedLevel: 15,
     normalEnemies: [
-      { name: 'デーモン',     hp: 175, maxHp: 175, attack: 75, defense: 35, expReward: 155 },
-      { name: 'ダークエルフ', hp: 145, maxHp: 145, attack: 85, defense: 28, expReward: 162 },
-      { name: 'シャドウ',     hp: 125, maxHp: 125, attack: 90, defense: 25, expReward: 158 },
+      { name: 'デーモン',     hp: 340, maxHp: 340, attack: 120, defense: 56, expReward: 155 },
+      { name: 'ダークエルフ', hp: 280, maxHp: 280, attack: 138, defense: 46, expReward: 162 },
+      { name: 'シャドウ',     hp: 240, maxHp: 240, attack: 145, defense: 42, expReward: 158 },
     ],
-    rareEnemy: { name: 'ダークナイト', hp: 190, maxHp: 190, attack: 112, defense: 48, expReward: 320 },
-    boss: { name: '魔王',         hp: 850, maxHp: 850, attack: 125, defense: 62, expReward: 1000 },
+    rareEnemy: { name: 'ダークナイト', hp: 360, maxHp: 360, attack: 180, defense: 76, expReward: 320 },
+    boss: { name: '魔王',         hp: 1700, maxHp: 1700, attack: 200, defense: 100, expReward: 1000 },
     rareChance: 0.15,
     drops: {
-      common:       '竜鱗',
-      rare:         '闇の結晶',
-      rareDropRate:  0.75,
-      boss:         '魔王の心臓',
-      bossDropRate:  0.25,
+      common:         '竜鱗',
+      commonDropRate:  0.50,
+      rare:           '闇の結晶',
+      rareDropRate:    0.75,
+      boss:           '魔王の心臓',
+      bossDropRate:    0.25,
     },
   },
 ];
@@ -323,9 +328,11 @@ function processDrop() {
       log(`📦 ${drops.common} を入手した。`, 'result');
     }
   } else {
-    // 通常敵: コモン素材確定
-    addDungeonMaterial(drops.common);
-    log(`📦 ${drops.common} を入手した。`, 'result');
+    // 通常敵: commonDropRate の確率でコモン素材をドロップ（未設定の場合は確定ドロップ）
+    if (Math.random() < (drops.commonDropRate ?? 1.0)) {
+      addDungeonMaterial(drops.common);
+      log(`📦 ${drops.common} を入手した。`, 'result');
+    }
   }
 }
 
