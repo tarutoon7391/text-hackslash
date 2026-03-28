@@ -2081,9 +2081,16 @@ function renderCraftList() {
       ([mat, cnt]) => (player.materials[mat] || 0) >= cnt
     );
 
-    const recipeStr = Object.entries(eq.recipe)
-      .map(([mat, cnt]) => `${mat}×${cnt}`)
-      .join(' + ');
+    // 素材ごとに足りているか判定し色分け表示するHTML
+    const recipeHtml = `<div class="craft-recipe">${
+      Object.entries(eq.recipe)
+        .map(([mat, cnt]) => {
+          const have = player.materials[mat] || 0;
+          const ok   = have >= cnt;
+          return `<span class="craft-mat ${ok ? 'ok' : 'ng'}">${mat}×${cnt}</span>`;
+        })
+        .join('<span class="craft-mat-sep"> + </span>')
+    }</div>`;
 
     const statsStr  = buildStatsStr(eq.stats);
     const eqRarity  = eq.rarity || 'normal';
@@ -2110,13 +2117,14 @@ function renderCraftList() {
     }
 
     const btnHtml = canCraft
-      ? `<button class="inv-btn" onclick="craftItem('${eq.id}')">クラフト（${recipeStr}）</button>`
-      : `<button class="inv-btn disabled" disabled>クラフト不可（${recipeStr}）</button>`;
+      ? `<button class="inv-btn" onclick="craftItem('${eq.id}')">クラフト</button>`
+      : `<button class="inv-btn disabled" disabled>クラフト不可</button>`;
 
     return `
       <div class="craft-item ${canCraft ? '' : 'insufficient'}">
         <div class="craft-name">[${eq.slot}] ${eq.name}${rarityBadge}</div>
         <div class="craft-stats">${statsStr}　${eq.effectDesc}</div>
+        ${recipeHtml}
         ${btnHtml}
       </div>`;
   }).join('');
