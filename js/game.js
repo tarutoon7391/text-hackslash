@@ -132,13 +132,19 @@ class Player {
   }
 
   /**
+   * 祝福スキルの ATK バフを含めた実効攻撃力を返す
+   */
+  get effectiveAttack() {
+    const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
+      ? game.playerAtkBuff.bonus : 0;
+    return this.attack + bonus;
+  }
+
+  /**
    * 通常攻撃ダメージを計算して返す（会心効果・ATK バフを含む）
    */
   calcAttackDamage(target) {
-    // 祝福スキルの ATK バフを考慮する
-    const atkBonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
-      ? game.playerAtkBuff.bonus : 0;
-    const raw = (this.attack + atkBonus) - Math.floor(target.defense * DEFENSE_FACTOR);
+    const raw = this.effectiveAttack - Math.floor(target.defense * DEFENSE_FACTOR);
     const dmg = Math.max(1, raw + randInt(-2, 2));
     return applyEquipmentEffects(dmg, 'deal');
   }

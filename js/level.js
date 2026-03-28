@@ -462,6 +462,7 @@ function gainExp(expGained) {
     player.maxMpBase   += 3;
 
     // スキルポイント付与（5 の倍数レベルは 5pt、それ以外は 3pt）
+    // Lv2〜20 でのトータル: 5倍数レベル4回×5pt=20pt + 残15レベル×3pt=45pt = 計65pt
     const pointsGained = (player.level % 5 === 0) ? 5 : 3;
     player.skillPoints += pointsGained;
 
@@ -644,20 +645,13 @@ function useSkill(skillId) {
   player.mp -= skill.mpCost;
   applyMpRegenEffect();
 
-  // バフ込みの実効 ATK を計算するヘルパー
-  const effectiveAtk = () => {
-    const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
-      ? game.playerAtkBuff.bonus : 0;
-    return player.attack + bonus;
-  };
-
   switch (skillId) {
 
     /* ── 剣士スキル ── */
 
     case 'iai_slash': {
       // 居合斬り: ATK×1.8
-      const raw = Math.floor(effectiveAtk() * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
       log(`⚔ ${player.name} は「居合斬り」で斬り込んだ！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -681,7 +675,7 @@ function useSkill(skillId) {
 
     case 'thunder_slash': {
       // 雷光斬り: ATK×2.2
-      const raw = Math.floor(effectiveAtk() * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
       log(`⚡ ${player.name} は「雷光斬り」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -691,7 +685,7 @@ function useSkill(skillId) {
 
     case 'death_blow': {
       // 必殺剣: ATK×3.0
-      const raw = Math.floor(effectiveAtk() * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
       enemy.takeDamage(dmg);
       log(`💀 ${player.name} は「必殺剣」を振りおろした！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -703,7 +697,7 @@ function useSkill(skillId) {
 
     case 'fire': {
       // ファイア: ATK×1.6
-      const raw = Math.floor(effectiveAtk() * 1.6) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 1.6) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
       log(`🔥 ${player.name} は「ファイア」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -713,7 +707,7 @@ function useSkill(skillId) {
 
     case 'thunder': {
       // サンダー: ATK×1.8
-      const raw = Math.floor(effectiveAtk() * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
       log(`⚡ ${player.name} は「サンダー」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -732,7 +726,7 @@ function useSkill(skillId) {
 
     case 'blizzard': {
       // ブリザド: ATK×2.2
-      const raw = Math.floor(effectiveAtk() * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
       log(`🌨 ${player.name} は「ブリザド」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -742,7 +736,7 @@ function useSkill(skillId) {
 
     case 'grand_magic': {
       // 大魔法陣: ATK×3.0
-      const raw = Math.floor(effectiveAtk() * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
       enemy.takeDamage(dmg);
       log(`✨ ${player.name} は「大魔法陣」を展開した！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -797,7 +791,7 @@ function useSkill(skillId) {
 
     case 'trip': {
       // 足払い: ATK×1.4 + 次ターン行動不能
-      const raw = Math.floor(effectiveAtk() * 1.4) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 1.4) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
       game.enemyStunned = true;
@@ -815,7 +809,7 @@ function useSkill(skillId) {
 
     case 'body_slam': {
       // 体当たり: ATK×1.6 + スタン
-      const raw = Math.floor(effectiveAtk() * 1.6) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 1.6) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
       game.enemyStunned = true;
@@ -826,7 +820,7 @@ function useSkill(skillId) {
 
     case 'devastating_blow': {
       // 破壊の一撃: ATK×2.0 + 敵 ATK デバフ（2 ターン）
-      const raw = Math.floor(effectiveAtk() * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const raw = Math.floor(player.effectiveAttack * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
       game.enemyAtkDebuff = { factor: 0.8, turnsLeft: 2 };
