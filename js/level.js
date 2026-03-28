@@ -65,10 +65,11 @@ const EXP_TABLE = [
 
 /* ==============================================================
    スキルツリー定義
-   各ルート 22 ノード。既存ノードコスト合計は各ルート 30 SP、新規 7 ノード分を追加。
+   各ルート 22 ノード（既存15 + 新規7）。
+   各ルートのノードコスト合計: 既存30SP + 新規17SP = 47SP × 4ルート = 全ノード合計 188SP。
    プレイヤーが Lv50 までに獲得できる SP は最大 191 pt
-   （Lv2〜20は5の倍数は5pt・それ以外は3pt、Lv21〜50は5の倍数は5pt・それ以外は4pt）
-   全ノード合計約 188pt になるよう設計。
+   （Lv2〜20は5の倍数は5pt・それ以外は3pt=65pt、Lv21〜50は5の倍数は5pt・それ以外は4pt=126pt）
+   191pt - 188pt = 3pt の余裕があり、全ノードを完走可能。
    ============================================================== */
 
 const SKILL_TREE_DEFINITIONS = [
@@ -322,7 +323,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_21', name: 'リジェネ',
         type: 'skill', skillId: 'regen',
-        description: '再生の魔法（3ターンHP回復 / MP:28）',
+        description: '再生の魔法（3ターン HP+20+Lv×0.5/ターン / MP:28）',
         mpCost: 28, bonuses: {}, cost: 3, requires: 'mg_20',
       },
       {
@@ -625,7 +626,7 @@ const SKILL_DEFINITIONS = (() => {
  * スキルポイント付与:
  *   Lv2〜20: 5の倍数レベルは5pt、それ以外は3pt（合計65pt）
  *   Lv21〜50: 5の倍数レベルは5pt、それ以外は4pt（合計126pt）
- *   Lv1〜50 総計: 191pt ≒ 全ノード合計約188pt
+ *   Lv1〜50 総計: 191pt（全ノード合計188ptに対して3pt余裕）
  * @param {number} expGained - 獲得 EXP 量
  */
 function gainExp(expGained) {

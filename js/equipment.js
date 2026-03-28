@@ -2304,6 +2304,7 @@ function getEnhanceCost(eq, nextLevel) {
 
   if (rarity === 'end' || rarity === 'legend') {
     // エンド/レジェンドアイテム: 全ダンジョン分のコモン・レア・ボスレア素材を消費
+    // レジェンドはエンドと同じコスト構造（レシピが全素材大量消費のためバランス上適切）
     DUNGEON_DEFINITIONS.forEach(d => {
       cost[d.drops.common] = (cost[d.drops.common] || 0) + nextLevel;
       if (d.drops.rares && d.drops.rares[0]) {
