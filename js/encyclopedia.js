@@ -183,11 +183,12 @@ function renderEncMonsterList() {
     const defeated    = !!p.defeatFlags[m.name];
 
     if (!encountered && !defeated) {
-      return `<div class="enc-entry unknown"><span class="enc-name">???</span></div>`;
+      return '<div class="enc-entry unknown"><span class="enc-name">???</span></div>';
     }
 
     const nameClass = defeated ? 'enc-name' : 'enc-name dim';
-    return `<div class="enc-entry ${defeated ? 'defeated' : 'encountered'}" onclick="showMonsterModal('${m.name}')">
+    const safeName  = encodeURIComponent(m.name);
+    return `<div class="enc-entry ${defeated ? 'defeated' : 'encountered'}" onclick="showMonsterModal(decodeURIComponent('${safeName}'))">
       <span class="${nameClass}">${m.name}</span>
       <span class="enc-meta">${m.dungeonName}</span>
     </div>`;
@@ -206,10 +207,11 @@ function renderEncItemList() {
     const unlocked = !!p.itemUnlockFlags[item.name];
 
     if (!unlocked) {
-      return `<div class="enc-entry unknown"><span class="enc-name">???</span></div>`;
+      return '<div class="enc-entry unknown"><span class="enc-name">???</span></div>';
     }
 
-    return `<div class="enc-entry unlocked" onclick="showItemModal('${item.name}')">
+    const safeName = encodeURIComponent(item.name);
+    return `<div class="enc-entry unlocked" onclick="showItemModal(decodeURIComponent('${safeName}'))">
       <span class="enc-name">${item.name}</span>
       <span class="enc-meta enc-type-badge">[${item.type}]</span>
     </div>`;
