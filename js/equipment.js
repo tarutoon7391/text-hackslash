@@ -1110,6 +1110,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+17%',
     recipe: { '精霊の羽根': 2, '遺跡の石板': 1 },
   },
+  {
+    id: 'd6_rare_boots',
+    name: '精霊の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 35, maxHp: 40, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '精霊の羽根': 1, '遺跡の石板': 1 },
+  },
 
   /* ─── D6 ボスレア追加分（古代の叡智 + 遺跡守護者の胆石） ─── */
 
@@ -1233,6 +1243,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectValue: 0.18,
     effectDesc: '会心率+18%',
     recipe: { '深海魚の鱗': 2, '海神の宝珠': 1 },
+  },
+  {
+    id: 'd7_rare_boots',
+    name: '深海の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 44, maxHp: 52, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '深海魚の鱗': 1, '海神の宝珠': 1 },
   },
 
   /* ─── D7 ボスレア追加分（深海神の加護 + 深海神の牙） ─── */
@@ -1358,6 +1378,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+20%',
     recipe: { '隕石鉄': 2, '宇宙水晶': 1 },
   },
+  {
+    id: 'd8_rare_boots',
+    name: '星屑の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 56, maxHp: 64, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '隕石鉄': 1, '宇宙水晶': 1 },
+  },
 
   /* ─── D8 ボスレア追加分（星神の加護 + 星の守護者の核） ─── */
 
@@ -1481,6 +1511,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectValue: 0.22,
     effectDesc: '会心率+22%',
     recipe: { '魔界の結晶': 2, '異界の魔石': 1 },
+  },
+  {
+    id: 'd9_rare_boots',
+    name: '魔界の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 70, maxHp: 78, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '魔界の結晶': 1, '異界の魔石': 1 },
   },
 
   /* ─── D9 ボスレア追加分（異界の力 + 迷宮守護者の核） ─── */
@@ -1606,6 +1646,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+23%',
     recipe: { '幻想の羽根': 2, '夢幻の水晶': 1 },
   },
+  {
+    id: 'd10_rare_boots',
+    name: '夢幻の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 86, maxHp: 96, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '幻想の羽根': 1, '夢幻の水晶': 1 },
+  },
 
   /* ─── D10 ボスレア追加分（夢神の加護 + 夢主の心） ─── */
 
@@ -1729,6 +1779,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectValue: 0.25,
     effectDesc: '会心率+25%',
     recipe: { '時の砂': 2, '空間の結晶': 1 },
+  },
+  {
+    id: 'd11_rare_boots',
+    name: '時空の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 106, maxHp: 118, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '時の砂': 1, '空間の結晶': 1 },
   },
 
   /* ─── D11 ボスレア追加分（時空の奇跡 + 時空守護者の核） ─── */
@@ -1854,6 +1914,16 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+27%',
     recipe: { '虚空の欠片': 2, '混沌の石板': 1 },
   },
+  {
+    id: 'd12_rare_boots',
+    name: '混沌の靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 130, maxHp: 142, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '虚空の欠片': 1, '混沌の石板': 1 },
+  },
 
   /* ─── D12 ボスレア追加分（混沌の力 + 混沌神の心臓） ─── */
 
@@ -1922,7 +1992,7 @@ const EQUIPMENT_DEFINITIONS = [
     recipe: { '混沌の力': 1, '混沌神の心臓': 1 },
   },
 
-  /* ─── エンドアイテム（D6〜D12対応、計7種類） ─── */
+  /* ─── エンドアイテム（D6〜D12対応、計9種類） ─── */
 
   /* D6: アクセサリー（レジェンドランク） — D1〜D6の全素材を大量消費 */
   {
@@ -1942,6 +2012,19 @@ const EQUIPMENT_DEFINITIONS = [
       '竜鱗': 20, '闇の結晶': 5, '虚無の欠片': 5, '魔王の魂': 2,
       '古代石': 20, '精霊の羽根': 5, '遺跡の石板': 5, '古代の叡智': 2,
     },
+  },
+
+  /* D6: アクセサリー（エンドランク） — 古代石×25 + 精霊の羽根×3 + 遺跡の石板×3 + 古代の叡智×1 */
+  {
+    id: 'end_acc_ancient',
+    name: '古代の覇者護符',
+    slot: 'アクセサリー',
+    rarity: 'end',
+    stats: { attack: 55, defense: 40, maxHp: 120, maxMp: 35 },
+    effectType: 'critChance',
+    effectValue: 0.27,
+    effectDesc: '会心率+27%',
+    recipe: { '精霊の羽根': 3, '遺跡の石板': 3, '古代の叡智': 1, '古代石': 25 },
   },
 
   /* D7: 武器 — 深海珊瑚×25 + 深海魚の鱗×3 + 海神の宝珠×3 + 深海神の加護×1 */
@@ -2007,6 +2090,19 @@ const EQUIPMENT_DEFINITIONS = [
     effectValue: 0.33,
     effectDesc: 'ダメージ軽減(33%の確率)',
     recipe: { '時の砂': 3, '空間の結晶': 3, '時空の奇跡': 1, '時空の欠片': 25 },
+  },
+
+  /* D12: アクセサリー（エンドランク） — 混沌の結晶×25 + 虚空の欠片×3 + 混沌の石板×3 + 混沌の力×1 */
+  {
+    id: 'end_acc_chaos',
+    name: '混沌の覇者護符',
+    slot: 'アクセサリー',
+    rarity: 'end',
+    stats: { attack: 135, defense: 100, maxHp: 280, maxMp: 90 },
+    effectType: 'critChance',
+    effectValue: 0.37,
+    effectDesc: '会心率+37%',
+    recipe: { '虚空の欠片': 3, '混沌の石板': 3, '混沌の力': 1, '混沌の結晶': 25 },
   },
 
   /* D12: アクセサリー（レジェンドランク） — D7〜D12の全素材を大量消費 */
