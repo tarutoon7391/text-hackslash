@@ -1100,15 +1100,23 @@ function renderEquippedList() {
   const el = document.getElementById('equipped-list');
   if (!el) return;
 
+  const player = game.player;
   const slots = ['頭', '胴', '足', '靴', 'アクセサリー', '武器'];
   el.innerHTML = slots.map(slot => {
-    const eqId  = game.player.equipment[slot];
+    const eqId  = player.equipment[slot];
     const eq    = eqId ? EQUIPMENT_DEFINITIONS.find(e => e.id === eqId) : null;
-    const label = eq ? eq.name : '（未装備）';
-    const btn   = eq
+    const enhLv = (eq && player.enhanceLevels[eqId]) || 0;
+    const label = eq
+      ? (enhLv > 0 ? `${eq.name} +${enhLv}` : eq.name)
+      : '（未装備）';
+    const unequipBtn = eq
       ? `<button class="inv-btn" onclick="unequipItem('${slot}')">外す</button>`
       : '';
-    return `<div class="eq-row"><span class="eq-slot">[${slot}]</span> <span>${label}</span>${btn}</div>`;
+    const canEnh = eq ? canAffordEnhancement(eq, enhLv + 1) : false;
+    const enhBtn = eq
+      ? `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eqId}')">⬆ 強化</button>`
+      : '';
+    return `<div class="eq-row"><span class="eq-slot">[${slot}]</span> <span>${label}</span>${unequipBtn}${enhBtn}</div>`;
   }).join('');
 }
 
@@ -1186,11 +1194,16 @@ function renderCraftList() {
     if (isOwned || isEquipped) {
       // 所持済み → 装備ボタンを表示（未装備スロットの場合）
       if (!isEquipped) {
+        const ownedEnhLv = player.enhanceLevels[eq.id] || 0;
+        const ownedDisplayName = ownedEnhLv > 0 ? `${eq.name} +${ownedEnhLv}` : eq.name;
+        const canEnh = canAffordEnhancement(eq, ownedEnhLv + 1);
+        const enhBtn = `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eq.id}')">⬆ 強化</button>`;
         return `
           <div class="craft-item owned">
-            <div class="craft-name">[${eq.slot}] ${eq.name}${rarityBadge}</div>
+            <div class="craft-name">[${eq.slot}] ${ownedDisplayName}${rarityBadge}</div>
             <div class="craft-stats">${statsStr}　${eq.effectDesc}</div>
             <button class="inv-btn" onclick="equipItem('${eq.id}')">装備する</button>
+            ${enhBtn}
           </div>`;
       }
       // 装備中は craft-list では表示しない
@@ -1353,3 +1366,187 @@ function applyMpRegenEffect() {
     player.mp = Math.min(player.maxMp, player.mp + mpRegen);
   }
 }
+
+/* ==============================================================
+   装備強化システム
+   ============================================================== */
+
+/**
+ * 装備がどのダンジョンに対応しているかを返す
+ * レシピの素材からダンジョンを特定する
+ * @param {object} eq - 装備定義
+ * @returns {object|null} - ダンジョン定義またはnull
+ */
+function getEquipmentDungeon(eq) {
+  const recipeKeys = Object.keys(eq.recipe);
+  for (const mat of recipeKeys) {
+    const dungeon = DUNGEON_DEFINITIONS.find(d =>
+      d.drops.common === mat ||
+      (d.drops.rares || []).includes(mat) ||
+      d.drops.boss === mat ||
+      d.drops.bossRare === mat
+    );
+    if (dungeon) return dungeon;
+  }
+  return null;
+}
+
+/**
+ * 装備の強化コストを計算する
+ * 強化コスト式: 必要素材数 = 強化後レベル
+ * 例: +0→+1は各素材1個, +1→+2は各素材2個, +2→+3は各素材3個
+ * @param {object} eq - 装備定義
+ * @param {number} nextLevel - 強化後のレベル
+ * @returns {object} - { 素材名: 必要数, ... }
+ */
+function getEnhanceCost(eq, nextLevel) {
+  const rarity = eq.rarity || 'normal';
+  const cost = {};
+
+  if (rarity === 'end') {
+    // エンドアイテム: 全5ダンジョン分のコモン・レア・ボスレア素材を消費
+    DUNGEON_DEFINITIONS.forEach(d => {
+      cost[d.drops.common] = (cost[d.drops.common] || 0) + nextLevel;
+      if (d.drops.rares && d.drops.rares[0]) {
+        cost[d.drops.rares[0]] = (cost[d.drops.rares[0]] || 0) + nextLevel;
+      }
+      cost[d.drops.bossRare] = (cost[d.drops.bossRare] || 0) + nextLevel;
+    });
+    return cost;
+  }
+
+  // ノーマル/レア/ボスレア: そのダンジョンのコモン・レア・ボスレア素材を消費
+  const dungeon = getEquipmentDungeon(eq);
+  if (!dungeon) return {};
+
+  cost[dungeon.drops.common] = nextLevel;
+  if (dungeon.drops.rares && dungeon.drops.rares[0]) {
+    cost[dungeon.drops.rares[0]] = nextLevel;
+  }
+  cost[dungeon.drops.bossRare] = nextLevel;
+  return cost;
+}
+
+/**
+ * 強化に必要な素材が揃っているかチェックする
+ * @param {object} eq - 装備定義
+ * @param {number} nextLevel - 強化後のレベル
+ * @returns {boolean}
+ */
+function canAffordEnhancement(eq, nextLevel) {
+  const cost = getEnhanceCost(eq, nextLevel);
+  if (Object.keys(cost).length === 0) return false;
+  const mats = game.player.materials;
+  return Object.entries(cost).every(([mat, cnt]) => (mats[mat] || 0) >= cnt);
+}
+
+/** 現在強化モーダルに表示中の装備ID */
+let enhanceModalEqId = null;
+
+/**
+ * 強化モーダルを表示する
+ * @param {string} eqId - 装備ID
+ */
+function showEnhanceModal(eqId) {
+  enhanceModalEqId = eqId;
+  renderEnhanceModal();
+  const overlay = document.getElementById('enhance-modal-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+
+/** 強化モーダルを閉じる */
+function closeEnhanceModal() {
+  const overlay = document.getElementById('enhance-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+  enhanceModalEqId = null;
+}
+
+/** 強化モーダルの内容を描画する */
+function renderEnhanceModal() {
+  const content = document.getElementById('enhance-modal-content');
+  if (!content || !enhanceModalEqId) return;
+
+  const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === enhanceModalEqId);
+  if (!eq) return;
+
+  const player    = game.player;
+  const currentLv = player.enhanceLevels[enhanceModalEqId] || 0;
+  const nextLv    = currentLv + 1;
+  const cost      = getEnhanceCost(eq, nextLv);
+  const mats      = player.materials;
+  const canAfford = Object.entries(cost).every(([m, c]) => (mats[m] || 0) >= c);
+
+  const displayName = currentLv > 0 ? `${eq.name} +${currentLv}` : eq.name;
+
+  // スロット別の強化ボーナス説明
+  const slot = eq.slot;
+  let statBonusStr = '';
+  if (slot === '武器') statBonusStr = 'ATK +3';
+  else if (['頭', '胴', '足', '靴'].includes(slot)) statBonusStr = 'DEF +2';
+  else if (slot === 'アクセサリー') statBonusStr = 'HP +5';
+
+  // 必要素材リスト
+  const matRows = Object.entries(cost).map(([mat, cnt]) => {
+    const have = mats[mat] || 0;
+    const ok   = have >= cnt;
+    return `<div class="enhance-mat-row ${ok ? 'ok' : 'insufficient'}">
+      <span class="enhance-mat-name">${mat}</span>
+      <span class="enhance-mat-count">${have} / ${cnt}</span>
+    </div>`;
+  }).join('');
+
+  const btnHtml = canAfford
+    ? `<button class="inv-btn enhance-confirm-btn" onclick="confirmEnhance()">⬆ 強化する (+${nextLv})</button>`
+    : `<button class="inv-btn disabled" disabled>⬆ 強化する（素材不足）</button>`;
+
+  content.innerHTML = `
+    <div class="enhance-modal-title">[ ENHANCE ]</div>
+    <div class="enhance-modal-info">
+      <div class="enhance-eq-name">${displayName}</div>
+      <div class="enhance-level-info">現在: <strong>+${currentLv}</strong> → 強化後: <strong>+${nextLv}</strong></div>
+      <div class="enhance-stat-bonus">強化ボーナス: ${statBonusStr}</div>
+    </div>
+    <div class="enhance-mat-section">
+      <div class="enhance-mat-title">必要素材（コスト式: 各素材 × 強化後レベル）：</div>
+      ${matRows || '<span class="inv-empty">素材情報なし</span>'}
+    </div>
+    ${btnHtml}
+  `;
+}
+
+/** 強化を実行する */
+function confirmEnhance() {
+  if (!enhanceModalEqId) return;
+
+  const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === enhanceModalEqId);
+  if (!eq) return;
+
+  const player    = game.player;
+  const currentLv = player.enhanceLevels[enhanceModalEqId] || 0;
+  const nextLv    = currentLv + 1;
+  const cost      = getEnhanceCost(eq, nextLv);
+
+  // 再度素材チェック（二重送信防止）
+  const mats = player.materials;
+  const canAfford = Object.entries(cost).every(([m, c]) => (mats[m] || 0) >= c);
+  if (!canAfford) {
+    renderEnhanceModal();
+    return;
+  }
+
+  // 素材を消費する
+  Object.entries(cost).forEach(([mat, cnt]) => {
+    player.materials[mat] = (player.materials[mat] || 0) - cnt;
+  });
+
+  // 強化レベルを更新する
+  player.enhanceLevels[enhanceModalEqId] = nextLv;
+
+  // ステータスを再計算する
+  player.recalcStats();
+
+  closeEnhanceModal();
+  renderInventory();
+  renderLobbyStatus();
+}
+

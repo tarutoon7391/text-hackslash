@@ -65,6 +65,7 @@ class Player {
     this.materials      = s.materials      ? { ...s.materials }    : {};
     this.equipment      = s.equipment      ? { ...s.equipment }    : {};
     this.ownedEquipment = s.ownedEquipment ? [...s.ownedEquipment] : [];
+    this.enhanceLevels  = s.enhanceLevels  ? { ...s.enhanceLevels } : {};
     this.dungeonProgress = s.dungeonProgress ? { ...s.dungeonProgress } : {};
 
     /** 図鑑: モンスター遭遇フラグ・討伐フラグ・討伐回数 */
@@ -125,6 +126,18 @@ class Player {
       this.defense += eq.stats.defense || 0;
       this.maxHp   += eq.stats.maxHp   || 0;
       this.maxMp   += eq.stats.maxMp   || 0;
+
+      // 装備強化ボーナスを加算する
+      const enhLv = this.enhanceLevels[eqId] || 0;
+      if (enhLv > 0) {
+        if (eq.slot === '武器') {
+          this.attack += enhLv * 3;
+        } else if (['頭', '胴', '足', '靴'].includes(eq.slot)) {
+          this.defense += enhLv * 2;
+        } else if (eq.slot === 'アクセサリー') {
+          this.maxHp += enhLv * 5;
+        }
+      }
     });
 
     this.hp = Math.min(this.hp, this.maxHp);
