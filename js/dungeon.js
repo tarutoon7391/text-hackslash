@@ -370,6 +370,10 @@ function completeDungeon() {
   log(`🏆 ${dungeon.name} をクリアした！`, 'special');
   log('獲得素材をインベントリに追加しました。', 'result');
 
+  // ロビーに戻る際にHPとMPを全回復する
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
   showScreen('lobby');
   renderLobby();
 }
@@ -379,6 +383,10 @@ function retreatFromDungeon() {
   // 獲得素材をプレイヤーのインベントリに移す（撤退は持ち帰り可）
   transferDungeonMaterials();
   log('🚪 ダンジョンから撤退した。獲得素材を持ち帰った。', 'result');
+
+  // ロビーに戻る際にHPとMPを全回復する
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
 
   showScreen('lobby');
   renderLobby();
@@ -392,8 +400,9 @@ function failDungeon() {
   game.dungeon.materials = [];
   log('💀 ダンジョン内で獲得した素材をすべて失った…', 'enemy-action');
 
-  // HP を最大値で復活（デスペナルティなし）
+  // HPとMPを最大値で復活（デスペナルティなし）
   game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
   renderPlayerStatus();
 
   showScreen('lobby');
