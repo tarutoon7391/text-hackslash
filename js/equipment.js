@@ -500,7 +500,7 @@ function applyEquipmentEffects(rawDamage, direction) {
     if (!eq) return;
 
     if (direction === 'take' && eq.effectType === 'damageReduction') {
-      // 確率でダメージを半減
+      // effectValue の確率で発動し、ダメージを 50% に軽減する
       if (Math.random() < eq.effectValue) {
         dmg = Math.floor(dmg * 0.5);
       }

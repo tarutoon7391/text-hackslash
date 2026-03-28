@@ -201,7 +201,7 @@ function useSkill(skillId) {
       break;
   }
 
-  // スキルが回復のみの場合はターン消費なし（HPを回復してもターンは進む）
+  // スキル使用後はプレイヤーターンを終了し、敵のターンへ進む
   afterPlayerTurn();
 }
 
