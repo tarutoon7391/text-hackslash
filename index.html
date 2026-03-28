@@ -33,8 +33,8 @@
         <button class="nav-btn" onclick="showScreen('inventory'); renderInventory();">
           🎒 インベントリ
         </button>
-        <button class="nav-btn" onclick="showScreen('skill-points'); renderSkillPoints();">
-          ⭐ スキルポイント
+        <button class="nav-btn" onclick="showScreen('skill-tree'); renderSkillTree();">
+          ⭐ スキルツリー
         </button>
         <button class="nav-btn" onclick="showScreen('encyclopedia'); renderEncyclopedia();">
           📖 図鑑
@@ -194,40 +194,35 @@
   </div><!-- /screen-inventory -->
 
   <!-- ========================================================
-       スキルポイント画面
+       スキルツリー画面
        ======================================================== -->
-  <div id="screen-skill-points" class="screen" style="display:none">
+  <div id="screen-skill-tree" class="screen" style="display:none">
 
     <div class="screen-panel">
-      <h2 class="panel-title">[ SKILL POINTS ]</h2>
+      <h2 class="panel-title">[ SKILL TREE ]</h2>
 
-      <div class="sp-remaining" id="sp-remaining">残りポイント: 0 pt</div>
+      <div class="sp-remaining" id="st-remaining">残りポイント: 0 pt</div>
 
-      <div class="sp-stats">
-        <div class="sp-row">
-          <span id="sp-atk">攻撃力: —</span>
-          <button class="sp-btn" id="sp-btn-atk" onclick="spendSkillPoint('atk')">強化（ATK+3）</button>
-        </div>
-        <div class="sp-row">
-          <span id="sp-def">防御力: —</span>
-          <button class="sp-btn" id="sp-btn-def" onclick="spendSkillPoint('def')">強化（DEF+2）</button>
-        </div>
-        <div class="sp-row">
-          <span id="sp-hp">最大 HP: —</span>
-          <button class="sp-btn" id="sp-btn-hp" onclick="spendSkillPoint('hp')">強化（HP+10）</button>
-        </div>
-        <div class="sp-row">
-          <span id="sp-mp">最大 MP: —</span>
-          <button class="sp-btn" id="sp-btn-mp" onclick="spendSkillPoint('mp')">強化（MP+8）</button>
-        </div>
+      <!-- ルートタブ -->
+      <div class="st-tabs" id="st-tabs">
+        <button class="st-tab-btn active" data-route="swordsman" onclick="switchSkillTreeTab('swordsman')">⚔ 剣士</button>
+        <button class="st-tab-btn" data-route="mage"       onclick="switchSkillTreeTab('mage')">🔮 魔法</button>
+        <button class="st-tab-btn" data-route="cleric"     onclick="switchSkillTreeTab('cleric')">✨ 僧侶</button>
+        <button class="st-tab-btn" data-route="warrior"    onclick="switchSkillTreeTab('warrior')">🥊 戦士</button>
       </div>
+
+      <!-- ルート説明 -->
+      <div id="st-route-desc" class="st-route-desc"></div>
+
+      <!-- ノードリスト -->
+      <div id="st-node-list" class="st-node-list"></div>
 
       <div class="screen-footer">
         <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
       </div>
     </div>
 
-  </div><!-- /screen-skill-points -->
+  </div><!-- /screen-skill-tree -->
 
   <!-- ========================================================
        図鑑画面
