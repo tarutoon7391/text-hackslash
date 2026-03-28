@@ -1166,6 +1166,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+23%',
     recipe: { '古代の叡智': 1, '遺跡守護者の胆石': 1 },
   },
+  {
+    id: 'd6_boss_acc',
+    name: '古代神将の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 36, defense: 24, maxHp: 50, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.20,
+    effectDesc: '会心率+20%',
+    recipe: { '古代の叡智': 1, '遺跡守護者の胆石': 1 },
+  },
 
   /* ─── D7 レア追加分（深海魚の鱗 + 海神の宝珠） ─── */
 
@@ -1277,6 +1288,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectType: 'critChance',
     effectValue: 0.25,
     effectDesc: '会心率+25%',
+    recipe: { '深海神の加護': 1, '深海神の牙': 1 },
+  },
+  {
+    id: 'd7_boss_acc',
+    name: '深海神の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 44, defense: 30, maxHp: 65, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.22,
+    effectDesc: '会心率+22%',
     recipe: { '深海神の加護': 1, '深海神の牙': 1 },
   },
 
@@ -1392,6 +1414,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+27%',
     recipe: { '星神の加護': 1, '星の守護者の核': 1 },
   },
+  {
+    id: 'd8_boss_acc',
+    name: '星神の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 52, defense: 37, maxHp: 80, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.24,
+    effectDesc: '会心率+24%',
+    recipe: { '星神の加護': 1, '星の守護者の核': 1 },
+  },
 
   /* ─── D9 レア追加分（魔界の結晶 + 異界の魔石） ─── */
 
@@ -1503,6 +1536,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectType: 'critChance',
     effectValue: 0.28,
     effectDesc: '会心率+28%',
+    recipe: { '異界の力': 1, '迷宮守護者の核': 1 },
+  },
+  {
+    id: 'd9_boss_acc',
+    name: '異界の力の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 63, defense: 47, maxHp: 100, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.25,
+    effectDesc: '会心率+25%',
     recipe: { '異界の力': 1, '迷宮守護者の核': 1 },
   },
 
@@ -1618,6 +1662,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+29%',
     recipe: { '夢神の加護': 1, '夢主の心': 1 },
   },
+  {
+    id: 'd10_boss_acc',
+    name: '夢神の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 75, defense: 57, maxHp: 120, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.26,
+    effectDesc: '会心率+26%',
+    recipe: { '夢神の加護': 1, '夢主の心': 1 },
+  },
 
   /* ─── D11 レア追加分（時の砂 + 空間の結晶） ─── */
 
@@ -1731,6 +1786,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+30%',
     recipe: { '時空の奇跡': 1, '時空守護者の核': 1 },
   },
+  {
+    id: 'd11_boss_acc',
+    name: '時空神の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 90, defense: 70, maxHp: 145, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.27,
+    effectDesc: '会心率+27%',
+    recipe: { '時空の奇跡': 1, '時空守護者の核': 1 },
+  },
 
   /* ─── D12 レア追加分（虚空の欠片 + 混沌の石板） ─── */
 
@@ -1842,6 +1908,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectType: 'critChance',
     effectValue: 0.32,
     effectDesc: '会心率+32%',
+    recipe: { '混沌の力': 1, '混沌神の心臓': 1 },
+  },
+  {
+    id: 'd12_boss_acc',
+    name: '混沌神の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 110, defense: 85, maxHp: 175, maxMp: 0 },
+    effectType: 'critChance',
+    effectValue: 0.28,
+    effectDesc: '会心率+28%',
     recipe: { '混沌の力': 1, '混沌神の心臓': 1 },
   },
 
