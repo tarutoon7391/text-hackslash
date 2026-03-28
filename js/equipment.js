@@ -1166,6 +1166,17 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '会心率+23%',
     recipe: { '古代の叡智': 1, '遺跡守護者の胆石': 1 },
   },
+  {
+    id: 'd6_boss_acc',
+    name: '古代神将の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 40, defense: 28, maxHp: 52, maxMp: 18 },
+    effectType: 'critChance',
+    effectValue: 0.23,
+    effectDesc: '会心率+23%',
+    recipe: { '古代の叡智': 1, '遺跡守護者の胆石': 1 },
+  },
 
   /* ─── D7 レア追加分（深海魚の鱗 + 海神の宝珠） ─── */
 
@@ -1839,6 +1850,17 @@ const EQUIPMENT_DEFINITIONS = [
     slot: '武器',
     rarity: 'bossRare',
     stats: { attack: 330, defense: 42, maxHp: 0, maxMp: 52 },
+    effectType: 'critChance',
+    effectValue: 0.32,
+    effectDesc: '会心率+32%',
+    recipe: { '混沌の力': 1, '混沌神の心臓': 1 },
+  },
+  {
+    id: 'd12_boss_acc',
+    name: '混沌神の首飾り',
+    slot: 'アクセサリー',
+    rarity: 'bossRare',
+    stats: { attack: 125, defense: 85, maxHp: 162, maxMp: 72 },
     effectType: 'critChance',
     effectValue: 0.32,
     effectDesc: '会心率+32%',
