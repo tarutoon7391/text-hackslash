@@ -138,6 +138,13 @@ async function loadGame() {
 
     game.dungeon = { id: null, enemyIndex: 0, materials: [] };
 
+    // マイグレーション: 全回復スキル取得済みの場合、神聖なうたい寝に自動移行する
+    if (game.player.learnedSkills.includes('full_recovery')) {
+      game.player.learnedSkills = game.player.learnedSkills.map(
+        s => s === 'full_recovery' ? 'holy_slumber' : s
+      );
+    }
+
     showSaveLoadMsg('✅ ロードしました！', 'success');
     log('📂 ゲームデータをロードしました。', 'result');
     log(`  名前: ${game.player.name}  LV: ${game.player.level}  EXP: ${game.player.exp}`, 'result');
