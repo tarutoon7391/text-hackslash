@@ -565,7 +565,80 @@ footer {
   cursor: not-allowed;
 }
 
-/* ===== スキルポイント画面 ===== */
+/* ===== クラフトフィルタータブ ===== */
+.craft-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.craft-filter-label {
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  white-space: nowrap;
+  min-width: 50px;
+}
+
+.craft-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.craft-filter-btn {
+  background-color: #0a0a0a;
+  color: #555;
+  border: 1px solid #333;
+  padding: 3px 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.craft-filter-btn:hover:not(.active) {
+  color: #00cc33;
+  border-color: #00cc33;
+  background-color: #00ff4111;
+}
+
+.craft-filter-btn.active {
+  color: #00ff41;
+  border-color: #00ff41;
+  box-shadow: 0 0 6px #00ff4166;
+}
+
+/* ===== レアリティバッジ ===== */
+.rarity-badge {
+  font-size: 0.68rem;
+  padding: 1px 5px;
+  border: 1px solid;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.rarity-badge.rarity-normal {
+  color: #666;
+  border-color: #666;
+}
+
+.rarity-badge.rarity-rare {
+  color: #00ccff;
+  border-color: #00ccff;
+}
+
+.rarity-badge.rarity-bossRare {
+  color: #ffaa00;
+  border-color: #ffaa00;
+}
+
+.rarity-badge.rarity-end {
+  color: #ff44ff;
+  border-color: #ff44ff;
+  text-shadow: 0 0 4px #ff44ff;
+}
 .sp-remaining {
   font-size: 1.1rem;
   color: #ffdd00;
