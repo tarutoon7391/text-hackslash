@@ -2,65 +2,54 @@
 
 /* ==============================================================
    セーブ・ロード機能
-   ロリポップ上の PHP API を使ったパスワードベースのセーブ・ロード
    ============================================================== */
 
-/** API のエンドポイント URL */
 const API_URL = 'https://lomo-s2409009.ssl-lolipop.jp/public_html/api.php';
 
-/**
- * セーブ・ロード結果メッセージを表示する
- * @param {string} text      - 表示テキスト
- * @param {string} type      - 'success' | 'error' | 'loading'
- */
 function showSaveLoadMsg(text, type) {
   const el = document.getElementById('saveload-msg');
+  if (!el) return;
   el.textContent = text;
-  // 既存クラスをクリアして新しいクラスをセット
-  el.className = type;
+  el.className   = type;
 }
 
-/**
- * セーブ・ロードボタンの有効 / 無効を切り替える
- * @param {boolean} enabled - true で有効、false で無効（通信中）
- */
 function setSaveLoadButtonsEnabled(enabled) {
-  document.getElementById('btn-save').disabled = !enabled;
-  document.getElementById('btn-load').disabled = !enabled;
+  ['btn-save', 'btn-load'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = !enabled;
+  });
 }
 
-/**
- * 現在のゲームデータをセーブする
- * パスワードを入力して API に送信する
- */
 async function saveGame() {
   const password = document.getElementById('password-input').value.trim();
+  if (!password) { showSaveLoadMsg('⚠ パスワードを入力してください。', 'error'); return; }
+  if (!game.player) { showSaveLoadMsg('⚠ ゲームが開始されていません。', 'error'); return; }
 
-  // パスワード未入力チェック
-  if (!password) {
-    showSaveLoadMsg('⚠ パスワードを入力してください。', 'error');
-    return;
-  }
-
-  // プレイヤーが初期化されていない場合は保存不可
-  if (!game.player) {
-    showSaveLoadMsg('⚠ ゲームが開始されていません。', 'error');
-    return;
-  }
-
-  // セーブするデータを構築する
+  const p = game.player;
   const saveData = {
-    name:    game.player.name,
-    level:   game.player.level,
-    hp:      game.player.hp,
-    maxHp:   game.player.maxHp,
-    attack:  game.player.attack,
-    defense: game.player.defense,
-    exp:     game.player.exp,
-    items:   [],  // 将来のアイテム拡張用
+    name:            p.name,
+    level:           p.level,
+    exp:             p.exp,
+    hp:              p.hp,
+    maxHp:           p.maxHp,
+    mp:              p.mp,
+    maxMp:           p.maxMp,
+    attackBase:      p.attackBase,
+    defenseBase:     p.defenseBase,
+    maxHpBase:       p.maxHpBase,
+    maxMpBase:       p.maxMpBase,
+    spAtk:           p.spAtk,
+    spDef:           p.spDef,
+    spHp:            p.spHp,
+    spMp:            p.spMp,
+    skillPoints:     p.skillPoints,
+    learnedSkills:   p.learnedSkills,
+    materials:       p.materials,
+    equipment:       p.equipment,
+    ownedEquipment:  p.ownedEquipment,
+    dungeonProgress: p.dungeonProgress,
   };
 
-  // 通信中はボタンを無効化してローディング表示
   setSaveLoadButtonsEnabled(false);
   showSaveLoadMsg('⏳ セーブ中…', 'loading');
 
@@ -68,49 +57,29 @@ async function saveGame() {
     const response = await fetch(API_URL, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        action:   'save',
-        password: password,
-        save:     saveData,
-      }),
+      body:    JSON.stringify({ action: 'save', password, save: saveData }),
     });
-
     const result = await response.json();
-
     if (result.status === 'ok' || result.success || response.ok) {
-      // セーブ成功
       showSaveLoadMsg('✅ セーブしました！', 'success');
       log('💾 ゲームデータをセーブしました。', 'result');
     } else {
-      // API からエラーが返ってきた場合
       const errMsg = result.message || result.error || '不明なエラー';
       showSaveLoadMsg(`❌ セーブ失敗: ${errMsg}`, 'error');
       log(`❌ セーブに失敗しました: ${errMsg}`, 'enemy-action');
     }
   } catch (err) {
-    // ネットワークエラーなど
     showSaveLoadMsg(`❌ 通信エラー: ${err.message}`, 'error');
     log(`❌ セーブ通信エラー: ${err.message}`, 'enemy-action');
   } finally {
-    // 通信完了後にボタンを再有効化
     setSaveLoadButtonsEnabled(true);
   }
 }
 
-/**
- * ゲームデータをロードする
- * パスワードを使って API からデータを取得し、ゲームに反映する
- */
 async function loadGame() {
   const password = document.getElementById('password-input').value.trim();
+  if (!password) { showSaveLoadMsg('⚠ パスワードを入力してください。', 'error'); return; }
 
-  // パスワード未入力チェック
-  if (!password) {
-    showSaveLoadMsg('⚠ パスワードを入力してください。', 'error');
-    return;
-  }
-
-  // 通信中はボタンを無効化してローディング表示
   setSaveLoadButtonsEnabled(false);
   showSaveLoadMsg('⏳ ロード中…', 'loading');
 
@@ -118,53 +87,54 @@ async function loadGame() {
     const response = await fetch(API_URL, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        action:   'load',
-        password: password,
-      }),
+      body:    JSON.stringify({ action: 'load', password }),
     });
-
     const result = await response.json();
 
-    // API レスポンスのエラー判定
     if (!response.ok || result.error || (!result.save && !result.data)) {
       const errMsg = result.message || result.error || 'データが見つかりませんでした';
       showSaveLoadMsg(`❌ ロード失敗: ${errMsg}`, 'error');
-      log(`❌ ロードに失敗しました: ${errMsg}`, 'enemy-action');
       return;
     }
 
-    // API から返るセーブデータを取り出す（フィールド名の違いに対応）
     const saved = result.save || result.data;
 
-    // ロードしたデータでプレイヤーを復元する（プレイヤーが未初期化の場合はデフォルト値を使う）
-    if (!game.player) {
-      const defaultStats = INITIAL_PLAYER_STATS;
-      game.player = new Player(
-        defaultStats.name, defaultStats.hp, defaultStats.maxHp,
-        defaultStats.attack, defaultStats.defense, defaultStats.level
-      );
-    }
-    game.player.name    = saved.name    ?? game.player.name;
-    game.player.level   = saved.level   ?? game.player.level;
-    game.player.hp      = saved.hp      ?? game.player.hp;
-    game.player.maxHp   = saved.maxHp   ?? game.player.maxHp;
-    game.player.attack  = saved.attack  ?? game.player.attack;
-    game.player.defense = saved.defense ?? game.player.defense;
-    game.player.exp     = saved.exp     ?? game.player.exp;
+    // ロードしたデータでプレイヤーを復元する
+    game.player = new Player({
+      name:            saved.name            ?? INITIAL_PLAYER_STATS.name,
+      hp:              saved.hp              ?? INITIAL_PLAYER_STATS.hp,
+      maxHp:           saved.maxHp           ?? INITIAL_PLAYER_STATS.maxHp,
+      mp:              saved.mp              ?? INITIAL_PLAYER_STATS.mp,
+      maxMp:           saved.maxMp           ?? INITIAL_PLAYER_STATS.maxMp,
+      attackBase:      saved.attackBase      ?? INITIAL_PLAYER_STATS.attackBase,
+      defenseBase:     saved.defenseBase     ?? INITIAL_PLAYER_STATS.defenseBase,
+      maxHpBase:       saved.maxHpBase       ?? (saved.maxHp ?? INITIAL_PLAYER_STATS.maxHp),
+      maxMpBase:       saved.maxMpBase       ?? (saved.maxMp ?? INITIAL_PLAYER_STATS.maxMp),
+      spAtk:           saved.spAtk           ?? 0,
+      spDef:           saved.spDef           ?? 0,
+      spHp:            saved.spHp            ?? 0,
+      spMp:            saved.spMp            ?? 0,
+      level:           saved.level           ?? 1,
+      exp:             saved.exp             ?? 0,
+      skillPoints:     saved.skillPoints     ?? 0,
+      learnedSkills:   saved.learnedSkills   ?? [],
+      materials:       saved.materials       ?? {},
+      equipment:       saved.equipment       ?? {},
+      ownedEquipment:  saved.ownedEquipment  ?? [],
+      dungeonProgress: saved.dungeonProgress ?? {},
+    });
 
-    // プレイヤーステータスを画面に反映する
-    renderPlayerStatus();
+    game.dungeon = { id: null, enemyIndex: 0, materials: [] };
 
     showSaveLoadMsg('✅ ロードしました！', 'success');
     log('📂 ゲームデータをロードしました。', 'result');
     log(`  名前: ${game.player.name}  LV: ${game.player.level}  EXP: ${game.player.exp}`, 'result');
+
+    renderLobby();
   } catch (err) {
-    // ネットワークエラーなど
     showSaveLoadMsg(`❌ 通信エラー: ${err.message}`, 'error');
     log(`❌ ロード通信エラー: ${err.message}`, 'enemy-action');
   } finally {
-    // 通信完了後にボタンを再有効化
     setSaveLoadButtonsEnabled(true);
   }
 }

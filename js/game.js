@@ -2,13 +2,10 @@
 
 /* ==============================================================
    ゲームバランス定数
-   数値を変えるだけでバランス調整が簡単にできる
    ============================================================== */
 
 /** 防御力の軽減係数（通常攻撃） */
 const DEFENSE_FACTOR       = 0.5;
-/** スキル攻撃倍率 */
-const SKILL_MULTIPLIER     = 1.8;
 /** スキル攻撃時の防御軽減係数（通常より低い） */
 const SKILL_DEFENSE_FACTOR = 0.4;
 /** 逃げる成功率（0.0 〜 1.0） */
@@ -20,12 +17,17 @@ const LOG_SEPARATOR_LENGTH = 40;
 
 /** プレイヤーの初期ステータス（バランス調整はここで行う） */
 const INITIAL_PLAYER_STATS = {
-  name:    '勇者',
-  hp:      100,
-  maxHp:   100,
-  attack:  18,
-  defense: 8,
-  level:   1,
+  name:          '勇者',
+  hp:            100,
+  maxHp:         100,
+  mp:            40,
+  maxMp:         40,
+  attackBase:    18,
+  defenseBase:   8,
+  level:         1,
+  exp:           0,
+  skillPoints:   0,
+  learnedSkills: [],
 };
 
 /* ==============================================================
@@ -46,68 +48,86 @@ function pick(arr) {
    プレイヤークラス
    ============================================================== */
 class Player {
-  /**
-   * @param {string} name    - キャラクター名
-   * @param {number} hp      - 現在 HP
-   * @param {number} maxHp   - 最大 HP
-   * @param {number} attack  - 攻撃力
-   * @param {number} defense - 防御力
-   * @param {number} level   - レベル
-   */
-  constructor(name, hp, maxHp, attack, defense, level) {
-    this.name    = name;
-    this.hp      = hp;
-    this.maxHp   = maxHp;
-    this.attack  = attack;
-    this.defense = defense;
-    this.level   = level;
-    this.exp     = 0;      // 経験値（将来の育成機能用）
+  constructor(s) {
+    this.name           = s.name          ?? '勇者';
+    this.hp             = s.hp            ?? 100;
+    this.maxHp          = s.maxHp         ?? 100;
+    this.mp             = s.mp            ?? 40;
+    this.maxMp          = s.maxMp         ?? 40;
+    this.attackBase     = s.attackBase    ?? 18;
+    this.defenseBase    = s.defenseBase   ?? 8;
+    this.maxHpBase      = s.maxHpBase     ?? 100;
+    this.maxMpBase      = s.maxMpBase     ?? 40;
+    this.level          = s.level         ?? 1;
+    this.exp            = s.exp           ?? 0;
+    this.skillPoints    = s.skillPoints   ?? 0;
+    this.learnedSkills  = s.learnedSkills  ? [...s.learnedSkills]  : [];
+    this.materials      = s.materials      ? { ...s.materials }    : {};
+    this.equipment      = s.equipment      ? { ...s.equipment }    : {};
+    this.ownedEquipment = s.ownedEquipment ? [...s.ownedEquipment] : [];
+    this.dungeonProgress = s.dungeonProgress ? { ...s.dungeonProgress } : {};
+
+    /** スキルポイントで強化した累計量 */
+    this.spAtk = s.spAtk ?? 0;
+    this.spDef = s.spDef ?? 0;
+    this.spHp  = s.spHp  ?? 0;
+    this.spMp  = s.spMp  ?? 0;
+
+    /** 有効ステータスを初期化 */
+    this.attack  = this.attackBase;
+    this.defense = this.defenseBase;
+    this.recalcStats();
   }
 
-  /** 通常攻撃ダメージを計算して返す */
+  /**
+   * 有効ステータス（attack / defense / maxHp / maxMp）を再計算する
+   * ベース値 + スキルポイント補正 + 装備補正
+   */
+  recalcStats() {
+    this.attack  = this.attackBase  + this.spAtk;
+    this.defense = this.defenseBase + this.spDef;
+    this.maxHp   = this.maxHpBase   + this.spHp;
+    this.maxMp   = this.maxMpBase   + this.spMp;
+
+    Object.values(this.equipment).forEach(eqId => {
+      if (!eqId) return;
+      const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === eqId);
+      if (!eq) return;
+      this.attack  += eq.stats.attack  || 0;
+      this.defense += eq.stats.defense || 0;
+      this.maxHp   += eq.stats.maxHp   || 0;
+      this.maxMp   += eq.stats.maxMp   || 0;
+    });
+
+    this.hp = Math.min(this.hp, this.maxHp);
+    this.mp = Math.min(this.mp, this.maxMp);
+  }
+
+  /** 通常攻撃ダメージを計算して返す（会心効果を含む） */
   calcAttackDamage(target) {
-    // 攻撃力からターゲットの防御力を引き、最低 1 ダメージを保証する
     const raw = this.attack - Math.floor(target.defense * DEFENSE_FACTOR);
-    return Math.max(1, raw + randInt(-2, 2));
-  }
-
-  /**
-   * スキル攻撃ダメージを計算して返す
-   * 通常攻撃の SKILL_MULTIPLIER 倍の威力（将来的にMPコストなど追加予定）
-   */
-  calcSkillDamage(target) {
-    const raw = Math.floor(this.attack * SKILL_MULTIPLIER) - Math.floor(target.defense * SKILL_DEFENSE_FACTOR);
-    return Math.max(1, raw + randInt(-1, 3));
+    const dmg = Math.max(1, raw + randInt(-2, 2));
+    return applyEquipmentEffects(dmg, 'deal');
   }
 
   /** 生存確認 */
-  isAlive() {
-    return this.hp > 0;
-  }
+  isAlive() { return this.hp > 0; }
 
-  /** ダメージを受ける */
+  /** ダメージを受ける（被ダメージ軽減装備を含む）。実際に受けたダメージを返す */
   takeDamage(amount) {
-    this.hp = Math.max(0, this.hp - amount);
+    const reduced = applyEquipmentEffects(amount, 'take');
+    this.hp = Math.max(0, this.hp - reduced);
+    return reduced;
   }
 
   /** HP を回復する（maxHp を超えない） */
-  heal(amount) {
-    this.hp = Math.min(this.maxHp, this.hp + amount);
-  }
+  heal(amount) { this.hp = Math.min(this.maxHp, this.hp + amount); }
 }
 
 /* ==============================================================
    敵クラス
    ============================================================== */
 class Enemy {
-  /**
-   * @param {string} name       - 敵の名前
-   * @param {number} hp         - 現在 HP
-   * @param {number} maxHp      - 最大 HP
-   * @param {number} attack     - 攻撃力
-   * @param {number} defense    - 防御力
-   * @param {number} expReward  - 撃破時の獲得経験値
-   */
   constructor(name, hp, maxHp, attack, defense, expReward) {
     this.name      = name;
     this.hp        = hp;
@@ -115,93 +135,63 @@ class Enemy {
     this.attack    = attack;
     this.defense   = defense;
     this.expReward = expReward;
+    this.poisoned  = false;
   }
 
-  /** 通常攻撃ダメージを計算して返す */
   calcAttackDamage(target) {
     const raw = this.attack - Math.floor(target.defense * DEFENSE_FACTOR);
     return Math.max(1, raw + randInt(-2, 2));
   }
 
-  /** 生存確認 */
-  isAlive() {
-    return this.hp > 0;
-  }
-
-  /** ダメージを受ける */
-  takeDamage(amount) {
-    this.hp = Math.max(0, this.hp - amount);
-  }
+  isAlive()       { return this.hp > 0; }
+  takeDamage(amt) { this.hp = Math.max(0, this.hp - amt); }
 }
-
-/* ==============================================================
-   敵データテーブル
-   敵を追加するにはこの配列にオブジェクトを追加するだけでよい
-   ============================================================== */
-const ENEMY_TABLE = [
-  { name: 'スライム',       hp: 20,  maxHp: 20,  attack: 6,  defense: 2,  expReward: 10 },
-  { name: 'ゴブリン',       hp: 30,  maxHp: 30,  attack: 9,  defense: 4,  expReward: 18 },
-  { name: 'コウモリ',       hp: 18,  maxHp: 18,  attack: 8,  defense: 1,  expReward: 12 },
-  { name: 'スケルトン',     hp: 35,  maxHp: 35,  attack: 11, defense: 6,  expReward: 25 },
-  { name: 'オーク',         hp: 50,  maxHp: 50,  attack: 14, defense: 8,  expReward: 35 },
-  { name: 'ダークウィザード', hp: 28, maxHp: 28,  attack: 18, defense: 3,  expReward: 40 },
-  { name: 'ドラゴン',       hp: 80,  maxHp: 80,  attack: 22, defense: 12, expReward: 80 },
-];
 
 /* ==============================================================
    ゲーム状態管理
    ============================================================== */
 const GameState = {
-  PLAYER_TURN: 'player_turn', // プレイヤーのターン
-  ENEMY_TURN:  'enemy_turn',  // 敵のターン
-  BATTLE_END:  'battle_end',  // 戦闘終了
+  PLAYER_TURN: 'player_turn',
+  ENEMY_TURN:  'enemy_turn',
+  BATTLE_END:  'battle_end',
 };
 
-/** ゲーム全体の状態を保持するオブジェクト */
 let game = {
-  player:       null,  // Player インスタンス
-  enemy:        null,  // Enemy インスタンス
-  state:        null,  // GameState の値
-  battleCount:  0,     // 連戦カウンター
+  player:         null,
+  enemy:          null,
+  state:          null,
+  battleCount:    0,
+  currentScreen:  'lobby',
+  dungeon: {
+    id:         null,
+    enemyIndex: 0,
+    materials:  [],
+  },
+  shieldActive:  null,
+  enemyPoisoned: null,
 };
 
 /* ==============================================================
    戦闘ロジック
    ============================================================== */
 
-/** 新しい敵をランダムに生成して返す（テーブルからコピー） */
-function spawnEnemy() {
-  const template = pick(ENEMY_TABLE);
-  // テーブルの値を使って新しい Enemy インスタンスを作成
-  return new Enemy(
-    template.name,
-    template.hp,
-    template.maxHp,
-    template.attack,
-    template.defense,
-    template.expReward
-  );
-}
-
-/**
- * プレイヤーのアクションを処理する
- * @param {string} action - 'attack' | 'skill' | 'flee'
- */
 function playerAction(action) {
-  // プレイヤーのターン以外は受け付けない
   if (game.state !== GameState.PLAYER_TURN) return;
-
-  // アクション中はボタンを無効化
-  setButtonsEnabled(false);
 
   switch (action) {
     case 'attack':
+      setButtonsEnabled(false);
+      hideSkillPanel();
       doPlayerAttack();
       break;
     case 'skill':
-      doPlayerSkill();
+      // スキルパネルを表示（ターン消費なし）
+      setButtonsEnabled(false);
+      showSkillPanel();
       break;
     case 'flee':
+      setButtonsEnabled(false);
+      hideSkillPanel();
       doPlayerFlee();
       break;
     default:
@@ -211,6 +201,8 @@ function playerAction(action) {
 
 /** 通常攻撃処理 */
 function doPlayerAttack() {
+  applyMpRegenEffect();
+
   const dmg = game.player.calcAttackDamage(game.enemy);
   game.enemy.takeDamage(dmg);
   log(`▶ ${game.player.name} の攻撃！ → ${game.enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -218,21 +210,13 @@ function doPlayerAttack() {
   afterPlayerTurn();
 }
 
-/** スキル攻撃処理 */
-function doPlayerSkill() {
-  const dmg = game.player.calcSkillDamage(game.enemy);
-  game.enemy.takeDamage(dmg);
-  log(`✨ ${game.player.name} のスキル【烈火斬】！ → ${game.enemy.name} に ${dmg} ダメージ！`, 'special');
-  renderEnemyStatus();
-  afterPlayerTurn();
-}
-
-/** 逃げる処理（FLEE_SUCCESS_RATE の確率で成功） */
+/** 逃げる/撤退処理 */
 function doPlayerFlee() {
   const success = Math.random() < FLEE_SUCCESS_RATE;
   if (success) {
-    log(`🚪 ${game.player.name} は逃げ出した！`, 'result');
-    endBattle('fled');
+    log(`🚪 ${game.player.name} はダンジョンから撤退した！`, 'result');
+    game.state = GameState.BATTLE_END;
+    retreatFromDungeon();
   } else {
     log(`${game.player.name} は逃げようとしたが、失敗した！`, 'system');
     afterPlayerTurn();
@@ -241,32 +225,61 @@ function doPlayerFlee() {
 
 /** プレイヤーのターン終了後の処理 */
 function afterPlayerTurn() {
-  // 敵の HP チェック
+  renderPlayerStatus();
+
   if (!game.enemy.isAlive()) {
     endBattle('win');
     return;
   }
-  // 敵のターンへ移行（少し遅延して自然な演出を出す）
+
   game.state = GameState.ENEMY_TURN;
   setTimeout(doEnemyTurn, ENEMY_TURN_DELAY_MS);
 }
 
-/** 敵のターン処理（現在はランダム攻撃のみ） */
+/** 敵のターン処理 */
 function doEnemyTurn() {
   if (game.state !== GameState.ENEMY_TURN) return;
 
-  const dmg = game.enemy.calcAttackDamage(game.player);
-  game.player.takeDamage(dmg);
-  log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${dmg} ダメージ！`, 'enemy-action');
+  // 毒ダメージ（毒は敵ターン開始時に適用）
+  if (game.enemyPoisoned && game.enemyPoisoned.active) {
+    const poisonDmg = game.enemyPoisoned.damage;
+    game.enemy.takeDamage(poisonDmg);
+    game.enemyPoisoned.turnsLeft--;
+    log(`☠ ${game.enemy.name} は毒で ${poisonDmg} ダメージを受けた！（残${game.enemyPoisoned.turnsLeft}ターン）`, 'player-action');
+    renderEnemyStatus();
+
+    if (!game.enemy.isAlive()) {
+      endBattle('win');
+      return;
+    }
+    if (game.enemyPoisoned.turnsLeft <= 0) {
+      game.enemyPoisoned = null;
+      log('毒が解けた。', 'system');
+    }
+  }
+
+  // 敵の通常攻撃
+  let rawDmg = game.enemy.calcAttackDamage(game.player);
+
+  // シールド効果を適用
+  if (game.shieldActive && game.shieldActive.turnsLeft > 0) {
+    rawDmg = Math.max(1, rawDmg - game.shieldActive.defenseBonus);
+    game.shieldActive.turnsLeft--;
+    if (game.shieldActive.turnsLeft <= 0) {
+      game.shieldActive = null;
+      log('🛡 シールドの効果が切れた。', 'system');
+    }
+  }
+
+  const actualDmg = game.player.takeDamage(rawDmg);
+  log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
   renderPlayerStatus();
 
-  // プレイヤーの HP チェック
   if (!game.player.isAlive()) {
     endBattle('lose');
     return;
   }
 
-  // プレイヤーのターンへ戻す
   game.state = GameState.PLAYER_TURN;
   log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
   log('あなたのターンです。アクションを選んでください。', 'system');
@@ -275,88 +288,135 @@ function doEnemyTurn() {
 
 /**
  * 戦闘終了処理
- * @param {string} result - 'win' | 'lose' | 'fled'
+ * @param {'win'|'lose'} result
  */
 function endBattle(result) {
   game.state = GameState.BATTLE_END;
   setButtonsEnabled(false);
+  hideSkillPanel();
 
   if (result === 'win') {
     const exp = game.enemy.expReward;
-    game.player.exp += exp;
+
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'special');
     log(`🏆 ${game.enemy.name} を倒した！ EXP +${exp}`, 'result');
-    log(`累計 EXP: ${game.player.exp}`, 'result');
+
+    // ドロップ処理
+    processDrop();
+
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'special');
-    renderPlayerStatus();
-    showNextBtn(true, '▶ 次の戦闘へ');
+
+    // EXP 加算とレベルアップチェック
+    gainExp(exp);
+
+    const isBoss = game.dungeon.enemyIndex === DUNGEON_ENEMY_COUNT - 1;
+    game.dungeon.enemyIndex++;
+
+    showDungeonNav(true, isBoss);
+
   } else if (result === 'lose') {
-    // デスペナルティ調整: レベルとEXPは維持し、HPのみ最大値に回復して復活
-    game.player.hp = game.player.maxHp;
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'enemy-action');
     log(`☠ ${game.player.name} は力尽きた…`, 'enemy-action');
-    log('💀 しかし経験は失われなかった。立ち上がれ、勇者よ。', 'special');
+    log('💀 ダンジョン内で獲得した素材をすべて失った。', 'special');
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'enemy-action');
-    renderPlayerStatus();
-    showNextBtn(true, '🔄 立ち上がる（HPが回復した）');
-  } else if (result === 'fled') {
-    showNextBtn(true, '▶ 次の戦闘へ');
+
+    setTimeout(failDungeon, 1500);
   }
 }
 
 /* ==============================================================
-   戦闘開始 / 次の戦闘 / リセット
+   スキルパネル
    ============================================================== */
 
-/** 新しい戦闘を開始する */
-function startBattle() {
-  game.battleCount++;
-  game.enemy = spawnEnemy();
-  game.state = GameState.PLAYER_TURN;
+/** スキル選択パネルを表示する */
+function showSkillPanel() {
+  const panel  = document.getElementById('skill-panel');
+  const player = game.player;
 
-  clearLog();
-  log(`=== 戦闘 ${game.battleCount} 開始 ===`, 'special');
-  log(`${game.enemy.name} が現れた！`, 'system');
-  log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
-  log('あなたのターンです。アクションを選んでください。', 'system');
+  const btns = SKILL_DEFINITIONS
+    .filter(s => player.learnedSkills.includes(s.id))
+    .map(s => {
+      const noMp = player.mp < s.mpCost;
+      return `<button class="skill-btn${noMp ? ' disabled' : ''}" ${noMp ? 'disabled' : ''} onclick="useSkill('${s.id}')">
+        ${s.name}（MP:${s.mpCost}）<br><small>${s.description}</small>
+      </button>`;
+    })
+    .join('');
 
-  renderPlayerStatus();
-  renderEnemyStatus();
-  setButtonsEnabled(true);
-  showNextBtn(false);
+  if (!btns) {
+    panel.innerHTML = '<span class="skill-none">習得済みスキルなし</span><button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
+  } else {
+    panel.innerHTML = btns + '<button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
+  }
+  panel.style.display = 'flex';
 }
 
-/** 「次の戦闘へ」または「立ち上がる」ボタン押下時の処理 */
-function nextBattle() {
-  startBattle();
+function hideSkillPanel() {
+  const panel = document.getElementById('skill-panel');
+  if (panel) panel.style.display = 'none';
 }
 
-/** ゲームを初期状態に戻す */
-function initGame() {
-  // プレイヤーを初期ステータスで作成（INITIAL_PLAYER_STATS で一元管理）
-  const s      = INITIAL_PLAYER_STATS;
-  game.player  = new Player(s.name, s.hp, s.maxHp, s.attack, s.defense, s.level);
-  game.enemy       = null;
-  game.state       = null;
-  game.battleCount = 0;
-
-  clearLog();
-  log('★ テキスト ハクスラ RPG へようこそ！', 'special');
-  log('「次の戦闘へ」ボタンを押して最初の戦闘を始めましょう。', 'system');
-
-  renderPlayerStatus();
-
-  // 敵ステータスは空白にする
-  document.getElementById('enemy-name').textContent   = '???';
-  document.getElementById('enemy-hp-label').textContent = 'HP: — / —';
-  document.getElementById('enemy-hp-bar').style.width  = '0%';
-  document.getElementById('enemy-detail').textContent  = '— / — / —';
-
-  setButtonsEnabled(false);
-  showNextBtn(true, '▶ 最初の戦闘を開始');
+function cancelSkillPanel() {
+  hideSkillPanel();
+  if (game.state === GameState.PLAYER_TURN) setButtonsEnabled(true);
 }
 
 /* ==============================================================
-   ゲーム起動
+   スキルポイント画面
    ============================================================== */
+
+function renderSkillPoints() {
+  const p = game.player;
+  document.getElementById('sp-remaining').textContent = `残りポイント: ${p.skillPoints} pt`;
+  document.getElementById('sp-atk').textContent = `攻撃力:   ${p.attack}  (ベース ${p.attackBase}  + SP ${p.spAtk}  + 装備)`;
+  document.getElementById('sp-def').textContent = `防御力:   ${p.defense}  (ベース ${p.defenseBase}  + SP ${p.spDef}  + 装備)`;
+  document.getElementById('sp-hp').textContent  = `最大 HP:  ${p.maxHp}  (ベース ${p.maxHpBase}  + SP ${p.spHp}  + 装備)`;
+  document.getElementById('sp-mp').textContent  = `最大 MP:  ${p.maxMp}  (ベース ${p.maxMpBase}  + SP ${p.spMp}  + 装備)`;
+
+  const hasSp = p.skillPoints > 0;
+  ['sp-btn-atk','sp-btn-def','sp-btn-hp','sp-btn-mp'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = !hasSp;
+  });
+}
+
+function spendSkillPoint(stat) {
+  const p = game.player;
+  if (p.skillPoints <= 0) return;
+  p.skillPoints--;
+
+  if (stat === 'atk') { p.attackBase  += 3; p.spAtk += 3; }
+  if (stat === 'def') { p.defenseBase += 2; p.spDef += 2; }
+  if (stat === 'hp')  { p.maxHpBase   += 10; p.spHp += 10; }
+  if (stat === 'mp')  { p.maxMpBase   += 8;  p.spMp += 8;  }
+
+  p.recalcStats();
+  renderSkillPoints();
+  renderLobbyStatus();
+}
+
+/* ==============================================================
+   ゲーム起動・初期化
+   ============================================================== */
+
+function initGame() {
+  const s = INITIAL_PLAYER_STATS;
+  game.player = new Player({
+    ...s,
+    maxHpBase:   s.maxHp,
+    maxMpBase:   s.maxMp,
+    spAtk: 0, spDef: 0, spHp: 0, spMp: 0,
+  });
+
+  game.enemy        = null;
+  game.state        = null;
+  game.battleCount  = 0;
+  game.dungeon      = { id: null, enemyIndex: 0, materials: [] };
+  game.shieldActive  = null;
+  game.enemyPoisoned = null;
+
+  showScreen('lobby');
+  renderLobby();
+}
+
 initGame();
