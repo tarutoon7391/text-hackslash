@@ -2214,7 +2214,7 @@ function unequipItem(slot) {
 
 /**
  * 装備効果をダメージ計算時に適用する
- * プレイヤーが受けるダメージに対して critChance / damageReduction を処理する
+ * critChance は全装備の値を合算して 1 回だけ判定し、会心の一撃が重複しないようにする
  * @param {number} rawDamage - 計算済みダメージ量
  * @param {'take'|'deal'} direction - take: 被ダメージ, deal: 与ダメージ
  * @returns {number} 効果適用後のダメージ
@@ -2222,6 +2222,9 @@ function unequipItem(slot) {
 function applyEquipmentEffects(rawDamage, direction) {
   let dmg = rawDamage;
   const player = game.player;
+
+  // 会心率を全装備から合算し、1 回だけ判定する（重複適用を防ぐ）
+  let totalCritChance = 0;
 
   Object.values(player.equipment).forEach(eqId => {
     if (!eqId) return;
@@ -2235,13 +2238,17 @@ function applyEquipmentEffects(rawDamage, direction) {
       }
     }
     if (direction === 'deal' && eq.effectType === 'critChance') {
-      // 会心率: ダメージ 1.5 倍
-      if (Math.random() < eq.effectValue) {
-        dmg = Math.floor(dmg * 1.5);
-        log('✦ 会心の一撃！', 'special');
-      }
+      totalCritChance += eq.effectValue;
     }
   });
+
+  // 会心判定は合算した確率（最大 1.0）で 1 回のみ行う
+  if (direction === 'deal' && totalCritChance > 0) {
+    if (Math.random() < Math.min(totalCritChance, 1.0)) {
+      dmg = Math.floor(dmg * 1.5);
+      log('✦ 会心の一撃！', 'special');
+    }
+  }
 
   return dmg;
 }
