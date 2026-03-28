@@ -5,7 +5,7 @@
    ============================================================== */
 
 /** レベル上限 */
-const MAX_LEVEL = 20;
+const MAX_LEVEL = 50;
 
 /**
  * 各レベルに達するために必要な累計 EXP テーブル（インデックス = レベル - 1）
@@ -30,15 +30,46 @@ const EXP_TABLE = [
   44800,  // Lv 17
   51300,  // Lv 18
   57800,  // Lv 19
-  64300,  // Lv 20（上限）
+  64300,  // Lv 20
+  71300,  // Lv 21
+  79300,  // Lv 22
+  87800,  // Lv 23
+  96800,  // Lv 24
+  106800, // Lv 25
+  117300, // Lv 26
+  128300, // Lv 27
+  140300, // Lv 28
+  152800, // Lv 29
+  165800, // Lv 30
+  179800, // Lv 31
+  194300, // Lv 32
+  209300, // Lv 33
+  225300, // Lv 34
+  243300, // Lv 35
+  262300, // Lv 36
+  282300, // Lv 37
+  303300, // Lv 38
+  325300, // Lv 39
+  350300, // Lv 40
+  376300, // Lv 41
+  403300, // Lv 42
+  431300, // Lv 43
+  460300, // Lv 44
+  492300, // Lv 45
+  525300, // Lv 46
+  559300, // Lv 47
+  594300, // Lv 48
+  630300, // Lv 49
+  670300, // Lv 50（上限）
 ];
 
 /* ==============================================================
    スキルツリー定義
-   各ルート 15 ノード。ノードコスト合計は各ルート 30 SP。
-   プレイヤーが Lv20 までに獲得できる SP は最大 65 pt
-   （5の倍数レベルは +5pt、それ以外は +3pt）なので
-   約 2 ルートを完走できるバランスに設定。
+   各ルート 22 ノード（既存15 + 新規7）。
+   各ルートのノードコスト合計: 既存30SP + 新規17SP = 47SP × 4ルート = 全ノード合計 188SP。
+   プレイヤーが Lv50 までに獲得できる SP は最大 191 pt
+   （Lv2〜20は5の倍数は5pt・それ以外は3pt=65pt、Lv21〜50は5の倍数は5pt・それ以外は4pt=126pt）
+   191pt - 188pt = 3pt の余裕があり、全ノードを完走可能。
    ============================================================== */
 
 const SKILL_TREE_DEFINITIONS = [
@@ -81,8 +112,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_06', name: '居合斬り',
         type: 'skill', skillId: 'iai_slash',
-        description: '高速の一撃（ATK×1.8 / MP:10）',
-        mpCost: 10, bonuses: {}, cost: 2, requires: 'sw_05',
+        description: '高速の一撃（ATK×1.8 / MP:15）',
+        mpCost: 15, bonuses: {}, cost: 2, requires: 'sw_05',
       },
       {
         id: 'sw_07', name: '猛攻の型',
@@ -102,8 +133,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_10', name: '連続斬り',
         type: 'skill', skillId: 'chain_slash',
-        description: '2 回連続攻撃（MP:12）',
-        mpCost: 12, bonuses: {}, cost: 2, requires: 'sw_09',
+        description: '2 回連続攻撃（MP:18）',
+        mpCost: 18, bonuses: {}, cost: 2, requires: 'sw_09',
       },
       {
         id: 'sw_11', name: '剣聖の修練',
@@ -118,8 +149,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_13', name: '雷光斬り',
         type: 'skill', skillId: 'thunder_slash',
-        description: '雷を纏った強斬り（ATK×2.2 / MP:15）',
-        mpCost: 15, bonuses: {}, cost: 3, requires: 'sw_12',
+        description: '雷を纏った強斬り（ATK×2.2 / MP:22）',
+        mpCost: 22, bonuses: {}, cost: 3, requires: 'sw_12',
       },
       {
         id: 'sw_14', name: '絶剣',
@@ -129,8 +160,46 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_15', name: '必殺剣',
         type: 'skill', skillId: 'death_blow',
-        description: '全力を込めた一撃（ATK×3.0 / MP:25）',
-        mpCost: 25, bonuses: {}, cost: 3, requires: 'sw_14',
+        description: '全力を込めた一撃（ATK×3.0 / MP:35）',
+        mpCost: 35, bonuses: {}, cost: 3, requires: 'sw_14',
+      },
+      {
+        id: 'sw_16', name: '剣聖の極意',
+        type: 'stat', description: 'ATK +10',
+        bonuses: { atk: 10 }, cost: 2, requires: 'sw_15',
+      },
+      {
+        id: 'sw_17', name: '流星斬り',
+        type: 'skill', skillId: 'shooting_star',
+        description: '光速の連撃（ATK×2.5 / MP:30）',
+        mpCost: 30, bonuses: {}, cost: 2, requires: 'sw_16',
+      },
+      {
+        id: 'sw_18', name: '剣聖の真髄',
+        type: 'stat', description: 'ATK +12',
+        bonuses: { atk: 12 }, cost: 2, requires: 'sw_17',
+      },
+      {
+        id: 'sw_19', name: '影縫い',
+        type: 'stat', description: 'DEF +8 / HP +20',
+        bonuses: { def: 8, hp: 20 }, cost: 2, requires: 'sw_18',
+      },
+      {
+        id: 'sw_20', name: '崩壊斬り',
+        type: 'skill', skillId: 'ruin_slash',
+        description: '存在を断つ斬撃（ATK×3.5 / MP:45）',
+        mpCost: 45, bonuses: {}, cost: 3, requires: 'sw_19',
+      },
+      {
+        id: 'sw_21', name: '神剣の境地',
+        type: 'stat', description: 'ATK +15 / HP +30',
+        bonuses: { atk: 15, hp: 30 }, cost: 3, requires: 'sw_20',
+      },
+      {
+        id: 'sw_22', name: '天地無用剣',
+        type: 'skill', skillId: 'peerless_blade',
+        description: '天地を貫く究極剣（ATK×4.5 / MP:60）',
+        mpCost: 60, bonuses: {}, cost: 3, requires: 'sw_21',
       },
     ],
   },
@@ -172,8 +241,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_06', name: 'ファイア',
         type: 'skill', skillId: 'fire',
-        description: '炎の魔法（ATK×1.6 / MP:8）',
-        mpCost: 8, bonuses: {}, cost: 2, requires: 'mg_05',
+        description: '炎の魔法（ATK×1.6 / MP:12）',
+        mpCost: 12, bonuses: {}, cost: 2, requires: 'mg_05',
       },
       {
         id: 'mg_07', name: '魔法練磨',
@@ -188,8 +257,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_09', name: 'サンダー',
         type: 'skill', skillId: 'thunder',
-        description: '雷の魔法（ATK×1.8 / MP:12）',
-        mpCost: 12, bonuses: {}, cost: 2, requires: 'mg_08',
+        description: '雷の魔法（ATK×1.8 / MP:18）',
+        mpCost: 18, bonuses: {}, cost: 2, requires: 'mg_08',
       },
       {
         id: 'mg_10', name: '魔法回復',
@@ -204,14 +273,14 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_12', name: '治癒魔法',
         type: 'skill', skillId: 'heal_magic',
-        description: '自分を回復する（HP+40+Lv×3 / MP:12）',
-        mpCost: 12, bonuses: {}, cost: 3, requires: 'mg_11',
+        description: '自分を回復する（HP+40+Lv×3 / MP:18）',
+        mpCost: 18, bonuses: {}, cost: 3, requires: 'mg_11',
       },
       {
         id: 'mg_13', name: 'ブリザド',
         type: 'skill', skillId: 'blizzard',
-        description: '氷の魔法（ATK×2.2 / MP:15）',
-        mpCost: 15, bonuses: {}, cost: 3, requires: 'mg_12',
+        description: '氷の魔法（ATK×2.2 / MP:22）',
+        mpCost: 22, bonuses: {}, cost: 3, requires: 'mg_12',
       },
       {
         id: 'mg_14', name: '大魔力',
@@ -221,8 +290,47 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_15', name: '大魔法陣',
         type: 'skill', skillId: 'grand_magic',
-        description: '究極の魔法攻撃（ATK×3.0 / MP:30）',
-        mpCost: 30, bonuses: {}, cost: 3, requires: 'mg_14',
+        description: '究極の魔法攻撃（ATK×3.0 / MP:42）',
+        mpCost: 42, bonuses: {}, cost: 3, requires: 'mg_14',
+      },
+      {
+        id: 'mg_16', name: '魔力覚醒',
+        type: 'stat', description: 'ATK +8 / MP +20',
+        bonuses: { atk: 8, mp: 20 }, cost: 2, requires: 'mg_15',
+      },
+      {
+        id: 'mg_17', name: 'メテオ',
+        type: 'skill', skillId: 'meteor',
+        description: '隕石の魔法（ATK×2.8 / MP:38）',
+        mpCost: 38, bonuses: {}, cost: 2, requires: 'mg_16',
+      },
+      {
+        id: 'mg_18', name: '超魔力',
+        type: 'stat', description: 'ATK +8 / MP +25',
+        bonuses: { atk: 8, mp: 25 }, cost: 2, requires: 'mg_17',
+      },
+      {
+        id: 'mg_19', name: '魔力爆発',
+        type: 'skill', skillId: 'magic_explosion',
+        description: '魔力を爆発させる（ATK×3.5 / MP:55）',
+        mpCost: 55, bonuses: {}, cost: 2, requires: 'mg_18',
+      },
+      {
+        id: 'mg_20', name: '大魔力覚醒',
+        type: 'stat', description: 'ATK +10 / MP +30',
+        bonuses: { atk: 10, mp: 30 }, cost: 3, requires: 'mg_19',
+      },
+      {
+        id: 'mg_21', name: 'リジェネ',
+        type: 'skill', skillId: 'regen',
+        description: '再生の魔法（3ターン HP+20+Lv×0.5/ターン / MP:28）',
+        mpCost: 28, bonuses: {}, cost: 3, requires: 'mg_20',
+      },
+      {
+        id: 'mg_22', name: '時空魔法',
+        type: 'skill', skillId: 'spacetime_magic',
+        description: '時空を歪める魔法（ATK×5.0 / MP:75）',
+        mpCost: 75, bonuses: {}, cost: 3, requires: 'mg_21',
       },
     ],
   },
@@ -264,8 +372,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_06', name: 'ホーリーライト',
         type: 'skill', skillId: 'holy_light',
-        description: '聖なる光で回復（HP+30+Lv×2 / MP:8）',
-        mpCost: 8, bonuses: {}, cost: 2, requires: 'cl_05',
+        description: '聖なる光で回復（HP+30+Lv×2 / MP:12）',
+        mpCost: 12, bonuses: {}, cost: 2, requires: 'cl_05',
       },
       {
         id: 'cl_07', name: '聖壁の守り',
@@ -280,8 +388,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_09', name: '祝福',
         type: 'skill', skillId: 'bless',
-        description: '自分に ATK+15 バフ（3 ターン / MP:10）',
-        mpCost: 10, bonuses: {}, cost: 2, requires: 'cl_08',
+        description: '自分に ATK+15 バフ（3 ターン / MP:15）',
+        mpCost: 15, bonuses: {}, cost: 2, requires: 'cl_08',
       },
       {
         id: 'cl_10', name: '回復の詩',
@@ -291,14 +399,14 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_11', name: '大回復',
         type: 'skill', skillId: 'big_heal',
-        description: '大きく HP を回復（HP+50+Lv×3 / MP:15）',
-        mpCost: 15, bonuses: {}, cost: 3, requires: 'cl_10',
+        description: '大きく HP を回復（HP+50+Lv×3 / MP:22）',
+        mpCost: 22, bonuses: {}, cost: 3, requires: 'cl_10',
       },
       {
         id: 'cl_12', name: '聖域',
         type: 'skill', skillId: 'sanctuary',
-        description: '防御バリア（DEF+25 / 2 ターン / MP:12）',
-        mpCost: 12, bonuses: {}, cost: 3, requires: 'cl_11',
+        description: '防御バリア（DEF+25 / 2 ターン / MP:18）',
+        mpCost: 18, bonuses: {}, cost: 3, requires: 'cl_11',
       },
       {
         id: 'cl_13', name: '神の恵み',
@@ -313,8 +421,46 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_15', name: '神聖魔法',
         type: 'skill', skillId: 'divine_heal',
-        description: '神聖な力で大回復（HP+60+Lv×4 / MP:30）',
-        mpCost: 30, bonuses: {}, cost: 3, requires: 'cl_14',
+        description: '神聖な力で大回復（HP+60+Lv×4 / MP:42）',
+        mpCost: 42, bonuses: {}, cost: 3, requires: 'cl_14',
+      },
+      {
+        id: 'cl_16', name: '聖なる覚醒',
+        type: 'stat', description: 'HP +35 / MP +20',
+        bonuses: { hp: 35, mp: 20 }, cost: 2, requires: 'cl_15',
+      },
+      {
+        id: 'cl_17', name: '祝福の歌',
+        type: 'skill', skillId: 'battle_hymn',
+        description: '戦いの歌で ATK+25（4 ターン / MP:22）',
+        mpCost: 22, bonuses: {}, cost: 2, requires: 'cl_16',
+      },
+      {
+        id: 'cl_18', name: '神の慈悲',
+        type: 'stat', description: 'HP +40 / DEF +10',
+        bonuses: { hp: 40, def: 10 }, cost: 2, requires: 'cl_17',
+      },
+      {
+        id: 'cl_19', name: '神の護り',
+        type: 'skill', skillId: 'divine_shield',
+        description: '神の盾で大幅防御（DEF+50 / 3 ターン / MP:30）',
+        mpCost: 30, bonuses: {}, cost: 2, requires: 'cl_18',
+      },
+      {
+        id: 'cl_20', name: '天恵の光',
+        type: 'stat', description: 'HP +30 / MP +20',
+        bonuses: { hp: 30, mp: 20 }, cost: 3, requires: 'cl_19',
+      },
+      {
+        id: 'cl_21', name: '完全回復',
+        type: 'skill', skillId: 'full_recovery',
+        description: 'HP を全回復する奇跡（MP:65）',
+        mpCost: 65, bonuses: {}, cost: 3, requires: 'cl_20',
+      },
+      {
+        id: 'cl_22', name: '奇跡の加護',
+        type: 'stat', description: 'HP +50 / DEF +15 / MP +20',
+        bonuses: { hp: 50, def: 15, mp: 20 }, cost: 3, requires: 'cl_21',
       },
     ],
   },
@@ -356,8 +502,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_06', name: '足払い',
         type: 'skill', skillId: 'trip',
-        description: '足を払う（ATK×1.2 / MP:8 / 30%でスタン）',
-        mpCost: 8, bonuses: {}, cost: 2, requires: 'wt_05',
+        description: '足を払う（ATK×1.2 / MP:12 / 30%でスタン）',
+        mpCost: 12, bonuses: {}, cost: 2, requires: 'wt_05',
       },
       {
         id: 'wt_07', name: '剛腕',
@@ -372,8 +518,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_09', name: '威嚇',
         type: 'skill', skillId: 'intimidate',
-        description: '敵の攻撃力を 2 ターン低下（MP:10）',
-        mpCost: 10, bonuses: {}, cost: 2, requires: 'wt_08',
+        description: '敵の攻撃力を 2 ターン低下（MP:15）',
+        mpCost: 15, bonuses: {}, cost: 2, requires: 'wt_08',
       },
       {
         id: 'wt_10', name: '突破口',
@@ -383,8 +529,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_11', name: '体当たり',
         type: 'skill', skillId: 'body_slam',
-        description: '強烈な体当たりでスタン（ATK×1.6 / MP:10）',
-        mpCost: 10, bonuses: {}, cost: 3, requires: 'wt_10',
+        description: '強烈な体当たり（ATK×1.6 / MP:15 / 40%でスタン）',
+        mpCost: 15, bonuses: {}, cost: 3, requires: 'wt_10',
       },
       {
         id: 'wt_12', name: '鋼鉄の肉体',
@@ -399,13 +545,52 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_14', name: '破壊の一撃',
         type: 'skill', skillId: 'devastating_blow',
-        description: '強打＋敵の攻撃力を 2 ターン低下（ATK×2.0 / MP:15）',
-        mpCost: 15, bonuses: {}, cost: 3, requires: 'wt_13',
+        description: '強打＋敵の攻撃力を 2 ターン低下（ATK×2.0 / MP:22）',
+        mpCost: 22, bonuses: {}, cost: 3, requires: 'wt_13',
       },
       {
         id: 'wt_15', name: '不屈の戦士',
         type: 'stat', description: 'ATK +5 / DEF +5 / HP +30',
         bonuses: { atk: 5, def: 5, hp: 30 }, cost: 3, requires: 'wt_14',
+      },
+      {
+        id: 'wt_16', name: '覚醒の咆哮',
+        type: 'stat', description: 'ATK +8 / DEF +8',
+        bonuses: { atk: 8, def: 8 }, cost: 2, requires: 'wt_15',
+      },
+      {
+        id: 'wt_17', name: '大地砕き',
+        type: 'skill', skillId: 'earth_crash',
+        description: '大地を砕く一撃（ATK×2.2 / MP:22 / 35%でスタン）',
+        mpCost: 22, bonuses: {}, cost: 2, requires: 'wt_16',
+      },
+      {
+        id: 'wt_18', name: '鋼鉄の意志',
+        type: 'stat', description: 'DEF +12 / HP +35',
+        bonuses: { def: 12, hp: 35 }, cost: 2, requires: 'wt_17',
+      },
+      {
+        id: 'wt_19', name: '滅却の一撃',
+        type: 'skill', skillId: 'annihilation',
+        description: '敵を滅却する強打（ATK×3.0 + ATKデバフ / MP:32）',
+        mpCost: 32, bonuses: {}, cost: 2, requires: 'wt_18',
+      },
+      {
+        id: 'wt_20', name: '無双の体',
+        type: 'stat', description: 'ATK +10 / DEF +10 / HP +40',
+        bonuses: { atk: 10, def: 10, hp: 40 }, cost: 3, requires: 'wt_19',
+      },
+      {
+        id: 'wt_21', name: '戦神の覚醒',
+        type: 'skill', skillId: 'battle_trance',
+        description: '戦神として覚醒（ATK+30 + DEF+20 / 3ターン / MP:38）',
+        mpCost: 38, bonuses: {}, cost: 3, requires: 'wt_20',
+      },
+      {
+        id: 'wt_22', name: '鬼神の一撃',
+        type: 'skill', skillId: 'ogre_strike',
+        description: '鬼神の力を込めた大一撃（ATK×4.0 / MP:55 / 50%でスタン）',
+        mpCost: 55, bonuses: {}, cost: 3, requires: 'wt_21',
       },
     ],
   },
@@ -438,8 +623,10 @@ const SKILL_DEFINITIONS = (() => {
 
 /**
  * EXP を加算してレベルアップを処理する
- * スキルポイント付与: 5 の倍数レベルは 5pt、それ以外は 3pt
- * Lv1→20 で最大 65pt 獲得できる
+ * スキルポイント付与:
+ *   Lv2〜20: 5の倍数レベルは5pt、それ以外は3pt（合計65pt）
+ *   Lv21〜50: 5の倍数レベルは5pt、それ以外は4pt（合計126pt）
+ *   Lv1〜50 総計: 191pt（全ノード合計188ptに対して3pt余裕）
  * @param {number} expGained - 獲得 EXP 量
  */
 function gainExp(expGained) {
@@ -461,9 +648,15 @@ function gainExp(expGained) {
     player.maxHpBase   += 5;
     player.maxMpBase   += 3;
 
-    // スキルポイント付与（5 の倍数レベルは 5pt、それ以外は 3pt）
-    // Lv2〜20 でのトータル: 5倍数レベル4回×5pt=20pt + 残15レベル×3pt=45pt = 計65pt
-    const pointsGained = (player.level % 5 === 0) ? 5 : 3;
+    // スキルポイント付与（5の倍数は5pt、Lv21以降の非5倍数は4pt、Lv20以下は3pt）
+    let pointsGained;
+    if (player.level % 5 === 0) {
+      pointsGained = 5;
+    } else if (player.level > 20) {
+      pointsGained = 4;
+    } else {
+      pointsGained = 3;
+    }
     player.skillPoints += pointsGained;
 
     log(`⬆ レベルが ${player.level} に上がった！スキルポイントを ${pointsGained}pt 獲得！`, 'special');
@@ -813,12 +1006,17 @@ function useSkill(skillId) {
     }
 
     case 'body_slam': {
-      // 体当たり: ATK×1.6 + スタン
+      // 体当たり: ATK×1.6 + 40%の確率でスタン
       const raw = Math.floor(player.effectiveAttack * 1.6) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
-      game.enemyStunned = true;
-      log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+      const stunned = Math.random() < 0.40;
+      game.enemyStunned = stunned;
+      if (stunned) {
+        log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+      } else {
+        log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+      }
       renderEnemyStatus();
       break;
     }
@@ -830,6 +1028,156 @@ function useSkill(skillId) {
       enemy.takeDamage(dmg);
       game.enemyAtkDebuff = { factor: 0.8, turnsLeft: 2 };
       log(`💢 ${player.name} は「破壊の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！攻撃力が 2 ターン低下！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── 剣士新スキル ── */
+
+    case 'shooting_star': {
+      // 流星斬り: ATK×2.5
+      const raw = Math.floor(player.effectiveAttack * 2.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`🌠 ${player.name} は「流星斬り」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ruin_slash': {
+      // 崩壊斬り: ATK×3.5
+      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`⚔ ${player.name} は「崩壊斬り」を振りおろした！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'peerless_blade': {
+      // 天地無用剣: ATK×4.5
+      const raw = Math.floor(player.effectiveAttack * 4.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 9)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`✴ ${player.name} は「天地無用剣」を解き放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── 魔法新スキル ── */
+
+    case 'meteor': {
+      // メテオ: ATK×2.8
+      const raw = Math.floor(player.effectiveAttack * 2.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`☄ ${player.name} は「メテオ」を召喚した！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'magic_explosion': {
+      // 魔力爆発: ATK×3.5
+      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 8)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`💥 ${player.name} は「魔力爆発」を発動した！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'regen': {
+      // リジェネ: 3ターン毎ターンHP回復 (+20/turn)
+      game.playerRegen = { hpPerTurn: 20 + Math.floor(player.level * 0.5), turnsLeft: 3 };
+      log(`💚 ${player.name} は「リジェネ」を唱えた！ 3 ターン HP 回復効果！`, 'player-action');
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'spacetime_magic': {
+      // 時空魔法: ATK×5.0
+      const raw = Math.floor(player.effectiveAttack * 5.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-6, 10)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`🌀 ${player.name} は「時空魔法」を展開した！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── 僧侶新スキル ── */
+
+    case 'battle_hymn': {
+      // 祝福の歌: ATK+25 バフ 4 ターン
+      game.playerAtkBuff = { bonus: 25, turnsLeft: 4 };
+      log(`🎶 ${player.name} は「祝福の歌」を歌った！ 4 ターン ATK +25`, 'player-action');
+      break;
+    }
+
+    case 'divine_shield': {
+      // 神の護り: DEF+50 バフ 3 ターン
+      game.shieldActive = { defenseBonus: 50, turnsLeft: 3 };
+      log(`🛡 ${player.name} は「神の護り」を展開した！ 3 ターン DEF +50`, 'player-action');
+      break;
+    }
+
+    case 'full_recovery': {
+      // 完全回復: HP全回復
+      const healed = player.maxHp - player.hp;
+      player.hp = player.maxHp;
+      log(`✨ ${player.name} は「完全回復」を唱えた！ HP が全回復した！ (+${healed})`, 'player-action');
+      renderPlayerStatus();
+      break;
+    }
+
+    /* ── 戦士新スキル ── */
+
+    case 'earth_crash': {
+      // 大地砕き: ATK×2.2 + 35%スタン
+      const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(dmg);
+      const stunned = Math.random() < 0.35;
+      game.enemyStunned = stunned;
+      if (stunned) {
+        log(`🌋 ${player.name} は「大地砕き」を放った！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+      } else {
+        log(`🌋 ${player.name} は「大地砕き」を放った！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+      }
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'annihilation': {
+      // 滅却の一撃: ATK×3.0 + 強化 ATK デバフ（2 ターン）
+      const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
+      enemy.takeDamage(dmg);
+      game.enemyAtkDebuff = { factor: 0.65, turnsLeft: 2 };
+      log(`💀 ${player.name} は「滅却の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！攻撃力が大幅低下！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'battle_trance': {
+      // 戦神の覚醒: ATK+30 バフ 3 ターン + DEF+20 バフ 3 ターン
+      game.playerAtkBuff = { bonus: 30, turnsLeft: 3 };
+      game.shieldActive  = { defenseBonus: 20, turnsLeft: 3 };
+      log(`⚡ ${player.name} は「戦神の覚醒」を発動！ 3 ターン ATK +30 / DEF +20`, 'player-action');
+      break;
+    }
+
+    case 'ogre_strike': {
+      // 鬼神の一撃: ATK×4.0 + 50%スタン
+      const raw = Math.floor(player.effectiveAttack * 4.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 9)), 'deal');
+      enemy.takeDamage(dmg);
+      const stunned = Math.random() < 0.50;
+      game.enemyStunned = stunned;
+      if (stunned) {
+        log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+      } else {
+        log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+      }
       renderEnemyStatus();
       break;
     }

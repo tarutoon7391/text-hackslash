@@ -145,6 +145,195 @@ const DUNGEON_DEFINITIONS = [
       bossRareDropRate:  0.08,
     },
   },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 6: 古代遺跡（推奨 Lv 18〜20）
+     ────────────────────────────────────────── */
+  {
+    id: 6,
+    name: '古代遺跡',
+    recommendedLevel: 18,
+    normalEnemies: [
+      { name: '遺跡の番人',   hp: 460, maxHp: 460, attack: 165, defense: 68, expReward: 200 },
+      { name: '古代の精霊',   hp: 380, maxHp: 380, attack: 178, defense: 58, expReward: 210 },
+      { name: '石像ゴーレム', hp: 540, maxHp: 540, attack: 155, defense: 82, expReward: 205 },
+    ],
+    rareEnemy: { name: '遺跡の守護神', hp: 480, maxHp: 480, attack: 225, defense: 95, expReward: 420 },
+    boss: { name: '古代神将',         hp: 2300, maxHp: 2300, attack: 260, defense: 135, expReward: 1300 },
+    rareChance: 0.15,
+    drops: {
+      common:           '古代石',
+      commonDropRate:    0.50,
+      rares:            ['精霊の羽根', '遺跡の石板'],
+      rareDropRate:      0.75,
+      boss:             '遺跡守護者の胆石',
+      bossDropRate:      0.25,
+      bossRare:         '古代の叡智',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 7: 深海の神殿（推奨 Lv 22〜25）
+     ────────────────────────────────────────── */
+  {
+    id: 7,
+    name: '深海の神殿',
+    recommendedLevel: 22,
+    normalEnemies: [
+      { name: 'ディープシーサーペント', hp: 620, maxHp: 620, attack: 215, defense: 90, expReward: 280 },
+      { name: '深海クラーケン',         hp: 750, maxHp: 750, attack: 200, defense: 105, expReward: 290 },
+      { name: '海底亡霊',               hp: 540, maxHp: 540, attack: 235, defense: 78, expReward: 275 },
+    ],
+    rareEnemy: { name: '深海の邪神使', hp: 640, maxHp: 640, attack: 290, defense: 120, expReward: 560 },
+    boss: { name: '深海神リヴァイアサン', hp: 3000, maxHp: 3000, attack: 330, defense: 175, expReward: 1700 },
+    rareChance: 0.15,
+    drops: {
+      common:           '深海珊瑚',
+      commonDropRate:    0.50,
+      rares:            ['深海魚の鱗', '海神の宝珠'],
+      rareDropRate:      0.75,
+      boss:             '深海神の牙',
+      bossDropRate:      0.25,
+      bossRare:         '深海神の加護',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 8: 宇宙の彼方（推奨 Lv 27〜30）
+     ────────────────────────────────────────── */
+  {
+    id: 8,
+    name: '宇宙の彼方',
+    recommendedLevel: 27,
+    normalEnemies: [
+      { name: 'スターゴーレム',   hp: 820, maxHp: 820, attack: 275, defense: 118, expReward: 380 },
+      { name: '銀河の亡霊',       hp: 700, maxHp: 700, attack: 295, defense: 102, expReward: 375 },
+      { name: 'コスモデーモン',   hp: 930, maxHp: 930, attack: 260, defense: 130, expReward: 385 },
+    ],
+    rareEnemy: { name: '星の番人', hp: 850, maxHp: 850, attack: 370, defense: 155, expReward: 740 },
+    boss: { name: '星神アストラル', hp: 3800, maxHp: 3800, attack: 405, defense: 215, expReward: 2200 },
+    rareChance: 0.15,
+    drops: {
+      common:           '星屑の欠片',
+      commonDropRate:    0.50,
+      rares:            ['隕石鉄', '宇宙水晶'],
+      rareDropRate:      0.75,
+      boss:             '星の守護者の核',
+      bossDropRate:      0.25,
+      bossRare:         '星神の加護',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 9: 異世界の迷宮（推奨 Lv 31〜34）
+     ────────────────────────────────────────── */
+  {
+    id: 9,
+    name: '異世界の迷宮',
+    recommendedLevel: 31,
+    normalEnemies: [
+      { name: '異界の魔人',   hp: 1000, maxHp: 1000, attack: 345, defense: 148, expReward: 500 },
+      { name: '次元の裂け目', hp: 880,  maxHp: 880,  attack: 370, defense: 130, expReward: 495 },
+      { name: '異界の悪魔',   hp: 1100, maxHp: 1100, attack: 330, defense: 162, expReward: 505 },
+    ],
+    rareEnemy: { name: '異界の封印者', hp: 1050, maxHp: 1050, attack: 465, defense: 195, expReward: 980 },
+    boss: { name: '異界の覇王', hp: 4700, maxHp: 4700, attack: 495, defense: 260, expReward: 2800 },
+    rareChance: 0.15,
+    drops: {
+      common:           '異界の石',
+      commonDropRate:    0.50,
+      rares:            ['魔界の結晶', '異界の魔石'],
+      rareDropRate:      0.75,
+      boss:             '迷宮守護者の核',
+      bossDropRate:      0.25,
+      bossRare:         '異界の力',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 10: 夢幻の庭園（推奨 Lv 36〜39）
+     ────────────────────────────────────────── */
+  {
+    id: 10,
+    name: '夢幻の庭園',
+    recommendedLevel: 36,
+    normalEnemies: [
+      { name: '夢幻の妖精',   hp: 1200, maxHp: 1200, attack: 420, defense: 180, expReward: 640 },
+      { name: '幻影の騎士',   hp: 1350, maxHp: 1350, attack: 400, defense: 200, expReward: 650 },
+      { name: '夢食いの魔物', hp: 1100, maxHp: 1100, attack: 445, defense: 165, expReward: 645 },
+    ],
+    rareEnemy: { name: '夢幻の女神使', hp: 1280, maxHp: 1280, attack: 565, defense: 240, expReward: 1250 },
+    boss: { name: '夢神フォルサム', hp: 5800, maxHp: 5800, attack: 600, defense: 315, expReward: 3600 },
+    rareChance: 0.15,
+    drops: {
+      common:           '夢の花',
+      commonDropRate:    0.50,
+      rares:            ['幻想の羽根', '夢幻の水晶'],
+      rareDropRate:      0.75,
+      boss:             '夢主の心',
+      bossDropRate:      0.25,
+      bossRare:         '夢神の加護',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 11: 時空の裂け目（推奨 Lv 41〜44）
+     ────────────────────────────────────────── */
+  {
+    id: 11,
+    name: '時空の裂け目',
+    recommendedLevel: 41,
+    normalEnemies: [
+      { name: '時の守護者',   hp: 1500, maxHp: 1500, attack: 505, defense: 225, expReward: 820 },
+      { name: '空間断層体',   hp: 1650, maxHp: 1650, attack: 485, defense: 245, expReward: 830 },
+      { name: '次元の亡霊',   hp: 1380, maxHp: 1380, attack: 530, defense: 208, expReward: 815 },
+    ],
+    rareEnemy: { name: '時空の支配者', hp: 1580, maxHp: 1580, attack: 680, defense: 295, expReward: 1600 },
+    boss: { name: '時空神クロノス', hp: 7200, maxHp: 7200, attack: 720, defense: 380, expReward: 4600 },
+    rareChance: 0.15,
+    drops: {
+      common:           '時空の欠片',
+      commonDropRate:    0.50,
+      rares:            ['時の砂', '空間の結晶'],
+      rareDropRate:      0.75,
+      boss:             '時空守護者の核',
+      bossDropRate:      0.25,
+      bossRare:         '時空の奇跡',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ──────────────────────────────────────────
+     ダンジョン 12: 混沌の神殿（推奨 Lv 46〜50）
+     ────────────────────────────────────────── */
+  {
+    id: 12,
+    name: '混沌の神殿',
+    recommendedLevel: 46,
+    normalEnemies: [
+      { name: '混沌の魔将',   hp: 1850, maxHp: 1850, attack: 610, defense: 275, expReward: 1050 },
+      { name: 'カオスデーモン', hp: 2000, maxHp: 2000, attack: 585, defense: 295, expReward: 1060 },
+      { name: '虚無の騎士',   hp: 1700, maxHp: 1700, attack: 640, defense: 258, expReward: 1040 },
+    ],
+    rareEnemy: { name: '混沌の覇神使', hp: 1950, maxHp: 1950, attack: 825, defense: 360, expReward: 2050 },
+    boss: { name: '混沌神カオスロード', hp: 9500, maxHp: 9500, attack: 880, defense: 460, expReward: 6000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '混沌の結晶',
+      commonDropRate:    0.50,
+      rares:            ['虚空の欠片', '混沌の石板'],
+      rareDropRate:      0.75,
+      boss:             '混沌神の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '混沌の力',
+      bossRareDropRate:  0.08,
+    },
+  },
 ];
 
 /** 1 ダンジョンあたりの敵数（ボス含む） */
@@ -182,7 +371,7 @@ function renderDungeonSelect() {
 
 /**
  * ダンジョンに入る
- * @param {number} dungeonId - ダンジョン ID（1〜5）
+ * @param {number} dungeonId - ダンジョン ID（1〜12）
  */
 function enterDungeon(dungeonId) {
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === dungeonId);
@@ -246,6 +435,7 @@ function startNextDungeonBattle() {
   game.playerAtkBuff  = null;
   game.enemyStunned   = false;
   game.enemyAtkDebuff = null;
+  game.playerRegen    = null;
 
   // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
   recordMonsterEncounter(game.enemy.name);
