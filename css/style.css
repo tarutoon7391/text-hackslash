@@ -639,6 +639,12 @@ footer {
   border-color: #ff44ff;
   text-shadow: 0 0 4px #ff44ff;
 }
+.rarity-badge.rarity-legend {
+  color: #ffdd00;
+  border-color: #ffdd00;
+  text-shadow: 0 0 6px #ffdd00, 0 0 12px #ff8800;
+  font-weight: bold;
+}
 .sp-remaining {
   font-size: 1.1rem;
   color: #ffdd00;

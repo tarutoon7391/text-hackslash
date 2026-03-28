@@ -224,6 +224,7 @@ let game = {
   playerAtkBuff:  null,   // { bonus: N, turnsLeft: N } — 祝福スキル
   enemyStunned:   false,  // 足払い・体当たりによるスタン
   enemyAtkDebuff: null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
+  playerRegen:    null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
 };
 
 /* ==============================================================
@@ -302,6 +303,21 @@ function tickPlayerBuffs() {
   }
 }
 
+/** プレイヤーのリジェネ効果を処理する */
+function tickPlayerRegen() {
+  if (game.playerRegen && game.playerRegen.turnsLeft > 0) {
+    const healAmt = game.playerRegen.hpPerTurn;
+    game.player.heal(healAmt);
+    game.playerRegen.turnsLeft--;
+    log(`💚 リジェネで HP +${healAmt} 回復！（残${game.playerRegen.turnsLeft}ターン）`, 'player-action');
+    renderPlayerStatus();
+    if (game.playerRegen.turnsLeft <= 0) {
+      game.playerRegen = null;
+      log('リジェネの効果が切れた。', 'system');
+    }
+  }
+}
+
 /** 敵のターン処理 */
 function doEnemyTurn() {
   if (game.state !== GameState.ENEMY_TURN) return;
@@ -311,6 +327,7 @@ function doEnemyTurn() {
     game.enemyStunned = false;
     log(`⚡ ${game.enemy.name} はスタンして行動できない！`, 'system');
     tickPlayerBuffs();
+    tickPlayerRegen();
     game.state = GameState.PLAYER_TURN;
     log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
     log('あなたのターンです。アクションを選んでください。', 'system');
@@ -370,6 +387,7 @@ function doEnemyTurn() {
 
   // プレイヤー ATK バフのターン管理
   tickPlayerBuffs();
+  tickPlayerRegen();
 
   game.state = GameState.PLAYER_TURN;
   log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
@@ -476,6 +494,7 @@ function initGame() {
   game.playerAtkBuff  = null;
   game.enemyStunned   = false;
   game.enemyAtkDebuff = null;
+  game.playerRegen    = null;
 
   showScreen('lobby');
   renderLobby();
