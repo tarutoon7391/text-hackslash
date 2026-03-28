@@ -9,7 +9,7 @@
  * @param {string} screenName - 'lobby' | 'dungeon-select' | 'battle' | 'inventory' | 'skill-points'
  */
 function showScreen(screenName) {
-  const screens = ['lobby', 'dungeon-select', 'battle', 'inventory', 'skill-points'];
+  const screens = ['lobby', 'dungeon-select', 'battle', 'inventory', 'skill-points', 'encyclopedia'];
   screens.forEach(name => {
     const el = document.getElementById(`screen-${name}`);
     if (el) el.style.display = name === screenName ? 'block' : 'none';

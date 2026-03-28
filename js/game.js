@@ -67,6 +67,14 @@ class Player {
     this.ownedEquipment = s.ownedEquipment ? [...s.ownedEquipment] : [];
     this.dungeonProgress = s.dungeonProgress ? { ...s.dungeonProgress } : {};
 
+    /** 図鑑: モンスター遭遇フラグ・討伐フラグ・討伐回数 */
+    this.encounterFlags  = s.encounterFlags  ? { ...s.encounterFlags }  : {};
+    this.defeatFlags     = s.defeatFlags     ? { ...s.defeatFlags }     : {};
+    this.defeatCounts    = s.defeatCounts    ? { ...s.defeatCounts }    : {};
+
+    /** 図鑑: アイテム解鎖フラグ */
+    this.itemUnlockFlags = s.itemUnlockFlags ? { ...s.itemUnlockFlags } : {};
+
     /** スキルポイントで強化した累計量 */
     this.spAtk = s.spAtk ?? 0;
     this.spDef = s.spDef ?? 0;
@@ -300,6 +308,9 @@ function endBattle(result) {
 
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'special');
     log(`🏆 ${game.enemy.name} を倒した！ EXP +${exp}`, 'result');
+
+    // 図鑑: 討伐を記録する
+    recordMonsterDefeat(game.enemy.name);
 
     // ドロップ処理
     processDrop();

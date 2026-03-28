@@ -48,6 +48,10 @@ async function saveGame() {
     equipment:       p.equipment,
     ownedEquipment:  p.ownedEquipment,
     dungeonProgress: p.dungeonProgress,
+    encounterFlags:  p.encounterFlags,
+    defeatFlags:     p.defeatFlags,
+    defeatCounts:    p.defeatCounts,
+    itemUnlockFlags: p.itemUnlockFlags,
   };
 
   setSaveLoadButtonsEnabled(false);
@@ -122,6 +126,10 @@ async function loadGame() {
       equipment:       saved.equipment       ?? {},
       ownedEquipment:  saved.ownedEquipment  ?? [],
       dungeonProgress: saved.dungeonProgress ?? {},
+      encounterFlags:  saved.encounterFlags  ?? {},
+      defeatFlags:     saved.defeatFlags     ?? {},
+      defeatCounts:    saved.defeatCounts    ?? {},
+      itemUnlockFlags: saved.itemUnlockFlags ?? {},
     });
 
     game.dungeon = { id: null, enemyIndex: 0, materials: [] };
