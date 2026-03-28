@@ -356,7 +356,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_06', name: '足払い',
         type: 'skill', skillId: 'trip',
-        description: '足を払い次ターン行動不能（ATK×1.4 / MP:8）',
+        description: '足を払う（ATK×1.2 / MP:8 / 30%でスタン）',
         mpCost: 8, bonuses: {}, cost: 2, requires: 'wt_05',
       },
       {
@@ -790,12 +790,17 @@ function useSkill(skillId) {
     /* ── 戦士スキル ── */
 
     case 'trip': {
-      // 足払い: ATK×1.4 + 次ターン行動不能
-      const raw = Math.floor(player.effectiveAttack * 1.4) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 足払い: ATK×1.2 + 30%の確率で次ターン行動不能
+      const raw = Math.floor(player.effectiveAttack * 1.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
-      game.enemyStunned = true;
-      log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！次のターン行動不能！`, 'player-action');
+      const stunned = Math.random() < 0.30;
+      game.enemyStunned = stunned;
+      if (stunned) {
+        log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！次のターン行動不能！`, 'player-action');
+      } else {
+        log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+      }
       renderEnemyStatus();
       break;
     }

@@ -1000,3 +1000,101 @@ footer {
   padding: 2px 0;
   line-height: 1;
 }
+
+/* ===== 装備強化ボタン ===== */
+.enhance-btn {
+  color: #ffaa00;
+  border-color: #ffaa00;
+}
+
+.enhance-btn:hover:not(:disabled) {
+  background-color: #ffaa0022;
+  box-shadow: 0 0 6px #ffaa00;
+}
+
+/* ===== 装備強化モーダル ===== */
+.enhance-modal-title {
+  font-size: 1.1rem;
+  color: #ffaa00;
+  text-shadow: 0 0 8px #ffaa00;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #aa7700;
+  padding-bottom: 8px;
+}
+
+.enhance-modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+}
+
+.enhance-eq-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00ff41;
+}
+
+.enhance-level-info {
+  color: #aaaaaa;
+}
+
+.enhance-level-info strong {
+  color: #ffdd00;
+}
+
+.enhance-stat-bonus {
+  color: #00ccff;
+  font-size: 0.85rem;
+}
+
+.enhance-mat-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.enhance-mat-title {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.enhance-mat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 8px;
+  border: 1px solid #333;
+  font-size: 0.82rem;
+}
+
+.enhance-mat-row.ok {
+  border-color: #00cc33;
+  color: #00ff41;
+}
+
+.enhance-mat-row.insufficient {
+  border-color: #993333;
+  color: #ff6666;
+}
+
+.enhance-mat-name {
+  flex: 1;
+}
+
+.enhance-mat-count {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.enhance-confirm-btn {
+  color: #ffaa00;
+  border-color: #ffaa00;
+  align-self: flex-start;
+}
+
+.enhance-confirm-btn:hover:not(:disabled) {
+  background-color: #ffaa0022;
+  box-shadow: 0 0 8px #ffaa00;
+}

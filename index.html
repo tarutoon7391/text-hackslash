@@ -265,6 +265,14 @@
   </div>
 </div>
 
+<!-- 装備強化モーダル -->
+<div id="enhance-modal-overlay" class="enc-modal-overlay" style="display:none" onclick="closeEnhanceModal()">
+  <div class="enc-modal" onclick="event.stopPropagation()">
+    <div id="enhance-modal-content"></div>
+    <button class="enc-modal-close nav-btn back-btn" onclick="closeEnhanceModal()">✕ 閉じる</button>
+  </div>
+</div>
+
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
 <!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js -->
