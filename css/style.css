@@ -840,3 +840,163 @@ footer {
 .enc-modal-close {
   align-self: flex-start;
 }
+
+/* ===== スキルツリー画面 ===== */
+
+/* ルートタブ */
+.st-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.st-tab-btn {
+  background-color: #0a0a0a;
+  color: #aaaaaa;
+  border: 1px solid #444;
+  padding: 8px 16px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.st-tab-btn.active {
+  color: #ffdd00;
+  border-color: #ffdd00;
+  box-shadow: 0 0 8px #ffdd0066;
+}
+
+.st-tab-btn:hover:not(.active) {
+  color: #ccaa00;
+  border-color: #ccaa00;
+  background-color: #ffdd0011;
+}
+
+/* ルート説明 */
+.st-route-desc {
+  font-size: 0.82rem;
+  color: #888;
+  padding: 4px 2px;
+  border-left: 2px solid #ffdd0044;
+  padding-left: 10px;
+}
+
+/* ノードリスト */
+.st-node-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  max-height: 460px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* 各ノード */
+.st-node {
+  border: 1px solid #333;
+  padding: 10px 14px;
+  background-color: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: default;
+  transition: background-color 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+/* 取得済みノード */
+.st-node.acquired {
+  border-color: #00cc33;
+  background-color: #001a00;
+}
+
+/* 取得可能ノード */
+.st-node.available {
+  border-color: #ffdd00;
+  cursor: pointer;
+}
+
+.st-node.available:hover {
+  background-color: #ffdd0011;
+  box-shadow: 0 0 8px #ffdd0066;
+}
+
+/* ロック中ノード */
+.st-node.locked {
+  border-color: #2a2a2a;
+  opacity: 0.55;
+}
+
+/* ノードヘッダー */
+.st-node-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-node-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.st-node-name {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #00ff41;
+  flex: 1;
+}
+
+.st-node.acquired .st-node-name {
+  color: #00cc33;
+}
+
+.st-node.locked .st-node-name {
+  color: #555;
+}
+
+.st-node-cost {
+  font-size: 0.8rem;
+  color: #ffdd00;
+  white-space: nowrap;
+}
+
+.st-node.acquired .st-node-cost {
+  color: #336633;
+}
+
+/* ノード説明 */
+.st-node-desc {
+  font-size: 0.82rem;
+  color: #aaaaaa;
+  padding-left: 28px;
+}
+
+.st-node.locked .st-node-desc {
+  color: #444;
+}
+
+/* ノードステータス */
+.st-node-status {
+  font-size: 0.78rem;
+  color: #555;
+  padding-left: 28px;
+}
+
+.st-node.acquired .st-node-status {
+  color: #00aa22;
+}
+
+.st-node.available .st-node-status {
+  color: #ccaa00;
+}
+
+/* ノード間の矢印 */
+.st-node-arrow {
+  text-align: center;
+  color: #333;
+  font-size: 1.1rem;
+  padding: 2px 0;
+  line-height: 1;
+}

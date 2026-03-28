@@ -9,7 +9,7 @@
  * @param {string} screenName - 'lobby' | 'dungeon-select' | 'battle' | 'inventory' | 'skill-points'
  */
 function showScreen(screenName) {
-  const screens = ['lobby', 'dungeon-select', 'battle', 'inventory', 'skill-points', 'encyclopedia'];
+  const screens = ['lobby', 'dungeon-select', 'battle', 'inventory', 'skill-tree', 'encyclopedia'];
   screens.forEach(name => {
     const el = document.getElementById(`screen-${name}`);
     if (el) el.style.display = name === screenName ? 'block' : 'none';
@@ -58,7 +58,7 @@ function renderLobbyStatus() {
     <div class="hp-bar-outer"><div class="hp-bar-inner${hpPct <= 25 ? ' danger' : hpPct <= 50 ? ' warning' : ''}" style="width:${hpPct}%"></div></div>
     <div class="mp-label">MP: ${p.mp} / ${p.maxMp}</div>
     <div class="hp-bar-outer"><div class="mp-bar-inner" style="width:${mpPct}%"></div></div>
-    <div class="lobby-stat-line">スキルポイント: <strong>${p.skillPoints} pt</strong></div>
+    <div class="lobby-stat-line">スキルツリーポイント: <strong>${p.skillPoints} pt</strong></div>
     <div class="lobby-stat-line">習得スキル: ${skillList}</div>
   `;
 }

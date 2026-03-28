@@ -75,11 +75,15 @@ class Player {
     /** 図鑑: アイテム解鎖フラグ */
     this.itemUnlockFlags = s.itemUnlockFlags ? { ...s.itemUnlockFlags } : {};
 
-    /** スキルポイントで強化した累計量 */
-    this.spAtk = s.spAtk ?? 0;
-    this.spDef = s.spDef ?? 0;
-    this.spHp  = s.spHp  ?? 0;
-    this.spMp  = s.spMp  ?? 0;
+    /**
+     * スキルツリーの取得済みノード一覧
+     * キー: ルート ID、値: 取得済みノード ID の配列
+     */
+    this.skillTreeNodes = s.skillTreeNodes
+      ? Object.fromEntries(
+          Object.entries(s.skillTreeNodes).map(([k, v]) => [k, [...v]])
+        )
+      : {};
 
     /** 有効ステータスを初期化 */
     this.attack  = this.attackBase;
@@ -89,13 +93,29 @@ class Player {
 
   /**
    * 有効ステータス（attack / defense / maxHp / maxMp）を再計算する
-   * ベース値 + スキルポイント補正 + 装備補正
+   * ベース値 + スキルツリーボーナス + 装備補正
    */
   recalcStats() {
-    this.attack  = this.attackBase  + this.spAtk;
-    this.defense = this.defenseBase + this.spDef;
-    this.maxHp   = this.maxHpBase   + this.spHp;
-    this.maxMp   = this.maxMpBase   + this.spMp;
+    // スキルツリーによるステータスボーナスを集計する
+    let stAtk = 0, stDef = 0, stHp = 0, stMp = 0;
+    if (typeof SKILL_TREE_DEFINITIONS !== 'undefined') {
+      SKILL_TREE_DEFINITIONS.forEach(route => {
+        const acquiredIds = this.skillTreeNodes[route.id] || [];
+        route.nodes.forEach(node => {
+          if (acquiredIds.includes(node.id) && node.bonuses) {
+            stAtk += node.bonuses.atk || 0;
+            stDef += node.bonuses.def || 0;
+            stHp  += node.bonuses.hp  || 0;
+            stMp  += node.bonuses.mp  || 0;
+          }
+        });
+      });
+    }
+
+    this.attack  = this.attackBase  + stAtk;
+    this.defense = this.defenseBase + stDef;
+    this.maxHp   = this.maxHpBase   + stHp;
+    this.maxMp   = this.maxMpBase   + stMp;
 
     Object.values(this.equipment).forEach(eqId => {
       if (!eqId) return;
@@ -111,9 +131,14 @@ class Player {
     this.mp = Math.min(this.mp, this.maxMp);
   }
 
-  /** 通常攻撃ダメージを計算して返す（会心効果を含む） */
+  /**
+   * 通常攻撃ダメージを計算して返す（会心効果・ATK バフを含む）
+   */
   calcAttackDamage(target) {
-    const raw = this.attack - Math.floor(target.defense * DEFENSE_FACTOR);
+    // 祝福スキルの ATK バフを考慮する
+    const atkBonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
+      ? game.playerAtkBuff.bonus : 0;
+    const raw = (this.attack + atkBonus) - Math.floor(target.defense * DEFENSE_FACTOR);
     const dmg = Math.max(1, raw + randInt(-2, 2));
     return applyEquipmentEffects(dmg, 'deal');
   }
@@ -175,8 +200,11 @@ let game = {
     enemyIndex: 0,
     materials:  [],
   },
-  shieldActive:  null,
-  enemyPoisoned: null,
+  shieldActive:   null,   // { defenseBonus: N, turnsLeft: N } — シールド・聖域
+  enemyPoisoned:  null,   // { active: bool, damage: N, turnsLeft: N }
+  playerAtkBuff:  null,   // { bonus: N, turnsLeft: N } — 祝福スキル
+  enemyStunned:   false,  // 足払い・体当たりによるスタン
+  enemyAtkDebuff: null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
 };
 
 /* ==============================================================
@@ -244,9 +272,32 @@ function afterPlayerTurn() {
   setTimeout(doEnemyTurn, ENEMY_TURN_DELAY_MS);
 }
 
+/** プレイヤーのバフターンを進める */
+function tickPlayerBuffs() {
+  if (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0) {
+    game.playerAtkBuff.turnsLeft--;
+    if (game.playerAtkBuff.turnsLeft <= 0) {
+      game.playerAtkBuff = null;
+      log('🌟 祝福の効果が切れた。', 'system');
+    }
+  }
+}
+
 /** 敵のターン処理 */
 function doEnemyTurn() {
   if (game.state !== GameState.ENEMY_TURN) return;
+
+  // スタン判定（足払い・体当たりの効果）
+  if (game.enemyStunned) {
+    game.enemyStunned = false;
+    log(`⚡ ${game.enemy.name} はスタンして行動できない！`, 'system');
+    tickPlayerBuffs();
+    game.state = GameState.PLAYER_TURN;
+    log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
+    log('あなたのターンです。アクションを選んでください。', 'system');
+    setButtonsEnabled(true);
+    return;
+  }
 
   // 毒ダメージ（毒は敵ターン開始時に適用）
   if (game.enemyPoisoned && game.enemyPoisoned.active) {
@@ -269,13 +320,23 @@ function doEnemyTurn() {
   // 敵の通常攻撃
   let rawDmg = game.enemy.calcAttackDamage(game.player);
 
-  // シールド効果を適用
+  // 敵 ATK デバフを適用（威嚇・破壊の一撃）
+  if (game.enemyAtkDebuff && game.enemyAtkDebuff.turnsLeft > 0) {
+    rawDmg = Math.floor(rawDmg * game.enemyAtkDebuff.factor);
+    game.enemyAtkDebuff.turnsLeft--;
+    if (game.enemyAtkDebuff.turnsLeft <= 0) {
+      game.enemyAtkDebuff = null;
+      log(`${game.enemy.name} のデバフが解けた。`, 'system');
+    }
+  }
+
+  // シールド効果を適用（聖域スキル）
   if (game.shieldActive && game.shieldActive.turnsLeft > 0) {
     rawDmg = Math.max(1, rawDmg - game.shieldActive.defenseBonus);
     game.shieldActive.turnsLeft--;
     if (game.shieldActive.turnsLeft <= 0) {
       game.shieldActive = null;
-      log('🛡 シールドの効果が切れた。', 'system');
+      log('🛡 防御バフの効果が切れた。', 'system');
     }
   }
 
@@ -287,6 +348,9 @@ function doEnemyTurn() {
     endBattle('lose');
     return;
   }
+
+  // プレイヤー ATK バフのターン管理
+  tickPlayerBuffs();
 
   game.state = GameState.PLAYER_TURN;
   log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
@@ -373,40 +437,6 @@ function cancelSkillPanel() {
 }
 
 /* ==============================================================
-   スキルポイント画面
-   ============================================================== */
-
-function renderSkillPoints() {
-  const p = game.player;
-  document.getElementById('sp-remaining').textContent = `残りポイント: ${p.skillPoints} pt`;
-  document.getElementById('sp-atk').textContent = `攻撃力:   ${p.attack}  (ベース ${p.attackBase}  + SP ${p.spAtk}  + 装備)`;
-  document.getElementById('sp-def').textContent = `防御力:   ${p.defense}  (ベース ${p.defenseBase}  + SP ${p.spDef}  + 装備)`;
-  document.getElementById('sp-hp').textContent  = `最大 HP:  ${p.maxHp}  (ベース ${p.maxHpBase}  + SP ${p.spHp}  + 装備)`;
-  document.getElementById('sp-mp').textContent  = `最大 MP:  ${p.maxMp}  (ベース ${p.maxMpBase}  + SP ${p.spMp}  + 装備)`;
-
-  const hasSp = p.skillPoints > 0;
-  ['sp-btn-atk','sp-btn-def','sp-btn-hp','sp-btn-mp'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.disabled = !hasSp;
-  });
-}
-
-function spendSkillPoint(stat) {
-  const p = game.player;
-  if (p.skillPoints <= 0) return;
-  p.skillPoints--;
-
-  if (stat === 'atk') { p.attackBase  += 3; p.spAtk += 3; }
-  if (stat === 'def') { p.defenseBase += 2; p.spDef += 2; }
-  if (stat === 'hp')  { p.maxHpBase   += 10; p.spHp += 10; }
-  if (stat === 'mp')  { p.maxMpBase   += 8;  p.spMp += 8;  }
-
-  p.recalcStats();
-  renderSkillPoints();
-  renderLobbyStatus();
-}
-
-/* ==============================================================
    ゲーム起動・初期化
    ============================================================== */
 
@@ -414,17 +444,19 @@ function initGame() {
   const s = INITIAL_PLAYER_STATS;
   game.player = new Player({
     ...s,
-    maxHpBase:   s.maxHp,
-    maxMpBase:   s.maxMp,
-    spAtk: 0, spDef: 0, spHp: 0, spMp: 0,
+    maxHpBase: s.maxHp,
+    maxMpBase: s.maxMp,
   });
 
-  game.enemy        = null;
-  game.state        = null;
-  game.battleCount  = 0;
-  game.dungeon      = { id: null, enemyIndex: 0, materials: [] };
-  game.shieldActive  = null;
-  game.enemyPoisoned = null;
+  game.enemy          = null;
+  game.state          = null;
+  game.battleCount    = 0;
+  game.dungeon        = { id: null, enemyIndex: 0, materials: [] };
+  game.shieldActive   = null;
+  game.enemyPoisoned  = null;
+  game.playerAtkBuff  = null;
+  game.enemyStunned   = false;
+  game.enemyAtkDebuff = null;
 
   showScreen('lobby');
   renderLobby();
