@@ -64,8 +64,8 @@ function getMonsterDrops(monsterEntry) {
 
   switch (monsterEntry.monsterType) {
     case 'normal': return [dungeon.drops.common];
-    case 'rare':   return [dungeon.drops.rare, dungeon.drops.common];
-    case 'boss':   return [dungeon.drops.boss, dungeon.drops.common];
+    case 'rare':   return [...dungeon.drops.rares, dungeon.drops.common];
+    case 'boss':   return [dungeon.drops.boss, dungeon.drops.bossRare, dungeon.drops.common].filter(Boolean);
     default:       return [];
   }
 }
@@ -90,8 +90,10 @@ function getAllItems() {
     };
 
     addMat(d.common, `${dungeon.name} のドロップ（通常）`);
-    addMat(d.rare,   `${dungeon.name} のレアドロップ`);
+    // rares は配列
+    (d.rares || []).forEach(r => addMat(r, `${dungeon.name} のレアドロップ`));
     addMat(d.boss,   `${dungeon.name} のボスドロップ`);
+    if (d.bossRare) addMat(d.bossRare, `${dungeon.name} のボスレアドロップ`);
   });
 
   // 装備: EQUIPMENT_DEFINITIONS から収集する

@@ -27,12 +27,14 @@ const DUNGEON_DEFINITIONS = [
     boss: { name: 'キングスライム', hp: 250, maxHp: 250, attack: 25, defense: 12, expReward: 150 },
     rareChance: 0.15,
     drops: {
-      common:         '革',
-      commonDropRate:  0.50,
-      rare:           'キラースライム核',
-      rareDropRate:    0.80,
-      boss:           'キングゼリー',
-      bossDropRate:    0.30,
+      common:           '革',
+      commonDropRate:    0.50,
+      rares:            ['キラースライム核', 'スライムクリスタル'],
+      rareDropRate:      0.80,
+      boss:             'キングゼリー',
+      bossDropRate:      0.30,
+      bossRare:         '王冠の欠片',
+      bossRareDropRate:  0.10,
     },
   },
 
@@ -52,12 +54,14 @@ const DUNGEON_DEFINITIONS = [
     boss: { name: 'ゴブリンキング',     hp: 440, maxHp: 440, attack: 55, defense: 30, expReward: 280 },
     rareChance: 0.15,
     drops: {
-      common:         '鉄',
-      commonDropRate:  0.50,
-      rare:           'シャーマンの杖',
-      rareDropRate:    0.80,
-      boss:           '王の紋章',
-      bossDropRate:    0.30,
+      common:           '鉄',
+      commonDropRate:    0.50,
+      rares:            ['シャーマンの杖', '森の魔石'],
+      rareDropRate:      0.80,
+      boss:             '王の紋章',
+      bossDropRate:      0.30,
+      bossRare:         '覇王の証',
+      bossRareDropRate:  0.10,
     },
   },
 
@@ -77,12 +81,14 @@ const DUNGEON_DEFINITIONS = [
     boss: { name: 'デスナイト',  hp: 680, maxHp: 680, attack: 72, defense: 42, expReward: 380 },
     rareChance: 0.15,
     drops: {
-      common:         '金',
-      commonDropRate:  0.50,
-      rare:           '呪いの骨',
-      rareDropRate:    0.80,
-      boss:           '死神の鎌',
-      bossDropRate:    0.30,
+      common:           '金',
+      commonDropRate:    0.50,
+      rares:            ['呪いの骨', '死霊の涙'],
+      rareDropRate:      0.80,
+      boss:             '死神の鎌',
+      bossDropRate:      0.30,
+      bossRare:         '冥府の鍵',
+      bossRareDropRate:  0.10,
     },
   },
 
@@ -102,12 +108,14 @@ const DUNGEON_DEFINITIONS = [
     boss: { name: 'フレイムドラゴン', hp: 1100, maxHp: 1100, attack: 130, defense: 70, expReward: 650 },
     rareChance: 0.15,
     drops: {
-      common:         'ダイヤ',
-      commonDropRate:  0.50,
-      rare:           '溶岩石',
-      rareDropRate:    0.75,
-      boss:           '竜の炎石',
-      bossDropRate:    0.30,
+      common:           'ダイヤ',
+      commonDropRate:    0.50,
+      rares:            ['溶岩石', '炎晶石'],
+      rareDropRate:      0.75,
+      boss:             '竜の炎石',
+      bossDropRate:      0.30,
+      bossRare:         '炎竜の魂',
+      bossRareDropRate:  0.10,
     },
   },
 
@@ -127,12 +135,14 @@ const DUNGEON_DEFINITIONS = [
     boss: { name: '魔王',         hp: 1700, maxHp: 1700, attack: 200, defense: 100, expReward: 1000 },
     rareChance: 0.15,
     drops: {
-      common:         '竜鱗',
-      commonDropRate:  0.50,
-      rare:           '闇の結晶',
-      rareDropRate:    0.75,
-      boss:           '魔王の心臓',
-      bossDropRate:    0.25,
+      common:           '竜鱗',
+      commonDropRate:    0.50,
+      rares:            ['闇の結晶', '虚無の欠片'],
+      rareDropRate:      0.75,
+      boss:             '魔王の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '魔王の魂',
+      bossRareDropRate:  0.08,
     },
   },
 ];
@@ -308,7 +318,12 @@ function processDrop() {
   const isBoss      = idx === DUNGEON_ENEMY_COUNT - 1;
 
   if (isBoss) {
-    // ボス: 低確率でボス専用素材, 外れたらコモン素材
+    // ボス: ボスレアドロップ判定（別枠、最低確率）
+    if (drops.bossRare && Math.random() < drops.bossRareDropRate) {
+      addDungeonMaterial(drops.bossRare);
+      log(`🌟 ${drops.bossRare} を入手した！`, 'result');
+    }
+    // ボス通常ドロップ判定
     const roll = Math.random();
     if (roll < drops.bossDropRate) {
       addDungeonMaterial(drops.boss);
@@ -318,11 +333,12 @@ function processDrop() {
       log(`📦 ${drops.common} を入手した。`, 'result');
     }
   } else if (isRareSpawn) {
-    // レア敵: 高確率でレア素材, 外れたらコモン素材
+    // レア敵: 2種のレアからランダムに1つ選んで高確率でドロップ
     const roll = Math.random();
     if (roll < drops.rareDropRate) {
-      addDungeonMaterial(drops.rare);
-      log(`✨ ${drops.rare} を入手した！`, 'result');
+      const rareDrop = pick(drops.rares);
+      addDungeonMaterial(rareDrop);
+      log(`✨ ${rareDrop} を入手した！`, 'result');
     } else {
       addDungeonMaterial(drops.common);
       log(`📦 ${drops.common} を入手した。`, 'result');

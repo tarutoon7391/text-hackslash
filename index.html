@@ -156,6 +156,33 @@
       <!-- クラフト / 装備リスト -->
       <div class="inv-section">
         <h3 class="inv-section-title">🔨 クラフト・装備一覧</h3>
+
+        <!-- 絞り込みタブ（部位） -->
+        <div class="craft-filter-group">
+          <span class="craft-filter-label">部位：</span>
+          <div class="craft-filter-tabs" id="craft-slot-tabs">
+            <button class="craft-filter-btn active" data-filter="all"       onclick="setCraftSlotFilter('all')">すべて</button>
+            <button class="craft-filter-btn"         data-filter="頭"        onclick="setCraftSlotFilter('頭')">頭</button>
+            <button class="craft-filter-btn"         data-filter="胴"        onclick="setCraftSlotFilter('胴')">胴</button>
+            <button class="craft-filter-btn"         data-filter="足"        onclick="setCraftSlotFilter('足')">足</button>
+            <button class="craft-filter-btn"         data-filter="靴"        onclick="setCraftSlotFilter('靴')">靴</button>
+            <button class="craft-filter-btn"         data-filter="アクセサリー" onclick="setCraftSlotFilter('アクセサリー')">アクセサリー</button>
+            <button class="craft-filter-btn"         data-filter="武器"      onclick="setCraftSlotFilter('武器')">武器</button>
+          </div>
+        </div>
+
+        <!-- 絞り込みタブ（レア度） -->
+        <div class="craft-filter-group">
+          <span class="craft-filter-label">レア度：</span>
+          <div class="craft-filter-tabs" id="craft-rarity-tabs">
+            <button class="craft-filter-btn active" data-filter="all"      onclick="setCraftRarityFilter('all')">すべて</button>
+            <button class="craft-filter-btn"         data-filter="normal"   onclick="setCraftRarityFilter('normal')">ノーマル</button>
+            <button class="craft-filter-btn"         data-filter="rare"     onclick="setCraftRarityFilter('rare')">レア</button>
+            <button class="craft-filter-btn"         data-filter="bossRare" onclick="setCraftRarityFilter('bossRare')">ボスレア</button>
+            <button class="craft-filter-btn"         data-filter="end"      onclick="setCraftRarityFilter('end')">エンド</button>
+          </div>
+        </div>
+
         <div id="craft-list"></div>
       </div>
 
