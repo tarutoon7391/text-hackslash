@@ -428,14 +428,15 @@ function startNextDungeonBattle() {
     template.expReward
   );
 
-  game.state          = GameState.PLAYER_TURN;
+  game.state             = GameState.PLAYER_TURN;
   game.battleCount++;
-  game.shieldActive   = null;
-  game.enemyPoisoned  = null;
-  game.playerAtkBuff  = null;
-  game.enemyStunned   = false;
-  game.enemyAtkDebuff = null;
-  game.playerRegen    = null;
+  game.shieldActive      = null;
+  game.enemyPoisoned     = null;
+  game.playerAtkBuff     = null;
+  game.enemyStunned      = false;
+  game.enemyAtkDebuff    = null;
+  game.playerRegen       = null;
+  game.playerDelayedHeal = null;
 
   // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
   recordMonsterEncounter(game.enemy.name);

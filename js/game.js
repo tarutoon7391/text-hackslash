@@ -127,15 +127,16 @@ class Player {
       this.maxHp   += eq.stats.maxHp   || 0;
       this.maxMp   += eq.stats.maxMp   || 0;
 
-      // 装備強化ボーナスを加算する
+      // 装備強化ボーナスを加算する（ダンジョン×レア度に応じた上昇幅）
       const enhLv = this.enhanceLevels[eqId] || 0;
       if (enhLv > 0) {
+        const boost = getEnhanceStatBoost(eq);
         if (eq.slot === '武器') {
-          this.attack += enhLv * 3;
+          this.attack += enhLv * boost;
         } else if (['頭', '胴', '足', '靴'].includes(eq.slot)) {
-          this.defense += enhLv * 2;
+          this.defense += enhLv * boost;
         } else if (eq.slot === 'アクセサリー') {
-          this.maxHp += enhLv * 5;
+          this.maxHp += enhLv * boost;
         }
       }
     });
@@ -219,12 +220,13 @@ let game = {
     enemyIndex: 0,
     materials:  [],
   },
-  shieldActive:   null,   // { defenseBonus: N, turnsLeft: N } — シールド・聖域
-  enemyPoisoned:  null,   // { active: bool, damage: N, turnsLeft: N }
-  playerAtkBuff:  null,   // { bonus: N, turnsLeft: N } — 祝福スキル
-  enemyStunned:   false,  // 足払い・体当たりによるスタン
-  enemyAtkDebuff: null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
-  playerRegen:    null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
+  shieldActive:      null,   // { defenseBonus: N, turnsLeft: N } — シールド・聖域
+  enemyPoisoned:     null,   // { active: bool, damage: N, turnsLeft: N }
+  playerAtkBuff:     null,   // { bonus: N, turnsLeft: N } — 祝福スキル
+  enemyStunned:      false,  // 足払い・体当たりによるスタン
+  enemyAtkDebuff:    null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
+  playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
+  playerDelayedHeal: null,   // { healAmt: N, turnsLeft: N } — 神聖なうたい寝（遅延回復）
 };
 
 /* ==============================================================
@@ -318,6 +320,21 @@ function tickPlayerRegen() {
   }
 }
 
+/** 神聖なうたい寝の遅延回復を処理する */
+function tickPlayerDelayedHeal() {
+  if (!game.playerDelayedHeal) return;
+  game.playerDelayedHeal.turnsLeft--;
+  if (game.playerDelayedHeal.turnsLeft <= 0) {
+    const healAmt = game.playerDelayedHeal.healAmt;
+    game.player.heal(healAmt);
+    game.playerDelayedHeal = null;
+    log(`✨ 「神聖なうたい寝」の加護が発動！ HP +${healAmt} 回復！`, 'player-action');
+    renderPlayerStatus();
+  } else {
+    log(`🎵 「神聖なうたい寝」の加護まで残り ${game.playerDelayedHeal.turnsLeft} ターン…`, 'system');
+  }
+}
+
 /** 敵のターン処理 */
 function doEnemyTurn() {
   if (game.state !== GameState.ENEMY_TURN) return;
@@ -328,6 +345,7 @@ function doEnemyTurn() {
     log(`⚡ ${game.enemy.name} はスタンして行動できない！`, 'system');
     tickPlayerBuffs();
     tickPlayerRegen();
+    tickPlayerDelayedHeal();
     game.state = GameState.PLAYER_TURN;
     log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
     log('あなたのターンです。アクションを選んでください。', 'system');
@@ -388,6 +406,7 @@ function doEnemyTurn() {
   // プレイヤー ATK バフのターン管理
   tickPlayerBuffs();
   tickPlayerRegen();
+  tickPlayerDelayedHeal();
 
   game.state = GameState.PLAYER_TURN;
   log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
@@ -478,17 +497,18 @@ function cancelSkillPanel() {
    ============================================================== */
 
 function initGame() {
-  game.player     = null;
-  game.enemy          = null;
-  game.state          = null;
-  game.battleCount    = 0;
-  game.dungeon        = { id: null, enemyIndex: 0, materials: [] };
-  game.shieldActive   = null;
-  game.enemyPoisoned  = null;
-  game.playerAtkBuff  = null;
-  game.enemyStunned   = false;
-  game.enemyAtkDebuff = null;
-  game.playerRegen    = null;
+  game.player            = null;
+  game.enemy             = null;
+  game.state             = null;
+  game.battleCount       = 0;
+  game.dungeon           = { id: null, enemyIndex: 0, materials: [] };
+  game.shieldActive      = null;
+  game.enemyPoisoned     = null;
+  game.playerAtkBuff     = null;
+  game.enemyStunned      = false;
+  game.enemyAtkDebuff    = null;
+  game.playerRegen       = null;
+  game.playerDelayedHeal = null;
 
   showScreen('login');
 }

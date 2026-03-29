@@ -2479,9 +2479,46 @@ function getEquipmentDungeon(eq) {
 }
 
 /**
+ * ダンジョン番号(D1=index0 〜 D12=index11)ごとの強化ベース値
+ * インデックス: [D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12]
+ */
+const DUNGEON_ENHANCE_BASES = [2.5, 3.5, 4.5, 5.5, 6.5, 8, 10, 12, 14, 16, 18, 20];
+
+/**
+ * レア度ごとの強化倍率
+ * ノーマル < レア < ボスレア < エンド < レジェンド の順で大きくなる
+ */
+const RARITY_ENHANCE_MULTS = {
+  normal:   1.0,
+  rare:     1.5,
+  bossRare: 2.0,
+  end:      2.5,
+  legend:   3.0,
+};
+
+/**
+ * 装備1強化レベルあたりのステータス上昇量を返す
+ * ダンジョン軸（D1→D12）× レア度軸（ノーマル→レジェンド）で段階的に上昇
+ * @param {object} eq - 装備定義
+ * @returns {number} - 1強化レベルあたりの上昇値
+ */
+function getEnhanceStatBoost(eq) {
+  const dungeon = getEquipmentDungeon(eq);
+  if (!dungeon) return 2;
+  const dIdx  = DUNGEON_DEFINITIONS.indexOf(dungeon);
+  const base  = DUNGEON_ENHANCE_BASES[dIdx] ?? 2;
+  const rarity = eq.rarity || 'normal';
+  const mult  = RARITY_ENHANCE_MULTS[rarity] ?? 1.0;
+  return Math.max(1, Math.round(base * mult));
+}
+
+/**
  * 装備の強化コストを計算する
- * 強化コスト式: 必要素材数 = 強化後レベル
- * 例: +0→+1は各素材1個, +1→+2は各素材2個, +2→+3は各素材3個
+ * ノーマル/レア/ボスレア: 強化後レベル数分のそのダンジョンの全素材
+ * エンド: 全ダンジョン分のコモン・レア・ボスレア素材を強化後レベル数分
+ * レジェンド: 対応ダンジョン範囲のボスレア素材のみを（強化後レベル+1）個
+ *   - D6レジェンド: D1〜D6のボスレア素材を各2個スタート
+ *   - D12レジェンド: D7〜D12のボスレア素材を各2個スタート
  * @param {object} eq - 装備定義
  * @param {number} nextLevel - 強化後のレベル
  * @returns {object} - { 素材名: 必要数, ... }
@@ -2490,9 +2527,26 @@ function getEnhanceCost(eq, nextLevel) {
   const rarity = eq.rarity || 'normal';
   const cost = {};
 
-  if (rarity === 'end' || rarity === 'legend') {
-    // エンド/レジェンドアイテム: 全ダンジョン分のコモン・レア・ボスレア素材を消費
-    // レジェンドはエンドと同じコスト構造（レシピが全素材大量消費のためバランス上適切）
+  if (rarity === 'legend') {
+    // レジェンドアイテム: 対応ダンジョン範囲のボスレア素材のみ消費
+    // 強化後レベル+1個からスタート（例: レベル1→2個, レベル2→3個）
+    // 現在のレジェンド装備はD6（legend_acc_ancient）とD12（legend_acc_chaos）の2種のみ
+    // D6レジェンド(dungeonIndex 0-5) → D1〜D6のボスレア素材を使用
+    // D12レジェンド(dungeonIndex 6-11) → D7〜D12のボスレア素材を使用
+    const dungeon  = getEquipmentDungeon(eq);
+    const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
+    const halfPoint = Math.floor(DUNGEON_DEFINITIONS.length / 2);
+    const start    = dIdx < halfPoint ? 0 : halfPoint;
+    const end      = dIdx < halfPoint ? halfPoint : DUNGEON_DEFINITIONS.length;
+    const matCount = nextLevel + 1;
+    for (let i = start; i < end; i++) {
+      cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = matCount;
+    }
+    return cost;
+  }
+
+  if (rarity === 'end') {
+    // エンドアイテム: 全ダンジョン分のコモン・レア・ボスレア素材を消費
     DUNGEON_DEFINITIONS.forEach(d => {
       cost[d.drops.common] = (cost[d.drops.common] || 0) + nextLevel;
       if (d.drops.rares && d.drops.rares[0]) {
@@ -2566,12 +2620,13 @@ function renderEnhanceModal() {
 
   const displayName = currentLv > 0 ? `${eq.name} +${currentLv}` : eq.name;
 
-  // スロット別の強化ボーナス説明
+  // スロット別の強化ボーナス説明（ダンジョン×レア度に応じた実際の上昇値を表示）
   const slot = eq.slot;
+  const boost = getEnhanceStatBoost(eq);
   let statBonusStr = '';
-  if (slot === '武器') statBonusStr = 'ATK +3';
-  else if (['頭', '胴', '足', '靴'].includes(slot)) statBonusStr = 'DEF +2';
-  else if (slot === 'アクセサリー') statBonusStr = 'HP +5';
+  if (slot === '武器') statBonusStr = `ATK +${boost}`;
+  else if (['頭', '胴', '足', '靴'].includes(slot)) statBonusStr = `DEF +${boost}`;
+  else if (slot === 'アクセサリー') statBonusStr = `HP +${boost}`;
 
   // 必要素材リスト
   const matRows = Object.entries(cost).map(([mat, cnt]) => {
@@ -2595,7 +2650,7 @@ function renderEnhanceModal() {
       <div class="enhance-stat-bonus">強化ボーナス: ${statBonusStr}</div>
     </div>
     <div class="enhance-mat-section">
-      <div class="enhance-mat-title">必要素材（コスト式: 各素材 × 強化後レベル）：</div>
+      <div class="enhance-mat-title">必要素材：</div>
       ${matRows || '<span class="inv-empty">素材情報なし</span>'}
     </div>
     ${btnHtml}
