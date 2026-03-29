@@ -169,7 +169,92 @@ h1 {
   box-shadow: 0 0 10px #ffdd00;
 }
 
-/* ===== セーブ・ロードパネル ===== */
+/* ===== ログイン画面 ===== */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.login-row label {
+  font-size: 0.85rem;
+  white-space: nowrap;
+  min-width: 110px;
+}
+
+.login-input {
+  background-color: #0a0a0a;
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  padding: 6px 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 160px;
+  outline: none;
+}
+
+.login-input:focus {
+  box-shadow: 0 0 6px #00ff41;
+}
+
+.login-btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.login-btn {
+  background-color: #0a0a0a;
+  color: #00ccff;
+  border: 1px solid #00ccff;
+  padding: 8px 22px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.login-btn:hover:not(:disabled) {
+  background-color: #00ccff22;
+  box-shadow: 0 0 8px #00ccff;
+}
+
+.login-btn:disabled {
+  color: #335566;
+  border-color: #335566;
+  cursor: not-allowed;
+}
+
+.login-btn.register-btn {
+  color: #00ff41;
+  border-color: #00ff41;
+}
+
+.login-btn.register-btn:hover:not(:disabled) {
+  background-color: #00ff4122;
+  box-shadow: 0 0 8px #00ff41;
+}
+
+#login-msg {
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  padding: 2px 0;
+}
+
+#login-msg.success { color: #00ff41; }
+#login-msg.error   { color: #ff4444; }
+#login-msg.loading { color: #ffdd00; }
+
+/* ===== セーブ・ロードパネル（旧デザイン・互換用） ===== */
 #saveload-panel {
   border: 1px solid #00ff41;
   padding: 12px;

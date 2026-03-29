@@ -583,6 +583,9 @@ function completeDungeon() {
   game.player.hp = game.player.maxHp;
   game.player.mp = game.player.maxMp;
 
+  // ダンジョンクリア時に自動セーブ
+  autoSave();
+
   showScreen('lobby');
   renderLobby();
 }
@@ -596,6 +599,9 @@ function retreatFromDungeon() {
   // ロビーに戻る際にHPとMPを全回復する
   game.player.hp = game.player.maxHp;
   game.player.mp = game.player.maxMp;
+
+  // 撤退時に自動セーブ
+  autoSave();
 
   showScreen('lobby');
   renderLobby();
@@ -613,6 +619,9 @@ function failDungeon() {
   game.player.hp = game.player.maxHp;
   game.player.mp = game.player.maxMp;
   renderPlayerStatus();
+
+  // 死亡時に自動セーブ
+  autoSave();
 
   showScreen('lobby');
   renderLobby();
