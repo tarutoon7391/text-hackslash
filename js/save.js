@@ -119,7 +119,17 @@ async function apiRequest(body) {
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify(body),
   });
-  return response.json();
+  // response.json() はレスポンスが JSON でない場合に Safari では
+  // "The string did not match the expected pattern." という
+  // ブラウザ固有のエラーを投げるため、テキストとして取得してから
+  // 手動でパースする。BOM や前後の空白も除去して対応する。
+  const text = await response.text();
+  try {
+    return JSON.parse(text.replace(/^\uFEFF/, '').trim());
+  } catch (_e) {
+    console.error('JSON パース失敗:', _e, 'レスポンス冒頭:', text.substring(0, 200));
+    throw new Error(`サーバーから不正なレスポンスが返されました（ステータス: ${response.status}）`);
+  }
 }
 
 // ── ログイン処理 ──────────────────────────────────────────────────
