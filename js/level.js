@@ -452,10 +452,10 @@ const SKILL_TREE_DEFINITIONS = [
         bonuses: { hp: 30, mp: 20 }, cost: 3, requires: 'cl_19',
       },
       {
-        id: 'cl_21', name: '完全回復',
-        type: 'skill', skillId: 'full_recovery',
-        description: 'HP を全回復する奇跡（MP:65）',
-        mpCost: 65, bonuses: {}, cost: 3, requires: 'cl_20',
+        id: 'cl_21', name: '神聖なうたい寝',
+        type: 'skill', skillId: 'holy_slumber',
+        description: '神聖な歌声で眠りを誘い、3ターン後にHPを大回復する（HP+100+Lv×4 / MP:55）',
+        mpCost: 55, bonuses: {}, cost: 3, requires: 'cl_20',
       },
       {
         id: 'cl_22', name: '奇跡の加護',
@@ -1120,12 +1120,11 @@ function useSkill(skillId) {
       break;
     }
 
-    case 'full_recovery': {
-      // 完全回復: HP全回復
-      const healed = player.maxHp - player.hp;
-      player.hp = player.maxHp;
-      log(`✨ ${player.name} は「完全回復」を唱えた！ HP が全回復した！ (+${healed})`, 'player-action');
-      renderPlayerStatus();
+    case 'holy_slumber': {
+      // 神聖なうたい寝: 3ターン後にHPを大回復（遅延回復）
+      const healAmt = 100 + player.level * 4;
+      game.playerDelayedHeal = { healAmt, turnsLeft: 3 };
+      log(`🎵 ${player.name} は「神聖なうたい寝」を歌った！ 3 ターン後に HP +${healAmt} が回復する…`, 'player-action');
       break;
     }
 
