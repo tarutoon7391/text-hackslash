@@ -13,9 +13,36 @@
 <div id="game-container">
 
   <!-- ========================================================
+       ログイン画面
+       ======================================================== -->
+  <div id="screen-login" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ LOGIN ]</h2>
+
+      <form class="login-form" onsubmit="loginUser(); return false;">
+        <div class="login-row">
+          <label for="login-username">👤 ユーザー名:</label>
+          <input type="text" id="login-username" placeholder="ユーザー名を入力..." autocomplete="username" class="login-input" />
+        </div>
+        <div class="login-row">
+          <label for="login-password">🔑 パスワード:</label>
+          <input type="password" id="login-password" placeholder="パスワードを入力..." autocomplete="current-password" class="login-input" />
+        </div>
+        <div class="login-btn-row">
+          <button type="submit" class="login-btn" id="btn-login">🔓 ログイン</button>
+          <button type="button" class="login-btn register-btn" id="btn-register" onclick="registerUser()">📝 新規登録</button>
+        </div>
+        <div id="login-msg"></div>
+      </form>
+    </div>
+
+  </div><!-- /screen-login -->
+
+  <!-- ========================================================
        ロビー画面
        ======================================================== -->
-  <div id="screen-lobby" class="screen">
+  <div id="screen-lobby" class="screen" style="display:none">
 
     <div class="screen-panel">
       <h2 class="panel-title">[ LOBBY ]</h2>
@@ -39,18 +66,7 @@
         <button class="nav-btn" onclick="showScreen('encyclopedia'); renderEncyclopedia();">
           📖 図鑑
         </button>
-      </div>
-
-      <!-- セーブ・ロードパネル -->
-      <div id="saveload-panel">
-        <h2>[ SAVE / LOAD ]</h2>
-        <div class="saveload-row">
-          <label for="password-input">🔑 パスワード:</label>
-          <input type="password" id="password-input" placeholder="パスワードを入力..." autocomplete="new-password" />
-          <button class="saveload-btn" id="btn-save" onclick="saveGame()">💾 セーブ</button>
-          <button class="saveload-btn" id="btn-load" onclick="loadGame()">📂 ロード</button>
-        </div>
-        <div id="saveload-msg"></div>
+        <button class="nav-btn back-btn" onclick="logoutUser()">🚪 ログアウト</button>
       </div>
     </div>
 

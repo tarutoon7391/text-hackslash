@@ -497,13 +497,7 @@ function cancelSkillPanel() {
    ============================================================== */
 
 function initGame() {
-  const s = INITIAL_PLAYER_STATS;
-  game.player = new Player({
-    ...s,
-    maxHpBase: s.maxHp,
-    maxMpBase: s.maxMp,
-  });
-
+  game.player            = null;
   game.enemy             = null;
   game.state             = null;
   game.battleCount       = 0;
@@ -516,8 +510,7 @@ function initGame() {
   game.playerRegen       = null;
   game.playerDelayedHeal = null;
 
-  showScreen('lobby');
-  renderLobby();
+  showScreen('login');
 }
 
 initGame();
