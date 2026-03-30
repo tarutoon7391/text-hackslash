@@ -410,8 +410,13 @@ function startNextDungeonBattle() {
     log('─'.repeat(40), 'special');
     log('💀 ボスが現れた！', 'special');
   } else {
+    // チャーム効果: 対応ダンジョンではレアモンスター出現率2倍
+    const effectiveRareChance = isCharmActiveForDungeon(dungeon.id)
+      ? Math.min(1.0, dungeon.rareChance * 2)
+      : dungeon.rareChance;
+
     // レア出現判定
-    const isRare = Math.random() < dungeon.rareChance;
+    const isRare = Math.random() < effectiveRareChance;
     template = isRare ? dungeon.rareEnemy : pick(dungeon.normalEnemies);
     if (isRare) {
       log('✨ レアモンスターが現れた！', 'special');
@@ -443,6 +448,12 @@ function startNextDungeonBattle() {
 
   clearLog();
   log(`=== ${dungeon.name} に入った！ 全 ${DUNGEON_ENEMY_COUNT} 体を倒せ！ ===`, 'special');
+  // チャーム効果の発動通知（最初の戦闘時のみ）
+  if (idx === 0 && isCharmActiveForDungeon(dungeon.id)) {
+    const activeCharmId  = game.player.equipment['チャーム'];
+    const activeCharmDef = EQUIPMENT_DEFINITIONS.find(e => e.id === activeCharmId);
+    log(`🍀 ${activeCharmDef.name} の効果が発動中！レア/ボスレアドロップ2倍＆レアモンスター出現率2倍`, 'special');
+  }
   updateDungeonInfo();
   log(`=== 戦闘 ${idx + 1} / ${DUNGEON_ENEMY_COUNT} ===`, 'special');
   log(`${game.enemy.name} が現れた！`, 'system');
@@ -500,6 +511,18 @@ function updateDungeonInfo() {
    ============================================================== */
 
 /**
+ * 現在のダンジョンに対してチャーム効果が発動しているか確認する
+ * @param {number} dungeonId - ダンジョン ID
+ * @returns {boolean} - チャームが有効な場合は true
+ */
+function isCharmActiveForDungeon(dungeonId) {
+  const charmId  = game.player.equipment['チャーム'];
+  if (!charmId) return false;
+  const charmDef = EQUIPMENT_DEFINITIONS.find(e => e.id === charmId);
+  return !!(charmDef && charmDef.charmDungeonId === dungeonId);
+}
+
+/**
  * 敵撃破時にドロップ素材を決定して game.dungeon.materials に追加する
  */
 function processDrop() {
@@ -511,11 +534,19 @@ function processDrop() {
   const isRareSpawn = game.enemy.name === dungeon.rareEnemy.name;
   const isBoss      = idx === DUNGEON_ENEMY_COUNT - 1;
 
+  // チャーム効果: 対応ダンジョンではレア/ボスレアドロップ率2倍
+  const charmActive = isCharmActiveForDungeon(dungeon.id);
+
   if (isBoss) {
     // ボス: ボスレアドロップ判定（別枠、最低確率）
-    if (drops.bossRare && Math.random() < drops.bossRareDropRate) {
-      addDungeonMaterial(drops.bossRare);
-      log(`🌟 ${drops.bossRare} を入手した！`, 'result');
+    if (drops.bossRare) {
+      const effectiveBossRareRate = charmActive
+        ? Math.min(1.0, drops.bossRareDropRate * 2)
+        : drops.bossRareDropRate;
+      if (Math.random() < effectiveBossRareRate) {
+        addDungeonMaterial(drops.bossRare);
+        log(`🌟 ${drops.bossRare} を入手した！`, 'result');
+      }
     }
     // ボス通常ドロップ判定
     const roll = Math.random();
@@ -528,8 +559,11 @@ function processDrop() {
     }
   } else if (isRareSpawn) {
     // レア敵: 2種のレアからランダムに1つ選んで高確率でドロップ
+    const effectiveRareDropRate = charmActive
+      ? Math.min(1.0, drops.rareDropRate * 2)
+      : drops.rareDropRate;
     const roll = Math.random();
-    if (roll < drops.rareDropRate) {
+    if (roll < effectiveRareDropRate) {
       const rareDrop = pick(drops.rares);
       addDungeonMaterial(rareDrop);
       log(`✨ ${rareDrop} を入手した！`, 'result');
