@@ -235,6 +235,10 @@ async function logoutUser() {
   auth.password = null;
   game.player   = null;
 
+  // ガチャ履歴をクリアする（別アカウントに引き継がれないようにする）
+  const gachaLogEl = document.getElementById('gacha-log');
+  if (gachaLogEl) gachaLogEl.innerHTML = '';
+
   // ログイン画面のフォームをクリア
   const userInput = document.getElementById('login-username');
   const passInput = document.getElementById('login-password');
