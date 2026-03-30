@@ -1376,3 +1376,126 @@ footer {
   padding: 4px 0;
   letter-spacing: 4px;
 }
+
+/* ===== ガチャ画面 ===== */
+.gacha-status-box {
+  border: 1px solid #ffdd00;
+  padding: 10px 14px;
+  background-color: #0a0900;
+  font-size: 0.95rem;
+  color: #ffdd00;
+  text-shadow: 0 0 4px #ffdd0066;
+}
+
+.gacha-perm-status {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: #aaaaaa;
+  padding: 6px 2px;
+}
+
+.gacha-btn-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.gacha-draw-btn {
+  color: #ffdd00;
+  border-color: #ffdd00;
+  font-size: 1rem;
+  padding: 12px 28px;
+}
+
+.gacha-draw-btn:hover:not(:disabled) {
+  background-color: #ffdd0022;
+  box-shadow: 0 0 12px #ffdd00;
+}
+
+.gacha-draw-btn:disabled {
+  color: #554400;
+  border-color: #554400;
+  cursor: not-allowed;
+}
+
+.gacha-lobby-btn {
+  color: #ffdd00;
+  border-color: #ffdd00;
+}
+
+.gacha-lobby-btn:hover:not(:disabled) {
+  background-color: #ffdd0022;
+  box-shadow: 0 0 10px #ffdd00;
+}
+
+.debug-ticket-btn {
+  color: #888888;
+  border-color: #555555;
+  font-size: 0.8rem;
+  padding: 6px 14px;
+}
+
+.debug-ticket-btn:hover:not(:disabled) {
+  background-color: #55555522;
+  box-shadow: 0 0 6px #888888;
+}
+
+.gacha-log {
+  border: 1px solid #444;
+  background-color: #050505;
+  padding: 12px;
+  min-height: 120px;
+  max-height: 320px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  box-shadow: inset 0 0 10px #00000066;
+}
+
+.gacha-summoning {
+  color: #ffdd00;
+  text-shadow: 0 0 6px #ffdd00;
+  letter-spacing: 3px;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.gacha-result-line {
+  margin: 3px 0;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  animation: gacha-fade-in 0.3s ease-in;
+}
+
+@keyframes gacha-fade-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* 限定レアリティバッジ */
+.rarity-badge.rarity-limited {
+  color: #ffdd00;
+  border-color: #ffdd00;
+  text-shadow: 0 0 6px #ffdd0088;
+  font-weight: bold;
+}
+
+/* 成長型武器の補足表示 */
+.growth-note {
+  color: #ffaa00;
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+/* レシピ未入手ロック表示 */
+.craft-recipe-lock {
+  font-size: 0.78rem;
+  color: #ff4444;
+  padding: 2px 0;
+}

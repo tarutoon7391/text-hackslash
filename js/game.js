@@ -87,6 +87,17 @@ class Player {
       : {};
 
     /** 有効ステータスを初期化 */
+    /** ガチャチケット枚数 */
+    this.gachaTickets   = s.gachaTickets   ?? 0;
+
+    /**
+     * 永続品の入手済みフラグ
+     * hasRecipeAogin: 蒼銀の剣のレシピ取得済み
+     * hasBookMakenshi: 魔剣士の書取得済み
+     */
+    this.permanentItems = s.permanentItems ? { ...s.permanentItems } : {};
+
+    /** 有効ステータスを初期化 */
     this.attack  = this.attackBase;
     this.defense = this.defenseBase;
     this.recalcStats();
@@ -97,6 +108,9 @@ class Player {
    * ベース値 + スキルツリーボーナス + 装備補正
    */
   recalcStats() {
+    // 最大HP変化によるHP補正のために、現在の最大HPを保持する
+    const prevMaxHp = this.maxHp;
+
     // スキルツリーによるステータスボーナスを集計する
     let stAtk = 0, stDef = 0, stHp = 0, stMp = 0;
     if (typeof SKILL_TREE_DEFINITIONS !== 'undefined') {
@@ -122,26 +136,47 @@ class Player {
       if (!eqId) return;
       const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === eqId);
       if (!eq) return;
-      this.attack  += eq.stats.attack  || 0;
-      this.defense += eq.stats.defense || 0;
-      this.maxHp   += eq.stats.maxHp   || 0;
-      this.maxMp   += eq.stats.maxMp   || 0;
 
-      // 装備強化ボーナスを加算する（ダンジョン×レア度に応じた上昇幅）
       const enhLv = this.enhanceLevels[eqId] || 0;
-      if (enhLv > 0) {
-        const boost = getEnhanceStatBoost(eq);
-        if (eq.slot === '武器') {
-          this.attack += enhLv * boost;
-        } else if (['頭', '胴', '足', '靴'].includes(eq.slot)) {
-          this.defense += enhLv * boost;
-        } else if (eq.slot === 'アクセサリー') {
-          this.maxHp += enhLv * boost;
+
+      if (eq.isGrowth) {
+        // 成長型武器: プレイヤーレベルに応じたステータスを計算する
+        const gs = (typeof computeGrowthStats !== 'undefined')
+          ? computeGrowthStats(eq, this.level)
+          : eq.stats;
+        const factor = 1 + 0.1 * enhLv;
+        this.attack  += Math.floor(gs.attack  * factor);
+        this.defense += Math.floor(gs.defense * factor);
+        this.maxHp   += Math.floor(gs.maxHp   * factor);
+        this.maxMp   += Math.floor(gs.maxMp   * factor);
+      } else {
+        this.attack  += eq.stats.attack  || 0;
+        this.defense += eq.stats.defense || 0;
+        this.maxHp   += eq.stats.maxHp   || 0;
+        this.maxMp   += eq.stats.maxMp   || 0;
+
+        // 装備強化ボーナスを加算する（ダンジョン×レア度に応じた上昇幅）
+        if (enhLv > 0) {
+          const boost = getEnhanceStatBoost(eq);
+          if (eq.slot === '武器') {
+            this.attack += enhLv * boost;
+          } else if (['頭', '胴', '足', '靴'].includes(eq.slot)) {
+            this.defense += enhLv * boost;
+          } else if (eq.slot === 'アクセサリー') {
+            this.maxHp += enhLv * boost;
+          }
         }
       }
     });
 
-    this.hp = Math.min(this.hp, this.maxHp);
+    // 最大HPが増加した場合は現在HPも差分だけ増加させる
+    // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
+    const hpDelta = this.maxHp - prevMaxHp;
+    if (hpDelta > 0) {
+      this.hp = Math.min(this.maxHp, this.hp + hpDelta);
+    } else {
+      this.hp = Math.min(this.hp, this.maxHp);
+    }
     this.mp = Math.min(this.mp, this.maxMp);
   }
 

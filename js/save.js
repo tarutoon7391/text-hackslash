@@ -63,6 +63,8 @@ function buildSaveData() {
     defeatFlags:     p.defeatFlags,
     defeatCounts:    p.defeatCounts,
     itemUnlockFlags: p.itemUnlockFlags,
+    gachaTickets:    p.gachaTickets,
+    permanentItems:  p.permanentItems,
   };
 }
 
@@ -95,6 +97,8 @@ function applyLoadedSave(saved) {
     defeatFlags:     saved.defeatFlags     ?? {},
     defeatCounts:    saved.defeatCounts    ?? {},
     itemUnlockFlags: saved.itemUnlockFlags ?? {},
+    gachaTickets:    saved.gachaTickets    ?? 0,
+    permanentItems:  saved.permanentItems  ?? {},
   });
   game.dungeon = { id: null, enemyIndex: 0, materials: [] };
 }

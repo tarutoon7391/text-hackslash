@@ -63,11 +63,17 @@
         <button class="nav-btn" onclick="showScreen('skill-tree'); renderSkillTree();">
           ⭐ スキルツリー
         </button>
+        <button class="nav-btn gacha-lobby-btn" onclick="showScreen('gacha'); renderGachaScreen();">
+          🎰 ガチャ
+        </button>
         <button class="nav-btn" onclick="showScreen('encyclopedia'); renderEncyclopedia();">
           📖 図鑑
         </button>
         <button class="nav-btn" onclick="showScreen('ranking'); renderRanking();">
           🏆 ランキング
+        </button>
+        <button class="nav-btn debug-ticket-btn" onclick="addGachaTickets()">
+          🎫 チケット+10（デバッグ）
         </button>
         <button class="nav-btn back-btn" onclick="logoutUser()">🚪 ログアウト</button>
       </div>
@@ -277,6 +283,43 @@
   </div><!-- /screen-encyclopedia -->
 
   <!-- ========================================================
+       ガチャ画面
+       ======================================================== -->
+  <div id="screen-gacha" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ GACHA ]</h2>
+
+      <!-- チケット枚数 -->
+      <div id="gacha-status" class="gacha-status-box">
+        🎫 所持ガチャチケット: <strong>0</strong> 枚
+      </div>
+
+      <!-- 永続品の入手状況 -->
+      <div id="gacha-perm-status" class="gacha-perm-status">
+      </div>
+
+      <!-- 操作ボタン -->
+      <div class="gacha-btn-row">
+        <button class="nav-btn gacha-draw-btn" id="btn-gacha-1" onclick="executeGachaOnce()">
+          🎲 1回引く（チケット×1）
+        </button>
+        <button class="nav-btn gacha-draw-btn" id="btn-gacha-10" onclick="executeGachaTen()">
+          🎲 10連引く（チケット×10）
+        </button>
+      </div>
+
+      <!-- 演出ログエリア -->
+      <div id="gacha-log" class="gacha-log"></div>
+
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-gacha -->
+
+  <!-- ========================================================
        ランキング画面
   ========================================================= -->
   <div id="screen-ranking" class="screen" style="display:none">
@@ -335,7 +378,7 @@
 
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
-<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js -->
+<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js → gacha.js -->
 <script src="js/ui.js"></script>
 <script src="js/equipment.js"></script>
 <script src="js/dungeon.js"></script>
@@ -344,6 +387,7 @@
 <script src="js/save.js"></script>
 <script src="js/encyclopedia.js"></script>
 <script src="js/ranking.js"></script>
+<script src="js/gacha.js"></script>
 
 </body>
 </html>
