@@ -2292,8 +2292,10 @@ const EQUIPMENT_DEFINITIONS = [
    * isGrowth: true でプレイヤーレベルに応じてステータスが上昇する
    * isSpecialEnhance: true でミスリル＋蒼天晶×強化レベル数の素材を消費する
    * requiresRecipe: 'hasRecipeAogin' のフラグが必要（ガチャで入手）
-   * Lv1:  ATK50  DEF5   HP20  MP30
-   * Lv50: ATK246 DEF54  HP167 MP177
+   * 計算式: 各ステータス = lv × 係数（ATK/MP係数多め、DEF/HP係数少なめ）
+   * Lv1:  ATK3   DEF1   HP2    MP3
+   * Lv50: ATK150 DEF50  HP100  MP150
+   * 強化: 基本ステータス × (1 + 0.1 × 強化レベル)
    */
   {
     id: 'aogin_no_ken',
@@ -2303,7 +2305,8 @@ const EQUIPMENT_DEFINITIONS = [
     isGrowth: true,
     isSpecialEnhance: true,
     requiresRecipe: 'hasRecipeAogin',
-    stats: { attack: 50, defense: 5, maxHp: 20, maxMp: 30 },
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    growthCoeff: { attack: 3, defense: 1, maxHp: 2, maxMp: 3 },
     effectType: 'mpRegen',
     effectValue: 3,
     effectDesc: '毎ターン MP+3（魔剣士の象徴）',
@@ -2317,8 +2320,10 @@ const EQUIPMENT_DEFINITIONS = [
 
 /**
  * 成長型装備のレベル別ステータスを計算して返す
- * 蒼銀の剣: Lv1=ATK50/DEF5/HP20/MP30、毎レベル ATK+4/DEF+1/HP+3/MP+3
- * Lv50時点: ATK246/DEF54/HP167/MP177（エンド武器より強く、上位ボスレアには届かない）
+ * 計算式: 各ステータス = lv × growthCoeff（レベル連動型）
+ * 蒼銀の剣の例: ATK = lv×3 / DEF = lv×1 / HP = lv×2 / MP = lv×3
+ * Lv50時点: ATK150/DEF50/HP100/MP150（エンドより強くレジェンドより弱い）
+ * 強化ボーナスは呼び出し側で factor = 1 + 0.1 × enhLv として乗算する
  * @param {object} eq    - 装備定義（isGrowth: true のもの）
  * @param {number} level - プレイヤーレベル
  * @returns {{attack:number, defense:number, maxHp:number, maxMp:number}}
@@ -2326,12 +2331,12 @@ const EQUIPMENT_DEFINITIONS = [
 function computeGrowthStats(eq, level) {
   if (!eq.isGrowth) return eq.stats;
   const lv = Math.max(1, Math.min(50, level || 1));
-  const g  = lv - 1;
+  const coeff = eq.growthCoeff || { attack: 0, defense: 0, maxHp: 0, maxMp: 0 };
   return {
-    attack:  (eq.stats.attack  || 0) + g * 4,
-    defense: (eq.stats.defense || 0) + g * 1,
-    maxHp:   (eq.stats.maxHp   || 0) + g * 3,
-    maxMp:   (eq.stats.maxMp   || 0) + g * 3,
+    attack:  Math.floor(lv * coeff.attack),
+    defense: Math.floor(lv * coeff.defense),
+    maxHp:   Math.floor(lv * coeff.maxHp),
+    maxMp:   Math.floor(lv * coeff.maxMp),
   };
 }
 

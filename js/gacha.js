@@ -178,6 +178,10 @@ function renderGachaScreen() {
   const p       = game.player;
   const tickets = p.gachaTickets || 0;
 
+  // ログインアカウントが変わった場合に前のアカウントの履歴が残らないようクリアする
+  const logEl = document.getElementById('gacha-log');
+  if (logEl) logEl.innerHTML = '';
+
   const statusEl = document.getElementById('gacha-status');
   if (statusEl) {
     statusEl.innerHTML = `🎫 所持ガチャチケット: <strong>${tickets}</strong> 枚`;
@@ -278,4 +282,27 @@ function addGachaTickets() {
   if (game.currentScreen === 'gacha') {
     renderGachaScreen();
   }
+}
+
+/** デバッグ用: プレイヤーレベルを1上げる */
+function debugLevelUp1() {
+  if (!game.player) return;
+  const player = game.player;
+  if (player.level >= MAX_LEVEL) return;
+  // 次のレベルに必要な累計EXPに設定してレベルアップを発火する
+  player.exp = EXP_TABLE[player.level];
+  gainExp(0);
+  renderLobbyStatus();
+}
+
+/** デバッグ用: プレイヤーレベルを10上げる */
+function debugLevelUp10() {
+  if (!game.player) return;
+  const player = game.player;
+  for (let i = 0; i < 10; i++) {
+    if (player.level >= MAX_LEVEL) break;
+    player.exp = EXP_TABLE[player.level];
+    gainExp(0);
+  }
+  renderLobbyStatus();
 }
