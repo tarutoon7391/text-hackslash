@@ -2284,7 +2284,56 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: '混沌の神殿のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
     recipe: { '混沌の結晶': 100 },
   },
+
+  /* ─── 限定武器（ガチャ排出レシピでクラフト） ─── */
+
+  /**
+   * 蒼銀の剣 — 魔剣士をモチーフにした成長型限定武器
+   * isGrowth: true でプレイヤーレベルに応じてステータスが上昇する
+   * isSpecialEnhance: true でミスリル＋蒼天晶×強化レベル数の素材を消費する
+   * requiresRecipe: 'hasRecipeAogin' のフラグが必要（ガチャで入手）
+   * Lv1:  ATK50  DEF5   HP20  MP30
+   * Lv50: ATK246 DEF54  HP167 MP177
+   */
+  {
+    id: 'aogin_no_ken',
+    name: '蒼銀の剣',
+    slot: '武器',
+    rarity: 'limited',
+    isGrowth: true,
+    isSpecialEnhance: true,
+    requiresRecipe: 'hasRecipeAogin',
+    stats: { attack: 50, defense: 5, maxHp: 20, maxMp: 30 },
+    effectType: 'mpRegen',
+    effectValue: 3,
+    effectDesc: '毎ターン MP+3（魔剣士の象徴）',
+    recipe: { 'ミスリル': 3, '蒼天晶': 3 },
+  },
 ];
+
+/* ==============================================================
+   成長型武器のステータス計算
+   ============================================================== */
+
+/**
+ * 成長型装備のレベル別ステータスを計算して返す
+ * 蒼銀の剣: Lv1=ATK50/DEF5/HP20/MP30、毎レベル ATK+4/DEF+1/HP+3/MP+3
+ * Lv50時点: ATK246/DEF54/HP167/MP177（エンド武器より強く、上位ボスレアには届かない）
+ * @param {object} eq    - 装備定義（isGrowth: true のもの）
+ * @param {number} level - プレイヤーレベル
+ * @returns {{attack:number, defense:number, maxHp:number, maxMp:number}}
+ */
+function computeGrowthStats(eq, level) {
+  if (!eq.isGrowth) return eq.stats;
+  const lv = Math.max(1, Math.min(50, level || 1));
+  const g  = lv - 1;
+  return {
+    attack:  (eq.stats.attack  || 0) + g * 4,
+    defense: (eq.stats.defense || 0) + g * 1,
+    maxHp:   (eq.stats.maxHp   || 0) + g * 3,
+    maxMp:   (eq.stats.maxMp   || 0) + g * 3,
+  };
+}
 
 /* ==============================================================
    インベントリ画面の描画
@@ -2302,6 +2351,7 @@ const RARITY_LABELS = {
   end:      'エンド',
   legend:   'レジェンド',
   charm:    'チャーム',
+  limited:  '限定',
 };
 
 /** インベントリ画面を描画する */
@@ -2418,10 +2468,18 @@ function renderCraftList() {
     const isEquipped = Object.values(player.equipment).includes(eq.id);
     const isOwned    = player.ownedEquipment.includes(eq.id);
 
+    // 成長型武器の表示ステータスは現在レベル基準で計算する
+    const displayStats = eq.isGrowth
+      ? computeGrowthStats(eq, player.level)
+      : eq.stats;
+
     // 素材が足りているか判定
     const canCraft = Object.entries(eq.recipe).every(
       ([mat, cnt]) => (player.materials[mat] || 0) >= cnt
     );
+
+    // レシピ必須フラグ
+    const hasRequiredRecipe = !eq.requiresRecipe || !!player.permanentItems[eq.requiresRecipe];
 
     // 素材ごとに足りているか判定し色分け表示するHTML
     const recipeHtml = `<div class="craft-recipe">${
@@ -2434,10 +2492,20 @@ function renderCraftList() {
         .join('<span class="craft-mat-sep"> + </span>')
     }</div>`;
 
-    const statsStr  = buildStatsStr(eq.stats);
+    const statsStr  = buildStatsStr(displayStats);
     const eqRarity  = eq.rarity || 'normal';
     const rarityLabel = RARITY_LABELS[eqRarity] || 'ノーマル';
     const rarityBadge = `<span class="rarity-badge rarity-${eqRarity}">${rarityLabel}</span>`;
+
+    // 成長型武器の補足情報
+    const growthNote = eq.isGrowth
+      ? `<div class="craft-stats growth-note">⬆ 成長型：レベルアップで強化（Lv${player.level}時点のステータス）</div>`
+      : '';
+
+    // レシピ未入手の場合の表示
+    const recipeNote = (!hasRequiredRecipe)
+      ? `<div class="craft-recipe-lock">🔒 レシピ未入手（ガチャから入手可能）</div>`
+      : '';
 
     // チャームは強化不可
     const isCharm = eq.slot === 'チャーム';
@@ -2453,6 +2521,7 @@ function renderCraftList() {
           <div class="craft-item owned">
             <div class="craft-name">[${eq.slot}] ${ownedDisplayName}${rarityBadge}</div>
             <div class="craft-stats">${statsStr}　${eq.effectDesc}</div>
+            ${growthNote}
             <button class="inv-btn" onclick="equipItem('${eq.id}')">装備する</button>
             ${enhBtn}
           </div>`;
@@ -2461,14 +2530,17 @@ function renderCraftList() {
       return '';
     }
 
-    const btnHtml = canCraft
+    const canCraftFull = canCraft && hasRequiredRecipe;
+    const btnHtml = canCraftFull
       ? `<button class="inv-btn" onclick="craftItem('${eq.id}')">クラフト</button>`
       : `<button class="inv-btn disabled" disabled>クラフト不可</button>`;
 
     return `
-      <div class="craft-item ${canCraft ? '' : 'insufficient'}">
+      <div class="craft-item ${canCraftFull ? '' : 'insufficient'}">
         <div class="craft-name">[${eq.slot}] ${eq.name}${rarityBadge}</div>
         <div class="craft-stats">${statsStr}　${eq.effectDesc}</div>
+        ${growthNote}
+        ${recipeNote}
         ${recipeHtml}
         ${btnHtml}
       </div>`;
@@ -2502,6 +2574,12 @@ function craftItem(eqId) {
   if (!eq) return;
 
   const player = game.player;
+
+  // レシピ必須チェック
+  if (eq.requiresRecipe && !player.permanentItems[eq.requiresRecipe]) {
+    alert('このアイテムのクラフトレシピを入手していません！');
+    return;
+  }
 
   // 素材チェック
   const canCraft = Object.entries(eq.recipe).every(
@@ -2537,9 +2615,10 @@ function equipItem(eqId) {
 
   const player = game.player;
 
-  // 同スロットにすでに装備があれば外す
+  // 同スロットにすでに装備があれば取り外しデータだけ更新する
+  // （recalcStatsは後でまとめて呼ぶことでHP差分を正確に算出する）
   if (player.equipment[eq.slot]) {
-    unequipItem(eq.slot);
+    delete player.equipment[eq.slot];
   }
 
   player.equipment[eq.slot] = eqId;
@@ -2699,11 +2778,17 @@ function getEnhanceStatBoost(eq) {
  * レジェンド: 対応ダンジョン範囲のボスレア素材のみを（強化後レベル+1）個
  *   - D6レジェンド: D1〜D6のボスレア素材を各2個スタート
  *   - D12レジェンド: D7〜D12のボスレア素材を各2個スタート
+ * 限定（isSpecialEnhance）: ミスリル×nextLevel + 蒼天晶×nextLevel
  * @param {object} eq - 装備定義
  * @param {number} nextLevel - 強化後のレベル
  * @returns {object} - { 素材名: 必要数, ... }
  */
 function getEnhanceCost(eq, nextLevel) {
+  // 特殊強化: 蒼銀の剣など isSpecialEnhance フラグのある装備
+  if (eq.isSpecialEnhance) {
+    return { 'ミスリル': nextLevel, '蒼天晶': nextLevel };
+  }
+
   const rarity = eq.rarity || 'normal';
   const cost = {};
 
@@ -2810,13 +2895,22 @@ function renderEnhanceModal() {
 
   const displayName = currentLv > 0 ? `${eq.name} +${currentLv}` : eq.name;
 
-  // スロット別の強化ボーナス説明（ダンジョン×レア度に応じた実際の上昇値を表示）
-  const slot = eq.slot;
-  const boost = getEnhanceStatBoost(eq);
+  // スロット別の強化ボーナス説明
   let statBonusStr = '';
-  if (slot === '武器') statBonusStr = `ATK +${boost}`;
-  else if (['頭', '胴', '足', '靴'].includes(slot)) statBonusStr = `DEF +${boost}`;
-  else if (slot === 'アクセサリー') statBonusStr = `HP +${boost}`;
+  if (eq.isSpecialEnhance) {
+    // 成長型特殊強化: 全ステータス10%増し（現在のレベルベース値から計算）
+    const gs = (typeof computeGrowthStats !== 'undefined')
+      ? computeGrowthStats(eq, game.player.level)
+      : eq.stats;
+    const factor = 0.1;
+    statBonusStr = `ATK+${Math.floor(gs.attack * factor)} / DEF+${Math.floor(gs.defense * factor)} / HP+${Math.floor(gs.maxHp * factor)} / MP+${Math.floor(gs.maxMp * factor)}（全ステータス10%増し）`;
+  } else {
+    const slot = eq.slot;
+    const boost = getEnhanceStatBoost(eq);
+    if (slot === '武器') statBonusStr = `ATK +${boost}`;
+    else if (['頭', '胴', '足', '靴'].includes(slot)) statBonusStr = `DEF +${boost}`;
+    else if (slot === 'アクセサリー') statBonusStr = `HP +${boost}`;
+  }
 
   // 必要素材リスト
   const matRows = Object.entries(cost).map(([mat, cnt]) => {
