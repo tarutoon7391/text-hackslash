@@ -2479,21 +2479,25 @@ function getEquipmentDungeon(eq) {
 }
 
 /**
- * ダンジョン番号(D1=index0 〜 D12=index11)ごとの強化ベース値
+ * ダンジョン番号(D1=index0 〜 D12=index11)ごとの強化加算ベース値
+ * 2ずつ増加: D1=2, D2=4, ..., D12=24
+ * ダンジョン軸とレア度軸が同等の影響を与えるよう設計
+ * 例: D1→D6 の差(10) ≈ ノーマル→ボスレアの差(10)
  * インデックス: [D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12]
  */
-const DUNGEON_ENHANCE_BASES = [2.5, 3.5, 4.5, 5.5, 6.5, 8, 10, 12, 14, 16, 18, 20];
+const DUNGEON_ENHANCE_BASES = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
 
 /**
- * レア度ごとの強化倍率
+ * レア度ごとの強化加算値
  * ノーマル < レア < ボスレア < エンド < レジェンド の順で大きくなる
+ * 各ランクごとに5ずつ増加（2ランク分=10 ≈ ダンジョン5段分=10）
  */
-const RARITY_ENHANCE_MULTS = {
-  normal:   1.0,
-  rare:     1.5,
-  bossRare: 2.0,
-  end:      2.5,
-  legend:   3.0,
+const RARITY_ENHANCE_ADDS = {
+  normal:   0,
+  rare:     5,
+  bossRare: 10,
+  end:      15,
+  legend:   20,
 };
 
 /**
@@ -2508,14 +2512,18 @@ function getEnhanceStatBoost(eq) {
   const dIdx  = DUNGEON_DEFINITIONS.indexOf(dungeon);
   const base  = DUNGEON_ENHANCE_BASES[dIdx] ?? 2;
   const rarity = eq.rarity || 'normal';
-  const mult  = RARITY_ENHANCE_MULTS[rarity] ?? 1.0;
-  return Math.max(1, Math.round(base * mult));
+  const rarityAdd = RARITY_ENHANCE_ADDS[rarity] ?? 0;
+  return Math.max(1, base + rarityAdd);
 }
 
 /**
  * 装備の強化コストを計算する
- * ノーマル/レア/ボスレア: 強化後レベル数分のそのダンジョンの全素材
- * エンド: 全ダンジョン分のコモン・レア・ボスレア素材を強化後レベル数分
+ * ノーマル: そのダンジョンのコモン素材のみを強化後レベル数分
+ * レア: そのダンジョンのコモン・レア素材を強化後レベル数分
+ * ボスレア: そのダンジョンのコモン・レア・ボスレア素材を強化後レベル数分
+ * エンド: 対応ダンジョン範囲のボスレア素材のみを強化後レベル数分
+ *   - D1〜D6エンド: D1〜D6のボスレア素材を各nextLevel個
+ *   - D7〜D12エンド: D7〜D12のボスレア素材を各nextLevel個
  * レジェンド: 対応ダンジョン範囲のボスレア素材のみを（強化後レベル+1）個
  *   - D6レジェンド: D1〜D6のボスレア素材を各2個スタート
  *   - D12レジェンド: D7〜D12のボスレア素材を各2個スタート
@@ -2546,25 +2554,35 @@ function getEnhanceCost(eq, nextLevel) {
   }
 
   if (rarity === 'end') {
-    // エンドアイテム: 全ダンジョン分のコモン・レア・ボスレア素材を消費
-    DUNGEON_DEFINITIONS.forEach(d => {
-      cost[d.drops.common] = (cost[d.drops.common] || 0) + nextLevel;
-      if (d.drops.rares && d.drops.rares[0]) {
-        cost[d.drops.rares[0]] = (cost[d.drops.rares[0]] || 0) + nextLevel;
-      }
-      cost[d.drops.bossRare] = (cost[d.drops.bossRare] || 0) + nextLevel;
-    });
+    // エンドアイテム: 対応ダンジョン範囲のボスレア素材のみ消費（レジェンドより少ない量）
+    // D1〜D6エンド → D1〜D6のボスレア素材 × nextLevel個
+    // D7〜D12エンド → D7〜D12のボスレア素材 × nextLevel個
+    const dungeon  = getEquipmentDungeon(eq);
+    const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
+    const dungeonMidpoint = Math.floor(DUNGEON_DEFINITIONS.length / 2);
+    const start    = dIdx < dungeonMidpoint ? 0 : dungeonMidpoint;
+    const end      = dIdx < dungeonMidpoint ? dungeonMidpoint : DUNGEON_DEFINITIONS.length;
+    for (let i = start; i < end; i++) {
+      cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = nextLevel;
+    }
     return cost;
   }
 
-  // ノーマル/レア/ボスレア: そのダンジョンのコモン・レア・ボスレア素材を消費
+  // ノーマル/レア/ボスレア: そのダンジョンの素材を消費
   const dungeon = getEquipmentDungeon(eq);
   if (!dungeon) return {};
 
+  // ノーマル: コモン素材のみ
   cost[dungeon.drops.common] = nextLevel;
+  if (rarity === 'normal') return cost;
+
+  // レア以上: コモン + レア素材
   if (dungeon.drops.rares && dungeon.drops.rares[0]) {
     cost[dungeon.drops.rares[0]] = nextLevel;
   }
+  if (rarity === 'rare') return cost;
+
+  // ボスレア: コモン + レア + ボスレア素材
   cost[dungeon.drops.bossRare] = nextLevel;
   return cost;
 }
