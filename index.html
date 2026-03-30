@@ -66,6 +66,9 @@
         <button class="nav-btn" onclick="showScreen('encyclopedia'); renderEncyclopedia();">
           📖 図鑑
         </button>
+        <button class="nav-btn" onclick="showScreen('ranking'); renderRanking();">
+          🏆 ランキング
+        </button>
         <button class="nav-btn back-btn" onclick="logoutUser()">🚪 ログアウト</button>
       </div>
     </div>
@@ -273,6 +276,45 @@
 
   </div><!-- /screen-encyclopedia -->
 
+  <!-- ========================================================
+       ランキング画面
+  ========================================================= -->
+  <div id="screen-ranking" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ RANKING ]</h2>
+
+      <!-- タブ -->
+      <div class="enc-tabs">
+        <button class="enc-tab-btn active" id="ranking-tab-level" onclick="switchRankingTab('level')">
+          ⭐ レベルランキング
+        </button>
+        <button class="enc-tab-btn" id="ranking-tab-legend" onclick="switchRankingTab('legend')">
+          💎 レジェンド所持数ランキング
+        </button>
+      </div>
+
+      <!-- ローディング表示 -->
+      <div id="ranking-loading" class="ranking-loading" style="display:none">
+        読み込み中...
+      </div>
+
+      <!-- エラー表示 -->
+      <div id="ranking-error" class="ranking-error" style="display:none"></div>
+
+      <!-- レベルランキングリスト -->
+      <div id="ranking-level-list" class="ranking-list"></div>
+
+      <!-- レジェンド所持数ランキングリスト -->
+      <div id="ranking-legend-list" class="ranking-list" style="display:none"></div>
+
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-ranking -->
+
 </div><!-- /game-container -->
 
 <!-- 図鑑詳細モーダル -->
@@ -293,7 +335,7 @@
 
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
-<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js -->
+<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js -->
 <script src="js/ui.js"></script>
 <script src="js/equipment.js"></script>
 <script src="js/dungeon.js"></script>
@@ -301,6 +343,7 @@
 <script src="js/game.js"></script>
 <script src="js/save.js"></script>
 <script src="js/encyclopedia.js"></script>
+<script src="js/ranking.js"></script>
 
 </body>
 </html>

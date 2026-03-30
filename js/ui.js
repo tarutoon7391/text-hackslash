@@ -6,10 +6,10 @@
 
 /**
  * 指定した画面を表示し、他の画面を非表示にする
- * @param {string} screenName - 'lobby' | 'dungeon-select' | 'battle' | 'inventory' | 'skill-points'
+ * @param {string} screenName - 'login' | 'lobby' | 'dungeon-select' | 'battle' | 'inventory' | 'skill-tree' | 'encyclopedia' | 'ranking'
  */
 function showScreen(screenName) {
-  const screens = ['login', 'lobby', 'dungeon-select', 'battle', 'inventory', 'skill-tree', 'encyclopedia'];
+  const screens = ['login', 'lobby', 'dungeon-select', 'battle', 'inventory', 'skill-tree', 'encyclopedia', 'ranking'];
   screens.forEach(name => {
     const el = document.getElementById(`screen-${name}`);
     if (el) el.style.display = name === screenName ? 'block' : 'none';

@@ -1222,3 +1222,121 @@ footer {
   background-color: #ffaa0022;
   box-shadow: 0 0 8px #ffaa00;
 }
+
+/* ===== ランキング画面 ===== */
+.ranking-loading {
+  color: #aaaaaa;
+  font-size: 0.9rem;
+  padding: 16px 0;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.ranking-error {
+  color: #ff6666;
+  font-size: 0.85rem;
+  padding: 12px;
+  border: 1px solid #ff444444;
+  background-color: #1a0000;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #333;
+  padding: 7px 12px;
+  background-color: #050505;
+  font-size: 0.85rem;
+}
+
+.ranking-rank {
+  min-width: 70px;
+  white-space: nowrap;
+  color: #aaaaaa;
+}
+
+.ranking-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ranking-value {
+  white-space: nowrap;
+  color: #00ccff;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* 1位 */
+.ranking-row-gold {
+  border-color: #ffdd00;
+  background-color: #1a1500;
+}
+
+.ranking-row-gold .ranking-rank {
+  color: #ffdd00;
+  text-shadow: 0 0 6px #ffdd0099;
+}
+
+.ranking-row-gold .ranking-name {
+  color: #ffdd00;
+}
+
+/* 2位 */
+.ranking-row-silver {
+  border-color: #cccccc;
+  background-color: #111111;
+}
+
+.ranking-row-silver .ranking-rank {
+  color: #cccccc;
+}
+
+.ranking-row-silver .ranking-name {
+  color: #cccccc;
+}
+
+/* 3位 */
+.ranking-row-bronze {
+  border-color: #cc7733;
+  background-color: #120a00;
+}
+
+.ranking-row-bronze .ranking-rank {
+  color: #cc7733;
+}
+
+.ranking-row-bronze .ranking-name {
+  color: #cc7733;
+}
+
+/* 自分の行 */
+.ranking-row-me {
+  border-color: #00ff41;
+  background-color: #001a00;
+  box-shadow: 0 0 6px #00ff4144;
+}
+
+.ranking-row-me .ranking-name {
+  color: #00ff41;
+}
+
+.ranking-separator {
+  text-align: center;
+  color: #444;
+  font-size: 0.85rem;
+  padding: 4px 0;
+  letter-spacing: 4px;
+}
