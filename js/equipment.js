@@ -2124,6 +2124,166 @@ const EQUIPMENT_DEFINITIONS = [
       '混沌の結晶': 20, '虚空の欠片': 5, '混沌の石板': 5, '混沌の力': 2,
     },
   },
+
+  /* ─── チャーム ─── */
+  /* チャームはダンジョンのノーマル素材100個でクラフトでき、
+     対応ダンジョンのレア/ボスレアドロップ率2倍＆レアモンスター出現率2倍の効果を持つ */
+
+  /* D1: スライムの洞窟 — 革×100 */
+  {
+    id: 'charm_d1',
+    name: 'スライムの幸運核',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 1,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: 'スライムの洞窟のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '革': 100 },
+  },
+
+  /* D2: ゴブリンの森 — 鉄×100 */
+  {
+    id: 'charm_d2',
+    name: '略奪者のお守り',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 2,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: 'ゴブリンの森のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '鉄': 100 },
+  },
+
+  /* D3: 骸骨の墓地 — 金×100 */
+  {
+    id: 'charm_d3',
+    name: '死霊の羨望',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 3,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '骸骨の墓地のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '金': 100 },
+  },
+
+  /* D4: 溶岩の洞窟 — ダイヤ×100 */
+  {
+    id: 'charm_d4',
+    name: '炎竜の強欲爪',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 4,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '溶岩の洞窟のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { 'ダイヤ': 100 },
+  },
+
+  /* D5: 魔王の城 — 竜鱗×100 */
+  {
+    id: 'charm_d5',
+    name: '魔王の眼球',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 5,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '魔王の城のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '竜鱗': 100 },
+  },
+
+  /* D6: 古代遺跡 — 古代石×100 */
+  {
+    id: 'charm_d6',
+    name: '古代の招福碑',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 6,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '古代遺跡のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '古代石': 100 },
+  },
+
+  /* D7: 深海の神殿 — 深海珊瑚×100 */
+  {
+    id: 'charm_d7',
+    name: '海神の幸運珠',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 7,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '深海の神殿のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '深海珊瑚': 100 },
+  },
+
+  /* D8: 宇宙の彼方 — 星屑の欠片×100 */
+  {
+    id: 'charm_d8',
+    name: '星屑の幸運石',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 8,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '宇宙の彼方のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '星屑の欠片': 100 },
+  },
+
+  /* D9: 異世界の迷宮 — 異界の石×100 */
+  {
+    id: 'charm_d9',
+    name: '異界の招福石',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 9,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '異世界の迷宮のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '異界の石': 100 },
+  },
+
+  /* D10: 夢幻の庭園 — 夢の花×100 */
+  {
+    id: 'charm_d10',
+    name: '夢幻の幸運花',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 10,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '夢幻の庭園のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '夢の花': 100 },
+  },
+
+  /* D11: 時空の裂け目 — 時空の欠片×100 */
+  {
+    id: 'charm_d11',
+    name: '時運の欠片',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 11,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '時空の裂け目のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '時空の欠片': 100 },
+  },
+
+  /* D12: 混沌の神殿 — 混沌の結晶×100 */
+  {
+    id: 'charm_d12',
+    name: '混沌の強欲核',
+    slot: 'チャーム',
+    rarity: 'charm',
+    charmDungeonId: 12,
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    effectType: 'charmBoost',
+    effectDesc: '混沌の神殿のレア/ボスレアドロップ2倍＆レアモンスター出現率2倍',
+    recipe: { '混沌の結晶': 100 },
+  },
 ];
 
 /* ==============================================================
@@ -2141,6 +2301,7 @@ const RARITY_LABELS = {
   bossRare: 'ボスレア',
   end:      'エンド',
   legend:   'レジェンド',
+  charm:    'チャーム',
 };
 
 /** インベントリ画面を描画する */
@@ -2173,7 +2334,7 @@ function renderEquippedList() {
   if (!el) return;
 
   const player = game.player;
-  const slots = ['頭', '胴', '足', '靴', 'アクセサリー', '武器'];
+  const slots = ['頭', '胴', '足', '靴', 'アクセサリー', '武器', 'チャーム'];
   el.innerHTML = slots.map(slot => {
     const eqId  = player.equipment[slot];
     const eq    = eqId ? EQUIPMENT_DEFINITIONS.find(e => e.id === eqId) : null;
@@ -2184,8 +2345,10 @@ function renderEquippedList() {
     const unequipBtn = eq
       ? `<button class="inv-btn" onclick="unequipItem('${slot}')">外す</button>`
       : '';
-    const canEnh = eq ? canAffordEnhancement(eq, enhLv + 1) : false;
-    const enhBtn = eq
+    // チャームスロットは強化不可
+    const isCharmSlot = slot === 'チャーム';
+    const canEnh = (!isCharmSlot && eq) ? canAffordEnhancement(eq, enhLv + 1) : false;
+    const enhBtn = (!isCharmSlot && eq)
       ? `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eqId}')">⬆ 強化</button>`
       : '';
     return `<div class="eq-row"><span class="eq-slot">[${slot}]</span> <span>${label}</span>${unequipBtn}${enhBtn}</div>`;
@@ -2237,9 +2400,15 @@ function renderCraftList() {
   const player = game.player;
 
   // フィルタリング
+  // チャームアイテム（rarity='charm'）は「チャーム」タブ選択時のみ表示し、
+  // 通常フィルター（すべて・ノーマル・レアなど）には含めない
   const filtered = EQUIPMENT_DEFINITIONS.filter(eq => {
-    if (craftFilterSlot !== 'all' && eq.slot !== craftFilterSlot) return false;
     const eqRarity = eq.rarity || 'normal';
+    // チャームは「チャーム」タブ専用
+    if (eqRarity === 'charm') return craftFilterRarity === 'charm';
+    // 「チャーム」タブ選択中は非チャームを非表示
+    if (craftFilterRarity === 'charm') return false;
+    if (craftFilterSlot !== 'all' && eq.slot !== craftFilterSlot) return false;
     if (craftFilterRarity !== 'all' && eqRarity !== craftFilterRarity) return false;
     return true;
   });
@@ -2270,13 +2439,16 @@ function renderCraftList() {
     const rarityLabel = RARITY_LABELS[eqRarity] || 'ノーマル';
     const rarityBadge = `<span class="rarity-badge rarity-${eqRarity}">${rarityLabel}</span>`;
 
+    // チャームは強化不可
+    const isCharm = eq.slot === 'チャーム';
+
     if (isOwned || isEquipped) {
       // 所持済み → 装備ボタンを表示（未装備スロットの場合）
       if (!isEquipped) {
         const ownedEnhLv = player.enhanceLevels[eq.id] || 0;
         const ownedDisplayName = ownedEnhLv > 0 ? `${eq.name} +${ownedEnhLv}` : eq.name;
-        const canEnh = canAffordEnhancement(eq, ownedEnhLv + 1);
-        const enhBtn = `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eq.id}')">⬆ 強化</button>`;
+        const canEnh = !isCharm && canAffordEnhancement(eq, ownedEnhLv + 1);
+        const enhBtn = isCharm ? '' : `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eq.id}')">⬆ 強化</button>`;
         return `
           <div class="craft-item owned">
             <div class="craft-name">[${eq.slot}] ${ownedDisplayName}${rarityBadge}</div>

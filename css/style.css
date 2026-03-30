@@ -758,6 +758,11 @@ footer {
   text-shadow: 0 0 6px #ffdd00, 0 0 12px #ff8800;
   font-weight: bold;
 }
+.rarity-badge.rarity-charm {
+  color: #44ffaa;
+  border-color: #44ffaa;
+  text-shadow: 0 0 4px #44ffaa;
+}
 .sp-remaining {
   font-size: 1.1rem;
   color: #ffdd00;
