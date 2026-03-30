@@ -112,8 +112,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_06', name: '居合斬り',
         type: 'skill', skillId: 'iai_slash',
-        description: '高速の一撃（ATK×1.8 / MP:15）',
-        mpCost: 15, bonuses: {}, cost: 2, requires: 'sw_05',
+        description: '高速の一撃（ATK×1.5 / MP:12 / 25%で防御を無視する会心）',
+        mpCost: 12, bonuses: {}, cost: 2, requires: 'sw_05',
       },
       {
         id: 'sw_07', name: '猛攻の型',
@@ -133,8 +133,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_10', name: '連続斬り',
         type: 'skill', skillId: 'chain_slash',
-        description: '2 回連続攻撃（MP:18）',
-        mpCost: 18, bonuses: {}, cost: 2, requires: 'sw_09',
+        description: '3 回連続攻撃（MP:15）',
+        mpCost: 15, bonuses: {}, cost: 2, requires: 'sw_09',
       },
       {
         id: 'sw_11', name: '剣聖の修練',
@@ -149,8 +149,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_13', name: '雷光斬り',
         type: 'skill', skillId: 'thunder_slash',
-        description: '雷を纏った強斬り（ATK×2.2 / MP:22）',
-        mpCost: 22, bonuses: {}, cost: 3, requires: 'sw_12',
+        description: '雷を纏った強斬り（ATK×2.0 / MP:18）',
+        mpCost: 18, bonuses: {}, cost: 3, requires: 'sw_12',
       },
       {
         id: 'sw_14', name: '絶剣',
@@ -160,8 +160,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_15', name: '必殺剣',
         type: 'skill', skillId: 'death_blow',
-        description: '全力を込めた一撃（ATK×3.0 / MP:35）',
-        mpCost: 35, bonuses: {}, cost: 3, requires: 'sw_14',
+        description: '防御を無視する必殺の一撃（ATK×2.5 / MP:25 / 防御無視）',
+        mpCost: 25, bonuses: {}, cost: 3, requires: 'sw_14',
       },
       {
         id: 'sw_16', name: '剣聖の極意',
@@ -171,8 +171,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_17', name: '流星斬り',
         type: 'skill', skillId: 'shooting_star',
-        description: '光速の連撃（ATK×2.5 / MP:30）',
-        mpCost: 30, bonuses: {}, cost: 2, requires: 'sw_16',
+        description: '光速の 2 連撃（ATK×1.3×2 / MP:22）',
+        mpCost: 22, bonuses: {}, cost: 2, requires: 'sw_16',
       },
       {
         id: 'sw_18', name: '剣聖の真髄',
@@ -187,8 +187,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_20', name: '崩壊斬り',
         type: 'skill', skillId: 'ruin_slash',
-        description: '存在を断つ斬撃（ATK×3.5 / MP:45）',
-        mpCost: 45, bonuses: {}, cost: 3, requires: 'sw_19',
+        description: '存在を断つ斬撃（ATK×3.0 / MP:35）',
+        mpCost: 35, bonuses: {}, cost: 3, requires: 'sw_19',
       },
       {
         id: 'sw_21', name: '神剣の境地',
@@ -198,8 +198,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'sw_22', name: '天地無用剣',
         type: 'skill', skillId: 'peerless_blade',
-        description: '天地を貫く究極剣（ATK×4.5 / MP:60）',
-        mpCost: 60, bonuses: {}, cost: 3, requires: 'sw_21',
+        description: '天地を貫く 3 連撃（ATK×1.4×3 / MP:45）',
+        mpCost: 45, bonuses: {}, cost: 3, requires: 'sw_21',
       },
     ],
   },
@@ -241,8 +241,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_06', name: 'ファイア',
         type: 'skill', skillId: 'fire',
-        description: '炎の魔法（ATK×1.6 / MP:12）',
-        mpCost: 12, bonuses: {}, cost: 2, requires: 'mg_05',
+        description: '炎の魔法（ATK×1.6 / MP:20）',
+        mpCost: 20, bonuses: {}, cost: 2, requires: 'mg_05',
       },
       {
         id: 'mg_07', name: '魔法練磨',
@@ -257,8 +257,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_09', name: 'サンダー',
         type: 'skill', skillId: 'thunder',
-        description: '雷の魔法（ATK×1.8 / MP:18）',
-        mpCost: 18, bonuses: {}, cost: 2, requires: 'mg_08',
+        description: '雷の魔法（ATK×1.8 / MP:28）',
+        mpCost: 28, bonuses: {}, cost: 2, requires: 'mg_08',
       },
       {
         id: 'mg_10', name: '魔法回復',
@@ -279,8 +279,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_13', name: 'ブリザド',
         type: 'skill', skillId: 'blizzard',
-        description: '氷の魔法（ATK×2.2 / MP:22）',
-        mpCost: 22, bonuses: {}, cost: 3, requires: 'mg_12',
+        description: '氷の魔法（ATK×2.2 / MP:38）',
+        mpCost: 38, bonuses: {}, cost: 3, requires: 'mg_12',
       },
       {
         id: 'mg_14', name: '大魔力',
@@ -290,8 +290,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_15', name: '大魔法陣',
         type: 'skill', skillId: 'grand_magic',
-        description: '究極の魔法攻撃（ATK×3.0 / MP:42）',
-        mpCost: 42, bonuses: {}, cost: 3, requires: 'mg_14',
+        description: '究極の魔法攻撃（ATK×3.0 / MP:65）',
+        mpCost: 65, bonuses: {}, cost: 3, requires: 'mg_14',
       },
       {
         id: 'mg_16', name: '魔力覚醒',
@@ -301,8 +301,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_17', name: 'メテオ',
         type: 'skill', skillId: 'meteor',
-        description: '隕石の魔法（ATK×2.8 / MP:38）',
-        mpCost: 38, bonuses: {}, cost: 2, requires: 'mg_16',
+        description: '隕石の魔法（ATK×2.8 / MP:55）',
+        mpCost: 55, bonuses: {}, cost: 2, requires: 'mg_16',
       },
       {
         id: 'mg_18', name: '超魔力',
@@ -312,8 +312,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_19', name: '魔力爆発',
         type: 'skill', skillId: 'magic_explosion',
-        description: '魔力を爆発させる（ATK×3.5 / MP:55）',
-        mpCost: 55, bonuses: {}, cost: 2, requires: 'mg_18',
+        description: '魔力を爆発させる（ATK×3.5 / MP:85）',
+        mpCost: 85, bonuses: {}, cost: 2, requires: 'mg_18',
       },
       {
         id: 'mg_20', name: '大魔力覚醒',
@@ -329,8 +329,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mg_22', name: '時空魔法',
         type: 'skill', skillId: 'spacetime_magic',
-        description: '時空を歪める魔法（ATK×5.0 / MP:75）',
-        mpCost: 75, bonuses: {}, cost: 3, requires: 'mg_21',
+        description: '時空を歪める魔法（ATK×5.0 / MP:120）',
+        mpCost: 120, bonuses: {}, cost: 3, requires: 'mg_21',
       },
     ],
   },
@@ -388,7 +388,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_09', name: '祝福',
         type: 'skill', skillId: 'bless',
-        description: '自分に ATK+15 バフ（3 ターン / MP:15）',
+        description: '自分に ATK+25 バフ（5 ターン / MP:15）',
         mpCost: 15, bonuses: {}, cost: 2, requires: 'cl_08',
       },
       {
@@ -405,7 +405,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_12', name: '聖域',
         type: 'skill', skillId: 'sanctuary',
-        description: '防御バリア（DEF+25 / 2 ターン / MP:18）',
+        description: '防御バリア（DEF+40 / 4 ターン / MP:18）',
         mpCost: 18, bonuses: {}, cost: 3, requires: 'cl_11',
       },
       {
@@ -432,7 +432,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_17', name: '祝福の歌',
         type: 'skill', skillId: 'battle_hymn',
-        description: '戦いの歌で ATK+25（4 ターン / MP:22）',
+        description: '戦いの歌で ATK+40（6 ターン / MP:22）',
         mpCost: 22, bonuses: {}, cost: 2, requires: 'cl_16',
       },
       {
@@ -443,7 +443,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'cl_19', name: '神の護り',
         type: 'skill', skillId: 'divine_shield',
-        description: '神の盾で大幅防御（DEF+50 / 3 ターン / MP:30）',
+        description: '神の盾で大幅防御（DEF+80 / 5 ターン / MP:30）',
         mpCost: 30, bonuses: {}, cost: 2, requires: 'cl_18',
       },
       {
@@ -502,7 +502,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_06', name: '足払い',
         type: 'skill', skillId: 'trip',
-        description: '足を払う（ATK×1.2 / MP:12 / 30%でスタン）',
+        description: '足を払う（ATK×1.2 / MP:12 / 15%でスタン＋必ずATK低下）',
         mpCost: 12, bonuses: {}, cost: 2, requires: 'wt_05',
       },
       {
@@ -518,7 +518,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_09', name: '威嚇',
         type: 'skill', skillId: 'intimidate',
-        description: '敵の攻撃力を 2 ターン低下（MP:15）',
+        description: '敵の攻撃力を 3 ターン大幅低下（MP:15）',
         mpCost: 15, bonuses: {}, cost: 2, requires: 'wt_08',
       },
       {
@@ -529,7 +529,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_11', name: '体当たり',
         type: 'skill', skillId: 'body_slam',
-        description: '強烈な体当たり（ATK×1.6 / MP:15 / 40%でスタン）',
+        description: '強烈な体当たり（ATK×1.6 / MP:15 / 20%でスタン＋必ずATK大幅低下）',
         mpCost: 15, bonuses: {}, cost: 3, requires: 'wt_10',
       },
       {
@@ -545,7 +545,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_14', name: '破壊の一撃',
         type: 'skill', skillId: 'devastating_blow',
-        description: '強打＋敵の攻撃力を 2 ターン低下（ATK×2.0 / MP:22）',
+        description: '強打＋敵の攻撃力を 3 ターン大幅低下（ATK×2.0 / MP:22）',
         mpCost: 22, bonuses: {}, cost: 3, requires: 'wt_13',
       },
       {
@@ -561,7 +561,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_17', name: '大地砕き',
         type: 'skill', skillId: 'earth_crash',
-        description: '大地を砕く一撃（ATK×2.2 / MP:22 / 35%でスタン）',
+        description: '大地を砕く一撃（ATK×2.2 / MP:22 / 15%でスタン＋必ずATK大幅低下）',
         mpCost: 22, bonuses: {}, cost: 2, requires: 'wt_16',
       },
       {
@@ -572,7 +572,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_19', name: '滅却の一撃',
         type: 'skill', skillId: 'annihilation',
-        description: '敵を滅却する強打（ATK×3.0 + ATKデバフ / MP:32）',
+        description: '敵を滅却する強打（ATK×3.0 ＋ 3ターンATK壊滅的デバフ / MP:32）',
         mpCost: 32, bonuses: {}, cost: 2, requires: 'wt_18',
       },
       {
@@ -583,13 +583,13 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'wt_21', name: '戦神の覚醒',
         type: 'skill', skillId: 'battle_trance',
-        description: '戦神として覚醒（ATK+30 + DEF+20 / 3ターン / MP:38）',
+        description: '戦神として覚醒（ATK+35 ＋ DEF+25 / 4ターン / MP:38）',
         mpCost: 38, bonuses: {}, cost: 3, requires: 'wt_20',
       },
       {
         id: 'wt_22', name: '鬼神の一撃',
         type: 'skill', skillId: 'ogre_strike',
-        description: '鬼神の力を込めた大一撃（ATK×4.0 / MP:55 / 50%でスタン）',
+        description: '鬼神の力を込めた大一撃（ATK×4.0 / MP:55 / 25%でスタン＋必ずATK強力低下）',
         mpCost: 55, bonuses: {}, cost: 3, requires: 'wt_21',
       },
     ],
@@ -844,17 +844,23 @@ function useSkill(skillId) {
     /* ── 剣士スキル ── */
 
     case 'iai_slash': {
-      // 居合斬り: ATK×1.8
-      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 居合斬り: ATK×1.5 / 25%で防御を無視する会心
+      const crit = Math.random() < 0.25;
+      const defFactor = crit ? 0 : SKILL_DEFENSE_FACTOR;
+      const raw = Math.floor(player.effectiveAttack * 1.5) - Math.floor(enemy.defense * defFactor);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
-      log(`⚔ ${player.name} は「居合斬り」で斬り込んだ！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      if (crit) {
+        log(`⚔✨ ${player.name} は「居合斬り」で会心！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
+      } else {
+        log(`⚔ ${player.name} は「居合斬り」で斬り込んだ！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      }
       renderEnemyStatus();
       break;
     }
 
     case 'chain_slash': {
-      // 連続斬り: 2 回攻撃
+      // 連続斬り: 3 回攻撃
       const dmg1 = player.calcAttackDamage(enemy);
       enemy.takeDamage(dmg1);
       let dmg2 = 0;
@@ -862,14 +868,19 @@ function useSkill(skillId) {
         dmg2 = player.calcAttackDamage(enemy);
         enemy.takeDamage(dmg2);
       }
-      log(`⚔⚔ ${player.name} は「連続斬り」で 2 回攻撃！ → ${enemy.name} に ${dmg1}＋${dmg2} ダメージ！`, 'player-action');
+      let dmg3 = 0;
+      if (enemy.isAlive()) {
+        dmg3 = player.calcAttackDamage(enemy);
+        enemy.takeDamage(dmg3);
+      }
+      log(`⚔⚔⚔ ${player.name} は「連続斬り」で 3 回攻撃！ → ${enemy.name} に ${dmg1}＋${dmg2}＋${dmg3} ダメージ！`, 'player-action');
       renderEnemyStatus();
       break;
     }
 
     case 'thunder_slash': {
-      // 雷光斬り: ATK×2.2
-      const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 雷光斬り: ATK×2.0
+      const raw = Math.floor(player.effectiveAttack * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
       log(`⚡ ${player.name} は「雷光斬り」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -878,11 +889,11 @@ function useSkill(skillId) {
     }
 
     case 'death_blow': {
-      // 必殺剣: ATK×3.0
-      const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 必殺剣: ATK×2.5 / 防御完全無視
+      const raw = Math.floor(player.effectiveAttack * 2.5);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
       enemy.takeDamage(dmg);
-      log(`💀 ${player.name} は「必殺剣」を振りおろした！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      log(`💀 ${player.name} は「必殺剣」で防御を貫いた！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
       renderEnemyStatus();
       break;
     }
@@ -950,9 +961,9 @@ function useSkill(skillId) {
     }
 
     case 'bless': {
-      // 祝福: ATK +15 バフ 3 ターン
-      game.playerAtkBuff = { bonus: 15, turnsLeft: 3 };
-      log(`🌟 ${player.name} は「祝福」を唱えた！ 3 ターン ATK +15`, 'player-action');
+      // 祝福: ATK +25 バフ 5 ターン
+      game.playerAtkBuff = { bonus: 25, turnsLeft: 5 };
+      log(`🌟 ${player.name} は「祝福」を唱えた！ 5 ターン ATK +25`, 'player-action');
       break;
     }
 
@@ -966,9 +977,9 @@ function useSkill(skillId) {
     }
 
     case 'sanctuary': {
-      // 聖域: DEF +25 バフ 2 ターン
-      game.shieldActive = { defenseBonus: 25, turnsLeft: 2 };
-      log(`🛡 ${player.name} は「聖域」を展開した！ 2 ターン DEF +25`, 'player-action');
+      // 聖域: DEF +40 バフ 4 ターン
+      game.shieldActive = { defenseBonus: 40, turnsLeft: 4 };
+      log(`🛡 ${player.name} は「聖域」を展開した！ 4 ターン DEF +40`, 'player-action');
       break;
     }
 
@@ -984,51 +995,55 @@ function useSkill(skillId) {
     /* ── 戦士スキル ── */
 
     case 'trip': {
-      // 足払い: ATK×1.2 + 30%の確率で次ターン行動不能
+      // 足払い: ATK×1.2 + 15%の確率でスタン＋常時ATK低下デバフ
       const raw = Math.floor(player.effectiveAttack * 1.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
-      const stunned = Math.random() < 0.30;
+      const stunned = Math.random() < 0.15;
       game.enemyStunned = stunned;
+      // 常時ATK低下デバフを付与（スタン有無にかかわらず）
+      game.enemyAtkDebuff = { factor: 0.85, turnsLeft: 2 };
       if (stunned) {
-        log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！次のターン行動不能！`, 'player-action');
+        log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！次のターン行動不能＋ATK低下！`, 'player-action');
       } else {
-        log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+        log(`💥 ${player.name} は「足払い」を決めた！ → ${enemy.name} に ${dmg} ダメージ！ATK低下！`, 'player-action');
       }
       renderEnemyStatus();
       break;
     }
 
     case 'intimidate': {
-      // 威嚇: 敵 ATK ×0.7 バフ（2 ターン）
-      game.enemyAtkDebuff = { factor: 0.7, turnsLeft: 2 };
-      log(`😤 ${player.name} は「威嚇」した！ → ${enemy.name} の攻撃力が 2 ターン低下！`, 'player-action');
+      // 威嚇: 敵 ATK ×0.55（3 ターン）- 大幅強化版
+      game.enemyAtkDebuff = { factor: 0.55, turnsLeft: 3 };
+      log(`😤 ${player.name} は「威嚇」した！ → ${enemy.name} の攻撃力が 3 ターン大幅低下！`, 'player-action');
       break;
     }
 
     case 'body_slam': {
-      // 体当たり: ATK×1.6 + 40%の確率でスタン
+      // 体当たり: ATK×1.6 + 20%の確率でスタン＋常時ATK大幅低下デバフ
       const raw = Math.floor(player.effectiveAttack * 1.6) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
-      const stunned = Math.random() < 0.40;
+      const stunned = Math.random() < 0.20;
       game.enemyStunned = stunned;
+      // 常時ATK大幅低下デバフを付与（スタン有無にかかわらず）
+      game.enemyAtkDebuff = { factor: 0.80, turnsLeft: 3 };
       if (stunned) {
-        log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+        log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！スタン＋ATK大幅低下！`, 'player-action');
       } else {
-        log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+        log(`💥 ${player.name} は「体当たり」を仕掛けた！ → ${enemy.name} に ${dmg} ダメージ！ATK大幅低下！`, 'player-action');
       }
       renderEnemyStatus();
       break;
     }
 
     case 'devastating_blow': {
-      // 破壊の一撃: ATK×2.0 + 敵 ATK デバフ（2 ターン）
+      // 破壊の一撃: ATK×2.0 + 敵 ATK デバフ（3 ターン・大幅強化版）
       const raw = Math.floor(player.effectiveAttack * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
-      game.enemyAtkDebuff = { factor: 0.8, turnsLeft: 2 };
-      log(`💢 ${player.name} は「破壊の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！攻撃力が 2 ターン低下！`, 'player-action');
+      game.enemyAtkDebuff = { factor: 0.65, turnsLeft: 3 };
+      log(`💢 ${player.name} は「破壊の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！攻撃力が 3 ターン大幅低下！`, 'player-action');
       renderEnemyStatus();
       break;
     }
@@ -1036,18 +1051,24 @@ function useSkill(skillId) {
     /* ── 剣士新スキル ── */
 
     case 'shooting_star': {
-      // 流星斬り: ATK×2.5
-      const raw = Math.floor(player.effectiveAttack * 2.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
-      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
-      enemy.takeDamage(dmg);
-      log(`🌠 ${player.name} は「流星斬り」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      // 流星斬り: ATK×1.3 の 2 連撃
+      const raw1 = Math.floor(player.effectiveAttack * 1.3) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg1 = applyEquipmentEffects(Math.max(1, raw1 + randInt(-2, 4)), 'deal');
+      enemy.takeDamage(dmg1);
+      let dmg2 = 0;
+      if (enemy.isAlive()) {
+        const raw2 = Math.floor(player.effectiveAttack * 1.3) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        dmg2 = applyEquipmentEffects(Math.max(1, raw2 + randInt(-2, 4)), 'deal');
+        enemy.takeDamage(dmg2);
+      }
+      log(`🌠 ${player.name} は「流星斬り」で 2 連撃！ → ${enemy.name} に ${dmg1}＋${dmg2} ダメージ！`, 'player-action');
       renderEnemyStatus();
       break;
     }
 
     case 'ruin_slash': {
-      // 崩壊斬り: ATK×3.5
-      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 崩壊斬り: ATK×3.0
+      const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
       enemy.takeDamage(dmg);
       log(`⚔ ${player.name} は「崩壊斬り」を振りおろした！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
@@ -1056,11 +1077,16 @@ function useSkill(skillId) {
     }
 
     case 'peerless_blade': {
-      // 天地無用剣: ATK×4.5
-      const raw = Math.floor(player.effectiveAttack * 4.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
-      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 9)), 'deal');
-      enemy.takeDamage(dmg);
-      log(`✴ ${player.name} は「天地無用剣」を解き放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      // 天地無用剣: ATK×1.4 の 3 連撃
+      const hits = [];
+      for (let i = 0; i < 3; i++) {
+        if (!enemy.isAlive()) break;
+        const raw = Math.floor(player.effectiveAttack * 1.4) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
+        enemy.takeDamage(dmg);
+        hits.push(dmg);
+      }
+      log(`✴ ${player.name} は「天地無用剣」で 3 連撃！ → ${enemy.name} に ${hits.join('＋')} ダメージ！`, 'player-action');
       renderEnemyStatus();
       break;
     }
@@ -1108,16 +1134,16 @@ function useSkill(skillId) {
     /* ── 僧侶新スキル ── */
 
     case 'battle_hymn': {
-      // 祝福の歌: ATK+25 バフ 4 ターン
-      game.playerAtkBuff = { bonus: 25, turnsLeft: 4 };
-      log(`🎶 ${player.name} は「祝福の歌」を歌った！ 4 ターン ATK +25`, 'player-action');
+      // 祝福の歌: ATK+40 バフ 6 ターン
+      game.playerAtkBuff = { bonus: 40, turnsLeft: 6 };
+      log(`🎶 ${player.name} は「祝福の歌」を歌った！ 6 ターン ATK +40`, 'player-action');
       break;
     }
 
     case 'divine_shield': {
-      // 神の護り: DEF+50 バフ 3 ターン
-      game.shieldActive = { defenseBonus: 50, turnsLeft: 3 };
-      log(`🛡 ${player.name} は「神の護り」を展開した！ 3 ターン DEF +50`, 'player-action');
+      // 神の護り: DEF+80 バフ 5 ターン
+      game.shieldActive = { defenseBonus: 80, turnsLeft: 5 };
+      log(`🛡 ${player.name} は「神の護り」を展開した！ 5 ターン DEF +80`, 'player-action');
       break;
     }
 
@@ -1132,51 +1158,55 @@ function useSkill(skillId) {
     /* ── 戦士新スキル ── */
 
     case 'earth_crash': {
-      // 大地砕き: ATK×2.2 + 35%スタン
+      // 大地砕き: ATK×2.2 + 15%スタン＋常時ATK大幅低下デバフ
       const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
-      const stunned = Math.random() < 0.35;
+      const stunned = Math.random() < 0.15;
       game.enemyStunned = stunned;
+      // 常時ATK大幅低下デバフを付与（スタン有無にかかわらず）
+      game.enemyAtkDebuff = { factor: 0.70, turnsLeft: 3 };
       if (stunned) {
-        log(`🌋 ${player.name} は「大地砕き」を放った！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+        log(`🌋 ${player.name} は「大地砕き」を放った！ → ${enemy.name} に ${dmg} ダメージ！スタン＋ATK大幅低下！`, 'player-action');
       } else {
-        log(`🌋 ${player.name} は「大地砕き」を放った！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+        log(`🌋 ${player.name} は「大地砕き」を放った！ → ${enemy.name} に ${dmg} ダメージ！ATK大幅低下！`, 'player-action');
       }
       renderEnemyStatus();
       break;
     }
 
     case 'annihilation': {
-      // 滅却の一撃: ATK×3.0 + 強化 ATK デバフ（2 ターン）
+      // 滅却の一撃: ATK×3.0 + 壊滅的 ATK デバフ（3 ターン）
       const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
       enemy.takeDamage(dmg);
-      game.enemyAtkDebuff = { factor: 0.65, turnsLeft: 2 };
-      log(`💀 ${player.name} は「滅却の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！攻撃力が大幅低下！`, 'player-action');
+      game.enemyAtkDebuff = { factor: 0.50, turnsLeft: 3 };
+      log(`💀 ${player.name} は「滅却の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！攻撃力が壊滅的に低下！`, 'player-action');
       renderEnemyStatus();
       break;
     }
 
     case 'battle_trance': {
-      // 戦神の覚醒: ATK+30 バフ 3 ターン + DEF+20 バフ 3 ターン
-      game.playerAtkBuff = { bonus: 30, turnsLeft: 3 };
-      game.shieldActive  = { defenseBonus: 20, turnsLeft: 3 };
-      log(`⚡ ${player.name} は「戦神の覚醒」を発動！ 3 ターン ATK +30 / DEF +20`, 'player-action');
+      // 戦神の覚醒: ATK+35 バフ 4 ターン + DEF+25 バフ 4 ターン
+      game.playerAtkBuff = { bonus: 35, turnsLeft: 4 };
+      game.shieldActive  = { defenseBonus: 25, turnsLeft: 4 };
+      log(`⚡ ${player.name} は「戦神の覚醒」を発動！ 4 ターン ATK +35 / DEF +25`, 'player-action');
       break;
     }
 
     case 'ogre_strike': {
-      // 鬼神の一撃: ATK×4.0 + 50%スタン
+      // 鬼神の一撃: ATK×4.0 + 25%スタン＋常時ATK強力低下デバフ
       const raw = Math.floor(player.effectiveAttack * 4.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 9)), 'deal');
       enemy.takeDamage(dmg);
-      const stunned = Math.random() < 0.50;
+      const stunned = Math.random() < 0.25;
       game.enemyStunned = stunned;
+      // 常時ATK強力低下デバフを付与（スタン有無にかかわらず）
+      game.enemyAtkDebuff = { factor: 0.60, turnsLeft: 3 };
       if (stunned) {
-        log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！スタン！`, 'player-action');
+        log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！スタン＋ATK強力低下！`, 'player-action');
       } else {
-        log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！（スタン不発）`, 'player-action');
+        log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！ATK強力低下！`, 'player-action');
       }
       renderEnemyStatus();
       break;
