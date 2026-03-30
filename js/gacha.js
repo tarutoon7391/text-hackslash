@@ -40,8 +40,8 @@ const GACHA_TABLE = [
   { id: 'key_skill',       name: 'スキルダンジョンの鍵',   type: 'key', rarity: 'key', weight: 20 },
 
   /* ── 限定素材 ── */
-  { id: 'gacha_mithril',   name: 'ミスリル',  type: 'limitedMaterial', rarity: 'limited', weight: 40 },
-  { id: 'gacha_souten',    name: '蒼天晶',    type: 'limitedMaterial', rarity: 'limited', weight: 40 },
+  { id: 'gacha_mithril',   name: 'ミスリル',  type: 'limitedMaterial', rarity: 'limited', weight: 30 },
+  { id: 'gacha_souten',    name: '蒼天晶',    type: 'limitedMaterial', rarity: 'limited', weight: 30 },
 
   /* ── クラフトレシピ（永続品） ── */
   {
@@ -270,6 +270,55 @@ function showGachaAnimation(results) {
         header.style.color = '#00ccff';
       }
     }, (idx + 1) * INTERVAL_MS);
+  });
+}
+
+/**
+ * 排出率一覧をガチャログエリアに表示する
+ * 永続品はフラグにより確率が変動するため、現在のプール状態で計算する
+ * 入手済みの永続品は「入手済み」と表示する
+ */
+function showGachaRates() {
+  const logEl = document.getElementById('gacha-log');
+  if (!logEl) return;
+
+  const p = game.player;
+
+  // 現在のプールで合計重みを計算する（入手済み永続品は除外済み）
+  const pool        = buildGachaPool();
+  const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+
+  logEl.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className   = 'gacha-summoning';
+  header.textContent = '--- 排出率一覧 ---';
+  logEl.appendChild(header);
+
+  GACHA_TABLE.forEach(item => {
+    const line = document.createElement('div');
+    line.className  = 'gacha-result-line';
+    line.style.color = GACHA_RARITY_COLORS[item.rarity] || '#00ff41';
+
+    const rarityLabel = GACHA_RARITY_LABELS[item.rarity] || '';
+
+    // 入手済み永続品かどうか判定する
+    const isObtained = item.permanent && p.permanentItems[item.flag];
+
+    if (isObtained) {
+      line.textContent = `[${rarityLabel}] ${item.name} - 入手済み`;
+    } else {
+      // 有効プール内でのこのアイテムの現在重みを取得する
+      const poolItem = pool.find(pi => pi.id === item.id);
+      if (poolItem) {
+        const percent = (poolItem.weight / totalWeight * 100).toFixed(2);
+        line.textContent = `[${rarityLabel}] ${item.name} - ${percent}%`;
+      } else {
+        line.textContent = `[${rarityLabel}] ${item.name} - 0.00%`;
+      }
+    }
+
+    logEl.appendChild(line);
   });
 }
 
