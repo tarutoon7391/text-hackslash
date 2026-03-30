@@ -611,6 +611,7 @@ const SKILL_DEFINITIONS = (() => {
           name:        n.name,
           mpCost:      n.mpCost || 0,
           description: n.description,
+          route:       route.id,
         });
       });
   });

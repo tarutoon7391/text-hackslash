@@ -459,13 +459,49 @@ function endBattle(result) {
    スキルパネル
    ============================================================== */
 
-/** スキル選択パネルを表示する */
-function showSkillPanel() {
+/** スキルパネルで現在選択中のルートタブ */
+let _skillPanelRoute = null;
+
+/** スキル選択パネルを表示する（route: タブで選択するルートID） */
+function showSkillPanel(route) {
   const panel  = document.getElementById('skill-panel');
   const player = game.player;
 
-  const btns = SKILL_DEFINITIONS
-    .filter(s => player.learnedSkills.includes(s.id))
+  // 各ルートの習得済みスキルをまとめる
+  const routeMap = {};
+  SKILL_TREE_DEFINITIONS.forEach(r => {
+    const skills = SKILL_DEFINITIONS.filter(
+      s => s.route === r.id && player.learnedSkills.includes(s.id)
+    );
+    if (skills.length > 0) routeMap[r.id] = { name: r.name, skills };
+  });
+
+  const availableRoutes = SKILL_TREE_DEFINITIONS.filter(r => routeMap[r.id]);
+
+  // 習得済みスキルが1つもない場合
+  if (availableRoutes.length === 0) {
+    panel.innerHTML = '<span class="skill-none">習得済みスキルなし</span>'
+      + '<button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
+    panel.style.display = 'flex';
+    return;
+  }
+
+  // 選択中のタブが有効でない場合は先頭ルートに切り替え
+  if (!route || !routeMap[route]) {
+    route = availableRoutes[0].id;
+  }
+  _skillPanelRoute = route;
+
+  // タブ HTML
+  const tabsHtml = availableRoutes
+    .map(r => {
+      const isActive = r.id === route;
+      return `<button class="skill-tab-btn${isActive ? ' active' : ''}" onclick="showSkillPanel('${r.id}')">${r.name}</button>`;
+    })
+    .join('');
+
+  // 選択中ルートのスキルボタン HTML
+  const btns = routeMap[route].skills
     .map(s => {
       const noMp = player.mp < s.mpCost;
       return `<button class="skill-btn${noMp ? ' disabled' : ''}" ${noMp ? 'disabled' : ''} onclick="useSkill('${s.id}')">
@@ -474,11 +510,9 @@ function showSkillPanel() {
     })
     .join('');
 
-  if (!btns) {
-    panel.innerHTML = '<span class="skill-none">習得済みスキルなし</span><button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
-  } else {
-    panel.innerHTML = btns + '<button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
-  }
+  panel.innerHTML = `<div class="skill-tabs">${tabsHtml}</div>`
+    + `<div class="skill-list">${btns}</div>`
+    + '<button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
   panel.style.display = 'flex';
 }
 

@@ -488,11 +488,47 @@ footer {
 /* スキルパネル */
 #skill-panel {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 8px;
   padding: 8px;
   border: 1px solid #ffdd00;
   background-color: #050505;
+}
+
+/* スキルタブ行 */
+.skill-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.skill-tab-btn {
+  background-color: #0a0a0a;
+  color: #888888;
+  border: 1px solid #444444;
+  padding: 6px 12px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.skill-tab-btn.active {
+  color: #ffdd00;
+  border-color: #ffdd00;
+  background-color: #1a1600;
+}
+
+.skill-tab-btn:hover:not(.active) {
+  background-color: #1a1a1a;
+  color: #aaaaaa;
+}
+
+/* スキルボタン行 */
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .skill-btn {
