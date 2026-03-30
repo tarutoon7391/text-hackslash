@@ -462,7 +462,7 @@ function endBattle(result) {
 /** スキルパネルで現在選択中のルートタブ */
 let _skillPanelRoute = null;
 
-/** スキル選択パネルを表示する（route: タブで選択するルートID） */
+/** スキル選択パネルを表示する（route: タブで選択するルートID、'all' ですべて表示） */
 function showSkillPanel(route) {
   const panel  = document.getElementById('skill-panel');
   const player = game.player;
@@ -486,22 +486,29 @@ function showSkillPanel(route) {
     return;
   }
 
-  // 選択中のタブが有効でない場合は先頭ルートに切り替え
-  if (!route || !routeMap[route]) {
-    route = availableRoutes[0].id;
+  // 選択中のタブが有効でない場合は「すべて」タブに切り替え
+  if (!route || (route !== 'all' && !routeMap[route])) {
+    route = 'all';
   }
   _skillPanelRoute = route;
 
-  // タブ HTML
-  const tabsHtml = availableRoutes
+  // 「すべて」タブ + 習得済みルートのタブ HTML
+  const allTab = `<button class="skill-tab-btn${route === 'all' ? ' active' : ''}" onclick="showSkillPanel('all')">すべて</button>`;
+  const routeTabs = availableRoutes
     .map(r => {
       const isActive = r.id === route;
       return `<button class="skill-tab-btn${isActive ? ' active' : ''}" onclick="showSkillPanel('${r.id}')">${r.name}</button>`;
     })
     .join('');
+  const tabsHtml = allTab + routeTabs;
 
-  // 選択中ルートのスキルボタン HTML
-  const btns = routeMap[route].skills
+  // 表示するスキル一覧を決定
+  const displaySkills = route === 'all'
+    ? availableRoutes.flatMap(r => routeMap[r.id].skills)
+    : routeMap[route].skills;
+
+  // スキルボタン HTML
+  const btns = displaySkills
     .map(s => {
       const noMp = player.mp < s.mpCost;
       return `<button class="skill-btn${noMp ? ' disabled' : ''}" ${noMp ? 'disabled' : ''} onclick="useSkill('${s.id}')">
