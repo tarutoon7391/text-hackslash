@@ -530,6 +530,22 @@ footer {
   color: #aaaaaa;
 }
 
+/* お気に入りタブ */
+.skill-tab-favorite {
+  color: #aaaaaa;
+  border-color: #666;
+}
+
+.skill-tab-favorite.active {
+  color: #ffdd00;
+  border-color: #ffdd00;
+  background-color: #1a1600;
+}
+
+.skill-tab-favorite:hover:not(.active) {
+  color: #ffdd00;
+}
+
 /* スキルボタン行 */
 .skill-list {
   display: flex;
@@ -1130,6 +1146,30 @@ footer {
 
 .st-node.acquired .st-node-cost {
   color: #336633;
+}
+
+/* お気に入りボタン（スキルツリー） */
+.st-favorite-btn {
+  background: none;
+  border: 1px solid #444444;
+  color: #666666;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 1px 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.st-favorite-btn.active {
+  color: #ffdd00;
+  border-color: #ffdd00;
+}
+
+.st-favorite-btn:hover {
+  color: #ffdd00;
+  border-color: #ffdd00;
 }
 
 /* ノード説明 */

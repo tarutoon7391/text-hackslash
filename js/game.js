@@ -61,7 +61,9 @@ class Player {
     this.level          = s.level         ?? 1;
     this.exp            = s.exp           ?? 0;
     this.skillPoints    = s.skillPoints   ?? 0;
-    this.learnedSkills  = s.learnedSkills  ? [...s.learnedSkills]  : [];
+    this.learnedSkills   = s.learnedSkills   ? [...s.learnedSkills]  : [];
+    /** お気に入り登録済みスキルIDの配列 */
+    this.favoriteSkills  = s.favoriteSkills  ? [...s.favoriteSkills] : [];
     this.materials      = s.materials      ? { ...s.materials }    : {};
     this.equipment      = s.equipment      ? { ...s.equipment }    : {};
     this.ownedEquipment = s.ownedEquipment ? [...s.ownedEquipment] : [];
@@ -526,18 +528,24 @@ function endBattle(result) {
 /** スキルパネルで現在選択中のルートタブ */
 let _skillPanelRoute = null;
 
-/** スキル選択パネルを表示する（route: タブで選択するルートID、'all' ですべて表示） */
+/** スキル選択パネルを表示する（route: タブで選択するルートID、'all' ですべて表示、'favorite' でお気に入り表示） */
 function showSkillPanel(route) {
   const panel  = document.getElementById('skill-panel');
   const player = game.player;
 
   // 各ルートの習得済みスキルをまとめる
+  const routeDefMap = {};
+  SKILL_TREE_DEFINITIONS.forEach(r => { routeDefMap[r.id] = r; });
+
   const routeMap = {};
-  SKILL_TREE_DEFINITIONS.forEach(r => {
-    const skills = SKILL_DEFINITIONS.filter(
-      s => s.route === r.id && player.learnedSkills.includes(s.id)
-    );
-    if (skills.length > 0) routeMap[r.id] = { name: r.name, skills };
+  SKILL_DEFINITIONS.forEach(s => {
+    if (player.learnedSkills.includes(s.id)) {
+      if (!routeMap[s.route]) {
+        const routeDef = routeDefMap[s.route];
+        routeMap[s.route] = { name: routeDef ? routeDef.name : s.route, skills: [] };
+      }
+      routeMap[s.route].skills.push(s);
+    }
   });
 
   const availableRoutes = SKILL_TREE_DEFINITIONS.filter(r => routeMap[r.id]);
@@ -551,12 +559,12 @@ function showSkillPanel(route) {
   }
 
   // 選択中のタブが有効でない場合は「すべて」タブに切り替え
-  if (!route || (route !== 'all' && !routeMap[route])) {
+  if (!route || (route !== 'all' && route !== 'favorite' && !routeMap[route])) {
     route = 'all';
   }
   _skillPanelRoute = route;
 
-  // 「すべて」タブ + 習得済みルートのタブ HTML
+  // 「すべて」タブ + 習得済みルートのタブ + お気に入りタブ HTML
   const allTab = `<button class="skill-tab-btn${route === 'all' ? ' active' : ''}" onclick="showSkillPanel('all')">すべて</button>`;
   const routeTabs = availableRoutes
     .map(r => {
@@ -564,25 +572,39 @@ function showSkillPanel(route) {
       return `<button class="skill-tab-btn${isActive ? ' active' : ''}" onclick="showSkillPanel('${r.id}')">${r.name}</button>`;
     })
     .join('');
-  const tabsHtml = allTab + routeTabs;
+  const favoriteTab = `<button class="skill-tab-btn skill-tab-favorite${route === 'favorite' ? ' active' : ''}" onclick="showSkillPanel('favorite')">★お気に入り</button>`;
+  const tabsHtml = allTab + routeTabs + favoriteTab;
 
   // 表示するスキル一覧を決定
-  const displaySkills = route === 'all'
-    ? availableRoutes.flatMap(r => routeMap[r.id].skills)
-    : routeMap[route].skills;
+  let displaySkills;
+  if (route === 'all') {
+    displaySkills = availableRoutes.flatMap(r => routeMap[r.id].skills);
+  } else if (route === 'favorite') {
+    displaySkills = SKILL_DEFINITIONS.filter(
+      s => player.favoriteSkills.includes(s.id) && player.learnedSkills.includes(s.id)
+    );
+  } else {
+    displaySkills = routeMap[route].skills;
+  }
 
-  // スキルボタン HTML
-  const btns = displaySkills
-    .map(s => {
-      const noMp = player.mp < s.mpCost;
-      return `<button class="skill-btn${noMp ? ' disabled' : ''}" ${noMp ? 'disabled' : ''} onclick="useSkill('${s.id}')">
-        ${s.name}（MP:${s.mpCost}）<br><small>${s.description}</small>
-      </button>`;
-    })
-    .join('');
+  // お気に入りタブで登録なしの場合
+  let listHtml;
+  if (route === 'favorite' && displaySkills.length === 0) {
+    listHtml = '<span class="skill-none">スキルツリーからお気に入り登録してください</span>';
+  } else {
+    // スキルボタン HTML
+    listHtml = displaySkills
+      .map(s => {
+        const noMp = player.mp < s.mpCost;
+        return `<button class="skill-btn${noMp ? ' disabled' : ''}" ${noMp ? 'disabled' : ''} onclick="useSkill('${s.id}')">
+          ${s.name}（MP:${s.mpCost}）<br><small>${s.description}</small>
+        </button>`;
+      })
+      .join('');
+  }
 
   panel.innerHTML = `<div class="skill-tabs">${tabsHtml}</div>`
-    + `<div class="skill-list">${btns}</div>`
+    + `<div class="skill-list">${listHtml}</div>`
     + '<button class="skill-cancel-btn" onclick="cancelSkillPanel()">キャンセル</button>';
   panel.style.display = 'flex';
 }
