@@ -644,6 +644,137 @@ const SKILL_TREE_DEFINITIONS = [
       },
     ],
   },
+
+  /* ──────────────────────────────────────────────────────────
+     魔剣士ルート（剣士×魔法の上位互換）
+     ATK・MP ボーナスが高く、MP 消費を伴う超高火力スキルを習得できる。
+     全4ルートMAX＋魔剣士の書を取得後に解放される特別ルート。
+     ────────────────────────────────────────────────────────── */
+  {
+    id:          'makenshi',
+    name:        '魔剣士',
+    description: '剣士×魔法の上位互換ルート。ATK・MP が大幅に伸び、全ルート最高クラスの火力スキルを習得できる。解放条件：全4ルートMAX＋魔剣士の書。',
+    nodes: [
+      {
+        id: 'mk_01', name: '魔力の心得',
+        type: 'stat', description: 'MP +8',
+        bonuses: { mp: 8 }, cost: 1, requires: null,
+      },
+      {
+        id: 'mk_02', name: '剣魔の型',
+        type: 'stat', description: 'ATK +3',
+        bonuses: { atk: 3 }, cost: 1, requires: 'mk_01',
+      },
+      {
+        id: 'mk_03', name: '魔力展開',
+        type: 'stat', description: 'MP +10',
+        bonuses: { mp: 10 }, cost: 1, requires: 'mk_02',
+      },
+      {
+        id: 'mk_04', name: '魔剣の基礎',
+        type: 'stat', description: 'ATK +4',
+        bonuses: { atk: 4 }, cost: 1, requires: 'mk_03',
+      },
+      {
+        id: 'mk_05', name: '剣魔の融合',
+        type: 'stat', description: 'ATK +4 / MP +5',
+        bonuses: { atk: 4, mp: 5 }, cost: 1, requires: 'mk_04',
+      },
+      {
+        // パッシブ: 通常攻撃が「MP回復攻撃」に変化する（威力×0.6・MP +8 回復）
+        id: 'mk_06', name: 'MP回復攻撃',
+        type: 'passive',
+        description: 'パッシブ：通常攻撃が「MP回復攻撃」に変化する（威力×0.6 / MP +8 回復）',
+        bonuses: {}, cost: 2, requires: 'mk_05',
+      },
+      {
+        id: 'mk_07', name: '魔力強化',
+        type: 'stat', description: 'ATK +6',
+        bonuses: { atk: 6 }, cost: 2, requires: 'mk_06',
+      },
+      {
+        id: 'mk_08', name: '魔力蓄積',
+        type: 'stat', description: 'MP +15',
+        bonuses: { mp: 15 }, cost: 2, requires: 'mk_07',
+      },
+      {
+        id: 'mk_09', name: '魔力凝縮',
+        type: 'skill', skillId: 'magic_condense',
+        description: '魔力を凝縮し次の攻撃を強化（次ターン ATK×2.5・被ダメ×1.5 / MP:30）',
+        mpCost: 30, bonuses: {}, cost: 3, requires: 'mk_08',
+      },
+      {
+        id: 'mk_10', name: '魔剣の極意',
+        type: 'stat', description: 'ATK +8',
+        bonuses: { atk: 8 }, cost: 2, requires: 'mk_09',
+      },
+      {
+        id: 'mk_11', name: '魔剣強撃',
+        type: 'skill', skillId: 'magic_sword_strike',
+        description: '魔力を纏った強撃（ATK×2.2 / MP:22 / 30%で防御を無視する会心）',
+        mpCost: 22, bonuses: {}, cost: 3, requires: 'mk_10',
+      },
+      {
+        id: 'mk_12', name: '深淵の魔力',
+        type: 'stat', description: 'ATK +10 / MP +18',
+        bonuses: { atk: 10, mp: 18 }, cost: 3, requires: 'mk_11',
+      },
+      {
+        id: 'mk_13', name: '魔力爆破斬',
+        type: 'skill', skillId: 'magic_burst_slash',
+        description: '魔剣で爆裂する一撃（物理ATK×3.0 + 魔法ATK×0.5追加 / MP:32）',
+        mpCost: 32, bonuses: {}, cost: 3, requires: 'mk_12',
+      },
+      {
+        id: 'mk_14', name: '究極の剣技',
+        type: 'stat', description: 'ATK +12',
+        bonuses: { atk: 12 }, cost: 3, requires: 'mk_13',
+      },
+      {
+        id: 'mk_15', name: '魔力防壁',
+        type: 'stat', description: 'ATK +8 / DEF +5',
+        bonuses: { atk: 8, def: 5 }, cost: 2, requires: 'mk_14',
+      },
+      {
+        id: 'mk_16', name: '魔力の海',
+        type: 'stat', description: 'MP +20',
+        bonuses: { mp: 20 }, cost: 2, requires: 'mk_15',
+      },
+      {
+        id: 'mk_17', name: '魔剣烈風斬',
+        type: 'skill', skillId: 'magic_gale_slash',
+        description: '魔力の嵐を纏った 2 連撃（ATK×1.75×2 / MP:40）',
+        mpCost: 40, bonuses: {}, cost: 2, requires: 'mk_16',
+      },
+      {
+        id: 'mk_18', name: '魔剣士の真髄',
+        type: 'stat', description: 'ATK +10 / DEF +8',
+        bonuses: { atk: 10, def: 8 }, cost: 2, requires: 'mk_17',
+      },
+      {
+        id: 'mk_19', name: '無限の魔力',
+        type: 'stat', description: 'MP +25',
+        bonuses: { mp: 25 }, cost: 2, requires: 'mk_18',
+      },
+      {
+        id: 'mk_20', name: '魔剣士の覚醒',
+        type: 'skill', skillId: 'makenshi_awakening',
+        description: '魔剣士として覚醒（ATK+50 / 4ターン ＋ DEF+20 / 3ターン / MP:45）',
+        mpCost: 45, bonuses: {}, cost: 3, requires: 'mk_19',
+      },
+      {
+        id: 'mk_21', name: '魔剣の神髄',
+        type: 'stat', description: 'ATK +15 / MP +30',
+        bonuses: { atk: 15, mp: 30 }, cost: 3, requires: 'mk_20',
+      },
+      {
+        id: 'mk_22', name: '絶界魔剣斬',
+        type: 'skill', skillId: 'absolute_magic_slash',
+        description: '全魔力を解放する究極の一撃（ATK×6.0 / MP:80 / 防御完全無視）',
+        mpCost: 80, bonuses: {}, cost: 3, requires: 'mk_21',
+      },
+    ],
+  },
 ];
 
 /**
@@ -667,6 +798,24 @@ const SKILL_DEFINITIONS = (() => {
   });
   return defs;
 })();
+
+/**
+ * 魔剣士ルートの解放条件を満たしているか判定する
+ * 条件: 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み AND 魔剣士の書を入手済み
+ * @returns {boolean}
+ */
+function isMakenshiUnlocked() {
+  const p = game.player;
+  if (!p.permanentItems.hasBookMakenshi) return false;
+  const baseRoutes = ['swordsman', 'mage', 'cleric', 'warrior'];
+  for (const routeId of baseRoutes) {
+    const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
+    if (!route) return false;
+    const acquired = p.skillTreeNodes[routeId] || [];
+    if (acquired.length < route.nodes.length) return false;
+  }
+  return true;
+}
 
 /* ==============================================================
    EXP 加算・レベルアップ処理
@@ -768,9 +917,37 @@ function renderSkillTree() {
     btn.classList.toggle('active', btn.dataset.route === skillTreeCurrentRoute);
   });
 
+  // 魔剣士タブのロック/解放状態を反映する
+  const makenshiUnlocked = isMakenshiUnlocked();
+  const makenshiTabBtn = document.getElementById('st-tab-makenshi');
+  if (makenshiTabBtn) {
+    makenshiTabBtn.textContent = makenshiUnlocked ? '🗡 魔剣士' : '🔒 魔剣士';
+    makenshiTabBtn.classList.toggle('tab-locked', !makenshiUnlocked);
+  }
+
   // 現在のルートを取得
   const route = SKILL_TREE_DEFINITIONS.find(r => r.id === skillTreeCurrentRoute);
   if (!route) return;
+
+  // 魔剣士タブが選択されているが未解放の場合はロックメッセージを表示する
+  if (skillTreeCurrentRoute === 'makenshi' && !makenshiUnlocked) {
+    const descEl = document.getElementById('st-route-desc');
+    if (descEl) descEl.textContent = '';
+    const nodeList = document.getElementById('st-node-list');
+    if (nodeList) {
+      nodeList.innerHTML = `
+        <div class="st-locked-msg">
+          <div class="st-locked-icon">🔒</div>
+          <div class="st-locked-title">魔剣士ルートは未解放です</div>
+          <div class="st-locked-cond">解放条件：</div>
+          <ul class="st-locked-list">
+            <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+            <li>「魔剣士の書」を入手済み（ガチャで入手可能）</li>
+          </ul>
+        </div>`;
+    }
+    return;
+  }
 
   // ルート説明
   const descEl = document.getElementById('st-route-desc');
@@ -797,13 +974,14 @@ function renderSkillTree() {
       ? `onclick="acquireSkillNode('${skillTreeCurrentRoute}', '${node.id}')"`
       : '';
 
-    const typeIcon = node.type === 'skill' ? '✨' : '📈';
+    // パッシブノードは🔮アイコンで表示する
+    const typeIcon = node.type === 'skill' ? '✨' : node.type === 'passive' ? '🔮' : '📈';
 
     let statusText;
-    if (isAcquired)        statusText = '✓ 取得済み';
+    if (isAcquired)         statusText = '✓ 取得済み';
     else if (!prevAcquired) statusText = '🔒 前のノードを取得してください';
-    else if (!canAfford)   statusText = `⚠ SP が足りません（必要 ${node.cost} pt）`;
-    else                   statusText = `▶ クリックして取得（${node.cost} SP 消費）`;
+    else if (!canAfford)    statusText = `⚠ SP が足りません（必要 ${node.cost} pt）`;
+    else                    statusText = `▶ クリックして取得（${node.cost} SP 消費）`;
 
     const arrow = idx < route.nodes.length - 1 ? '<div class="st-node-arrow">↓</div>' : '';
 
@@ -867,6 +1045,9 @@ function acquireSkillNode(routeId, nodeId) {
 
   const node = route.nodes.find(n => n.id === nodeId);
   if (!node) return;
+
+  // 魔剣士ルートは解放条件を満たしていないと取得不可
+  if (routeId === 'makenshi' && !isMakenshiUnlocked()) return;
 
   // 既に取得済みか確認
   if (!p.skillTreeNodes[routeId]) p.skillTreeNodes[routeId] = [];
@@ -1297,6 +1478,77 @@ function useSkill(skillId) {
       } else {
         log(`👹 ${player.name} は「鬼神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！ATK強力低下！`, 'player-action');
       }
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── 魔剣士スキル ── */
+
+    case 'magic_condense': {
+      // 魔力凝縮: 次のターン ATK×2.5・被ダメ×1.5（justSet=true で発動ターンは即消費しない）
+      game.playerCondense = { atkMultiplier: 2.5, dmgMultiplier: 1.5, justSet: true };
+      log(`💎 ${player.name} は「魔力凝縮」を発動！次の攻撃が ATK×2.5！（この間 被ダメ ×1.5）`, 'player-action');
+      break;
+    }
+
+    case 'magic_sword_strike': {
+      // 魔剣強撃: ATK×2.2 / 30%で防御を無視する会心
+      const ignoresDef = Math.random() < 0.30;
+      const defFactor  = ignoresDef ? 0 : SKILL_DEFENSE_FACTOR;
+      const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * defFactor);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(dmg);
+      if (ignoresDef) {
+        log(`⚔🔮 ${player.name} は「魔剣強撃」で防御を貫いた！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
+      } else {
+        log(`⚔🔮 ${player.name} は「魔剣強撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      }
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'magic_burst_slash': {
+      // 魔力爆破斬: 物理ATK×3.0 + 魔法ATK×0.5追加ダメ（魔法部分は防御無視）
+      const rawPhys = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const physDmg = applyEquipmentEffects(Math.max(1, rawPhys + randInt(-4, 6)), 'deal');
+      const magicDmg = Math.floor(player.effectiveAttack * 0.5);
+      const totalDmg = physDmg + magicDmg;
+      enemy.takeDamage(totalDmg);
+      log(`🔮💥 ${player.name} は「魔力爆破斬」を放った！ → ${enemy.name} に ${physDmg}+${magicDmg}(魔法) = ${totalDmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'magic_gale_slash': {
+      // 魔剣烈風斬: ATK×1.75 の 2 連撃（合計 ATK×3.5 相当）
+      const raw1 = Math.floor(player.effectiveAttack * 1.75) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg1 = applyEquipmentEffects(Math.max(1, raw1 + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(dmg1);
+      let dmg2 = 0;
+      if (enemy.isAlive()) {
+        const raw2 = Math.floor(player.effectiveAttack * 1.75) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        dmg2 = applyEquipmentEffects(Math.max(1, raw2 + randInt(-3, 5)), 'deal');
+        enemy.takeDamage(dmg2);
+      }
+      log(`⚔🌪 ${player.name} は「魔剣烈風斬」を放った！ → ${enemy.name} に ${dmg1}+${dmg2} = ${dmg1 + dmg2} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'makenshi_awakening': {
+      // 魔剣士の覚醒: ATK+50 バフ 4 ターン + DEF+20 バフ 3 ターン
+      game.playerAtkBuff = { bonus: 50, turnsLeft: 4 };
+      game.shieldActive  = { defenseBonus: 20, turnsLeft: 3 };
+      log(`🌌 ${player.name} は「魔剣士の覚醒」を発動！4 ターン ATK +50 / 3 ターン DEF +20！`, 'player-action');
+      break;
+    }
+
+    case 'absolute_magic_slash': {
+      // 絶界魔剣斬: ATK×6.0 / 防御を完全に無視する究極の一撃
+      const raw = Math.floor(player.effectiveAttack * 6.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 10)), 'deal');
+      enemy.takeDamage(dmg);
+      log(`🌌⚡ ${player.name} は「絶界魔剣斬」を解放した！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
       renderEnemyStatus();
       break;
     }

@@ -1107,6 +1107,64 @@ footer {
   background-color: #ffdd0011;
 }
 
+/* ロック中タブ（魔剣士など未解放ルート） */
+.st-tab-btn.tab-locked {
+  color: #666;
+  border-color: #444;
+  cursor: pointer;
+}
+
+.st-tab-btn.tab-locked:hover {
+  color: #888;
+  border-color: #666;
+  background-color: #ffffff08;
+}
+
+/* 魔剣士タブ解放後はゴールド系の特別カラーで表示 */
+.st-tab-btn[data-route="makenshi"]:not(.tab-locked) {
+  color: #bb88ff;
+  border-color: #8844cc;
+}
+
+.st-tab-btn[data-route="makenshi"]:not(.tab-locked).active {
+  color: #dd99ff;
+  border-color: #aa66ff;
+  box-shadow: 0 0 8px #aa66ff66;
+}
+
+/* 魔剣士ルートのロックメッセージ */
+.st-locked-msg {
+  padding: 24px 16px;
+  text-align: center;
+  color: #888;
+}
+
+.st-locked-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.st-locked-title {
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
+.st-locked-cond {
+  font-size: 0.88rem;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.st-locked-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.84rem;
+  color: #777;
+  line-height: 1.8;
+}
+
 /* ルート説明 */
 .st-route-desc {
   font-size: 0.82rem;
