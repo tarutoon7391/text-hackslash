@@ -2294,8 +2294,9 @@ const EQUIPMENT_DEFINITIONS = [
    * isSpecialEnhance: true でミスリル＋蒼天晶×強化レベル数の素材を消費する
    * requiresRecipe: 'hasRecipeAogin' のフラグが必要（ガチャで入手）
    * 計算式: 各ステータス = lv × 係数（ATK/MP係数多め、DEF/HP係数少なめ）
-   * Lv1:  ATK3   DEF1   HP2    MP3
-   * Lv50: ATK150 DEF50  HP100  MP150
+   * Lv 1:  ATK2    DEF1    HP2    MP2
+   * Lv50:  ATK100  DEF40   HP75   MP100
+   * Lv99:  ATK198  DEF79   HP148  MP198
    * 強化: 基本ステータス × (1 + 0.1 × 強化レベル)
    */
   {
@@ -2307,7 +2308,7 @@ const EQUIPMENT_DEFINITIONS = [
     isSpecialEnhance: true,
     requiresRecipe: 'hasRecipeAogin',
     stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
-    growthCoeff: { attack: 3, defense: 1, maxHp: 2, maxMp: 3 },
+    growthCoeff: { attack: 2.0, defense: 0.8, maxHp: 1.5, maxMp: 2.0 },
     effectType: 'mpRegen',
     effectLevelCoeff: 0.5,
     effectDesc: '毎ターン MP+Lv×0.5（端数切り捨て・最低1）',
@@ -2322,8 +2323,9 @@ const EQUIPMENT_DEFINITIONS = [
 /**
  * 成長型装備のレベル別ステータスを計算して返す
  * 計算式: 各ステータス = lv × growthCoeff（レベル連動型）
- * 蒼銀の剣の例: ATK = lv×3 / DEF = lv×1 / HP = lv×2 / MP = lv×3
- * Lv50時点: ATK150/DEF50/HP100/MP150（エンドより強くレジェンドより弱い）
+ * 蒼銀の剣の例: ATK = lv×2.0 / DEF = lv×0.8 / HP = lv×1.5 / MP = lv×2.0
+ * Lv50時点: ATK100/DEF40/HP75/MP100
+ * Lv99時点: ATK198/DEF79/HP148/MP198（D12エンド武器ATK195より強くレジェンドには届かない）
  * 強化ボーナスは呼び出し側で factor = 1 + 0.1 × enhLv として乗算する
  * @param {object} eq    - 装備定義（isGrowth: true のもの）
  * @param {number} level - プレイヤーレベル
@@ -2331,7 +2333,7 @@ const EQUIPMENT_DEFINITIONS = [
  */
 function computeGrowthStats(eq, level) {
   if (!eq.isGrowth) return eq.stats;
-  const lv = Math.max(1, Math.min(50, level || 1));
+  const lv = Math.max(1, Math.min(99, level || 1));
   const coeff = eq.growthCoeff || { attack: 0, defense: 0, maxHp: 0, maxMp: 0 };
   return {
     attack:  Math.floor(lv * coeff.attack),
