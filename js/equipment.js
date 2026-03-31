@@ -2309,7 +2309,7 @@ const EQUIPMENT_DEFINITIONS = [
     growthCoeff: { attack: 3, defense: 1, maxHp: 2, maxMp: 3 },
     effectType: 'mpRegen',
     effectLevelCoeff: 0.5,
-    effectDesc: '毎ターン MP+Lv×0.5（端数切り捨て・最低1）（魔剣士の象徴）',
+    effectDesc: '毎ターン MP+Lv×0.5（端数切り捨て・最低1）',
     recipe: { 'ミスリル': 3, '蒼天晶': 3 },
   },
 ];
