@@ -34,10 +34,9 @@ const GACHA_TABLE = [
   { id: 'gacha_demon',     name: '魔王の魂',    type: 'material',          rarity: 'bossRare', weight: 20 },
 
   /* ── ダンジョンの鍵 ── */
-  { id: 'key_xp',          name: 'XPダンジョンの鍵',       type: 'key', rarity: 'key', weight: 20 },
-  { id: 'key_raremon',     name: 'レアモンダンジョンの鍵', type: 'key', rarity: 'key', weight: 20 },
-  { id: 'key_gacha',       name: 'ガチャチケダンジョンの鍵', type: 'key', rarity: 'key', weight: 20 },
-  { id: 'key_skill',       name: 'スキルダンジョンの鍵',   type: 'key', rarity: 'key', weight: 20 },
+  { id: 'key_xp',          name: 'XPダンジョンの鍵',       type: 'key', rarity: 'key', weight: 27 },
+  { id: 'key_raremon',     name: 'レアモンダンジョンの鍵', type: 'key', rarity: 'key', weight: 27 },
+  { id: 'key_skill',       name: 'スキルダンジョンの鍵',   type: 'key', rarity: 'key', weight: 26 },
 
   /* ── 限定素材 ── */
   { id: 'gacha_mithril',   name: 'ミスリル',  type: 'limitedMaterial', rarity: 'limited', weight: 30 },
