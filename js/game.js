@@ -326,12 +326,12 @@ function doPlayerAttack() {
   const hasMpRecovery = (player.skillTreeNodes['makenshi'] || []).includes('mk_06');
 
   if (hasMpRecovery) {
-    // 通常攻撃の0.6倍ダメージ・MP +8 回復（maxMp を超えない）
+    // 通常攻撃の0.6倍ダメージ・MP +30 回復（maxMp を超えない）
     const rawDmg = player.calcAttackDamage(enemy);
     const dmg    = Math.max(1, Math.floor(rawDmg * 0.6));
     enemy.takeDamage(dmg);
     const mpBefore = player.mp;
-    player.mp = Math.min(player.maxMp, player.mp + 8);
+    player.mp = Math.min(player.maxMp, player.mp + 30);
     const mpGained = player.mp - mpBefore;
     log(`⚔✨ ${player.name} の「MP回復攻撃」！ → ${enemy.name} に ${dmg} ダメージ！MP +${mpGained} 回復！`, 'player-action');
     renderPlayerStatus();
