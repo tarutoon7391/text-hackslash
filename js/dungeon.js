@@ -416,6 +416,86 @@ const GACHA_DUNGEON_ENEMY_COUNT = 30;
    ダンジョン画面の初期表示
    ============================================================== */
 
+/**
+ * @typedef {Object} SpecialDungeonEntry
+ * @property {string} icon        - ダンジョンを表すアイコン文字
+ * @property {string} name        - ダンジョン名
+ * @property {string} description - 簡単な説明文
+ * @property {Function} onEnter   - 「選択する」ボタンを押したときに呼び出す関数
+ */
+
+/**
+ * 特殊ダンジョンの定義リスト。
+ * 新しい特殊ダンジョンを追加する場合はここに追加する。
+ * @type {SpecialDungeonEntry[]}
+ */
+const SPECIAL_DUNGEON_LIST = [
+  {
+    icon: '🎫',
+    name: 'ガチャチケダンジョン',
+    description: 'ガチャチケットを獲得できる特殊ダンジョン。全 30 体を討伐してクリアすると獲得チケットがインベントリに加算されます。',
+    onEnter() {
+      showScreen('gacha-dungeon-difficulty');
+      renderGachaDungeonDifficultySelect();
+    },
+  },
+];
+
+/** ダンジョンタイプ選択画面（通常 / 特殊）を描画する */
+function renderDungeonTypeSelect() {
+  const list = document.getElementById('dungeon-type-list');
+  list.innerHTML = '';
+
+  // 通常ダンジョン
+  const normalItem = document.createElement('div');
+  normalItem.className = 'dungeon-item';
+  normalItem.innerHTML = `
+    <div class="dungeon-info">
+      <span class="dungeon-name">🗺 通常ダンジョン</span>
+      <span class="dungeon-meta">D1〜D12 の通常ダンジョンに挑戦する</span>
+    </div>
+    <button class="dungeon-enter-btn" onclick="showScreen('dungeon-select'); renderDungeonSelect();">▶ 選択する</button>
+  `;
+  list.appendChild(normalItem);
+
+  // 特殊ダンジョン
+  const specialItem = document.createElement('div');
+  specialItem.className = 'dungeon-item';
+  specialItem.innerHTML = `
+    <div class="dungeon-info">
+      <span class="dungeon-name">✨ 特殊ダンジョン</span>
+      <span class="dungeon-meta">報酬が特殊なダンジョンに挑戦する</span>
+    </div>
+    <button class="dungeon-enter-btn" onclick="showScreen('special-dungeon-select'); renderSpecialDungeonSelect();">▶ 選択する</button>
+  `;
+  list.appendChild(specialItem);
+}
+
+/** 特殊ダンジョン選択画面を描画する */
+function renderSpecialDungeonSelect() {
+  const list = document.getElementById('special-dungeon-list');
+  list.innerHTML = '';
+
+  SPECIAL_DUNGEON_LIST.forEach(dungeon => {
+    const item = document.createElement('div');
+    item.className = 'dungeon-item';
+
+    const btn = document.createElement('button');
+    btn.className = 'dungeon-enter-btn';
+    btn.textContent = '▶ 選択する';
+    btn.addEventListener('click', () => dungeon.onEnter());
+
+    item.innerHTML = `
+      <div class="dungeon-info">
+        <span class="dungeon-name">${dungeon.icon} ${dungeon.name}</span>
+        <span class="dungeon-meta">${dungeon.description}</span>
+      </div>
+    `;
+    item.appendChild(btn);
+    list.appendChild(item);
+  });
+}
+
 /** ダンジョン選択画面を描画する */
 function renderDungeonSelect() {
   const list = document.getElementById('dungeon-list');
