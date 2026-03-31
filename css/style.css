@@ -431,6 +431,12 @@ footer {
   padding-top: 4px;
 }
 
+.screen-header {
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 4px;
+}
+
 /* ===== ダンジョン選択画面 ===== */
 .dungeon-item {
   display: flex;
