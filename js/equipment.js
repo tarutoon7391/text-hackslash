@@ -2308,8 +2308,8 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
     growthCoeff: { attack: 3, defense: 1, maxHp: 2, maxMp: 3 },
     effectType: 'mpRegen',
-    effectValue: 3,
-    effectDesc: '毎ターン MP+3（魔剣士の象徴）',
+    effectLevelCoeff: 0.5,
+    effectDesc: '毎ターン MP+Lv×0.5（端数切り捨て・最低1）（魔剣士の象徴）',
     recipe: { 'ミスリル': 3, '蒼天晶': 3 },
   },
 ];
@@ -2457,12 +2457,20 @@ function renderCraftList() {
   // フィルタリング
   // チャームアイテム（rarity='charm'）は「チャーム」タブ選択時のみ表示し、
   // 通常フィルター（すべて・ノーマル・レアなど）には含めない
+  // 限定アイテム（rarity='limited'）は「限定」タブ選択時にレシピ入手済みのもののみ表示する
   const filtered = EQUIPMENT_DEFINITIONS.filter(eq => {
     const eqRarity = eq.rarity || 'normal';
     // チャームは「チャーム」タブ専用
     if (eqRarity === 'charm') return craftFilterRarity === 'charm';
     // 「チャーム」タブ選択中は非チャームを非表示
     if (craftFilterRarity === 'charm') return false;
+    // 「限定」タブ選択中はレシピ入手済みの限定装備のみ表示
+    if (craftFilterRarity === 'limited') {
+      if (eqRarity !== 'limited') return false;
+      // レシピ不要の限定装備は常に表示、レシピ必須の場合は入手済みのみ表示
+      if (!eq.requiresRecipe) return true;
+      return !!player.permanentItems[eq.requiresRecipe];
+    }
     if (craftFilterSlot !== 'all' && eq.slot !== craftFilterSlot) return false;
     if (craftFilterRarity !== 'all' && eqRarity !== craftFilterRarity) return false;
     return true;
@@ -2502,6 +2510,13 @@ function renderCraftList() {
     const rarityLabel = RARITY_LABELS[eqRarity] || 'ノーマル';
     const rarityBadge = `<span class="rarity-badge rarity-${eqRarity}">${rarityLabel}</span>`;
 
+    // レベル連動型効果の場合は現在レベルでの実効値を末尾に追記する
+    let effectDescDisplay = eq.effectDesc;
+    if (eq.effectType === 'mpRegen' && eq.effectLevelCoeff !== undefined) {
+      const currentMpRegen = Math.max(1, Math.floor(player.level * eq.effectLevelCoeff));
+      effectDescDisplay = `${eq.effectDesc}（現在: MP+${currentMpRegen}/ターン）`;
+    }
+
     // 成長型武器の補足情報
     const growthNote = eq.isGrowth
       ? `<div class="craft-stats growth-note">⬆ 成長型：レベルアップで強化（Lv${player.level}時点のステータス）</div>`
@@ -2525,7 +2540,7 @@ function renderCraftList() {
         return `
           <div class="craft-item owned">
             <div class="craft-name">[${eq.slot}] ${ownedDisplayName}${rarityBadge}</div>
-            <div class="craft-stats">${statsStr}　${eq.effectDesc}</div>
+            <div class="craft-stats">${statsStr}　${effectDescDisplay}</div>
             ${growthNote}
             <button class="inv-btn" onclick="equipItem('${eq.id}')">装備する</button>
             ${enhBtn}
@@ -2543,7 +2558,7 @@ function renderCraftList() {
     return `
       <div class="craft-item ${canCraftFull ? '' : 'insufficient'}">
         <div class="craft-name">[${eq.slot}] ${eq.name}${rarityBadge}</div>
-        <div class="craft-stats">${statsStr}　${eq.effectDesc}</div>
+        <div class="craft-stats">${statsStr}　${effectDescDisplay}</div>
         ${growthNote}
         ${recipeNote}
         ${recipeHtml}
@@ -2691,7 +2706,8 @@ function applyEquipmentEffects(rawDamage, direction) {
 }
 
 /**
- * 攻撃ターン開始時に MP を回復する装備効果を処理する（金の聖剣）
+ * 攻撃ターン開始時に MP を回復する装備効果を処理する（金の聖剣・蒼銀の剣）
+ * effectLevelCoeff が定義されている場合はプレイヤーレベル × 係数（端数切り捨て・最低1）で計算する
  */
 function applyMpRegenEffect() {
   const player = game.player;
@@ -2701,7 +2717,11 @@ function applyMpRegenEffect() {
     if (!eqId) return;
     const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === eqId);
     if (eq && eq.effectType === 'mpRegen') {
-      mpRegen += eq.effectValue;
+      if (eq.effectLevelCoeff !== undefined) {
+        mpRegen += Math.max(1, Math.floor(player.level * eq.effectLevelCoeff));
+      } else {
+        mpRegen += eq.effectValue;
+      }
     }
   });
 
