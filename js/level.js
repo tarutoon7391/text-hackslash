@@ -801,10 +801,20 @@ const SKILL_DEFINITIONS = (() => {
 
 /**
  * 魔剣士ルートの解放条件を満たしているか判定する
- * 条件: 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み AND 魔剣士の書を入手済み
+ * 条件: アンロック済み AND 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み AND 魔剣士の書を入手済み
  * @returns {boolean}
  */
 function isMakenshiUnlocked() {
+  const p = game.player;
+  return !!p.permanentItems.makenshiRouteUnlocked && isMakenshiPrerequisiteMet();
+}
+
+/**
+ * 魔剣士ルートの解放前提条件（全4ルートMAX＋魔剣士の書）を満たしているか判定する。
+ * アンロック済みかどうかは含まない。
+ * @returns {boolean}
+ */
+function isMakenshiPrerequisiteMet() {
   const p = game.player;
   if (!p.permanentItems.hasBookMakenshi) return false;
   const baseRoutes = ['swordsman', 'mage', 'cleric', 'warrior'];
@@ -815,6 +825,40 @@ function isMakenshiUnlocked() {
     if (acquired.length < route.nodes.length) return false;
   }
   return true;
+}
+
+/**
+ * 魔剣士ルートをスキルストーン1個消費してアンロックする
+ */
+function unlockMakenshiRoute() {
+  const p = game.player;
+  const SKILL_STONE_NAME = 'スキルストーン';
+  const stoneCount = p.materials[SKILL_STONE_NAME] || 0;
+
+  if (stoneCount < 1) {
+    alert('スキルストーンが足りません！');
+    return;
+  }
+
+  if (!confirm('スキルストーンを1つ消費して魔剣士ルートをアンロックしますか？')) {
+    return;
+  }
+
+  // スキルストーンを1消費
+  p.materials[SKILL_STONE_NAME] -= 1;
+  if (p.materials[SKILL_STONE_NAME] <= 0) {
+    delete p.materials[SKILL_STONE_NAME];
+  }
+
+  // アンロックフラグを立てる
+  p.permanentItems.makenshiRouteUnlocked = true;
+
+  // 画面再描画
+  renderSkillTree();
+  renderLobbyStatus();
+
+  // 自動セーブ
+  autoSave();
 }
 
 /* ==============================================================
@@ -935,16 +979,37 @@ function renderSkillTree() {
     if (descEl) descEl.textContent = '';
     const nodeList = document.getElementById('st-node-list');
     if (nodeList) {
-      nodeList.innerHTML = `
-        <div class="st-locked-msg">
-          <div class="st-locked-icon">🔒</div>
-          <div class="st-locked-title">魔剣士ルートは未解放です</div>
-          <div class="st-locked-cond">解放条件：</div>
-          <ul class="st-locked-list">
-            <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
-            <li>「魔剣士の書」を入手済み（ガチャで入手可能）</li>
-          </ul>
-        </div>`;
+      const prereqMet = isMakenshiPrerequisiteMet();
+      if (prereqMet) {
+        // 条件達成済み：アンロックボタンを表示
+        const stoneCount = p.materials['スキルストーン'] || 0;
+        nodeList.innerHTML = `
+          <div class="st-locked-msg">
+            <div class="st-locked-icon">🔓</div>
+            <div class="st-locked-title">魔剣士ルートを解放できます！</div>
+            <div class="st-locked-cond">解放条件：</div>
+            <ul class="st-locked-list">
+              <li>✅ 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+              <li>✅ 「魔剣士の書」を入手済み</li>
+            </ul>
+            <div class="st-locked-cond">スキルストーン所持数: ${stoneCount} 個</div>
+            <button class="st-unlock-btn" onclick="unlockMakenshiRoute()" ${stoneCount < 1 ? 'disabled' : ''}>
+              🔓 アンロックする（スキルストーン×1消費）
+            </button>
+          </div>`;
+      } else {
+        // 条件未達成：通常のロックメッセージを表示
+        nodeList.innerHTML = `
+          <div class="st-locked-msg">
+            <div class="st-locked-icon">🔒</div>
+            <div class="st-locked-title">魔剣士ルートは未解放です</div>
+            <div class="st-locked-cond">解放条件：</div>
+            <ul class="st-locked-list">
+              <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+              <li>「魔剣士の書」を入手済み（ガチャで入手可能）</li>
+            </ul>
+          </div>`;
+      }
     }
     return;
   }
