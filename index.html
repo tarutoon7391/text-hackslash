@@ -60,6 +60,15 @@
         <button class="nav-btn" onclick="showScreen('gacha-dungeon-difficulty'); renderGachaDungeonDifficultySelect();">
           🎫 チケットダンジョン
         </button>
+        <button class="nav-btn" onclick="showScreen('xp-dungeon-difficulty'); renderXpDungeonDifficultySelect();">
+          ✨ XPダンジョン
+        </button>
+        <button class="nav-btn" onclick="showScreen('raremon-dungeon-select'); renderRaremonDungeonSelect();">
+          💎 レアモンダンジョン
+        </button>
+        <button class="nav-btn" onclick="showScreen('skill-dungeon-difficulty'); renderSkillDungeonDifficultySelect();">
+          🎓 スキルダンジョン
+        </button>
         <button class="nav-btn" onclick="showScreen('inventory'); renderInventory();">
           🎒 インベントリ
         </button>
@@ -118,6 +127,66 @@
     </div>
 
   </div><!-- /screen-gacha-dungeon-difficulty -->
+
+  <!-- ========================================================
+       XPダンジョン難易度選択画面
+       ======================================================== -->
+  <div id="screen-xp-dungeon-difficulty" class="screen" style="display:none">
+    <div class="screen-panel">
+      <h2 class="panel-title">[ XP DUNGEON ]</h2>
+      <p class="dungeon-description">✨ 経験値特化のダンジョン！エメラルド系モンスターが出現。<br>
+        全 30 体を討伐してクリアすると獲得EXPがキャラクターに反映されます。<br>
+        撤退・全滅時はその探索で獲得したEXPは没収されます。<br>
+        入場にはXPダンジョンの鍵×1が必要です。
+      </p>
+      <div id="xp-dungeon-difficulty-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+  </div><!-- /screen-xp-dungeon-difficulty -->
+
+  <!-- ========================================================
+       レアモンダンジョン選択画面
+       ======================================================== -->
+  <div id="screen-raremon-dungeon-select" class="screen" style="display:none">
+    <div class="screen-panel">
+      <h2 class="panel-title">[ RARE MONSTER DUNGEON ]</h2>
+      <p class="dungeon-description">💎 対応ダンジョンのレアモン・ボスが出現する素材収集特化ダンジョン！<br>
+        全 30 体を討伐してクリアすると獲得素材がインベントリに追加されます。<br>
+        撤退・全滅時はその探索で獲得した素材は没収されます。<br>
+        入場にはレアモンダンジョンの鍵×1が必要です。
+      </p>
+      <div id="raremon-dungeon-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+  </div><!-- /screen-raremon-dungeon-select -->
+
+  <!-- ========================================================
+       スキルダンジョン難易度選択画面
+       ======================================================== -->
+  <div id="screen-skill-dungeon-difficulty" class="screen" style="display:none">
+    <div class="screen-panel">
+      <h2 class="panel-title">[ SKILL DUNGEON ]</h2>
+      <p class="dungeon-description">🎓 スキルストーンを入手できるダンジョン！<br>
+        全 30 体を討伐してクリアするとスキルストーンがインベントリに追加されます。<br>
+        撤退・全滅時はその探索で獲得したスキルストーンは没収されます。<br>
+        入場にはスキルダンジョンの鍵×1が必要です。
+      </p>
+      <div id="skill-dungeon-difficulty-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+  </div><!-- /screen-skill-dungeon-difficulty -->
 
   <!-- ========================================================
        戦闘画面

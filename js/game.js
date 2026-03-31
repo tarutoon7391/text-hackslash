@@ -465,7 +465,11 @@ function endBattle(result) {
     const exp = game.enemy.expReward;
 
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'special');
-    log(`🏆 ${game.enemy.name} を倒した！ EXP +${exp}`, 'result');
+    if (game.dungeon.isXpDungeon || game.dungeon.isSkillDungeon) {
+      log(`🏆 ${game.enemy.name} を倒した！`, 'result');
+    } else {
+      log(`🏆 ${game.enemy.name} を倒した！ EXP +${exp}`, 'result');
+    }
 
     // 図鑑: 討伐を記録する
     recordMonsterDefeat(game.enemy.name);
@@ -476,10 +480,19 @@ function endBattle(result) {
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'special');
 
     // EXP 加算とレベルアップチェック
-    gainExp(exp);
+    // XPダンジョンはprocessXpDropで積み立て、スキルダンジョンはEXP0のため直接付与しない
+    if (!game.dungeon.isXpDungeon && !game.dungeon.isSkillDungeon) {
+      gainExp(exp);
+    }
 
-    // ガチャチケダンジョンかどうかでボス判定の基準を切り替える
-    const isBoss = game.dungeon.isGachaDungeon
+    // 特殊ダンジョン（30体）かどうかでボス判定の基準を切り替える
+    // GACHA_DUNGEON_ENEMY_COUNT と XP/RAREMON/SKILL_DUNGEON_ENEMY_COUNT はすべて 30
+    const isBoss = (
+      game.dungeon.isGachaDungeon   ||
+      game.dungeon.isXpDungeon      ||
+      game.dungeon.isRaremonDungeon ||
+      game.dungeon.isSkillDungeon
+    )
       ? game.dungeon.enemyIndex === GACHA_DUNGEON_ENEMY_COUNT - 1
       : game.dungeon.enemyIndex === DUNGEON_ENEMY_COUNT - 1;
     game.dungeon.enemyIndex++;
@@ -491,6 +504,12 @@ function endBattle(result) {
     log(`☠ ${game.player.name} は力尽きた…`, 'enemy-action');
     if (game.dungeon.isGachaDungeon) {
       log('💀 探索中に獲得したガチャチケットをすべて失った。', 'special');
+    } else if (game.dungeon.isXpDungeon) {
+      log('💀 探索中に獲得したEXPをすべて失った。', 'special');
+    } else if (game.dungeon.isSkillDungeon) {
+      log('💀 探索中に獲得したスキルストーンをすべて失った。', 'special');
+    } else if (game.dungeon.isRaremonDungeon) {
+      log('💀 探索中に獲得した素材をすべて失った。', 'special');
     } else {
       log('💀 ダンジョン内で獲得した素材をすべて失った。', 'special');
     }

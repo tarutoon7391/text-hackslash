@@ -475,6 +475,18 @@ function startNextDungeonBattle() {
     startNextGachaDungeonBattle();
     return;
   }
+  if (game.dungeon.isXpDungeon) {
+    startNextXpDungeonBattle();
+    return;
+  }
+  if (game.dungeon.isRaremonDungeon) {
+    startNextRaremonDungeonBattle();
+    return;
+  }
+  if (game.dungeon.isSkillDungeon) {
+    startNextSkillDungeonBattle();
+    return;
+  }
 
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
@@ -586,6 +598,24 @@ function updateDungeonInfo() {
       `📍 ${def.name}  [ ${game.dungeon.enemyIndex + 1} / ${GACHA_DUNGEON_ENEMY_COUNT} 体目 ]`;
     return;
   }
+  if (game.dungeon.isXpDungeon) {
+    const def = XP_DUNGEON_DEFINITIONS[game.dungeon.xpDifficulty];
+    if (!def) return;
+    el.textContent = `📍 ${def.name}  [ ${game.dungeon.enemyIndex + 1} / ${XP_DUNGEON_ENEMY_COUNT} 体目 ]`;
+    return;
+  }
+  if (game.dungeon.isRaremonDungeon) {
+    const def = RAREMON_DUNGEON_DEFINITIONS[game.dungeon.raremonVariant];
+    if (!def) return;
+    el.textContent = `📍 ${def.name}  [ ${game.dungeon.enemyIndex + 1} / ${RAREMON_DUNGEON_ENEMY_COUNT} 体目 ]`;
+    return;
+  }
+  if (game.dungeon.isSkillDungeon) {
+    const def = SKILL_DUNGEON_DEFINITIONS[game.dungeon.skillDifficulty];
+    if (!def) return;
+    el.textContent = `📍 ${def.name}  [ ${game.dungeon.enemyIndex + 1} / ${SKILL_DUNGEON_ENEMY_COUNT} 体目 ]`;
+    return;
+  }
 
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
@@ -616,6 +646,18 @@ function processDrop() {
   // ガチャチケダンジョンの場合は専用のドロップ処理へ分岐する
   if (game.dungeon.isGachaDungeon) {
     processGachaDrop();
+    return;
+  }
+  if (game.dungeon.isXpDungeon) {
+    processXpDrop();
+    return;
+  }
+  if (game.dungeon.isRaremonDungeon) {
+    processRaremonDrop();
+    return;
+  }
+  if (game.dungeon.isSkillDungeon) {
+    processSkillDrop();
     return;
   }
 
@@ -694,11 +736,11 @@ function addDungeonMaterial(materialName) {
 
 /** ダンジョンクリア処理（ボス撃破後） */
 function completeDungeon() {
-  // ガチャチケダンジョンの場合は専用のクリア処理へ分岐する
-  if (game.dungeon.isGachaDungeon) {
-    completeGachaDungeon();
-    return;
-  }
+  // 特殊ダンジョンの場合は専用のクリア処理へ分岐する
+  if (game.dungeon.isGachaDungeon)    { completeGachaDungeon();   return; }
+  if (game.dungeon.isXpDungeon)       { completeXpDungeon();      return; }
+  if (game.dungeon.isRaremonDungeon)  { completeRaremonDungeon(); return; }
+  if (game.dungeon.isSkillDungeon)    { completeSkillDungeon();   return; }
 
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
@@ -726,11 +768,11 @@ function completeDungeon() {
 
 /** 撤退処理 */
 function retreatFromDungeon() {
-  // ガチャチケダンジョンの場合は専用の撤退処理へ分岐する
-  if (game.dungeon.isGachaDungeon) {
-    retreatFromGachaDungeon();
-    return;
-  }
+  // 特殊ダンジョンの場合は専用の撤退処理へ分岐する
+  if (game.dungeon.isGachaDungeon)   { retreatFromGachaDungeon();   return; }
+  if (game.dungeon.isXpDungeon)      { retreatFromXpDungeon();      return; }
+  if (game.dungeon.isRaremonDungeon) { retreatFromRaremonDungeon(); return; }
+  if (game.dungeon.isSkillDungeon)   { retreatFromSkillDungeon();   return; }
 
   // 獲得素材をプレイヤーのインベントリに移す（撤退は持ち帰り可）
   transferDungeonMaterials();
@@ -758,6 +800,12 @@ function failDungeon() {
     // ガチャチケダンジョン: 探索中のチケットは没収
     game.dungeon.ticketsEarned = 0;
     log('💀 探索中に獲得したガチャチケットをすべて失った…', 'enemy-action');
+  } else if (game.dungeon.isXpDungeon) {
+    game.dungeon.xpEarned = 0;
+    log('💀 探索中に獲得したEXPをすべて失った…', 'enemy-action');
+  } else if (game.dungeon.isSkillDungeon) {
+    game.dungeon.skillStonesEarned = 0;
+    log('💀 探索中に獲得したスキルストーンをすべて失った…', 'enemy-action');
   } else {
     log('💀 ダンジョン内で獲得した素材をすべて失った…', 'enemy-action');
   }
@@ -988,6 +1036,777 @@ function retreatFromGachaDungeon() {
   // 撤退時に自動セーブ
   autoSave();
 
+  showScreen('lobby');
+  renderLobby();
+}
+
+/* ==============================================================
+   XPダンジョン定義
+   ============================================================== */
+
+/**
+ * XPダンジョン難易度別定義
+ * エメラルド系モンスターが出現する経験値特化ダンジョン
+ * 通常モンEXP: 推奨Lv帯レアモンの2倍程度
+ * ボスEXP: 通常の10倍 / レアボスEXP: 通常の30倍
+ */
+const XP_DUNGEON_DEFINITIONS = {
+  /* 初級（推奨 Lv 20） */
+  beginner: {
+    name: 'XPダンジョン【初級】',
+    recommendedLevel: 20,
+    normalEnemies: [
+      { name: 'エメラルドスライム',  hp: 430, maxHp: 430, attack: 160, defense: 64,  expReward: 840 },
+      { name: 'エメラルドゴーレム',  hp: 510, maxHp: 510, attack: 153, defense: 78,  expReward: 860 },
+      { name: 'エメラルドウォーム',  hp: 370, maxHp: 370, attack: 170, defense: 55,  expReward: 820 },
+    ],
+    normalExpReward: 840,
+    rareChance:      0.15,
+    rareEnemy: { name: 'エメラルドゴースト', hp: 500, maxHp: 500, attack: 225, defense: 95,  expReward: 1680 },
+    boss:      { name: 'エメラルドガーディアン', hp: 2400, maxHp: 2400, attack: 260, defense: 135, expReward: 8400 },
+    rareBoss:  { name: 'エメラルドキング',     hp: 3200, maxHp: 3200, attack: 300, defense: 155, expReward: 25200 },
+    rareBossChance: 0.15,
+  },
+  /* 中級（推奨 Lv 30） */
+  intermediate: {
+    name: 'XPダンジョン【中級】',
+    recommendedLevel: 30,
+    normalEnemies: [
+      { name: 'エメラルドサーペント',   hp: 800, maxHp: 800, attack: 272, defense: 110, expReward: 1480 },
+      { name: 'エメラルドドレイク',     hp: 920, maxHp: 920, attack: 260, defense: 126, expReward: 1500 },
+      { name: 'エメラルドウィッチ',     hp: 700, maxHp: 700, attack: 292, defense: 98,  expReward: 1460 },
+    ],
+    normalExpReward: 1480,
+    rareChance:      0.15,
+    rareEnemy: { name: 'エメラルドデビル', hp: 860, maxHp: 860, attack: 380, defense: 156, expReward: 2960 },
+    boss:      { name: 'エメラルドデーモン',   hp: 4000, maxHp: 4000, attack: 416, defense: 218, expReward: 14800 },
+    rareBoss:  { name: 'エメラルドエンペラー', hp: 5200, maxHp: 5200, attack: 480, defense: 248, expReward: 44400 },
+    rareBossChance: 0.15,
+  },
+  /* 上級（推奨 Lv 50） */
+  advanced: {
+    name: 'XPダンジョン【上級】',
+    recommendedLevel: 50,
+    normalEnemies: [
+      { name: 'エメラルドコロッサス',    hp: 1900, maxHp: 1900, attack: 622, defense: 280, expReward: 4100 },
+      { name: 'エメラルドドラゴン',      hp: 2060, maxHp: 2060, attack: 600, defense: 300, expReward: 4120 },
+      { name: 'エメラルドレヴィアタン',  hp: 1750, maxHp: 1750, attack: 650, defense: 262, expReward: 4060 },
+    ],
+    normalExpReward: 4100,
+    rareChance:      0.15,
+    rareEnemy: { name: 'エメラルドリッチ',     hp: 1960, maxHp: 1960, attack: 832, defense: 365, expReward: 8200 },
+    boss:      { name: 'エメラルドゴッド',      hp: 9600, maxHp: 9600, attack: 890, defense: 465, expReward: 41000 },
+    rareBoss:  { name: 'エメラルドオーバーロード', hp: 12000, maxHp: 12000, attack: 1020, defense: 530, expReward: 123000 },
+    rareBossChance: 0.15,
+  },
+};
+
+/** XPダンジョンの討伐数 */
+const XP_DUNGEON_ENEMY_COUNT = 30;
+
+/* ==============================================================
+   レアモンダンジョン定義
+   ============================================================== */
+
+/**
+ * レアモンダンジョン難易度別定義（A〜D）
+ * 対応ダンジョンのレアモン＋ボスが出現する素材収集特化ダンジョン
+ * 通常枠: レアモン90% / ボス10%
+ * 30体目: 対応3ダンジョンのボスからランダム1体（均等）
+ */
+const RAREMON_DUNGEON_DEFINITIONS = {
+  /* A: D1〜D3（推奨 Lv D3より少し上 = Lv 10） */
+  A: {
+    name: 'レアモンダンジョン【A】',
+    recommendedLevel: 10,
+    dungeonIds: [1, 2, 3],
+  },
+  /* B: D4〜D6（推奨 Lv D6より少し上 = Lv 21） */
+  B: {
+    name: 'レアモンダンジョン【B】',
+    recommendedLevel: 21,
+    dungeonIds: [4, 5, 6],
+  },
+  /* C: D7〜D9（推奨 Lv D9より少し上 = Lv 35） */
+  C: {
+    name: 'レアモンダンジョン【C】',
+    recommendedLevel: 35,
+    dungeonIds: [7, 8, 9],
+  },
+  /* D: D10〜D12（推奨 Lv D12より少し上 = Lv 50） */
+  D: {
+    name: 'レアモンダンジョン【D】',
+    recommendedLevel: 50,
+    dungeonIds: [10, 11, 12],
+  },
+};
+
+/** レアモンダンジョンの討伐数 */
+const RAREMON_DUNGEON_ENEMY_COUNT = 30;
+
+/** レアモンスター出現率（通常枠） */
+const RAREMON_DUNGEON_RARE_CHANCE = 0.90;
+
+/* ==============================================================
+   スキルダンジョン定義
+   ============================================================== */
+
+/**
+ * スキルダンジョン難易度別定義
+ * スキルストーンを入手できるダンジョン
+ */
+const SKILL_DUNGEON_DEFINITIONS = {
+  /* 初級（推奨 Lv 20） */
+  beginner: {
+    name: 'スキルダンジョン【初級】',
+    recommendedLevel: 20,
+    normalEnemies: [
+      { name: 'スペルキャスター',  hp: 440, maxHp: 440, attack: 162, defense: 66,  expReward: 0 },
+      { name: 'ルーンウォーリアー', hp: 500, maxHp: 500, attack: 155, defense: 75,  expReward: 0 },
+      { name: 'マジックドール',    hp: 380, maxHp: 380, attack: 172, defense: 57,  expReward: 0 },
+    ],
+    rareChance:       0.05,
+    rareEnemy: { name: 'スペルマスター',    hp: 520, maxHp: 520, attack: 228, defense: 97, expReward: 0 },
+    boss:      { name: 'スキルストーン番人', hp: 2500, maxHp: 2500, attack: 262, defense: 138, expReward: 0 },
+    normalDropRate: 0.005,
+    rareDropRate:   0.10,
+    bossDropRate:   0.30,
+  },
+  /* 中級（推奨 Lv 30） */
+  intermediate: {
+    name: 'スキルダンジョン【中級】',
+    recommendedLevel: 30,
+    normalEnemies: [
+      { name: 'グリモワール番兵',    hp: 810, maxHp: 810, attack: 274, defense: 112, expReward: 0 },
+      { name: 'スキルイーター',      hp: 930, maxHp: 930, attack: 262, defense: 128, expReward: 0 },
+      { name: 'エンチャントゴーレム', hp: 710, maxHp: 710, attack: 294, defense: 100, expReward: 0 },
+    ],
+    rareChance:       0.05,
+    rareEnemy: { name: 'グリモワール守護者', hp: 870, maxHp: 870, attack: 384, defense: 158, expReward: 0 },
+    boss:      { name: 'スキルストーン大番人', hp: 4100, maxHp: 4100, attack: 418, defense: 222, expReward: 0 },
+    normalDropRate: 0.01,
+    rareDropRate:   0.30,
+    bossDropRate:   0.50,
+  },
+  /* 上級（推奨 Lv 50） */
+  advanced: {
+    name: 'スキルダンジョン【上級】',
+    recommendedLevel: 50,
+    normalEnemies: [
+      { name: 'スキルクロマー',   hp: 1920, maxHp: 1920, attack: 625, defense: 282, expReward: 0 },
+      { name: 'ラストスペル',     hp: 2070, maxHp: 2070, attack: 602, defense: 302, expReward: 0 },
+      { name: 'ソウルハーベスター', hp: 1770, maxHp: 1770, attack: 652, defense: 265, expReward: 0 },
+    ],
+    rareChance:       0.05,
+    rareEnemy: { name: 'スキルロード',        hp: 1980, maxHp: 1980, attack: 836, defense: 368, expReward: 0 },
+    boss:      { name: '伝説のスキルストーン番人', hp: 10000, maxHp: 10000, attack: 895, defense: 468, expReward: 0 },
+    normalDropRate: 0.02,
+    rareDropRate:   0.50,
+    bossDropRate:   1.00,
+  },
+};
+
+/** スキルダンジョンの討伐数 */
+const SKILL_DUNGEON_ENEMY_COUNT = 30;
+
+/** スキルストーンのアイテム名 */
+const SKILL_STONE_NAME = 'スキルストーン';
+
+/* ==============================================================
+   共通ヘルパー
+   ============================================================== */
+
+/** 特殊ダンジョン（30体）かどうか確認する */
+function isSpecialDungeon() {
+  return !!(
+    game.dungeon.isGachaDungeon   ||
+    game.dungeon.isXpDungeon      ||
+    game.dungeon.isRaremonDungeon ||
+    game.dungeon.isSkillDungeon
+  );
+}
+
+/* ==============================================================
+   XPダンジョン
+   ============================================================== */
+
+/** XPダンジョン難易度選択画面を描画する */
+function renderXpDungeonDifficultySelect() {
+  const list = document.getElementById('xp-dungeon-difficulty-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const keyName  = 'XPダンジョンの鍵';
+  const keyCount = (game.player.materials[keyName] || 0);
+
+  const difficulties = [
+    { key: 'beginner',     label: '初級', icon: '🌱' },
+    { key: 'intermediate', label: '中級', icon: '⚔' },
+    { key: 'advanced',     label: '上級', icon: '🔥' },
+  ];
+
+  difficulties.forEach(({ key, label, icon }) => {
+    const def  = XP_DUNGEON_DEFINITIONS[key];
+    const item = document.createElement('div');
+    item.className = 'dungeon-item';
+    item.innerHTML = `
+      <div class="dungeon-info">
+        <span class="dungeon-name">${icon} XPダンジョン ${label}</span>
+        <span class="dungeon-meta">
+          推奨 Lv ${def.recommendedLevel}〜　全 ${XP_DUNGEON_ENEMY_COUNT} 体討伐
+          　通常 EXP: ${def.normalExpReward}　ボスEXP: ${def.normalExpReward * 10}　レアボスEXP: ${def.normalExpReward * 30}
+          　レアモン出現率: ${(def.rareChance * 100).toFixed(0)}%
+          　入場: XPダンジョンの鍵×1（所持: ${keyCount}）
+        </span>
+      </div>
+      <button class="dungeon-enter-btn" ${keyCount < 1 ? 'disabled' : ''} onclick="enterXpDungeon('${key}')">✨ 挑戦する</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+/**
+ * XPダンジョンに入る
+ * @param {string} difficulty - 'beginner' | 'intermediate' | 'advanced'
+ */
+function enterXpDungeon(difficulty) {
+  const def = XP_DUNGEON_DEFINITIONS[difficulty];
+  if (!def) return;
+
+  const keyName = 'XPダンジョンの鍵';
+  if ((game.player.materials[keyName] || 0) < 1) {
+    log('❌ XPダンジョンの鍵が足りません。', 'system');
+    return;
+  }
+
+  // 鍵を1枚消費する
+  game.player.materials[keyName] -= 1;
+  if (game.player.materials[keyName] <= 0) {
+    delete game.player.materials[keyName];
+  }
+
+  // ダンジョン状態を初期化する
+  game.dungeon = {
+    id:           null,
+    enemyIndex:   0,
+    materials:    [],
+    isXpDungeon:  true,
+    xpDifficulty: difficulty,
+    xpEarned:     0,
+  };
+
+  showScreen('battle');
+  game.player.mp = game.player.maxMp;
+  startNextDungeonBattle();
+}
+
+/** XPダンジョン内で次の戦闘を開始する */
+function startNextXpDungeonBattle() {
+  const def = XP_DUNGEON_DEFINITIONS[game.dungeon.xpDifficulty];
+  if (!def) return;
+
+  const idx = game.dungeon.enemyIndex;
+
+  let template;
+
+  if (idx === XP_DUNGEON_ENEMY_COUNT - 1) {
+    // 30体目: 15%でレアボス、85%で通常ボス
+    if (Math.random() < def.rareBossChance) {
+      template = def.rareBoss;
+      log('─'.repeat(40), 'special');
+      log('💎 レアボスが現れた！', 'special');
+    } else {
+      template = def.boss;
+      log('─'.repeat(40), 'special');
+      log('💀 ボスが現れた！', 'special');
+    }
+  } else {
+    const isRareSpawn = Math.random() < def.rareChance;
+    template = isRareSpawn ? def.rareEnemy : pick(def.normalEnemies);
+    if (isRareSpawn) {
+      log('✨ レアモンスターが現れた！', 'special');
+    }
+  }
+
+  game.enemy = new Enemy(
+    template.name,
+    template.hp,
+    template.maxHp,
+    template.attack,
+    template.defense,
+    template.expReward
+  );
+
+  game.state             = GameState.PLAYER_TURN;
+  game.battleCount++;
+  game.shieldActive      = null;
+  game.enemyPoisoned     = null;
+  game.playerAtkBuff     = null;
+  game.enemyStunned      = false;
+  game.enemyAtkDebuff    = null;
+  game.playerRegen       = null;
+  game.playerDelayedHeal = null;
+
+  recordMonsterEncounter(game.enemy.name);
+
+  clearLog();
+  log(`=== ${def.name} ===`, 'special');
+  log(`全 ${XP_DUNGEON_ENEMY_COUNT} 体を倒してクリアせよ！　クリア時のみEXPを獲得できます。`, 'special');
+  updateDungeonInfo();
+  log(`=== 戦闘 ${idx + 1} / ${XP_DUNGEON_ENEMY_COUNT} ===`, 'special');
+  log(`${game.enemy.name} が現れた！`, 'system');
+  log('─'.repeat(40), 'system');
+  log('あなたのターンです。アクションを選んでください。', 'system');
+
+  renderPlayerStatus();
+  renderEnemyStatus();
+  setButtonsEnabled(true);
+  showDungeonNav(false);
+}
+
+/** XPダンジョンのドロップ処理（EXP積み立て） */
+function processXpDrop() {
+  const exp = game.enemy.expReward;
+  game.dungeon.xpEarned += exp;
+  log(`⬆ EXP +${exp}（XPダンジョン内：クリア時に獲得）　探索合計: ${game.dungeon.xpEarned}`, 'result');
+}
+
+/** XPダンジョンクリア処理 */
+function completeXpDungeon() {
+  const def = XP_DUNGEON_DEFINITIONS[game.dungeon.xpDifficulty];
+  const xp  = game.dungeon.xpEarned;
+
+  log('', 'system');
+  log(`🏆 ${def ? def.name : 'XPダンジョン'} をクリアした！`, 'special');
+  log(`⬆ EXP ${xp} をインベントリに追加しました。`, 'result');
+
+  gainExp(xp);
+
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  autoSave();
+  showScreen('lobby');
+  renderLobby();
+}
+
+/** XPダンジョンからの撤退処理 */
+function retreatFromXpDungeon() {
+  game.dungeon.xpEarned = 0;
+  log('🚪 XPダンジョンから撤退した。探索中に獲得したEXPは没収された。', 'result');
+
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  autoSave();
+  showScreen('lobby');
+  renderLobby();
+}
+
+/* ==============================================================
+   レアモンダンジョン
+   ============================================================== */
+
+/** レアモンダンジョン選択画面を描画する */
+function renderRaremonDungeonSelect() {
+  const list = document.getElementById('raremon-dungeon-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const keyName  = 'レアモンダンジョンの鍵';
+  const keyCount = (game.player.materials[keyName] || 0);
+
+  const variants = [
+    { key: 'A', icon: '🔵', desc: 'D1〜D3のレアモン・ボス' },
+    { key: 'B', icon: '🟡', desc: 'D4〜D6のレアモン・ボス' },
+    { key: 'C', icon: '🟠', desc: 'D7〜D9のレアモン・ボス' },
+    { key: 'D', icon: '🔴', desc: 'D10〜D12のレアモン・ボス' },
+  ];
+
+  variants.forEach(({ key, icon, desc }) => {
+    const def  = RAREMON_DUNGEON_DEFINITIONS[key];
+    const item = document.createElement('div');
+    item.className = 'dungeon-item';
+    item.innerHTML = `
+      <div class="dungeon-info">
+        <span class="dungeon-name">${icon} レアモンダンジョン ${key}</span>
+        <span class="dungeon-meta">
+          推奨 Lv ${def.recommendedLevel}〜　全 ${RAREMON_DUNGEON_ENEMY_COUNT} 体討伐　${desc}
+          　レアモン出現率: ${(RAREMON_DUNGEON_RARE_CHANCE * 100).toFixed(0)}%　ボス出現率: ${((1 - RAREMON_DUNGEON_RARE_CHANCE) * 100).toFixed(0)}%
+          　入場: レアモンダンジョンの鍵×1（所持: ${keyCount}）
+        </span>
+      </div>
+      <button class="dungeon-enter-btn" ${keyCount < 1 ? 'disabled' : ''} onclick="enterRaremonDungeon('${key}')">💎 挑戦する</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+/**
+ * レアモンダンジョンに入る
+ * @param {string} variant - 'A' | 'B' | 'C' | 'D'
+ */
+function enterRaremonDungeon(variant) {
+  const def = RAREMON_DUNGEON_DEFINITIONS[variant];
+  if (!def) return;
+
+  const keyName = 'レアモンダンジョンの鍵';
+  if ((game.player.materials[keyName] || 0) < 1) {
+    log('❌ レアモンダンジョンの鍵が足りません。', 'system');
+    return;
+  }
+
+  game.player.materials[keyName] -= 1;
+  if (game.player.materials[keyName] <= 0) {
+    delete game.player.materials[keyName];
+  }
+
+  game.dungeon = {
+    id:               null,
+    enemyIndex:       0,
+    materials:        [],
+    isRaremonDungeon: true,
+    raremonVariant:   variant,
+  };
+
+  showScreen('battle');
+  game.player.mp = game.player.maxMp;
+  startNextDungeonBattle();
+}
+
+/** レアモンダンジョン内で次の戦闘を開始する */
+function startNextRaremonDungeonBattle() {
+  const def = RAREMON_DUNGEON_DEFINITIONS[game.dungeon.raremonVariant];
+  if (!def) return;
+
+  const idx            = game.dungeon.enemyIndex;
+  const sourceDungeons = def.dungeonIds.map(id => DUNGEON_DEFINITIONS.find(d => d.id === id)).filter(Boolean);
+
+  let template;
+
+  if (idx === RAREMON_DUNGEON_ENEMY_COUNT - 1) {
+    // 30体目: 対応3ダンジョンのボスからランダム1体
+    const bossDungeon = pick(sourceDungeons);
+    template = bossDungeon.boss;
+    game.dungeon.finalBossSourceId = bossDungeon.id;
+    log('─'.repeat(40), 'special');
+    log(`💀 ${template.name} が現れた！（最終ボス）`, 'special');
+  } else if (Math.random() < RAREMON_DUNGEON_RARE_CHANCE) {
+    // 通常枠: レアモン90%
+    const rareDungeon = pick(sourceDungeons);
+    template = rareDungeon.rareEnemy;
+    game.dungeon.currentEnemySourceId = rareDungeon.id;
+    game.dungeon.currentEnemyIsRare   = true;
+    log('✨ レアモンスターが現れた！', 'special');
+  } else {
+    // 通常枠: ボス10%
+    const bossDungeon = pick(sourceDungeons);
+    template = bossDungeon.boss;
+    game.dungeon.currentEnemySourceId = bossDungeon.id;
+    game.dungeon.currentEnemyIsRare   = false;
+    log('─'.repeat(40), 'special');
+    log('💀 ボスモンスターが現れた！', 'special');
+  }
+
+  game.enemy = new Enemy(
+    template.name,
+    template.hp,
+    template.maxHp,
+    template.attack,
+    template.defense,
+    template.expReward
+  );
+
+  game.state             = GameState.PLAYER_TURN;
+  game.battleCount++;
+  game.shieldActive      = null;
+  game.enemyPoisoned     = null;
+  game.playerAtkBuff     = null;
+  game.enemyStunned      = false;
+  game.enemyAtkDebuff    = null;
+  game.playerRegen       = null;
+  game.playerDelayedHeal = null;
+
+  recordMonsterEncounter(game.enemy.name);
+
+  clearLog();
+  log(`=== ${def.name} ===`, 'special');
+  log(`全 ${RAREMON_DUNGEON_ENEMY_COUNT} 体を倒してクリアせよ！`, 'special');
+  updateDungeonInfo();
+  log(`=== 戦闘 ${idx + 1} / ${RAREMON_DUNGEON_ENEMY_COUNT} ===`, 'special');
+  log(`${game.enemy.name} が現れた！`, 'system');
+  log('─'.repeat(40), 'system');
+  log('あなたのターンです。アクションを選んでください。', 'system');
+
+  renderPlayerStatus();
+  renderEnemyStatus();
+  setButtonsEnabled(true);
+  showDungeonNav(false);
+}
+
+/** レアモンダンジョンのドロップ処理 */
+function processRaremonDrop() {
+  const def = RAREMON_DUNGEON_DEFINITIONS[game.dungeon.raremonVariant];
+  if (!def) return;
+
+  const idx            = game.dungeon.enemyIndex;
+  const isFinalBoss    = (idx === RAREMON_DUNGEON_ENEMY_COUNT - 1);
+  const sourceDungeons = def.dungeonIds.map(id => DUNGEON_DEFINITIONS.find(d => d.id === id)).filter(Boolean);
+
+  if (isFinalBoss) {
+    // 30体目ボス: ボスレア素材を確定ドロップ
+    const src   = sourceDungeons.find(d => d.id === game.dungeon.finalBossSourceId) || pick(sourceDungeons);
+    const drops = src.drops;
+
+    if (drops.bossRare) {
+      addDungeonMaterial(drops.bossRare);
+      log(`🌟 ${drops.bossRare} を確定入手した！`, 'result');
+    }
+    if (Math.random() < drops.bossDropRate) {
+      addDungeonMaterial(drops.boss);
+      log(`💎 ${drops.boss} を入手した！`, 'result');
+    }
+  } else if (game.dungeon.currentEnemyIsRare) {
+    // レアモンスター: レア素材ドロップ
+    const src   = sourceDungeons.find(d => d.id === game.dungeon.currentEnemySourceId) || pick(sourceDungeons);
+    const drops = src.drops;
+
+    if (Math.random() < drops.rareDropRate) {
+      const rareDrop = pick(drops.rares);
+      addDungeonMaterial(rareDrop);
+      log(`✨ ${rareDrop} を入手した！`, 'result');
+    }
+  } else {
+    // ボスモンスター（通常枠 10%出現分）: ボス素材＋ボスレア素材
+    const src   = sourceDungeons.find(d => d.id === game.dungeon.currentEnemySourceId) || pick(sourceDungeons);
+    const drops = src.drops;
+
+    if (drops.bossRare && Math.random() < drops.bossRareDropRate) {
+      addDungeonMaterial(drops.bossRare);
+      log(`🌟 ${drops.bossRare} を入手した！`, 'result');
+    }
+    if (Math.random() < drops.bossDropRate) {
+      addDungeonMaterial(drops.boss);
+      log(`💎 ${drops.boss} を入手した！`, 'result');
+    }
+  }
+}
+
+/** レアモンダンジョンクリア処理 */
+function completeRaremonDungeon() {
+  const def = RAREMON_DUNGEON_DEFINITIONS[game.dungeon.raremonVariant];
+
+  transferDungeonMaterials();
+
+  log('', 'system');
+  log(`🏆 ${def ? def.name : 'レアモンダンジョン'} をクリアした！`, 'special');
+  log('獲得素材をインベントリに追加しました。', 'result');
+
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  autoSave();
+  showScreen('lobby');
+  renderLobby();
+}
+
+/** レアモンダンジョンからの撤退処理（没収） */
+function retreatFromRaremonDungeon() {
+  game.dungeon.materials = [];
+  log('🚪 レアモンダンジョンから撤退した。探索中に獲得した素材は没収された。', 'result');
+
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  autoSave();
+  showScreen('lobby');
+  renderLobby();
+}
+
+/* ==============================================================
+   スキルダンジョン
+   ============================================================== */
+
+/** スキルダンジョン難易度選択画面を描画する */
+function renderSkillDungeonDifficultySelect() {
+  const list = document.getElementById('skill-dungeon-difficulty-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const keyName  = 'スキルダンジョンの鍵';
+  const keyCount = (game.player.materials[keyName] || 0);
+
+  const difficulties = [
+    { key: 'beginner',     label: '初級', icon: '🌱' },
+    { key: 'intermediate', label: '中級', icon: '⚔' },
+    { key: 'advanced',     label: '上級', icon: '🔥' },
+  ];
+
+  difficulties.forEach(({ key, label, icon }) => {
+    const def  = SKILL_DUNGEON_DEFINITIONS[key];
+    const item = document.createElement('div');
+    item.className = 'dungeon-item';
+    item.innerHTML = `
+      <div class="dungeon-info">
+        <span class="dungeon-name">${icon} スキルダンジョン ${label}</span>
+        <span class="dungeon-meta">
+          推奨 Lv ${def.recommendedLevel}〜　全 ${SKILL_DUNGEON_ENEMY_COUNT} 体討伐
+          　通常モンドロップ: ${(def.normalDropRate * 100).toFixed(1)}%　レアモンドロップ: ${(def.rareDropRate * 100).toFixed(0)}%
+          　ボスドロップ: ${(def.bossDropRate * 100).toFixed(0)}%　レアモン出現率: ${(def.rareChance * 100).toFixed(0)}%
+          　入場: スキルダンジョンの鍵×1（所持: ${keyCount}）
+        </span>
+      </div>
+      <button class="dungeon-enter-btn" ${keyCount < 1 ? 'disabled' : ''} onclick="enterSkillDungeon('${key}')">🎓 挑戦する</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+/**
+ * スキルダンジョンに入る
+ * @param {string} difficulty - 'beginner' | 'intermediate' | 'advanced'
+ */
+function enterSkillDungeon(difficulty) {
+  const def = SKILL_DUNGEON_DEFINITIONS[difficulty];
+  if (!def) return;
+
+  const keyName = 'スキルダンジョンの鍵';
+  if ((game.player.materials[keyName] || 0) < 1) {
+    log('❌ スキルダンジョンの鍵が足りません。', 'system');
+    return;
+  }
+
+  game.player.materials[keyName] -= 1;
+  if (game.player.materials[keyName] <= 0) {
+    delete game.player.materials[keyName];
+  }
+
+  game.dungeon = {
+    id:                null,
+    enemyIndex:        0,
+    materials:         [],
+    isSkillDungeon:    true,
+    skillDifficulty:   difficulty,
+    skillStonesEarned: 0,
+  };
+
+  showScreen('battle');
+  game.player.mp = game.player.maxMp;
+  startNextDungeonBattle();
+}
+
+/** スキルダンジョン内で次の戦闘を開始する */
+function startNextSkillDungeonBattle() {
+  const def = SKILL_DUNGEON_DEFINITIONS[game.dungeon.skillDifficulty];
+  if (!def) return;
+
+  const idx = game.dungeon.enemyIndex;
+
+  let template;
+
+  if (idx === SKILL_DUNGEON_ENEMY_COUNT - 1) {
+    template = def.boss;
+    log('─'.repeat(40), 'special');
+    log('💀 ボスが現れた！', 'special');
+  } else {
+    const isRareSpawn = Math.random() < def.rareChance;
+    template = isRareSpawn ? def.rareEnemy : pick(def.normalEnemies);
+    if (isRareSpawn) {
+      log('✨ レアモンスターが現れた！', 'special');
+    }
+  }
+
+  game.enemy = new Enemy(
+    template.name,
+    template.hp,
+    template.maxHp,
+    template.attack,
+    template.defense,
+    template.expReward
+  );
+
+  game.state             = GameState.PLAYER_TURN;
+  game.battleCount++;
+  game.shieldActive      = null;
+  game.enemyPoisoned     = null;
+  game.playerAtkBuff     = null;
+  game.enemyStunned      = false;
+  game.enemyAtkDebuff    = null;
+  game.playerRegen       = null;
+  game.playerDelayedHeal = null;
+
+  recordMonsterEncounter(game.enemy.name);
+
+  clearLog();
+  log(`=== ${def.name} ===`, 'special');
+  log(`全 ${SKILL_DUNGEON_ENEMY_COUNT} 体を倒してクリアせよ！　クリア時のみスキルストーンを獲得できます。`, 'special');
+  updateDungeonInfo();
+  log(`=== 戦闘 ${idx + 1} / ${SKILL_DUNGEON_ENEMY_COUNT} ===`, 'special');
+  log(`${game.enemy.name} が現れた！`, 'system');
+  log('─'.repeat(40), 'system');
+  log('あなたのターンです。アクションを選んでください。', 'system');
+
+  renderPlayerStatus();
+  renderEnemyStatus();
+  setButtonsEnabled(true);
+  showDungeonNav(false);
+}
+
+/** スキルダンジョンのドロップ処理 */
+function processSkillDrop() {
+  const def = SKILL_DUNGEON_DEFINITIONS[game.dungeon.skillDifficulty];
+  if (!def) return;
+
+  const idx    = game.dungeon.enemyIndex;
+  const isBoss = idx === SKILL_DUNGEON_ENEMY_COUNT - 1;
+  const isRare = game.enemy.name === def.rareEnemy.name;
+
+  let dropRate;
+  if (isBoss) {
+    dropRate = def.bossDropRate;
+  } else if (isRare) {
+    dropRate = def.rareDropRate;
+  } else {
+    dropRate = def.normalDropRate;
+  }
+
+  if (Math.random() < dropRate) {
+    game.dungeon.skillStonesEarned += 1;
+    log(`🎓 ${SKILL_STONE_NAME} ×1 を入手した！（探索合計: ${game.dungeon.skillStonesEarned} 個）`, 'result');
+  }
+}
+
+/** スキルダンジョンクリア処理 */
+function completeSkillDungeon() {
+  const def    = SKILL_DUNGEON_DEFINITIONS[game.dungeon.skillDifficulty];
+  const stones = game.dungeon.skillStonesEarned;
+
+  if (stones > 0) {
+    game.player.materials[SKILL_STONE_NAME] = (game.player.materials[SKILL_STONE_NAME] || 0) + stones;
+    recordItemUnlock(SKILL_STONE_NAME);
+  }
+
+  log('', 'system');
+  log(`🏆 ${def ? def.name : 'スキルダンジョン'} をクリアした！`, 'special');
+  log(`🎓 ${SKILL_STONE_NAME} ${stones} 個をインベントリに追加しました。`, 'result');
+
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  autoSave();
+  showScreen('lobby');
+  renderLobby();
+}
+
+/** スキルダンジョンからの撤退処理 */
+function retreatFromSkillDungeon() {
+  game.dungeon.skillStonesEarned = 0;
+  log('🚪 スキルダンジョンから撤退した。探索中に獲得したスキルストーンは没収された。', 'result');
+
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  autoSave();
   showScreen('lobby');
   renderLobby();
 }
