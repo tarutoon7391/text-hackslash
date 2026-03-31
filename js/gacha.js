@@ -323,36 +323,3 @@ function showGachaRates() {
   });
 }
 
-/** デバッグ用: ガチャチケットを10枚追加する */
-function addGachaTickets() {
-  if (!game.player) return;
-  game.player.gachaTickets = (game.player.gachaTickets || 0) + 10;
-  renderLobbyStatus();
-  // ガチャ画面が開いている場合は更新する
-  if (game.currentScreen === 'gacha') {
-    renderGachaScreen();
-  }
-}
-
-/** デバッグ用: プレイヤーレベルを1上げる */
-function debugLevelUp1() {
-  if (!game.player) return;
-  const player = game.player;
-  if (player.level >= MAX_LEVEL) return;
-  // 次のレベルに必要な累計EXPに設定してレベルアップを発火する
-  player.exp = EXP_TABLE[player.level];
-  gainExp(0);
-  renderLobbyStatus();
-}
-
-/** デバッグ用: プレイヤーレベルを10上げる */
-function debugLevelUp10() {
-  if (!game.player) return;
-  const player = game.player;
-  for (let i = 0; i < 10; i++) {
-    if (player.level >= MAX_LEVEL) break;
-    player.exp = EXP_TABLE[player.level];
-    gainExp(0);
-  }
-  renderLobbyStatus();
-}
