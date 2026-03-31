@@ -1431,18 +1431,6 @@ footer {
   box-shadow: 0 0 10px #ffdd00;
 }
 
-.debug-ticket-btn {
-  color: #888888;
-  border-color: #555555;
-  font-size: 0.8rem;
-  padding: 6px 14px;
-}
-
-.debug-ticket-btn:hover:not(:disabled) {
-  background-color: #55555522;
-  box-shadow: 0 0 6px #888888;
-}
-
 .gacha-log {
   border: 1px solid #444;
   background-color: #050505;
