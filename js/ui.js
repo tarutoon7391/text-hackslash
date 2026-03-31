@@ -38,14 +38,6 @@ function renderLobbyStatus() {
   const el = document.getElementById('lobby-player-status');
   if (!el) return;
 
-  const skillList = (p.learnedSkills.length > 0)
-    ? p.learnedSkills.map(id => {
-        const def = (typeof SKILL_DEFINITIONS !== 'undefined')
-          ? SKILL_DEFINITIONS.find(s => s.id === id) : null;
-        return def ? def.name : id;
-      }).join(' / ')
-    : 'なし';
-
   const hpPct  = Math.max(0, Math.min(100, (p.hp  / p.maxHp) * 100));
   const mpPct  = Math.max(0, Math.min(100, (p.mp  / p.maxMp) * 100));
 
@@ -65,7 +57,7 @@ function renderLobbyStatus() {
   const critDisplay = parseFloat((totalCritChance * 100).toFixed(1));
 
   el.innerHTML = `
-    <div class="lobby-stat-line">名前: <strong>${p.name}</strong></div>
+    <div class="lobby-stat-line">名前: <strong>${auth.username || p.name}</strong></div>
     <div class="lobby-stat-line">Lv: <strong>${p.level}</strong> / ${maxLv}</div>
     <div class="lobby-stat-line">EXP: ${p.exp}　${atLv ? '（最大レベル）' : `→ 次のレベルまで ${nxt}`}</div>
     <div class="lobby-stat-line">ATK: ${p.attack}　DEF: ${p.defense}　会心率: ${critDisplay}%</div>
@@ -74,7 +66,6 @@ function renderLobbyStatus() {
     <div class="mp-label">MP: ${p.mp} / ${p.maxMp}</div>
     <div class="hp-bar-outer"><div class="mp-bar-inner" style="width:${mpPct}%"></div></div>
     <div class="lobby-stat-line">スキルツリーポイント: <strong>${p.skillPoints} pt</strong></div>
-    <div class="lobby-stat-line">習得スキル: ${skillList}</div>
     <div class="lobby-stat-line">🎫 ガチャチケット: <strong>${p.gachaTickets || 0}</strong> 枚</div>
   `;
 }
