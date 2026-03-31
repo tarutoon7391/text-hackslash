@@ -50,6 +50,31 @@ function getAllMonsters() {
     }
   });
 
+  // 特殊ダンジョン定義からモンスターを追加するヘルパー
+  const addSpecialDungeonMonsters = (defs, reward) => {
+    Object.values(defs).forEach(def => {
+      def.normalEnemies.forEach(e => {
+        if (!monsters.find(m => m.name === e.name)) {
+          monsters.push({ name: e.name, dungeonName: def.name, dungeonId: null, monsterType: 'normal', specialReward: reward });
+        }
+      });
+      if (!monsters.find(m => m.name === def.rareEnemy.name)) {
+        monsters.push({ name: def.rareEnemy.name, dungeonName: def.name, dungeonId: null, monsterType: 'rare', specialReward: reward });
+      }
+      if (!monsters.find(m => m.name === def.boss.name)) {
+        monsters.push({ name: def.boss.name, dungeonName: def.name, dungeonId: null, monsterType: 'boss', specialReward: reward });
+      }
+      if (def.rareBoss && !monsters.find(m => m.name === def.rareBoss.name)) {
+        monsters.push({ name: def.rareBoss.name, dungeonName: def.name, dungeonId: null, monsterType: 'boss', specialReward: reward });
+      }
+    });
+  };
+
+  // ガチャチケダンジョン・XPダンジョン・スキルダンジョンのモンスターを追加
+  addSpecialDungeonMonsters(GACHA_DUNGEON_DEFINITIONS, 'ガチャチケット');
+  addSpecialDungeonMonsters(XP_DUNGEON_DEFINITIONS,    'EXP');
+  addSpecialDungeonMonsters(SKILL_DUNGEON_DEFINITIONS, SKILL_STONE_NAME);
+
   return monsters;
 }
 
@@ -59,6 +84,9 @@ function getAllMonsters() {
  * @returns {string[]}
  */
 function getMonsterDrops(monsterEntry) {
+  // 特殊ダンジョンのモンスターは specialReward フィールドで報酬を返す
+  if (monsterEntry.specialReward) return [monsterEntry.specialReward];
+
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === monsterEntry.dungeonId);
   if (!dungeon) return [];
 
@@ -118,6 +146,19 @@ function getAllItems() {
       effect:   parts.length > 0 ? parts.join(' / ') : '---',
       slot:     eq.slot,
     });
+  });
+
+  // 特殊アイテムを追加
+  [
+    { name: 'ガチャチケット',          type: '特殊アイテム', howToGet: 'ガチャチケダンジョンで入手',  effect: 'ガチャを引くために使用' },
+    { name: 'XPダンジョンの鍵',        type: '特殊アイテム', howToGet: 'ガチャで入手',               effect: 'XPダンジョンの入場に使用' },
+    { name: 'レアモンダンジョンの鍵',  type: '特殊アイテム', howToGet: 'ガチャで入手',               effect: 'レアモンダンジョンの入場に使用' },
+    { name: 'スキルダンジョンの鍵',    type: '特殊アイテム', howToGet: 'ガチャで入手',               effect: 'スキルダンジョンの入場に使用' },
+    { name: SKILL_STONE_NAME,          type: '特殊アイテム', howToGet: 'スキルダンジョンで入手',     effect: 'スキル強化素材' },
+  ].forEach(item => {
+    if (seen.has(item.name)) return;
+    seen.add(item.name);
+    items.push(item);
   });
 
   return items;

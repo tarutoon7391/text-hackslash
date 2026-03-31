@@ -723,12 +723,12 @@ function completeGachaDungeon() {
 
 /**
  * ガチャチケダンジョンの撤退処理
- * 撤退時は探索中に獲得したチケットは没収される
+ * 撤退時は探索中に獲得したチケットをプレイヤーに持ち帰らせる
  */
 function retreatFromGachaDungeon() {
-  // チケットは没収（セーブデータには反映しない）
-  game.dungeon.ticketsEarned = 0;
-  log('🚪 チケットダンジョンから撤退した。探索中に獲得したチケットは没収された。', 'result');
+  const tickets = game.dungeon.ticketsEarned;
+  game.player.gachaTickets = (game.player.gachaTickets || 0) + tickets;
+  log(`🚪 チケットダンジョンから撤退した。探索中に獲得したガチャチケット ${tickets} 枚を持ち帰った。`, 'result');
 
   // ロビーに戻る際にHPとMPを全回復する
   game.player.hp = game.player.maxHp;
@@ -923,8 +923,9 @@ function completeXpDungeon() {
 
 /** XPダンジョンからの撤退処理 */
 function retreatFromXpDungeon() {
-  game.dungeon.xpEarned = 0;
-  log('🚪 XPダンジョンから撤退した。探索中に獲得したEXPは没収された。', 'result');
+  const xp = game.dungeon.xpEarned;
+  gainExp(xp);
+  log(`🚪 XPダンジョンから撤退した。探索中に獲得した EXP ${xp} を持ち帰った。`, 'result');
 
   game.player.hp = game.player.maxHp;
   game.player.mp = game.player.maxMp;
@@ -1142,10 +1143,10 @@ function completeRaremonDungeon() {
   renderLobby();
 }
 
-/** レアモンダンジョンからの撤退処理（没収） */
+/** レアモンダンジョンからの撤退処理 */
 function retreatFromRaremonDungeon() {
-  game.dungeon.materials = [];
-  log('🚪 レアモンダンジョンから撤退した。探索中に獲得した素材は没収された。', 'result');
+  transferDungeonMaterials();
+  log('🚪 レアモンダンジョンから撤退した。探索中に獲得した素材を持ち帰った。', 'result');
 
   game.player.hp = game.player.maxHp;
   game.player.mp = game.player.maxMp;
@@ -1333,8 +1334,12 @@ function completeSkillDungeon() {
 
 /** スキルダンジョンからの撤退処理 */
 function retreatFromSkillDungeon() {
-  game.dungeon.skillStonesEarned = 0;
-  log('🚪 スキルダンジョンから撤退した。探索中に獲得したスキルストーンは没収された。', 'result');
+  const stones = game.dungeon.skillStonesEarned;
+  if (stones > 0) {
+    game.player.materials[SKILL_STONE_NAME] = (game.player.materials[SKILL_STONE_NAME] || 0) + stones;
+    recordItemUnlock(SKILL_STONE_NAME);
+  }
+  log(`🚪 スキルダンジョンから撤退した。探索中に獲得した ${SKILL_STONE_NAME} ${stones} 個を持ち帰った。`, 'result');
 
   game.player.hp = game.player.maxHp;
   game.player.mp = game.player.maxMp;
