@@ -340,6 +340,79 @@ const DUNGEON_DEFINITIONS = [
 const DUNGEON_ENEMY_COUNT = 15;
 
 /* ==============================================================
+   ガチャチケダンジョン定義
+   各難易度のモンスター・ドロップ率を定義する
+   ============================================================== */
+
+/**
+ * ガチャチケダンジョンの難易度別定義
+ * normalTicketDropRate: 通常敵のチケットドロップ率
+ * bossTicketDropRate:   ボスのチケットドロップ率
+ * ticketDragonDrop:     チケットドラゴン（レア）の確定ドロップ枚数
+ */
+const GACHA_DUNGEON_DEFINITIONS = {
+  /* ──────────────────────────────────────────
+     初級（推奨 Lv 20）
+     ────────────────────────────────────────── */
+  beginner: {
+    name: 'チケットダンジョン【初級】',
+    recommendedLevel: 20,
+    normalEnemies: [
+      { name: 'トレジャースライム', hp: 420,  maxHp: 420,  attack: 158, defense: 62,  expReward: 195 },
+      { name: 'コイン番兵',         hp: 490,  maxHp: 490,  attack: 166, defense: 72,  expReward: 200 },
+      { name: '金貨の亡霊',         hp: 370,  maxHp: 370,  attack: 172, defense: 55,  expReward: 192 },
+    ],
+    rareEnemy: { name: 'チケットドラゴン', hp: 2400, maxHp: 2400, attack: 268, defense: 140, expReward: 420 },
+    boss:      { name: 'チケット番人',     hp: 2600, maxHp: 2600, attack: 278, defense: 148, expReward: 1350 },
+    rareChance:           0.05,
+    normalTicketDropRate: 0.01,
+    bossTicketDropRate:   0.30,
+    ticketDragonDrop:     1,
+  },
+
+  /* ──────────────────────────────────────────
+     中級（推奨 Lv 30）
+     ────────────────────────────────────────── */
+  intermediate: {
+    name: 'チケットダンジョン【中級】',
+    recommendedLevel: 30,
+    normalEnemies: [
+      { name: 'シルバースライム', hp: 760,  maxHp: 760,  attack: 270, defense: 108, expReward: 385 },
+      { name: 'チケット守衛',     hp: 880,  maxHp: 880,  attack: 258, defense: 122, expReward: 390 },
+      { name: '宝の番兵',         hp: 670,  maxHp: 670,  attack: 285, defense: 96,  expReward: 382 },
+    ],
+    rareEnemy: { name: 'チケットドラゴン', hp: 3900, maxHp: 3900, attack: 400, defense: 212, expReward: 760 },
+    boss:      { name: 'チケット大番人',   hp: 4100, maxHp: 4100, attack: 415, defense: 220, expReward: 2300 },
+    rareChance:           0.05,
+    normalTicketDropRate: 0.02,
+    bossTicketDropRate:   0.50,
+    ticketDragonDrop:     2,
+  },
+
+  /* ──────────────────────────────────────────
+     上級（推奨 Lv 50）
+     ────────────────────────────────────────── */
+  advanced: {
+    name: 'チケットダンジョン【上級】',
+    recommendedLevel: 50,
+    normalEnemies: [
+      { name: '幻のスライム', hp: 1900, maxHp: 1900, attack: 620, defense: 278, expReward: 1060 },
+      { name: '混沌の守銭奴', hp: 2050, maxHp: 2050, attack: 598, defense: 298, expReward: 1065 },
+      { name: '虚無の財宝番', hp: 1750, maxHp: 1750, attack: 648, defense: 260, expReward: 1055 },
+    ],
+    rareEnemy: { name: 'チケットドラゴン',   hp: 9800,  maxHp: 9800,  attack: 870, defense: 458, expReward: 2100 },
+    boss:      { name: '伝説のチケット番人', hp: 10500, maxHp: 10500, attack: 900, defense: 475, expReward: 6500 },
+    rareChance:           0.05,
+    normalTicketDropRate: 0.03,
+    bossTicketDropRate:   1.00,
+    ticketDragonDrop:     3,
+  },
+};
+
+/** ガチャチケダンジョンの討伐数 */
+const GACHA_DUNGEON_ENEMY_COUNT = 30;
+
+/* ==============================================================
    ダンジョン画面の初期表示
    ============================================================== */
 
@@ -397,6 +470,12 @@ function enterDungeon(dungeonId) {
  * ダンジョン内で次の敵との戦闘を開始する
  */
 function startNextDungeonBattle() {
+  // ガチャチケダンジョンの場合は専用処理へ分岐する
+  if (game.dungeon.isGachaDungeon) {
+    startNextGachaDungeonBattle();
+    return;
+  }
+
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
 
@@ -497,13 +576,21 @@ function showDungeonNav(show, isBossKill) {
  * ダンジョン情報（何体目か）を更新する
  */
 function updateDungeonInfo() {
+  const el = document.getElementById('dungeon-info');
+  if (!el) return;
+
+  if (game.dungeon.isGachaDungeon) {
+    const def = GACHA_DUNGEON_DEFINITIONS[game.dungeon.gachaDifficulty];
+    if (!def) return;
+    el.textContent =
+      `📍 ${def.name}  [ ${game.dungeon.enemyIndex + 1} / ${GACHA_DUNGEON_ENEMY_COUNT} 体目 ]`;
+    return;
+  }
+
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
-  const el = document.getElementById('dungeon-info');
-  if (el) {
-    el.textContent =
-      `📍 ${dungeon.name}  [ ${game.dungeon.enemyIndex + 1} / ${DUNGEON_ENEMY_COUNT} 体目 ]`;
-  }
+  el.textContent =
+    `📍 ${dungeon.name}  [ ${game.dungeon.enemyIndex + 1} / ${DUNGEON_ENEMY_COUNT} 体目 ]`;
 }
 
 /* ==============================================================
@@ -526,6 +613,12 @@ function isCharmActiveForDungeon(dungeonId) {
  * 敵撃破時にドロップ素材を決定して game.dungeon.materials に追加する
  */
 function processDrop() {
+  // ガチャチケダンジョンの場合は専用のドロップ処理へ分岐する
+  if (game.dungeon.isGachaDungeon) {
+    processGachaDrop();
+    return;
+  }
+
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
 
@@ -601,6 +694,12 @@ function addDungeonMaterial(materialName) {
 
 /** ダンジョンクリア処理（ボス撃破後） */
 function completeDungeon() {
+  // ガチャチケダンジョンの場合は専用のクリア処理へ分岐する
+  if (game.dungeon.isGachaDungeon) {
+    completeGachaDungeon();
+    return;
+  }
+
   const dungeon = DUNGEON_DEFINITIONS.find(d => d.id === game.dungeon.id);
   if (!dungeon) return;
 
@@ -627,6 +726,12 @@ function completeDungeon() {
 
 /** 撤退処理 */
 function retreatFromDungeon() {
+  // ガチャチケダンジョンの場合は専用の撤退処理へ分岐する
+  if (game.dungeon.isGachaDungeon) {
+    retreatFromGachaDungeon();
+    return;
+  }
+
   // 獲得素材をプレイヤーのインベントリに移す（撤退は持ち帰り可）
   transferDungeonMaterials();
   log('🚪 ダンジョンから撤退した。獲得素材を持ち帰った。', 'result');
@@ -648,7 +753,14 @@ function retreatFromDungeon() {
  */
 function failDungeon() {
   game.dungeon.materials = [];
-  log('💀 ダンジョン内で獲得した素材をすべて失った…', 'enemy-action');
+
+  if (game.dungeon.isGachaDungeon) {
+    // ガチャチケダンジョン: 探索中のチケットは没収
+    game.dungeon.ticketsEarned = 0;
+    log('💀 探索中に獲得したガチャチケットをすべて失った…', 'enemy-action');
+  } else {
+    log('💀 ダンジョン内で獲得した素材をすべて失った…', 'enemy-action');
+  }
 
   // HPとMPを最大値で復活（デスペナルティなし）
   game.player.hp = game.player.maxHp;
@@ -673,4 +785,209 @@ function transferDungeonMaterials() {
     game.player.materials[item.name] += item.count;
   });
   game.dungeon.materials = [];
+}
+
+/* ==============================================================
+   ガチャチケダンジョン
+   ============================================================== */
+
+/**
+ * ガチャチケダンジョンの難易度選択画面を描画する
+ */
+function renderGachaDungeonDifficultySelect() {
+  const list = document.getElementById('gacha-dungeon-difficulty-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  const difficulties = [
+    { key: 'beginner',     label: '初級', icon: '🌱' },
+    { key: 'intermediate', label: '中級', icon: '⚔' },
+    { key: 'advanced',     label: '上級', icon: '🔥' },
+  ];
+
+  difficulties.forEach(({ key, label, icon }) => {
+    const def = GACHA_DUNGEON_DEFINITIONS[key];
+    const item = document.createElement('div');
+    item.className = 'dungeon-item';
+    item.innerHTML = `
+      <div class="dungeon-info">
+        <span class="dungeon-name">${icon} チケットダンジョン ${label}</span>
+        <span class="dungeon-meta">
+          推奨 Lv ${def.recommendedLevel}〜　全 ${GACHA_DUNGEON_ENEMY_COUNT} 体討伐
+          　通常チケットドロップ: ${(def.normalTicketDropRate * 100).toFixed(0)}%
+          　ボスドロップ: ${(def.bossTicketDropRate * 100).toFixed(0)}%
+          　チケットドラゴン確定 ${def.ticketDragonDrop} 枚
+        </span>
+      </div>
+      <button class="dungeon-enter-btn" onclick="enterGachaDungeon('${key}')">🎫 挑戦する</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+/**
+ * ガチャチケダンジョンに入る
+ * @param {string} difficulty - 'beginner' | 'intermediate' | 'advanced'
+ */
+function enterGachaDungeon(difficulty) {
+  const def = GACHA_DUNGEON_DEFINITIONS[difficulty];
+  if (!def) return;
+
+  // ガチャダンジョン状態を初期化
+  game.dungeon = {
+    id:             null,
+    enemyIndex:     0,
+    materials:      [],
+    isGachaDungeon: true,
+    gachaDifficulty: difficulty,
+    ticketsEarned:  0,
+  };
+
+  showScreen('battle');
+
+  // 入場時に MP を最大値まで回復する
+  game.player.mp = game.player.maxMp;
+
+  startNextDungeonBattle();
+}
+
+/**
+ * ガチャチケダンジョン内で次の敵との戦闘を開始する
+ */
+function startNextGachaDungeonBattle() {
+  const def = GACHA_DUNGEON_DEFINITIONS[game.dungeon.gachaDifficulty];
+  if (!def) return;
+
+  const idx = game.dungeon.enemyIndex;  // 0〜29
+
+  let template;
+  let isRareSpawn = false;
+
+  if (idx === GACHA_DUNGEON_ENEMY_COUNT - 1) {
+    // 30 体目はボス
+    template = def.boss;
+    log('─'.repeat(40), 'special');
+    log('💀 ボスが現れた！', 'special');
+  } else {
+    // レアモンスター（チケットドラゴン）出現判定: 5%
+    isRareSpawn = Math.random() < def.rareChance;
+    template = isRareSpawn ? def.rareEnemy : pick(def.normalEnemies);
+    if (isRareSpawn) {
+      log('✨ チケットドラゴンが現れた！', 'special');
+    }
+  }
+
+  game.enemy = new Enemy(
+    template.name,
+    template.hp,
+    template.maxHp,
+    template.attack,
+    template.defense,
+    template.expReward
+  );
+
+  game.state             = GameState.PLAYER_TURN;
+  game.battleCount++;
+  game.shieldActive      = null;
+  game.enemyPoisoned     = null;
+  game.playerAtkBuff     = null;
+  game.enemyStunned      = false;
+  game.enemyAtkDebuff    = null;
+  game.playerRegen       = null;
+  game.playerDelayedHeal = null;
+
+  // 図鑑: 遭遇を記録する
+  recordMonsterEncounter(game.enemy.name);
+
+  clearLog();
+  log(`=== ${def.name} ===`, 'special');
+  log(`全 ${GACHA_DUNGEON_ENEMY_COUNT} 体を倒してクリアせよ！`, 'special');
+  updateDungeonInfo();
+  log(`=== 戦闘 ${idx + 1} / ${GACHA_DUNGEON_ENEMY_COUNT} ===`, 'special');
+  log(`${game.enemy.name} が現れた！`, 'system');
+  log('─'.repeat(40), 'system');
+  log('あなたのターンです。アクションを選んでください。', 'system');
+
+  renderPlayerStatus();
+  renderEnemyStatus();
+  setButtonsEnabled(true);
+  showDungeonNav(false);
+}
+
+/**
+ * ガチャチケダンジョンのドロップ処理
+ * ドロップはガチャチケットのみ（素材はドロップしない）
+ */
+function processGachaDrop() {
+  const def         = GACHA_DUNGEON_DEFINITIONS[game.dungeon.gachaDifficulty];
+  if (!def) return;
+
+  const idx          = game.dungeon.enemyIndex;
+  const isBoss       = idx === GACHA_DUNGEON_ENEMY_COUNT - 1;
+  const isTicketDragon = game.enemy.name === def.rareEnemy.name;
+
+  if (isBoss) {
+    // ボス: bossTicketDropRate の確率でチケットを1枚ドロップ
+    if (Math.random() < def.bossTicketDropRate) {
+      game.dungeon.ticketsEarned += 1;
+      log(`🎫 ガチャチケット ×1 を入手した！（探索合計: ${game.dungeon.ticketsEarned} 枚）`, 'result');
+    }
+  } else if (isTicketDragon) {
+    // チケットドラゴン: 確定ドロップ
+    const drop = def.ticketDragonDrop;
+    game.dungeon.ticketsEarned += drop;
+    log(`🎫 チケットドラゴンからガチャチケット ×${drop} を入手した！（探索合計: ${game.dungeon.ticketsEarned} 枚）`, 'result');
+  } else {
+    // 通常敵: normalTicketDropRate の確率でチケットを1枚ドロップ
+    if (Math.random() < def.normalTicketDropRate) {
+      game.dungeon.ticketsEarned += 1;
+      log(`🎫 ガチャチケット ×1 を入手した！（探索合計: ${game.dungeon.ticketsEarned} 枚）`, 'result');
+    }
+  }
+}
+
+/**
+ * ガチャチケダンジョンクリア処理
+ * クリア時のみ獲得チケットをセーブデータに加算する
+ */
+function completeGachaDungeon() {
+  const def     = GACHA_DUNGEON_DEFINITIONS[game.dungeon.gachaDifficulty];
+  const tickets = game.dungeon.ticketsEarned;
+
+  // 獲得チケットをプレイヤーに加算する（クリア時のみ）
+  game.player.gachaTickets = (game.player.gachaTickets || 0) + tickets;
+
+  log('', 'system');
+  log(`🏆 ${def ? def.name : 'チケットダンジョン'} をクリアした！`, 'special');
+  log(`🎫 ガチャチケット ${tickets} 枚をインベントリに追加しました。`, 'result');
+
+  // ロビーに戻る際にHPとMPを全回復する
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  // クリア時に自動セーブ
+  autoSave();
+
+  showScreen('lobby');
+  renderLobby();
+}
+
+/**
+ * ガチャチケダンジョンの撤退処理
+ * 撤退時は探索中に獲得したチケットは没収される
+ */
+function retreatFromGachaDungeon() {
+  // チケットは没収（セーブデータには反映しない）
+  game.dungeon.ticketsEarned = 0;
+  log('🚪 チケットダンジョンから撤退した。探索中に獲得したチケットは没収された。', 'result');
+
+  // ロビーに戻る際にHPとMPを全回復する
+  game.player.hp = game.player.maxHp;
+  game.player.mp = game.player.maxMp;
+
+  // 撤退時に自動セーブ
+  autoSave();
+
+  showScreen('lobby');
+  renderLobby();
 }
