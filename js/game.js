@@ -171,6 +171,18 @@ class Player {
       }
     });
 
+    // 蒼銀の剣×魔剣士シナジー: 魔剣士ルートのノードを1つ以上取得 かつ 蒼銀の剣を装備中
+    // → 会心率以外の全ステータス（ATK・DEF・HP・MP）を 1.2 倍にする
+    // ※ HP/MP 調整の前にシナジーを適用することで、繰り返し呼出し時に倍率が累積しないようにする
+    const isMakenshiJob = (this.skillTreeNodes['makenshi'] || []).length > 0;
+    const hasAoginNoKen = Object.values(this.equipment).includes('aogin_no_ken');
+    if (isMakenshiJob && hasAoginNoKen) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
+    }
+
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
     // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
     const hpDelta = this.maxHp - prevMaxHp;
@@ -183,12 +195,17 @@ class Player {
   }
 
   /**
-   * 祝福スキルの ATK バフを含めた実効攻撃力を返す
+   * 祝福スキルの ATK バフ・魔力凝縮を含めた実効攻撃力を返す
    */
   get effectiveAttack() {
     const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
       ? game.playerAtkBuff.bonus : 0;
-    return this.attack + bonus;
+    const base = this.attack + bonus;
+    // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
+    if (game.playerCondense && !game.playerCondense.justSet) {
+      return Math.floor(base * game.playerCondense.atkMultiplier);
+    }
+    return base;
   }
 
   /**
@@ -263,6 +280,7 @@ let game = {
   shieldActive:      null,   // { defenseBonus: N, turnsLeft: N } — シールド・聖域
   enemyPoisoned:     null,   // { active: bool, damage: N, turnsLeft: N }
   playerAtkBuff:     null,   // { bonus: N, turnsLeft: N } — 祝福スキル
+  playerCondense:    null,   // { atkMultiplier: N, dmgMultiplier: N, justSet: bool } — 魔力凝縮
   enemyStunned:      false,  // 足払い・体当たりによるスタン
   enemyAtkDebuff:    null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
   playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
@@ -301,9 +319,28 @@ function playerAction(action) {
 function doPlayerAttack() {
   applyMpRegenEffect();
 
-  const dmg = game.player.calcAttackDamage(game.enemy);
-  game.enemy.takeDamage(dmg);
-  log(`▶ ${game.player.name} の攻撃！ → ${game.enemy.name} に ${dmg} ダメージ！`, 'player-action');
+  const player = game.player;
+  const enemy  = game.enemy;
+
+  // MP回復攻撃パッシブ（魔剣士 mk_06）が有効かチェック
+  const hasMpRecovery = (player.skillTreeNodes['makenshi'] || []).includes('mk_06');
+
+  if (hasMpRecovery) {
+    // 通常攻撃の0.6倍ダメージ・MP +8 回復（maxMp を超えない）
+    const rawDmg = player.calcAttackDamage(enemy);
+    const dmg    = Math.max(1, Math.floor(rawDmg * 0.6));
+    enemy.takeDamage(dmg);
+    const mpBefore = player.mp;
+    player.mp = Math.min(player.maxMp, player.mp + 8);
+    const mpGained = player.mp - mpBefore;
+    log(`⚔✨ ${player.name} の「MP回復攻撃」！ → ${enemy.name} に ${dmg} ダメージ！MP +${mpGained} 回復！`, 'player-action');
+    renderPlayerStatus();
+  } else {
+    const dmg = player.calcAttackDamage(enemy);
+    enemy.takeDamage(dmg);
+    log(`▶ ${player.name} の攻撃！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+  }
+
   renderEnemyStatus();
   afterPlayerTurn();
 }
@@ -323,6 +360,17 @@ function doPlayerFlee() {
 
 /** プレイヤーのターン終了後の処理 */
 function afterPlayerTurn() {
+  // 魔力凝縮の状態を進める
+  // justSet=true: 発動したばかりのターン → 次のターンに持ち越すため false に変更するだけ
+  // justSet=false: 凝縮中に行動した → 消費して解除する
+  if (game.playerCondense) {
+    if (game.playerCondense.justSet) {
+      game.playerCondense.justSet = false;
+    } else {
+      game.playerCondense = null;
+    }
+  }
+
   renderPlayerStatus();
 
   if (!game.enemy.isAlive()) {
@@ -422,6 +470,11 @@ function doEnemyTurn() {
       game.enemyAtkDebuff = null;
       log(`${game.enemy.name} のデバフが解けた。`, 'system');
     }
+  }
+
+  // 魔力凝縮中は被ダメージ増加（凝縮エネルギーを溜めているため隙が大きい）
+  if (game.playerCondense && !game.playerCondense.justSet) {
+    rawDmg = Math.floor(rawDmg * game.playerCondense.dmgMultiplier);
   }
 
   // シールド効果を適用（聖域スキル）
@@ -632,6 +685,7 @@ function initGame() {
   game.shieldActive      = null;
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
+  game.playerCondense    = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;

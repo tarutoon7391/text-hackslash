@@ -231,6 +231,7 @@ function startNextDungeonBattle() {
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
+  game.playerCondense    = null;
   game.playerDelayedHeal = null;
 
   // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
@@ -641,6 +642,7 @@ function startNextGachaDungeonBattle() {
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
+  game.playerCondense    = null;
   game.playerDelayedHeal = null;
 
   // 図鑑: 遭遇を記録する
@@ -873,6 +875,7 @@ function startNextXpDungeonBattle() {
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
+  game.playerCondense    = null;
   game.playerDelayedHeal = null;
 
   recordMonsterEncounter(game.enemy.name);
@@ -1053,6 +1056,7 @@ function startNextRaremonDungeonBattle() {
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
+  game.playerCondense    = null;
   game.playerDelayedHeal = null;
 
   recordMonsterEncounter(game.enemy.name);
@@ -1261,6 +1265,7 @@ function startNextSkillDungeonBattle() {
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
+  game.playerCondense    = null;
   game.playerDelayedHeal = null;
 
   recordMonsterEncounter(game.enemy.name);
