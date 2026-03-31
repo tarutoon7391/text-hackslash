@@ -3,401 +3,200 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>テキスト ハクスラ RPG</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>テキストハックスラッシュ ⚔️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Boogaloo&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<h1>⚔ TEXT HACK&amp;SLASH ⚔</h1>
+  <!-- ===== ヒーローセクション ===== -->
+  <section class="hero" id="hero">
+    <!-- 背景装飾 -->
+    <div class="hero-bg-shapes" aria-hidden="true">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+    </div>
 
-<div id="game-container">
+    <!-- 浮かぶアイコン群 -->
+    <div class="floating-icons" aria-hidden="true">
+      <span class="fi fi-1">⚔️</span>
+      <span class="fi fi-2">🎲</span>
+      <span class="fi fi-3">🏆</span>
+      <span class="fi fi-4">💎</span>
+      <span class="fi fi-5">🌟</span>
+      <span class="fi fi-6">🗡️</span>
+      <span class="fi fi-7">🎮</span>
+      <span class="fi fi-8">✨</span>
+    </div>
 
-  <!-- ========================================================
-       ログイン画面
-       ======================================================== -->
-  <div id="screen-login" class="screen" style="display:none">
+    <div class="hero-content reveal-group">
+      <div class="badge reveal-item">🎮 ブラウザで遊べるRPG</div>
+      <h1 class="hero-title reveal-item">
+        <span class="title-line-1">テキスト</span>
+        <span class="title-line-2">ハック<em>スラッシュ</em></span>
+      </h1>
+      <p class="hero-sub reveal-item">
+        文字を武器に、ダンジョンを攻略せよ。<br />
+        装備を鍛えて、最強の冒険者を目指せ！
+      </p>
+      <div class="hero-ctas reveal-item">
+        <a href="#game" class="btn btn-primary">
+          <span class="btn-inner">今すぐ遊ぶ ▶</span>
+        </a>
+        <a href="#features" class="btn btn-secondary">
+          <span class="btn-inner">ゲームを見る 👀</span>
+        </a>
+      </div>
+    </div>
 
-    <div class="screen-panel">
-      <h2 class="panel-title">[ LOGIN ]</h2>
+    <!-- スクロール促進矢印 -->
+    <div class="scroll-hint" aria-hidden="true">
+      <span class="scroll-arrow">▼</span>
+    </div>
+  </section>
 
-      <form class="login-form" onsubmit="loginUser(); return false;">
-        <div class="login-row">
-          <label for="login-username">👤 ユーザー名:</label>
-          <input type="text" id="login-username" placeholder="ユーザー名を入力..." autocomplete="username" class="login-input" />
+  <!-- ===== ゲーム紹介セクション ===== -->
+  <section class="features" id="features">
+    <div class="features-header">
+      <span class="section-label">🗺 ゲームの特徴</span>
+      <h2 class="section-title">こんなゲームだよ！</h2>
+    </div>
+
+    <div class="features-grid">
+      <!-- カード 1 -->
+      <article class="feature-card card-1">
+        <div class="card-icon">⚔️</div>
+        <h3>テキスト式バトル</h3>
+        <p>
+          派手なグラフィックは不要！テキストで繰り広げる
+          スピーディーなダンジョン攻略。サクサク進む
+          テンポが最高の中毒性を生む。
+        </p>
+        <div class="card-deco" aria-hidden="true">★</div>
+      </article>
+
+      <!-- カード 2 -->
+      <article class="feature-card card-2">
+        <div class="card-icon">🎲</div>
+        <h3>ランダム性が熱い</h3>
+        <p>
+          ダイスの目でドロップアイテムが変わる！D1〜D12
+          の12種ダンジョン。毎回違う結果で、何度でも
+          飽きさせない。
+        </p>
+        <div class="card-deco" aria-hidden="true">♦</div>
+      </article>
+
+      <!-- カード 3 -->
+      <article class="feature-card card-3">
+        <div class="card-icon">🔧</div>
+        <h3>装備強化システム</h3>
+        <p>
+          ドロップ素材で武器・防具を強化！レアリティは
+          normal → rare → legend まで。ガチャで伝説装備
+          をゲットしよう。
+        </p>
+        <div class="card-deco" aria-hidden="true">▲</div>
+      </article>
+
+      <!-- カード 4 -->
+      <article class="feature-card card-4">
+        <div class="card-icon">📈</div>
+        <h3>レベルアップ・スキルツリー</h3>
+        <p>
+          Lv50まで成長！SPを振ってスキルツリーを解放。
+          あなただけのビルドを作り上げ、最強冒険者
+          への道を歩め。
+        </p>
+        <div class="card-deco" aria-hidden="true">●</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== イメージギャラリーセクション ===== -->
+  <section class="gallery" id="gallery">
+    <div class="gallery-header">
+      <span class="section-label">📸 スクリーンショット</span>
+      <h2 class="section-title">ゲーム画面を<br />チラ見せ</h2>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item gi-1">
+        <div class="gallery-placeholder">
+          <span class="placeholder-icon">⚔️</span>
+          <span class="placeholder-label">バトル画面</span>
         </div>
-        <div class="login-row">
-          <label for="login-password">🔑 パスワード:</label>
-          <input type="password" id="login-password" placeholder="パスワードを入力..." autocomplete="current-password" class="login-input" />
+      </div>
+      <div class="gallery-item gi-2">
+        <div class="gallery-placeholder">
+          <span class="placeholder-icon">🎒</span>
+          <span class="placeholder-label">装備一覧</span>
         </div>
-        <div class="login-btn-row">
-          <button type="submit" class="login-btn" id="btn-login">🔓 ログイン</button>
-          <button type="button" class="login-btn register-btn" id="btn-register" onclick="registerUser()">📝 新規登録</button>
+      </div>
+      <div class="gallery-item gi-3">
+        <div class="gallery-placeholder">
+          <span class="placeholder-icon">🗺️</span>
+          <span class="placeholder-label">ダンジョン選択</span>
         </div>
-        <div id="login-msg"></div>
-      </form>
-    </div>
-
-  </div><!-- /screen-login -->
-
-  <!-- ========================================================
-       ロビー画面
-       ======================================================== -->
-  <div id="screen-lobby" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ LOBBY ]</h2>
-
-      <!-- プレイヤーステータス -->
-      <div id="lobby-player-status" class="lobby-status-box">
-        <!-- JS で動的に描画 -->
       </div>
-
-      <!-- ナビゲーションボタン -->
-      <div class="lobby-nav">
-        <button class="nav-btn" onclick="showScreen('dungeon-select'); renderDungeonSelect();">
-          🗺 ダンジョンへ
-        </button>
-        <button class="nav-btn" onclick="showScreen('inventory'); renderInventory();">
-          🎒 インベントリ
-        </button>
-        <button class="nav-btn" onclick="showScreen('skill-tree'); renderSkillTree();">
-          ⭐ スキルツリー
-        </button>
-        <button class="nav-btn gacha-lobby-btn" onclick="showScreen('gacha'); renderGachaScreen();">
-          🎰 ガチャ
-        </button>
-        <button class="nav-btn" onclick="showScreen('encyclopedia'); renderEncyclopedia();">
-          📖 図鑑
-        </button>
-        <button class="nav-btn" onclick="showScreen('ranking'); renderRanking();">
-          🏆 ランキング
-        </button>
-        <button class="nav-btn debug-ticket-btn" onclick="addGachaTickets()">
-          🎫 チケット+10（デバッグ）
-        </button>
-        <button class="nav-btn debug-ticket-btn" onclick="debugLevelUp1()">
-          ⬆ Lv+1（デバッグ）
-        </button>
-        <button class="nav-btn debug-ticket-btn" onclick="debugLevelUp10()">
-          ⬆ Lv+10（デバッグ）
-        </button>
-        <button class="nav-btn back-btn" onclick="logoutUser()">🚪 ログアウト</button>
-      </div>
-    </div>
-
-  </div><!-- /screen-lobby -->
-
-  <!-- ========================================================
-       ダンジョン選択画面
-       ======================================================== -->
-  <div id="screen-dungeon-select" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ DUNGEON SELECT ]</h2>
-      <div id="dungeon-list">
-        <!-- JS で動的に描画 -->
-      </div>
-      <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
-      </div>
-    </div>
-
-  </div><!-- /screen-dungeon-select -->
-
-  <!-- ========================================================
-       戦闘画面
-       ======================================================== -->
-  <div id="screen-battle" class="screen" style="display:none">
-
-    <!-- ダンジョン情報バー -->
-    <div id="dungeon-info" class="dungeon-info-bar"></div>
-
-    <!-- ステータス表示パネル（プレイヤー・敵） -->
-    <div id="status-panel">
-
-      <!-- プレイヤーステータス -->
-      <div class="status-box" id="player-box">
-        <h2>[ PLAYER ]</h2>
-        <div class="status-name" id="player-name">—</div>
-        <div class="hp-label" id="player-hp-label">HP: — / —</div>
-        <div class="hp-bar-outer">
-          <div class="hp-bar-inner" id="player-hp-bar" style="width:100%"></div>
+      <div class="gallery-item gi-4">
+        <div class="gallery-placeholder">
+          <span class="placeholder-icon">📊</span>
+          <span class="placeholder-label">ステータス画面</span>
         </div>
-        <div class="mp-label" id="player-mp-label">MP: — / —</div>
-        <div class="hp-bar-outer">
-          <div class="mp-bar-inner" id="player-mp-bar" style="width:100%"></div>
+      </div>
+      <div class="gallery-item gi-5">
+        <div class="gallery-placeholder">
+          <span class="placeholder-icon">🎲</span>
+          <span class="placeholder-label">ガチャ演出</span>
         </div>
-        <div class="status-detail" id="player-detail">ATK: — / DEF: — / LV: —</div>
       </div>
-
-      <!-- 敵ステータス -->
-      <div class="status-box" id="enemy-box">
-        <h2>[ ENEMY ]</h2>
-        <div class="status-name" id="enemy-name">—</div>
-        <div class="hp-label" id="enemy-hp-label">HP: — / —</div>
-        <div class="hp-bar-outer">
-          <div class="hp-bar-inner" id="enemy-hp-bar" style="width:100%"></div>
+      <div class="gallery-item gi-6">
+        <div class="gallery-placeholder">
+          <span class="placeholder-icon">🏆</span>
+          <span class="placeholder-label">ランキング</span>
         </div>
-        <div class="status-detail" id="enemy-detail">ATK: — / DEF: — / EXP: —</div>
-      </div>
-
-    </div>
-
-    <!-- バトルログエリア -->
-    <div id="log-area"></div>
-
-    <!-- スキル選択パネル（スキルボタン押下時に表示） -->
-    <div id="skill-panel" style="display:none"></div>
-
-    <!-- アクションボタン -->
-    <div id="action-panel">
-      <button class="action-btn" id="btn-attack" onclick="playerAction('attack')">⚔ 攻撃</button>
-      <button class="action-btn" id="btn-skill"  onclick="playerAction('skill')">✨ スキル</button>
-      <button class="action-btn" id="btn-flee"   onclick="playerAction('flee')">🚪 撤退</button>
-    </div>
-
-    <!-- ダンジョン進行ナビゲーション（次の敵へ / 撤退する） -->
-    <div id="dungeon-nav-panel" style="display:none">
-      <button class="nav-btn" id="btn-next-enemy">▶ 次の敵へ進む</button>
-      <button class="nav-btn back-btn" id="btn-retreat" onclick="retreatFromDungeon()">🏃 撤退する</button>
-    </div>
-
-  </div><!-- /screen-battle -->
-
-  <!-- ========================================================
-       インベントリ画面
-       ======================================================== -->
-  <div id="screen-inventory" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ INVENTORY ]</h2>
-
-      <!-- 所持素材 -->
-      <div class="inv-section">
-        <h3 class="inv-section-title">📦 所持素材</h3>
-        <div id="materials-list" class="materials-grid"></div>
-      </div>
-
-      <!-- 装備中一覧 -->
-      <div class="inv-section">
-        <h3 class="inv-section-title">🛡 現在の装備</h3>
-        <div id="equipped-list"></div>
-      </div>
-
-      <!-- クラフト / 装備リスト -->
-      <div class="inv-section">
-        <h3 class="inv-section-title">🔨 クラフト・装備一覧</h3>
-
-        <!-- 絞り込みタブ（部位） -->
-        <div class="craft-filter-group">
-          <span class="craft-filter-label">部位：</span>
-          <div class="craft-filter-tabs" id="craft-slot-tabs">
-            <button class="craft-filter-btn active" data-filter="all"       onclick="setCraftSlotFilter('all')">すべて</button>
-            <button class="craft-filter-btn"         data-filter="頭"        onclick="setCraftSlotFilter('頭')">頭</button>
-            <button class="craft-filter-btn"         data-filter="胴"        onclick="setCraftSlotFilter('胴')">胴</button>
-            <button class="craft-filter-btn"         data-filter="足"        onclick="setCraftSlotFilter('足')">足</button>
-            <button class="craft-filter-btn"         data-filter="靴"        onclick="setCraftSlotFilter('靴')">靴</button>
-            <button class="craft-filter-btn"         data-filter="アクセサリー" onclick="setCraftSlotFilter('アクセサリー')">アクセサリー</button>
-            <button class="craft-filter-btn"         data-filter="武器"      onclick="setCraftSlotFilter('武器')">武器</button>
-          </div>
-        </div>
-
-        <!-- 絞り込みタブ（レア度） -->
-        <div class="craft-filter-group">
-          <span class="craft-filter-label">レア度：</span>
-          <div class="craft-filter-tabs" id="craft-rarity-tabs">
-            <button class="craft-filter-btn active" data-filter="all"      onclick="setCraftRarityFilter('all')">すべて</button>
-            <button class="craft-filter-btn"         data-filter="normal"   onclick="setCraftRarityFilter('normal')">ノーマル</button>
-            <button class="craft-filter-btn"         data-filter="rare"     onclick="setCraftRarityFilter('rare')">レア</button>
-            <button class="craft-filter-btn"         data-filter="bossRare" onclick="setCraftRarityFilter('bossRare')">ボスレア</button>
-            <button class="craft-filter-btn"         data-filter="end"      onclick="setCraftRarityFilter('end')">エンド</button>
-            <button class="craft-filter-btn"         data-filter="legend"   onclick="setCraftRarityFilter('legend')">レジェンド</button>
-            <button class="craft-filter-btn"         data-filter="charm"    onclick="setCraftRarityFilter('charm')">チャーム</button>
-            <button class="craft-filter-btn"         data-filter="limited"  onclick="setCraftRarityFilter('limited')">限定</button>
-          </div>
-        </div>
-
-        <div id="craft-list"></div>
-      </div>
-
-      <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
       </div>
     </div>
+  </section>
 
-  </div><!-- /screen-inventory -->
-
-  <!-- ========================================================
-       スキルツリー画面
-       ======================================================== -->
-  <div id="screen-skill-tree" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ SKILL TREE ]</h2>
-
-      <div class="sp-remaining" id="st-remaining">残りポイント: 0 pt</div>
-
-      <!-- ルートタブ -->
-      <div class="st-tabs" id="st-tabs">
-        <button class="st-tab-btn active" data-route="swordsman" onclick="switchSkillTreeTab('swordsman')">⚔ 剣士</button>
-        <button class="st-tab-btn" data-route="mage"       onclick="switchSkillTreeTab('mage')">🔮 魔法</button>
-        <button class="st-tab-btn" data-route="cleric"     onclick="switchSkillTreeTab('cleric')">✨ 僧侶</button>
-        <button class="st-tab-btn" data-route="warrior"    onclick="switchSkillTreeTab('warrior')">🥊 戦士</button>
-      </div>
-
-      <!-- ルート説明 -->
-      <div id="st-route-desc" class="st-route-desc"></div>
-
-      <!-- ノードリスト -->
-      <div id="st-node-list" class="st-node-list"></div>
-
-      <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
-      </div>
+  <!-- ===== CTAバナー ===== -->
+  <section class="cta-banner" id="game">
+    <div class="cta-shapes" aria-hidden="true">
+      <div class="cs cs-1"></div>
+      <div class="cs cs-2"></div>
+      <div class="cs cs-3"></div>
     </div>
-
-  </div><!-- /screen-skill-tree -->
-
-  <!-- ========================================================
-       図鑑画面
-       ======================================================== -->
-  <div id="screen-encyclopedia" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ ENCYCLOPEDIA ]</h2>
-
-      <!-- タブ -->
-      <div class="enc-tabs">
-        <button class="enc-tab-btn active" id="enc-tab-monster" onclick="switchEncTab('monster')">
-          🐲 モンスター図鑑
-        </button>
-        <button class="enc-tab-btn" id="enc-tab-item" onclick="switchEncTab('item')">
-          💎 アイテム図鑑
-        </button>
-      </div>
-
-      <!-- モンスターリスト -->
-      <div id="enc-monster-list" class="enc-list"></div>
-
-      <!-- アイテムリスト -->
-      <div id="enc-item-list" class="enc-list" style="display:none"></div>
-
-      <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
-      </div>
+    <div class="cta-content">
+      <h2>さあ、冒険を始めよう！</h2>
+      <p>ブラウザさえあれば、今すぐ無料でプレイできる。</p>
+      <a href="#" class="btn btn-big">
+        <span class="btn-inner">ゲームをプレイ ⚔️</span>
+      </a>
     </div>
+  </section>
 
-  </div><!-- /screen-encyclopedia -->
-
-  <!-- ========================================================
-       ガチャ画面
-       ======================================================== -->
-  <div id="screen-gacha" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ GACHA ]</h2>
-
-      <!-- チケット枚数 -->
-      <div id="gacha-status" class="gacha-status-box">
-        🎫 所持ガチャチケット: <strong>0</strong> 枚
+  <!-- ===== フッター ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="footer-logo-icon">⚔️</span>
+        <span class="footer-logo-text">テキストハックスラッシュ</span>
       </div>
-
-      <!-- 永続品の入手状況 -->
-      <div id="gacha-perm-status" class="gacha-perm-status">
-      </div>
-
-      <!-- 操作ボタン -->
-      <div class="gacha-btn-row">
-        <button class="nav-btn gacha-draw-btn" id="btn-gacha-1" onclick="executeGachaOnce()">
-          🎲 1回引く（チケット×1）
-        </button>
-        <button class="nav-btn gacha-draw-btn" id="btn-gacha-10" onclick="executeGachaTen()">
-          🎲 10連引く（チケット×10）
-        </button>
-        <button class="nav-btn" onclick="showGachaRates()">
-          📊 排出率
-        </button>
-      </div>
-
-      <!-- 演出ログエリア -->
-      <div id="gacha-log" class="gacha-log"></div>
-
-      <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
-      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="#features">特徴</a>
+        <a href="#gallery">スクリーンショット</a>
+        <a href="#game">プレイする</a>
+      </nav>
+      <p class="footer-copy">© 2024 テキストハックスラッシュ. All rights reserved.</p>
     </div>
+  </footer>
 
-  </div><!-- /screen-gacha -->
-
-  <!-- ========================================================
-       ランキング画面
-  ========================================================= -->
-  <div id="screen-ranking" class="screen" style="display:none">
-
-    <div class="screen-panel">
-      <h2 class="panel-title">[ RANKING ]</h2>
-
-      <!-- タブ -->
-      <div class="enc-tabs">
-        <button class="enc-tab-btn active" id="ranking-tab-level" onclick="switchRankingTab('level')">
-          ⭐ レベルランキング
-        </button>
-        <button class="enc-tab-btn" id="ranking-tab-legend" onclick="switchRankingTab('legend')">
-          💎 レジェンド所持数ランキング
-        </button>
-      </div>
-
-      <!-- ローディング表示 -->
-      <div id="ranking-loading" class="ranking-loading" style="display:none">
-        読み込み中...
-      </div>
-
-      <!-- エラー表示 -->
-      <div id="ranking-error" class="ranking-error" style="display:none"></div>
-
-      <!-- レベルランキングリスト -->
-      <div id="ranking-level-list" class="ranking-list"></div>
-
-      <!-- レジェンド所持数ランキングリスト -->
-      <div id="ranking-legend-list" class="ranking-list" style="display:none"></div>
-
-      <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
-      </div>
-    </div>
-
-  </div><!-- /screen-ranking -->
-
-</div><!-- /game-container -->
-
-<!-- 図鑑詳細モーダル -->
-<div id="enc-modal-overlay" class="enc-modal-overlay" style="display:none" onclick="closeEncModal()">
-  <div class="enc-modal" onclick="event.stopPropagation()">
-    <div id="enc-modal-content"></div>
-    <button class="enc-modal-close nav-btn back-btn" onclick="closeEncModal()">✕ 閉じる</button>
-  </div>
-</div>
-
-<!-- 装備強化モーダル -->
-<div id="enhance-modal-overlay" class="enc-modal-overlay" style="display:none" onclick="closeEnhanceModal()">
-  <div class="enc-modal" onclick="event.stopPropagation()">
-    <div id="enhance-modal-content"></div>
-    <button class="enc-modal-close nav-btn back-btn" onclick="closeEnhanceModal()">✕ 閉じる</button>
-  </div>
-</div>
-
-<footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
-
-<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js → gacha.js -->
-<script src="js/ui.js"></script>
-<script src="js/equipment.js"></script>
-<script src="js/dungeon.js"></script>
-<script src="js/level.js"></script>
-<script src="js/game.js"></script>
-<script src="js/save.js"></script>
-<script src="js/encyclopedia.js"></script>
-<script src="js/ranking.js"></script>
-<script src="js/gacha.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
