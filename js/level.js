@@ -681,10 +681,10 @@ const SKILL_TREE_DEFINITIONS = [
         bonuses: { atk: 4, mp: 5 }, cost: 1, requires: 'mk_04',
       },
       {
-        // パッシブ: 通常攻撃が「MP回復攻撃」に変化する（威力×0.6・MP +8 回復）
+        // パッシブ: 通常攻撃が「MP回復攻撃」に変化する（威力×0.6・MP +30 回復）
         id: 'mk_06', name: 'MP回復攻撃',
         type: 'passive',
-        description: 'パッシブ：通常攻撃が「MP回復攻撃」に変化する（威力×0.6 / MP +8 回復）',
+        description: 'パッシブ：通常攻撃が「MP回復攻撃」に変化する（威力×0.6 / MP +30 回復）',
         bonuses: {}, cost: 2, requires: 'mk_05',
       },
       {
@@ -700,8 +700,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_09', name: '魔力凝縮',
         type: 'skill', skillId: 'magic_condense',
-        description: '魔力を凝縮し次の攻撃を強化（次ターン ATK×2.5・被ダメ×1.5 / MP:30）',
-        mpCost: 30, bonuses: {}, cost: 3, requires: 'mk_08',
+        description: '魔力を凝縮し次の攻撃を強化（次ターン ATK×4.0・被ダメ×1.5 / MP:50）',
+        mpCost: 50, bonuses: {}, cost: 3, requires: 'mk_08',
       },
       {
         id: 'mk_10', name: '魔剣の極意',
@@ -711,8 +711,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_11', name: '魔剣強撃',
         type: 'skill', skillId: 'magic_sword_strike',
-        description: '魔力を纏った強撃（ATK×2.2 / MP:22 / 30%で防御を無視する会心）',
-        mpCost: 22, bonuses: {}, cost: 3, requires: 'mk_10',
+        description: '魔力を纏った強撃（ATK×3.5 / MP:40 / 40%で防御を無視する会心）',
+        mpCost: 40, bonuses: {}, cost: 3, requires: 'mk_10',
       },
       {
         id: 'mk_12', name: '深淵の魔力',
@@ -722,8 +722,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_13', name: '魔力爆破斬',
         type: 'skill', skillId: 'magic_burst_slash',
-        description: '魔剣で爆裂する一撃（物理ATK×3.0 + 魔法ATK×0.5追加 / MP:32）',
-        mpCost: 32, bonuses: {}, cost: 3, requires: 'mk_12',
+        description: '魔剣で爆裂する一撃（物理ATK×4.5 + 魔法ATK×0.8追加 / MP:55）',
+        mpCost: 55, bonuses: {}, cost: 3, requires: 'mk_12',
       },
       {
         id: 'mk_14', name: '究極の剣技',
@@ -743,8 +743,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_17', name: '魔剣烈風斬',
         type: 'skill', skillId: 'magic_gale_slash',
-        description: '魔力の嵐を纏った 2 連撃（ATK×1.75×2 / MP:40）',
-        mpCost: 40, bonuses: {}, cost: 2, requires: 'mk_16',
+        description: '魔力の嵐を纏った 2 連撃（ATK×2.8×2 / MP:60）',
+        mpCost: 60, bonuses: {}, cost: 2, requires: 'mk_16',
       },
       {
         id: 'mk_18', name: '魔剣士の真髄',
@@ -759,8 +759,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_20', name: '魔剣士の覚醒',
         type: 'skill', skillId: 'makenshi_awakening',
-        description: '魔剣士として覚醒（ATK+50 / 4ターン + DEF+20 / 3ターン / MP:45）',
-        mpCost: 45, bonuses: {}, cost: 3, requires: 'mk_19',
+        description: '魔剣士として覚醒（ATK+80 / 4ターン + DEF+35 / 3ターン / MP:70）',
+        mpCost: 70, bonuses: {}, cost: 3, requires: 'mk_19',
       },
       {
         id: 'mk_21', name: '魔剣の神髄',
@@ -770,8 +770,8 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_22', name: '絶界魔剣斬',
         type: 'skill', skillId: 'absolute_magic_slash',
-        description: '全魔力を解放する究極の一撃（ATK×6.0 / MP:80 / 防御完全無視）',
-        mpCost: 80, bonuses: {}, cost: 3, requires: 'mk_21',
+        description: '全魔力を解放する究極の一撃（ATK×9.0 / MP:130 / 防御完全無視）',
+        mpCost: 130, bonuses: {}, cost: 3, requires: 'mk_21',
       },
     ],
   },
@@ -1485,17 +1485,17 @@ function useSkill(skillId) {
     /* ── 魔剣士スキル ── */
 
     case 'magic_condense': {
-      // 魔力凝縮: 次のターン ATK×2.5・被ダメ×1.5（justSet=true で発動ターンは即消費しない）
-      game.playerCondense = { atkMultiplier: 2.5, dmgMultiplier: 1.5, justSet: true };
-      log(`💎 ${player.name} は「魔力凝縮」を発動！次の攻撃が ATK×2.5！（この間 被ダメ ×1.5）`, 'player-action');
+      // 魔力凝縮: 次のターン ATK×4.0・被ダメ×1.5（justSet=true で発動ターンは即消費しない）
+      game.playerCondense = { atkMultiplier: 4.0, dmgMultiplier: 1.5, justSet: true };
+      log(`💎 ${player.name} は「魔力凝縮」を発動！次の攻撃が ATK×4.0！（この間 被ダメ ×1.5）`, 'player-action');
       break;
     }
 
     case 'magic_sword_strike': {
-      // 魔剣強撃: ATK×2.2 / 30%で防御を無視する会心
-      const ignoresDef = Math.random() < 0.30;
+      // 魔剣強撃: ATK×3.5 / 40%で防御を無視する会心
+      const ignoresDef = Math.random() < 0.40;
       const defFactor  = ignoresDef ? 0 : SKILL_DEFENSE_FACTOR;
-      const raw = Math.floor(player.effectiveAttack * 2.2) - Math.floor(enemy.defense * defFactor);
+      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * defFactor);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
       if (ignoresDef) {
@@ -1508,10 +1508,10 @@ function useSkill(skillId) {
     }
 
     case 'magic_burst_slash': {
-      // 魔力爆破斬: 物理ATK×3.0 + 魔法ATK×0.5追加ダメ（魔法部分は防御無視）
-      const rawPhys = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 魔力爆破斬: 物理ATK×4.5 + 魔法ATK×0.8追加ダメ（魔法部分は防御無視）
+      const rawPhys = Math.floor(player.effectiveAttack * 4.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const physDmg = applyEquipmentEffects(Math.max(1, rawPhys + randInt(-4, 6)), 'deal');
-      const magicDmg = Math.floor(player.effectiveAttack * 0.5);
+      const magicDmg = Math.floor(player.effectiveAttack * 0.8);
       const totalDmg = physDmg + magicDmg;
       enemy.takeDamage(totalDmg);
       log(`🔮💥 ${player.name} は「魔力爆破斬」を放った！ → ${enemy.name} に ${physDmg}+${magicDmg}(魔法) = ${totalDmg} ダメージ！`, 'player-action');
@@ -1520,13 +1520,13 @@ function useSkill(skillId) {
     }
 
     case 'magic_gale_slash': {
-      // 魔剣烈風斬: ATK×1.75 の 2 連撃（合計 ATK×3.5 相当）
-      const raw1 = Math.floor(player.effectiveAttack * 1.75) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 魔剣烈風斬: ATK×2.8 の 2 連撃（合計 ATK×5.6 相当）
+      const raw1 = Math.floor(player.effectiveAttack * 2.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg1 = applyEquipmentEffects(Math.max(1, raw1 + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg1);
       let dmg2 = 0;
       if (enemy.isAlive()) {
-        const raw2 = Math.floor(player.effectiveAttack * 1.75) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const raw2 = Math.floor(player.effectiveAttack * 2.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
         dmg2 = applyEquipmentEffects(Math.max(1, raw2 + randInt(-3, 5)), 'deal');
         enemy.takeDamage(dmg2);
       }
@@ -1536,16 +1536,16 @@ function useSkill(skillId) {
     }
 
     case 'makenshi_awakening': {
-      // 魔剣士の覚醒: ATK+50 バフ 4 ターン + DEF+20 バフ 3 ターン
-      game.playerAtkBuff = { bonus: 50, turnsLeft: 4 };
-      game.shieldActive  = { defenseBonus: 20, turnsLeft: 3 };
-      log(`🌌 ${player.name} は「魔剣士の覚醒」を発動！4 ターン ATK +50 / 3 ターン DEF +20！`, 'player-action');
+      // 魔剣士の覚醒: ATK+80 バフ 4 ターン + DEF+35 バフ 3 ターン
+      game.playerAtkBuff = { bonus: 80, turnsLeft: 4 };
+      game.shieldActive  = { defenseBonus: 35, turnsLeft: 3 };
+      log(`🌌 ${player.name} は「魔剣士の覚醒」を発動！4 ターン ATK +80 / 3 ターン DEF +35！`, 'player-action');
       break;
     }
 
     case 'absolute_magic_slash': {
-      // 絶界魔剣斬: ATK×6.0 / 防御を完全に無視する究極の一撃
-      const raw = Math.floor(player.effectiveAttack * 6.0);
+      // 絶界魔剣斬: ATK×9.0 / 防御を完全に無視する究極の一撃
+      const raw = Math.floor(player.effectiveAttack * 9.0);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 10)), 'deal');
       enemy.takeDamage(dmg);
       log(`🌌⚡ ${player.name} は「絶界魔剣斬」を解放した！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
