@@ -49,11 +49,26 @@ function renderLobbyStatus() {
   const hpPct  = Math.max(0, Math.min(100, (p.hp  / p.maxHp) * 100));
   const mpPct  = Math.max(0, Math.min(100, (p.mp  / p.maxMp) * 100));
 
+  // 全装備の critChance を合算して会心率を算出する（最大100%）
+  let totalCritChance = 0;
+  if (p.equipment && typeof EQUIPMENT_DEFINITIONS !== 'undefined') {
+    Object.values(p.equipment).forEach(eqId => {
+      if (!eqId) return;
+      const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === eqId);
+      if (eq && eq.effectType === 'critChance') {
+        totalCritChance += eq.effectValue;
+      }
+    });
+  }
+  totalCritChance = Math.min(totalCritChance, 1.0);
+  // 整数であればそのまま、そうでなければ小数第1位まで表示する
+  const critDisplay = parseFloat((totalCritChance * 100).toFixed(1));
+
   el.innerHTML = `
     <div class="lobby-stat-line">名前: <strong>${p.name}</strong></div>
     <div class="lobby-stat-line">Lv: <strong>${p.level}</strong> / ${maxLv}</div>
     <div class="lobby-stat-line">EXP: ${p.exp}　${atLv ? '（最大レベル）' : `→ 次のレベルまで ${nxt}`}</div>
-    <div class="lobby-stat-line">ATK: ${p.attack}　DEF: ${p.defense}</div>
+    <div class="lobby-stat-line">ATK: ${p.attack}　DEF: ${p.defense}　会心率: ${critDisplay}%</div>
     <div class="hp-label">HP: ${p.hp} / ${p.maxHp}</div>
     <div class="hp-bar-outer"><div class="hp-bar-inner${hpPct <= 25 ? ' danger' : hpPct <= 50 ? ' warning' : ''}" style="width:${hpPct}%"></div></div>
     <div class="mp-label">MP: ${p.mp} / ${p.maxMp}</div>
