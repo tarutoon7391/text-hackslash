@@ -655,6 +655,26 @@ footer {
   min-width: 100px;
 }
 
+.eq-name {
+  min-width: 160px;
+  color: #00ff41;
+}
+
+.eq-stats {
+  flex: 1;
+  color: #aaaaaa;
+  font-size: 0.8rem;
+}
+
+.eq-unequipped {
+  color: #555;
+}
+
+/* 強化ボーナス数値の黄色表示 */
+.enhance-bonus {
+  color: yellow;
+}
+
 .craft-item {
   border: 1px solid #00cc33;
   padding: 8px 12px;
