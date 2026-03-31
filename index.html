@@ -57,6 +57,9 @@
         <button class="nav-btn" onclick="showScreen('dungeon-select'); renderDungeonSelect();">
           🗺 ダンジョンへ
         </button>
+        <button class="nav-btn" onclick="showScreen('gacha-dungeon-difficulty'); renderGachaDungeonDifficultySelect();">
+          🎫 チケットダンジョン
+        </button>
         <button class="nav-btn" onclick="showScreen('inventory'); renderInventory();">
           🎒 インベントリ
         </button>
@@ -94,6 +97,27 @@
     </div>
 
   </div><!-- /screen-dungeon-select -->
+
+  <!-- ========================================================
+       ガチャチケダンジョン難易度選択画面
+       ======================================================== -->
+  <div id="screen-gacha-dungeon-difficulty" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ TICKET DUNGEON ]</h2>
+      <p class="dungeon-description">🎫 ガチャチケットを獲得できる特殊ダンジョン！<br>
+        全 30 体を討伐してクリアすると獲得チケットがインベントリに加算されます。<br>
+        撤退・全滅時はその探索で獲得したチケットは没収されます。
+      </p>
+      <div id="gacha-dungeon-difficulty-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-gacha-dungeon-difficulty -->
 
   <!-- ========================================================
        戦闘画面

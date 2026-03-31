@@ -251,9 +251,12 @@ let game = {
   battleCount:    0,
   currentScreen:  'lobby',
   dungeon: {
-    id:         null,
-    enemyIndex: 0,
-    materials:  [],
+    id:              null,
+    enemyIndex:      0,
+    materials:       [],
+    isGachaDungeon:  false,  // ガチャチケダンジョン中フラグ
+    gachaDifficulty: null,   // 'beginner' | 'intermediate' | 'advanced'
+    ticketsEarned:   0,      // 今回の探索で獲得したチケット数
   },
   shieldActive:      null,   // { defenseBonus: N, turnsLeft: N } — シールド・聖域
   enemyPoisoned:     null,   // { active: bool, damage: N, turnsLeft: N }
@@ -475,7 +478,10 @@ function endBattle(result) {
     // EXP 加算とレベルアップチェック
     gainExp(exp);
 
-    const isBoss = game.dungeon.enemyIndex === DUNGEON_ENEMY_COUNT - 1;
+    // ガチャチケダンジョンかどうかでボス判定の基準を切り替える
+    const isBoss = game.dungeon.isGachaDungeon
+      ? game.dungeon.enemyIndex === GACHA_DUNGEON_ENEMY_COUNT - 1
+      : game.dungeon.enemyIndex === DUNGEON_ENEMY_COUNT - 1;
     game.dungeon.enemyIndex++;
 
     showDungeonNav(true, isBoss);
@@ -483,7 +489,11 @@ function endBattle(result) {
   } else if (result === 'lose') {
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'enemy-action');
     log(`☠ ${game.player.name} は力尽きた…`, 'enemy-action');
-    log('💀 ダンジョン内で獲得した素材をすべて失った。', 'special');
+    if (game.dungeon.isGachaDungeon) {
+      log('💀 探索中に獲得したガチャチケットをすべて失った。', 'special');
+    } else {
+      log('💀 ダンジョン内で獲得した素材をすべて失った。', 'special');
+    }
     log('═'.repeat(LOG_SEPARATOR_LENGTH), 'enemy-action');
 
     setTimeout(failDungeon, 1500);
@@ -577,7 +587,7 @@ function initGame() {
   game.enemy             = null;
   game.state             = null;
   game.battleCount       = 0;
-  game.dungeon           = { id: null, enemyIndex: 0, materials: [] };
+  game.dungeon           = { id: null, enemyIndex: 0, materials: [], isGachaDungeon: false, gachaDifficulty: null, ticketsEarned: 0 };
   game.shieldActive      = null;
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
