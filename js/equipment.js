@@ -2408,7 +2408,7 @@ function renderEquippedList() {
     const enhBtn = !isCharmSlot
       ? `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eqId}')">⬆ 強化</button>`
       : '';
-    return `<div class="eq-row"><span class="eq-slot">[${slot}]</span><span class="eq-name">${label}</span><span class="eq-stats">${statsHtml}</span>${unequipBtn}${enhBtn}</div>`;
+    return `<div class="eq-row"><div class="eq-info"><span class="eq-slot">[${slot}]</span><span class="eq-name">${label}</span></div><div class="eq-controls"><span class="eq-stats">${statsHtml}</span>${unequipBtn}${enhBtn}</div></div>`;
   }).join('');
 }
 

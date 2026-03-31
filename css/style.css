@@ -650,6 +650,20 @@ footer {
   font-size: 0.85rem;
 }
 
+.eq-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.eq-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .eq-slot {
   color: #aaaaaa;
   min-width: 100px;
@@ -668,6 +682,23 @@ footer {
 
 .eq-unequipped {
   color: #555;
+}
+
+@media (max-width: 480px) {
+  .eq-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .eq-slot {
+    min-width: unset;
+  }
+  .eq-name {
+    min-width: unset;
+  }
+  .eq-controls {
+    padding-left: 4px;
+  }
 }
 
 /* 強化ボーナス数値の黄色表示 */
