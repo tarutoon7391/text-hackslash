@@ -741,12 +741,20 @@ function renderSkillTree() {
 
     const arrow = idx < route.nodes.length - 1 ? '<div class="st-node-arrow">↓</div>' : '';
 
+    // スキルマスのみお気に入りボタンを表示する
+    let favoriteBtn = '';
+    if (node.type === 'skill' && node.skillId) {
+      const isFav = p.favoriteSkills.includes(node.skillId);
+      favoriteBtn = `<button class="st-favorite-btn${isFav ? ' active' : ''}" onclick="event.stopPropagation(); toggleFavoriteSkill('${node.skillId}')" title="${isFav ? 'お気に入りを解除' : 'お気に入りに登録'}">${isFav ? '★' : '☆'}</button>`;
+    }
+
     return `
       <div class="st-node ${stateClass}" ${onclickAttr}>
         <div class="st-node-header">
           <span class="st-node-icon">${typeIcon}</span>
           <span class="st-node-name">${node.name}</span>
           <span class="st-node-cost">${node.cost} SP</span>
+          ${favoriteBtn}
         </div>
         <div class="st-node-desc">${node.description}</div>
         <div class="st-node-status">${statusText}</div>
@@ -762,6 +770,21 @@ function renderSkillTree() {
  */
 function switchSkillTreeTab(routeId) {
   skillTreeCurrentRoute = routeId;
+  renderSkillTree();
+}
+
+/**
+ * スキルのお気に入り登録・解除をトグルする
+ * @param {string} skillId - スキル ID
+ */
+function toggleFavoriteSkill(skillId) {
+  const p = game.player;
+  const idx = p.favoriteSkills.indexOf(skillId);
+  if (idx === -1) {
+    p.favoriteSkills.push(skillId);
+  } else {
+    p.favoriteSkills.splice(idx, 1);
+  }
   renderSkillTree();
 }
 
