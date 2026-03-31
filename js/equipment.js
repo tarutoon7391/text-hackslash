@@ -2394,19 +2394,21 @@ function renderEquippedList() {
     const eqId  = player.equipment[slot];
     const eq    = eqId ? EQUIPMENT_DEFINITIONS.find(e => e.id === eqId) : null;
     const enhLv = (eq && player.enhanceLevels[eqId]) || 0;
-    const label = eq
-      ? (enhLv > 0 ? `${eq.name} +${enhLv}` : eq.name)
-      : '（未装備）';
-    const unequipBtn = eq
-      ? `<button class="inv-btn" onclick="unequipItem('${slot}')">外す</button>`
-      : '';
+
+    if (!eq) {
+      return `<div class="eq-row"><span class="eq-slot">[${slot}]</span><span class="eq-unequipped">未装備</span></div>`;
+    }
+
+    const label = enhLv > 0 ? `${eq.name} +${enhLv}` : eq.name;
+    const statsHtml = buildEnhancedStatsStr(eq, enhLv, player.level);
+    const unequipBtn = `<button class="inv-btn" onclick="unequipItem('${slot}')">外す</button>`;
     // チャームスロットは強化不可
     const isCharmSlot = slot === 'チャーム';
-    const canEnh = (!isCharmSlot && eq) ? canAffordEnhancement(eq, enhLv + 1) : false;
-    const enhBtn = (!isCharmSlot && eq)
+    const canEnh = !isCharmSlot ? canAffordEnhancement(eq, enhLv + 1) : false;
+    const enhBtn = !isCharmSlot
       ? `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eqId}')">⬆ 強化</button>`
       : '';
-    return `<div class="eq-row"><span class="eq-slot">[${slot}]</span> <span>${label}</span>${unequipBtn}${enhBtn}</div>`;
+    return `<div class="eq-row"><span class="eq-slot">[${slot}]</span><span class="eq-name">${label}</span><span class="eq-stats">${statsHtml}</span>${unequipBtn}${enhBtn}</div>`;
   }).join('');
 }
 
@@ -2537,10 +2539,12 @@ function renderCraftList() {
         const ownedDisplayName = ownedEnhLv > 0 ? `${eq.name} +${ownedEnhLv}` : eq.name;
         const canEnh = !isCharm && canAffordEnhancement(eq, ownedEnhLv + 1);
         const enhBtn = isCharm ? '' : `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eq.id}')">⬆ 強化</button>`;
+        // 強化済みの場合は強化分を黄色で表示する
+        const ownedStatsStr = buildEnhancedStatsStr(eq, ownedEnhLv, player.level);
         return `
           <div class="craft-item owned">
             <div class="craft-name">[${eq.slot}] ${ownedDisplayName}${rarityBadge}</div>
-            <div class="craft-stats">${statsStr}　${effectDescDisplay}</div>
+            <div class="craft-stats">${ownedStatsStr}　${effectDescDisplay}</div>
             ${growthNote}
             <button class="inv-btn" onclick="equipItem('${eq.id}')">装備する</button>
             ${enhBtn}
@@ -2578,6 +2582,63 @@ function buildStatsStr(stats) {
   if (stats.defense > 0) parts.push(`DEF+${stats.defense}`);
   if (stats.maxHp   > 0) parts.push(`HP+${stats.maxHp}`);
   if (stats.maxMp   > 0) parts.push(`MP+${stats.maxMp}`);
+  return parts.length > 0 ? parts.join(' / ') : '---';
+}
+
+/**
+ * 強化済み装備のステータス表示 HTML 文字列を生成する
+ * 強化分は黄色文字で (+ XX) 形式で表示する
+ * @param {object} eq          - 装備定義
+ * @param {number} enhLv       - 強化レベル
+ * @param {number} playerLevel - プレイヤーレベル（成長型武器用）
+ * @returns {string} HTML 文字列
+ */
+function buildEnhancedStatsStr(eq, enhLv, playerLevel) {
+  const baseStats = eq.isGrowth ? computeGrowthStats(eq, playerLevel) : eq.stats;
+
+  if (enhLv <= 0) {
+    return buildStatsStr(baseStats);
+  }
+
+  /**
+   * 強化ボーナスを黄色の (+ XX) 形式で返す
+   * @param {number} bonus
+   * @returns {string}
+   */
+  const bonusSpan = bonus => bonus > 0 ? `<span class="enhance-bonus">(+${bonus})</span>` : '';
+
+  const parts = [];
+
+  if (eq.isGrowth) {
+    // 成長型特殊強化: 全ステータス × (1 + 0.1 × enhLv)
+    const factor   = 1 + 0.1 * enhLv;
+    const atkTotal = Math.floor(baseStats.attack  * factor);
+    const defTotal = Math.floor(baseStats.defense * factor);
+    const hpTotal  = Math.floor(baseStats.maxHp   * factor);
+    const mpTotal  = Math.floor(baseStats.maxMp   * factor);
+    if (atkTotal > 0) parts.push(`ATK+${atkTotal}${bonusSpan(atkTotal - baseStats.attack)}`);
+    if (defTotal > 0) parts.push(`DEF+${defTotal}${bonusSpan(defTotal - baseStats.defense)}`);
+    if (hpTotal  > 0) parts.push(`HP+${hpTotal}${bonusSpan(hpTotal - baseStats.maxHp)}`);
+    if (mpTotal  > 0) parts.push(`MP+${mpTotal}${bonusSpan(mpTotal - baseStats.maxMp)}`);
+  } else {
+    const boost      = getEnhanceStatBoost(eq);
+    const totalBonus = enhLv * boost;
+    const slot       = eq.slot;
+    const atkBonus   = slot === '武器' ? totalBonus : 0;
+    const defBonus   = ['頭', '胴', '足', '靴'].includes(slot) ? totalBonus : 0;
+    const hpBonus    = slot === 'アクセサリー' ? totalBonus : 0;
+
+    const atkTotal = (baseStats.attack  || 0) + atkBonus;
+    const defTotal = (baseStats.defense || 0) + defBonus;
+    const hpTotal  = (baseStats.maxHp   || 0) + hpBonus;
+    const mpTotal  =  baseStats.maxMp   || 0;
+
+    if (atkTotal > 0) parts.push(`ATK+${atkTotal}${bonusSpan(atkBonus)}`);
+    if (defTotal > 0) parts.push(`DEF+${defTotal}${bonusSpan(defBonus)}`);
+    if (hpTotal  > 0) parts.push(`HP+${hpTotal}${bonusSpan(hpBonus)}`);
+    if (mpTotal  > 0) parts.push(`MP+${mpTotal}`);
+  }
+
   return parts.length > 0 ? parts.join(' / ') : '---';
 }
 
