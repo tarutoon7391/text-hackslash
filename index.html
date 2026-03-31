@@ -54,11 +54,8 @@
 
       <!-- ナビゲーションボタン -->
       <div class="lobby-nav">
-        <button class="nav-btn" onclick="showScreen('dungeon-select'); renderDungeonSelect();">
+        <button class="nav-btn" onclick="showScreen('dungeon-type'); renderDungeonTypeSelect();">
           🗺 ダンジョンへ
-        </button>
-        <button class="nav-btn" onclick="showScreen('gacha-dungeon-difficulty'); renderGachaDungeonDifficultySelect();">
-          🎫 チケットダンジョン
         </button>
         <button class="nav-btn" onclick="showScreen('inventory'); renderInventory();">
           🎒 インベントリ
@@ -82,7 +79,24 @@
   </div><!-- /screen-lobby -->
 
   <!-- ========================================================
-       ダンジョン選択画面
+       ダンジョンタイプ選択画面（通常 / 特殊）
+       ======================================================== -->
+  <div id="screen-dungeon-type" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ DUNGEON TYPE ]</h2>
+      <div id="dungeon-type-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-dungeon-type -->
+
+  <!-- ========================================================
+       通常ダンジョン選択画面
        ======================================================== -->
   <div id="screen-dungeon-select" class="screen" style="display:none">
 
@@ -92,11 +106,28 @@
         <!-- JS で動的に描画 -->
       </div>
       <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+        <button class="nav-btn back-btn" onclick="showScreen('dungeon-type'); renderDungeonTypeSelect();">⬅ 戻る</button>
       </div>
     </div>
 
   </div><!-- /screen-dungeon-select -->
+
+  <!-- ========================================================
+       特殊ダンジョン選択画面
+       ======================================================== -->
+  <div id="screen-special-dungeon-select" class="screen" style="display:none">
+
+    <div class="screen-panel">
+      <h2 class="panel-title">[ SPECIAL DUNGEON ]</h2>
+      <div id="special-dungeon-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('dungeon-type'); renderDungeonTypeSelect();">⬅ 戻る</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-special-dungeon-select -->
 
   <!-- ========================================================
        ガチャチケダンジョン難易度選択画面
@@ -113,7 +144,7 @@
         <!-- JS で動的に描画 -->
       </div>
       <div class="screen-footer">
-        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+        <button class="nav-btn back-btn" onclick="showScreen('special-dungeon-select'); renderSpecialDungeonSelect();">⬅ 戻る</button>
       </div>
     </div>
 
