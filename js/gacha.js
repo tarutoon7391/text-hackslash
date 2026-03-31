@@ -281,6 +281,7 @@ function showGachaAnimation(results) {
 function showGachaRates() {
   const logEl = document.getElementById('gacha-log');
   if (!logEl) return;
+  if (!game.player) return;
 
   const p = game.player;
 
