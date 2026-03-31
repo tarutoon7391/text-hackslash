@@ -759,7 +759,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_20', name: '魔剣士の覚醒',
         type: 'skill', skillId: 'makenshi_awakening',
-        description: '魔剣士として覚醒（ATK+50 / 4ターン ＋ DEF+20 / 3ターン / MP:45）',
+        description: '魔剣士として覚醒（ATK+50 / 4ターン + DEF+20 / 3ターン / MP:45）',
         mpCost: 45, bonuses: {}, cost: 3, requires: 'mk_19',
       },
       {
