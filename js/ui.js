@@ -9,7 +9,7 @@
  * @param {string} screenName - 'login' | 'lobby' | 'dungeon-type' | 'dungeon-select' | 'special-dungeon-select' | 'battle' | 'inventory' | 'skill-tree' | 'encyclopedia' | 'ranking'
  */
 function showScreen(screenName) {
-  const screens = ['login', 'lobby', 'dungeon-type', 'dungeon-select', 'special-dungeon-select', 'battle', 'inventory', 'skill-tree', 'encyclopedia', 'ranking', 'gacha', 'gacha-dungeon-difficulty', 'xp-dungeon-difficulty', 'raremon-dungeon-select', 'skill-dungeon-difficulty'];
+  const screens = ['login', 'lobby', 'dungeon-type', 'dungeon-select', 'special-dungeon-select', 'battle', 'inventory', 'skill-tree', 'encyclopedia', 'ranking', 'gacha', 'gacha-dungeon-difficulty', 'xp-dungeon-difficulty', 'raremon-dungeon-select', 'skill-dungeon-difficulty', 'news'];
   screens.forEach(name => {
     const el = document.getElementById(`screen-${name}`);
     if (el) el.style.display = name === screenName ? 'block' : 'none';
@@ -24,6 +24,7 @@ function showScreen(screenName) {
 /** ロビー画面全体を描画する */
 function renderLobby() {
   renderLobbyStatus();
+  if (typeof updateNewsBadge === 'function') updateNewsBadge();
 }
 
 /** ロビー画面のプレイヤーステータスを更新する */

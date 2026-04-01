@@ -1666,3 +1666,96 @@ footer {
   color: #ff4444;
   padding: 2px 0;
 }
+
+/* ==============================================================
+   お知らせ機能
+   ============================================================== */
+
+/* ロビーのお知らせボタン（未読バッジのアンカーとなる） */
+.news-btn {
+  position: relative;
+}
+
+/* 未読バッジ（赤い丸） */
+.news-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: #ff3333;
+  border-radius: 50%;
+  display: none;
+  box-shadow: 0 0 6px #ff333388;
+}
+
+/* ニュース一覧コンテナ */
+#news-list {
+  margin: 8px 0 16px;
+}
+
+/* ニュースカード */
+.news-item {
+  border: 1px solid #333;
+  background-color: #0a0a0a;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+}
+
+/* 未読ニュースカードは枠を強調 */
+.news-item-unread {
+  border-color: #00cc66;
+  background-color: #001a0d;
+}
+
+/* カードのヘッダー行（NEWバッジ・日付・タイトル） */
+.news-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+/* NEWバッジ */
+.news-new-badge {
+  background-color: #ff3333;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* 日付 */
+.news-date {
+  color: #888888;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* タイトル */
+.news-title {
+  color: #00cc66;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+/* 本文 */
+.news-content {
+  color: #cccccc;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* ニュースなし */
+.news-empty {
+  color: #666666;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px 0;
+}
