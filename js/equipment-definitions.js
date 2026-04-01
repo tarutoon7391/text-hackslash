@@ -5012,7 +5012,8 @@ const EQUIPMENT_DEFINITIONS = [
     name: '天上の祝福の護符',
     slot: 'アクセサリー',
     rarity: 'legend',
-    stats: { attack: 200, defense: 160, maxHp: 500, maxMp: 160 },
+    // D12レジェンド基準値にエンド装備と同様のD12→D18ダンジョン補正を適用
+    stats: { attack: 532, defense: 391, maxHp: 887, maxMp: 368 },
     effectType: 'critChance',
     effectValue: 0.42,
     effectDesc: '会心率+42%',
@@ -5025,7 +5026,8 @@ const EQUIPMENT_DEFINITIONS = [
     name: '絶対なる混沌の護符',
     slot: 'アクセサリー',
     rarity: 'legend',
-    stats: { attack: 320, defense: 250, maxHp: 800, maxMp: 260 },
+    // D18レジェンド基準値にエンド装備と同様のD18→D24ダンジョン補正を適用
+    stats: { attack: 1512, defense: 1109, maxHp: 2520, maxMp: 1045 },
     effectType: 'critChance',
     effectValue: 0.46,
     effectDesc: '会心率+46%',
