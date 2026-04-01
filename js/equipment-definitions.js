@@ -3203,7 +3203,7 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 0, defense: 1573, maxHp: 564, maxMp: 0 },
     effectType: 'damageReduction',
     effectValue: 0.29,
-    effectDesc: 'ダメージ軽減(28%の確率)',
+    effectDesc: 'ダメージ軽減(29%の確率)',
     recipe: { '絶対混沌の核片': 5 },
   },
   {
@@ -3380,7 +3380,7 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 334, defense: 0, maxHp: 0, maxMp: 54 },
     effectType: 'critChance',
     effectValue: 0.29,
-    effectDesc: '会心率+28%',
+    effectDesc: '会心率+29%',
     recipe: { '業火の灰': 2, '煉獄の魔核': 1 },
   },
   {
@@ -3433,7 +3433,7 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 155, defense: 104, maxHp: 165, maxMp: 93 },
     effectType: 'critChance',
     effectValue: 0.29,
-    effectDesc: '会心率+28%',
+    effectDesc: '会心率+29%',
     recipe: { '業火の灰': 1, '煉獄の魔核': 1 },
   },
 
@@ -3860,7 +3860,7 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 0, defense: 769, maxHp: 1253, maxMp: 313 },
     effectType: 'damageReduction',
     effectValue: 0.29,
-    effectDesc: 'ダメージ軽減(28%の確率)',
+    effectDesc: 'ダメージ軽減(29%の確率)',
     recipe: { '次元の魂片': 1, '審判の炎核': 1 },
   },
   {
@@ -3871,7 +3871,7 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 0, defense: 1224, maxHp: 1014, maxMp: 0 },
     effectType: 'damageReduction',
     effectValue: 0.29,
-    effectDesc: 'ダメージ軽減(28%の確率)',
+    effectDesc: 'ダメージ軽減(29%の確率)',
     recipe: { '次元の魂片': 1, '審判の炎核': 1 },
   },
   {
