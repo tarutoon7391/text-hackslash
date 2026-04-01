@@ -1759,3 +1759,22 @@ footer {
   text-align: center;
   padding: 20px 0;
 }
+
+/* ===== メンテナンス画面 ===== */
+.maintenance-box {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.maintenance-icon {
+  font-size: 3em;
+  margin-bottom: 16px;
+}
+
+.maintenance-message {
+  color: #00ff41;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  line-height: 1.8;
+}

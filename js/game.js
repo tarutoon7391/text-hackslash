@@ -691,6 +691,17 @@ function initGame() {
   game.playerRegen       = null;
   game.playerDelayedHeal = null;
 
+  // メンテナンスモードチェック
+  if (MAINTENANCE.enabled) {
+    // メンテナンス画面のメッセージを設定
+    const msgEl = document.getElementById('maintenance-message');
+    if (msgEl) {
+      msgEl.textContent = MAINTENANCE.message;
+    }
+    showScreen('maintenance');
+    return; // 以降のゲーム初期化を中断
+  }
+
   showScreen('login');
 }
 
