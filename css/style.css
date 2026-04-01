@@ -1165,6 +1165,30 @@ footer {
   line-height: 1.8;
 }
 
+.st-unlock-btn {
+  background-color: #1a0a2e;
+  color: #bb88ff;
+  border: 1px solid #8844cc;
+  padding: 12px 24px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 12px;
+  letter-spacing: 1px;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.st-unlock-btn:hover:not(:disabled) {
+  background-color: #2a1a4e;
+  box-shadow: 0 0 10px #8844cc;
+}
+
+.st-unlock-btn:disabled {
+  color: #666;
+  border-color: #444;
+  cursor: not-allowed;
+}
+
 /* ルート説明 */
 .st-route-desc {
   font-size: 0.82rem;
