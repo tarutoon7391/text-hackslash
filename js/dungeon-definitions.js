@@ -334,6 +334,334 @@ const DUNGEON_DEFINITIONS = [
       bossRareDropRate:  0.08,
     },
   },
+
+
+  /* ── D13〜D24 通常ダンジョン ──────────────────────────── */
+
+  /* ────────────────────────────────────────
+     ダンジョン 13: 神々の試練場（推奨 Lv 52〜）
+     ──────────────────────────────────────── */
+  {
+    id: 13,
+    name: '神々の試練場',
+    recommendedLevel: 52,
+    normalEnemies: [
+      { name: '試練の守護獣', hp: 2202, maxHp: 2202, attack: 726, defense: 327, expReward: 1250 },
+      { name: '神話の戦士', hp: 2380, maxHp: 2380, attack: 696, defense: 351, expReward: 1261 },
+      { name: '神の試練体', hp: 2023, maxHp: 2023, attack: 762, defense: 307, expReward: 1238 },
+    ],
+    rareEnemy: { name: '試練の番神', hp: 2320, maxHp: 2320, attack: 982, defense: 428, expReward: 2440 },
+    boss: { name: '試練神ラシオン', hp: 11305, maxHp: 11305, attack: 1047, defense: 547, expReward: 7140 },
+    rareChance: 0.15,
+    drops: {
+      common:           '神々の試練石',
+      commonDropRate:    0.50,
+      rares:            ['神話の羽根', '試練の結晶'],
+      rareDropRate:      0.75,
+      boss:             '試練神の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '神々の加護',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 14: 永劫の氷獄（推奨 Lv 58〜）
+     ──────────────────────────────────────── */
+  {
+    id: 14,
+    name: '永劫の氷獄',
+    recommendedLevel: 58,
+    normalEnemies: [
+      { name: '氷獄の凍死者', hp: 2620, maxHp: 2620, attack: 864, defense: 389, expReward: 1487 },
+      { name: 'ニブルヘイムの霜精', hp: 2832, maxHp: 2832, attack: 828, defense: 418, expReward: 1501 },
+      { name: '永劫の氷剣士', hp: 2407, maxHp: 2407, attack: 906, defense: 365, expReward: 1473 },
+    ],
+    rareEnemy: { name: '氷獄の封印者', hp: 2761, maxHp: 2761, attack: 1168, defense: 510, expReward: 2903 },
+    boss: { name: '氷獄神フィンブル', hp: 13453, maxHp: 13453, attack: 1246, defense: 651, expReward: 8497 },
+    rareChance: 0.15,
+    drops: {
+      common:           '永劫の氷塊',
+      commonDropRate:    0.50,
+      rares:            ['ニブルヘイムの氷晶', '氷獄の破片'],
+      rareDropRate:      0.75,
+      boss:             '氷獄番人の核',
+      bossDropRate:      0.25,
+      bossRare:         '永劫の凍結核',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 15: 業火の煉獄（推奨 Lv 64〜）
+     ──────────────────────────────────────── */
+  {
+    id: 15,
+    name: '業火の煉獄',
+    recommendedLevel: 64,
+    normalEnemies: [
+      { name: '煉獄の炎鬼', hp: 3118, maxHp: 3118, attack: 1028, defense: 463, expReward: 1769 },
+      { name: '業火の焦炎使', hp: 3370, maxHp: 3370, attack: 986, defense: 497, expReward: 1786 },
+      { name: '地獄の炎番', hp: 2865, maxHp: 2865, attack: 1079, defense: 435, expReward: 1753 },
+    ],
+    rareEnemy: { name: '煉獄の主', hp: 3286, maxHp: 3286, attack: 1390, defense: 607, expReward: 3455 },
+    boss: { name: '煉獄神プロメ', hp: 16009, maxHp: 16009, attack: 1483, defense: 775, expReward: 10111 },
+    rareChance: 0.15,
+    drops: {
+      common:           '煉獄の炎石',
+      commonDropRate:    0.50,
+      rares:            ['業火の灰', '煉獄の魔核'],
+      rareDropRate:      0.75,
+      boss:             '炎獄番人の炎核',
+      bossDropRate:      0.25,
+      bossRare:         '業火の意志',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 16: 冥界の回廊（推奨 Lv 70〜）
+     ──────────────────────────────────────── */
+  {
+    id: 16,
+    name: '冥界の回廊',
+    recommendedLevel: 70,
+    normalEnemies: [
+      { name: '冥界の亡者', hp: 3710, maxHp: 3710, attack: 1223, defense: 551, expReward: 2106 },
+      { name: '死の回廊の番人', hp: 4011, maxHp: 4011, attack: 1173, defense: 592, expReward: 2126 },
+      { name: '黒衣の死霊', hp: 3409, maxHp: 3409, attack: 1283, defense: 517, expReward: 2086 },
+    ],
+    rareEnemy: { name: '冥王の使者', hp: 3910, maxHp: 3910, attack: 1654, defense: 722, expReward: 4111 },
+    boss: { name: '冥界神ハデル', hp: 19051, maxHp: 19051, attack: 1765, defense: 922, expReward: 12032 },
+    rareChance: 0.15,
+    drops: {
+      common:           '冥界の黒晶',
+      commonDropRate:    0.50,
+      rares:            ['亡者の涙', '冥王の破片'],
+      rareDropRate:      0.75,
+      boss:             '冥界の扉の鍵',
+      bossDropRate:      0.25,
+      bossRare:         '冥王の魂石',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 17: 神域の迷宮（推奨 Lv 76〜）
+     ──────────────────────────────────────── */
+  {
+    id: 17,
+    name: '神域の迷宮',
+    recommendedLevel: 76,
+    normalEnemies: [
+      { name: '神域の迷宮番人', hp: 4415, maxHp: 4415, attack: 1456, defense: 656, expReward: 2506 },
+      { name: '聖域の魔物', hp: 4773, maxHp: 4773, attack: 1396, defense: 704, expReward: 2530 },
+      { name: '神の使徒', hp: 4057, maxHp: 4057, attack: 1527, defense: 616, expReward: 2482 },
+    ],
+    rareEnemy: { name: '神域の守護者', hp: 4653, maxHp: 4653, attack: 1969, defense: 859, expReward: 4892 },
+    boss: { name: '神域神レイオス', hp: 22670, maxHp: 22670, attack: 2100, defense: 1098, expReward: 14318 },
+    rareChance: 0.15,
+    drops: {
+      common:           '神域の聖石',
+      commonDropRate:    0.50,
+      rares:            ['神域の羽衣', '聖域の魔法陣'],
+      rareDropRate:      0.75,
+      boss:             '神域番人の核',
+      bossDropRate:      0.25,
+      bossRare:         '神域の威光',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 18: 天上の聖域（推奨 Lv 82〜）
+     ──────────────────────────────────────── */
+  {
+    id: 18,
+    name: '天上の聖域',
+    recommendedLevel: 82,
+    normalEnemies: [
+      { name: '天上の光天使', hp: 5254, maxHp: 5254, attack: 1732, defense: 781, expReward: 2982 },
+      { name: '聖域の守護騎士', hp: 5680, maxHp: 5680, attack: 1661, defense: 838, expReward: 3010 },
+      { name: '天界の光精霊', hp: 4828, maxHp: 4828, attack: 1817, defense: 733, expReward: 2953 },
+    ],
+    rareEnemy: { name: '天上の聖典守護者', hp: 5538, maxHp: 5538, attack: 2343, defense: 1022, expReward: 5822 },
+    boss: { name: '天上神ルシエル', hp: 26978, maxHp: 26978, attack: 2499, defense: 1306, expReward: 17039 },
+    rareChance: 0.15,
+    drops: {
+      common:           '天上の光晶',
+      commonDropRate:    0.50,
+      rares:            ['天使の翼', '聖域の光核'],
+      rareDropRate:      0.75,
+      boss:             '聖域守護者の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '天上の祝福',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 19: 虚無の断層（推奨 Lv 88〜）
+     ──────────────────────────────────────── */
+  {
+    id: 19,
+    name: '虚無の断層',
+    recommendedLevel: 88,
+    normalEnemies: [
+      { name: '虚無の断層体', hp: 6252, maxHp: 6252, attack: 2061, defense: 929, expReward: 3548 },
+      { name: '消滅の魔人', hp: 6759, maxHp: 6759, attack: 1977, defense: 997, expReward: 3582 },
+      { name: '断層の侵食者', hp: 5745, maxHp: 5745, attack: 2163, defense: 872, expReward: 3514 },
+    ],
+    rareEnemy: { name: '虚無の消滅使', hp: 6590, maxHp: 6590, attack: 2788, defense: 1217, expReward: 6928 },
+    boss: { name: '虚無神ニヒル', hp: 32103, maxHp: 32103, attack: 2974, defense: 1554, expReward: 20276 },
+    rareChance: 0.15,
+    drops: {
+      common:           '虚無の断層石',
+      commonDropRate:    0.50,
+      rares:            ['消滅の核', '断層の破片'],
+      rareDropRate:      0.75,
+      boss:             '断層番人の核',
+      bossDropRate:      0.25,
+      bossRare:         '虚無の消滅核',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 20: 時の終焉（推奨 Lv 94〜）
+     ──────────────────────────────────────── */
+  {
+    id: 20,
+    name: '時の終焉',
+    recommendedLevel: 94,
+    normalEnemies: [
+      { name: '時崩の番人', hp: 7440, maxHp: 7440, attack: 2453, defense: 1106, expReward: 4222 },
+      { name: '終焉の時計守', hp: 8043, maxHp: 8043, attack: 2353, defense: 1186, expReward: 4263 },
+      { name: '崩壊の時間魔', hp: 6836, maxHp: 6836, attack: 2574, defense: 1038, expReward: 4182 },
+    ],
+    rareEnemy: { name: '終焉の時神使', hp: 7842, maxHp: 7842, attack: 3318, defense: 1448, expReward: 8244 },
+    boss: { name: '終焉神テルミナ', hp: 38203, maxHp: 38203, attack: 3539, defense: 1850, expReward: 24128 },
+    rareChance: 0.15,
+    drops: {
+      common:           '崩壊の時計石',
+      commonDropRate:    0.50,
+      rares:            ['終焉の砂時計', '時崩の破片'],
+      rareDropRate:      0.75,
+      boss:             '終焉番人の核',
+      bossDropRate:      0.25,
+      bossRare:         '時の終焉の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 21: 創世の地（推奨 Lv 110〜）
+     ──────────────────────────────────────── */
+  {
+    id: 21,
+    name: '創世の地',
+    recommendedLevel: 110,
+    normalEnemies: [
+      { name: '原初の光体', hp: 8853, maxHp: 8853, attack: 2919, defense: 1316, expReward: 5025 },
+      { name: '創世の魔物', hp: 9571, maxHp: 9571, attack: 2799, defense: 1412, expReward: 5073 },
+      { name: '宇宙誕生の精霊', hp: 8135, maxHp: 8135, attack: 3063, defense: 1235, expReward: 4977 },
+    ],
+    rareEnemy: { name: '原初の神格体', hp: 9332, maxHp: 9332, attack: 3948, defense: 1723, expReward: 9810 },
+    boss: { name: '創世神ゲネシス', hp: 45462, maxHp: 45462, attack: 4211, defense: 2201, expReward: 28713 },
+    rareChance: 0.15,
+    drops: {
+      common:           '創世の原子',
+      commonDropRate:    0.50,
+      rares:            ['宇宙誕生の光', '原初の魔核'],
+      rareDropRate:      0.75,
+      boss:             '創世神の結晶',
+      bossDropRate:      0.25,
+      bossRare:         '宇宙の始まりの欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 22: 魂の審判場（推奨 Lv 130〜）
+     ──────────────────────────────────────── */
+  {
+    id: 22,
+    name: '魂の審判場',
+    recommendedLevel: 130,
+    normalEnemies: [
+      { name: '審判の魂鬼', hp: 10535, maxHp: 10535, attack: 3474, defense: 1566, expReward: 5979 },
+      { name: '次元の断罪者', hp: 11389, maxHp: 11389, attack: 3331, defense: 1680, expReward: 6036 },
+      { name: '魂の審判体', hp: 9681, maxHp: 9681, attack: 3645, defense: 1469, expReward: 5922 },
+    ],
+    rareEnemy: { name: '審判の主神使', hp: 11105, maxHp: 11105, attack: 4698, defense: 2050, expReward: 11674 },
+    boss: { name: '審判神ジャッジメント', hp: 54099, maxHp: 54099, attack: 5011, defense: 2620, expReward: 34168 },
+    rareChance: 0.15,
+    drops: {
+      common:           '審判の結晶石',
+      commonDropRate:    0.50,
+      rares:            ['次元の魂片', '審判の炎核'],
+      rareDropRate:      0.75,
+      boss:             '審判神の証',
+      bossDropRate:      0.25,
+      bossRare:         '魂の審判印',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 23: 神域の頂（推奨 Lv 160〜）
+     ──────────────────────────────────────── */
+  {
+    id: 23,
+    name: '神域の頂',
+    recommendedLevel: 160,
+    normalEnemies: [
+      { name: '頂の神格体', hp: 12537, maxHp: 12537, attack: 4134, defense: 1864, expReward: 7116 },
+      { name: '全次元の頂神兵', hp: 13553, maxHp: 13553, attack: 3964, defense: 1999, expReward: 7183 },
+      { name: '神域の頂点守', hp: 11520, maxHp: 11520, attack: 4337, defense: 1748, expReward: 7048 },
+    ],
+    rareEnemy: { name: '頂点の神格使', hp: 13215, maxHp: 13215, attack: 5591, defense: 2440, expReward: 13892 },
+    boss: { name: '頂神オムニコス', hp: 64378, maxHp: 64378, attack: 5963, defense: 3117, expReward: 40660 },
+    rareChance: 0.15,
+    drops: {
+      common:           '頂の神聖核',
+      commonDropRate:    0.50,
+      rares:            ['全次元の光片', '頂点の結晶'],
+      rareDropRate:      0.75,
+      boss:             '頂神の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '神域の頂の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 24: 絶対なる混沌（推奨 Lv 190〜）
+     ──────────────────────────────────────── */
+  {
+    id: 24,
+    name: '絶対なる混沌',
+    recommendedLevel: 190,
+    normalEnemies: [
+      { name: '混沌絶対体', hp: 14919, maxHp: 14919, attack: 4919, defense: 2218, expReward: 8467 },
+      { name: '終焉の混沌魔', hp: 16128, maxHp: 16128, attack: 4718, defense: 2379, expReward: 8548 },
+      { name: '絶対の破壊神兵', hp: 13709, maxHp: 13709, attack: 5161, defense: 2081, expReward: 8387 },
+    ],
+    rareEnemy: { name: '混沌絶対の使', hp: 15725, maxHp: 15725, attack: 6653, defense: 2903, expReward: 16532 },
+    boss: { name: '絶対神カオスロード・オメガ', hp: 180000, maxHp: 180000, attack: 12000, defense: 5800, expReward: 100000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '絶対混沌の核片',
+      commonDropRate:    0.50,
+      rares:            ['終焉の混沌核', '絶対の破壊石'],
+      rareDropRate:      0.75,
+      boss:             '混沌絶対神の証',
+      bossDropRate:      0.25,
+      bossRare:         '絶対なる混沌の力',
+      bossRareDropRate:  0.08,
+    },
+  },
+
 ];
 
 /** 1 ダンジョンあたりの敵数（ボス含む） */
@@ -408,6 +736,44 @@ const GACHA_DUNGEON_DEFINITIONS = {
     bossTicketDropRate:   1.00,
     ticketDragonDrop:     3,
   },
+
+  /* ──────────────────────────────────────────
+     超級（推奨 Lv 100）：チケット4枚確定
+     ────────────────────────────────────────── */
+  superAdvanced: {
+    name: 'チケットダンジョン【超級】',
+    recommendedLevel: 100,
+    normalEnemies: [
+      { name: '幻影のスライム',     hp: 9500,  maxHp: 9500,  attack: 3150, defense: 1420, expReward: 5400 },
+      { name: '黄金の財宝番',       hp: 10200, maxHp: 10200, attack: 3020, defense: 1520, expReward: 5410 },
+      { name: '混沌の守銭奴改',     hp: 8800,  maxHp: 8800,  attack: 3280, defense: 1320, expReward: 5390 },
+    ],
+    rareEnemy: { name: 'チケットドラゴン改', hp: 50000, maxHp: 50000, attack: 4400, defense: 2320, expReward: 10800 },
+    boss:      { name: '超級チケット番人',   hp: 55000, maxHp: 55000, attack: 4600, defense: 2420, expReward: 33000 },
+    rareChance:           0.05,
+    normalTicketDropRate: 0.05,
+    bossTicketDropRate:   1.00,
+    ticketDragonDrop:     4,
+  },
+
+  /* ──────────────────────────────────────────
+     超上級（推奨 Lv 200）：チケット5枚確定
+     ────────────────────────────────────────── */
+  superElite: {
+    name: 'チケットダンジョン【超上級】',
+    recommendedLevel: 200,
+    normalEnemies: [
+      { name: '絶対のスライム',     hp: 24000, maxHp: 24000, attack: 7800, defense: 3600, expReward: 13500 },
+      { name: '究極の財宝番',       hp: 25500, maxHp: 25500, attack: 7500, defense: 3800, expReward: 13510 },
+      { name: '終焉の守銭奴',       hp: 22500, maxHp: 22500, attack: 8100, defense: 3400, expReward: 13490 },
+    ],
+    rareEnemy: { name: '究極チケットドラゴン', hp: 120000, maxHp: 120000, attack: 11000, defense: 5800, expReward: 27000 },
+    boss:      { name: '絶対チケット番人',     hp: 130000, maxHp: 130000, attack: 11500, defense: 6000, expReward: 82000 },
+    rareChance:           0.05,
+    normalTicketDropRate: 0.08,
+    bossTicketDropRate:   1.00,
+    ticketDragonDrop:     5,
+  },
 };
 
 /** ガチャチケダンジョンの討伐数 */
@@ -473,6 +839,39 @@ const XP_DUNGEON_DEFINITIONS = {
     rareBoss:  { name: 'エメラルドオーバーロード', hp: 12000, maxHp: 12000, attack: 1020, defense: 530, expReward: 123000 },
     rareBossChance: 0.15,
   },
+
+  /* 超級（推奨 Lv 100） */
+  superAdvanced: {
+    name: 'XPダンジョン【超級】',
+    recommendedLevel: 100,
+    normalEnemies: [
+      { name: 'エメラルドコングロマリット', hp: 9800,  maxHp: 9800,  attack: 3180, defense: 1440, expReward: 14400 },
+      { name: 'エメラルドアークデーモン',   hp: 10500, maxHp: 10500, attack: 3050, defense: 1540, expReward: 14600 },
+      { name: 'エメラルドグランドレイス',   hp: 9100,  maxHp: 9100,  attack: 3310, defense: 1340, expReward: 14200 },
+    ],
+    normalExpReward: 14400,
+    rareChance:      0.15,
+    rareEnemy: { name: 'エメラルドアルカナ',   hp: 10200, maxHp: 10200, attack: 4450, defense: 1950, expReward: 28800 },
+    boss:      { name: 'エメラルドオメガ',     hp: 56000, maxHp: 56000, attack: 4700, defense: 2550, expReward: 144000 },
+    rareBoss:  { name: 'エメラルドインフィニティ', hp: 70000, maxHp: 70000, attack: 5400, defense: 2850, expReward: 432000 },
+    rareBossChance: 0.15,
+  },
+  /* 超上級（推奨 Lv 200） */
+  superElite: {
+    name: 'XPダンジョン【超上級】',
+    recommendedLevel: 200,
+    normalEnemies: [
+      { name: 'エメラルド絶対体',     hp: 24500, maxHp: 24500, attack: 7900, defense: 3650, expReward: 100000 },
+      { name: 'エメラルド終焉の使',   hp: 26000, maxHp: 26000, attack: 7600, defense: 3850, expReward: 102000 },
+      { name: 'エメラルド混沌の核',   hp: 23000, maxHp: 23000, attack: 8200, defense: 3450, expReward: 98000 },
+    ],
+    normalExpReward: 100000,
+    rareChance:      0.15,
+    rareEnemy: { name: 'エメラルド絶対神使',     hp: 25500, maxHp: 25500, attack: 11200, defense: 4600, expReward: 200000 },
+    boss:      { name: 'エメラルド絶対神',        hp: 155000, maxHp: 155000, attack: 12000, defense: 6100, expReward: 1000000 },
+    rareBoss:  { name: 'エメラルド超越神',        hp: 200000, maxHp: 200000, attack: 14000, defense: 7200, expReward: 3000000 },
+    rareBossChance: 0.15,
+  },
 };
 
 /** XPダンジョンの討伐数 */
@@ -512,6 +911,31 @@ const RAREMON_DUNGEON_DEFINITIONS = {
     name: 'レアモンダンジョン【D】',
     recommendedLevel: 50,
     dungeonIds: [10, 11, 12],
+  },
+
+  /* E: D13〜D15（推奨 Lv 67） */
+  E: {
+    name: 'レアモンダンジョン【E】',
+    recommendedLevel: 67,
+    dungeonIds: [13, 14, 15],
+  },
+  /* F: D16〜D18（推奨 Lv 85） */
+  F: {
+    name: 'レアモンダンジョン【F】',
+    recommendedLevel: 85,
+    dungeonIds: [16, 17, 18],
+  },
+  /* G: D19〜D21（推奨 Lv 113） */
+  G: {
+    name: 'レアモンダンジョン【G】',
+    recommendedLevel: 113,
+    dungeonIds: [19, 20, 21],
+  },
+  /* H: D22〜D24（推奨 Lv 193） */
+  H: {
+    name: 'レアモンダンジョン【H】',
+    recommendedLevel: 193,
+    dungeonIds: [22, 23, 24],
   },
 };
 
@@ -576,6 +1000,39 @@ const SKILL_DUNGEON_DEFINITIONS = {
     boss:      { name: '伝説のスキルストーン番人', hp: 10000, maxHp: 10000, attack: 895, defense: 468, expReward: 0 },
     normalDropRate: 0.02,
     rareDropRate:   0.50,
+    bossDropRate:   1.00,
+  },
+
+  /* 超級（推奨 Lv 100） */
+  superAdvanced: {
+    name: 'スキルダンジョン【超級】',
+    recommendedLevel: 100,
+    normalEnemies: [
+      { name: 'スキルデストロイヤー',   hp: 9600,  maxHp: 9600,  attack: 3200, defense: 1450, expReward: 0 },
+      { name: 'ルーンクラッシャー',     hp: 10300, maxHp: 10300, attack: 3070, defense: 1550, expReward: 0 },
+      { name: 'アンチスペルゴーレム',   hp: 8900,  maxHp: 8900,  attack: 3330, defense: 1350, expReward: 0 },
+    ],
+    rareChance:       0.05,
+    rareEnemy: { name: 'スキルマスター改',       hp: 10100, maxHp: 10100, attack: 4480, defense: 1980, expReward: 0 },
+    boss:      { name: '超級スキルストーン番人', hp: 58000, maxHp: 58000, attack: 4720, defense: 2550, expReward: 0 },
+    normalDropRate: 0.04,
+    rareDropRate:   0.80,
+    bossDropRate:   1.00,
+  },
+  /* 超上級（推奨 Lv 200） */
+  superElite: {
+    name: 'スキルダンジョン【超上級】',
+    recommendedLevel: 200,
+    normalEnemies: [
+      { name: 'スキル絶滅体',         hp: 24000, maxHp: 24000, attack: 7850, defense: 3620, expReward: 0 },
+      { name: '終焉のスペルイーター',   hp: 25500, maxHp: 25500, attack: 7550, defense: 3820, expReward: 0 },
+      { name: '混沌のエンチャンター',   hp: 22500, maxHp: 22500, attack: 8150, defense: 3420, expReward: 0 },
+    ],
+    rareChance:       0.05,
+    rareEnemy: { name: '絶対スキルロード',            hp: 25000, maxHp: 25000, attack: 11150, defense: 4580, expReward: 0 },
+    boss:      { name: '絶対なるスキルストーン番人', hp: 160000, maxHp: 160000, attack: 12100, defense: 6200, expReward: 0 },
+    normalDropRate: 0.08,
+    rareDropRate:   1.00,
     bossDropRate:   1.00,
   },
 };

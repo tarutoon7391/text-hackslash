@@ -501,13 +501,15 @@ function getEquipmentDungeon(eq) {
 }
 
 /**
- * ダンジョン番号(D1=index0 〜 D12=index11)ごとの強化加算ベース値
- * 2ずつ増加: D1=2, D2=4, ..., D12=24
+ * ダンジョン番号(D1=index0 〜 D24=index23)ごとの強化加算ベース値
+ * 2ずつ増加: D1=2, D2=4, ..., D12=24, D13=26, ..., D24=48
  * ダンジョン軸とレア度軸が同等の影響を与えるよう設計
- * 例: D1→D6 の差(10) ≈ ノーマル→ボスレアの差(10)
- * インデックス: [D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12]
+ * インデックス: [D1, D2, ..., D12, D13, D14, ..., D24]
  */
-const DUNGEON_ENHANCE_BASES = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+const DUNGEON_ENHANCE_BASES = [
+  2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24,  // D1〜D12
+  26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, // D13〜D24
+];
 
 /**
  * レア度ごとの強化加算値
@@ -566,15 +568,18 @@ function getEnhanceCost(eq, nextLevel) {
   if (rarity === 'legend') {
     // レジェンドアイテム: 対応ダンジョン範囲のボスレア素材のみ消費
     // 強化後レベル+1個からスタート（例: レベル1→2個, レベル2→3個）
-    // 現在のレジェンド装備はD6（legend_acc_ancient）とD12（legend_acc_chaos）の2種のみ
-    // D6レジェンド(dungeonIndex 0-5) → D1〜D6のボスレア素材を使用
-    // D12レジェンド(dungeonIndex 6-11) → D7〜D12のボスレア素材を使用
+    // 各レジェンドはダンジョン総数の1/4ずつのレンジに対応する（動的計算）
+    // D6レジェンド → D1〜D6のボスレア素材を使用
+    // D12レジェンド → D7〜D12のボスレア素材を使用
+    // D18レジェンド → D13〜D18のボスレア素材を使用
+    // D24レジェンド → D19〜D24のボスレア素材を使用
     const dungeon  = getEquipmentDungeon(eq);
     const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
-    const halfPoint = Math.floor(DUNGEON_DEFINITIONS.length / 2);
-    const start    = dIdx < halfPoint ? 0 : halfPoint;
-    const end      = dIdx < halfPoint ? halfPoint : DUNGEON_DEFINITIONS.length;
-    const matCount = nextLevel + 1;
+    const rangeSize = Math.ceil(DUNGEON_DEFINITIONS.length / 4);
+    const rangeIdx  = Math.floor(dIdx / rangeSize);
+    const start     = rangeIdx * rangeSize;
+    const end       = Math.min(start + rangeSize, DUNGEON_DEFINITIONS.length);
+    const matCount  = nextLevel + 1;
     for (let i = start; i < end; i++) {
       cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = matCount;
     }
@@ -583,13 +588,17 @@ function getEnhanceCost(eq, nextLevel) {
 
   if (rarity === 'end') {
     // エンドアイテム: 対応ダンジョン範囲のボスレア素材のみ消費（レジェンドより少ない量）
+    // ダンジョン総数を4等分した各レンジに対応する（動的計算）
     // D1〜D6エンド → D1〜D6のボスレア素材 × nextLevel個
     // D7〜D12エンド → D7〜D12のボスレア素材 × nextLevel個
+    // D13〜D18エンド → D13〜D18のボスレア素材 × nextLevel個
+    // D19〜D24エンド → D19〜D24のボスレア素材 × nextLevel個
     const dungeon  = getEquipmentDungeon(eq);
     const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
-    const dungeonMidpoint = Math.floor(DUNGEON_DEFINITIONS.length / 2);
-    const start    = dIdx < dungeonMidpoint ? 0 : dungeonMidpoint;
-    const end      = dIdx < dungeonMidpoint ? dungeonMidpoint : DUNGEON_DEFINITIONS.length;
+    const rangeSize = Math.ceil(DUNGEON_DEFINITIONS.length / 4);
+    const rangeIdx  = Math.floor(dIdx / rangeSize);
+    const start     = rangeIdx * rangeSize;
+    const end       = Math.min(start + rangeSize, DUNGEON_DEFINITIONS.length);
     for (let i = start; i < end; i++) {
       cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = nextLevel;
     }
