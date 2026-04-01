@@ -13,6 +13,19 @@
 <div id="game-container">
 
   <!-- ========================================================
+       メンテナンス画面
+       ======================================================== -->
+  <div id="screen-maintenance" class="screen" style="display:none">
+    <div class="screen-panel">
+      <h2 class="panel-title">[ MAINTENANCE ]</h2>
+      <div class="maintenance-box">
+        <div class="maintenance-icon">🔧</div>
+        <div id="maintenance-message" class="maintenance-message"></div>
+      </div>
+    </div>
+  </div><!-- /screen-maintenance -->
+
+  <!-- ========================================================
        ログイン画面
        ======================================================== -->
   <div id="screen-login" class="screen" style="display:none">
@@ -522,7 +535,8 @@
 
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
-<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js → gacha.js → news-definitions.js → news.js -->
+<!-- 読み込み順: maintenance.js → ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js → gacha.js → news-definitions.js → news.js -->
+<script src="js/maintenance.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/equipment-definitions.js"></script>
 <script src="js/equipment.js"></script>
