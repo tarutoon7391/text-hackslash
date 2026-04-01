@@ -1,0 +1,54 @@
+# デプロイ時にキャッシュバスティングを自動適用してGitHub Pagesにデプロイするワークフロー
+name: キャッシュバスティング & GitHub Pages デプロイ
+
+on:
+  # mainブランチへのpush時に実行
+  push:
+    branches: ["main"]
+
+  # Actionsタブから手動実行も可能
+  workflow_dispatch:
+
+# GITHUB_TOKENの権限設定（GitHub Pagesへのデプロイに必要）
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時デプロイは1つのみ許可（進行中のデプロイはキャンセルしない）
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: キャッシュバスティング用バージョン文字列を生成
+        id: version
+        run: echo "hash=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: index.html の JS/CSS 参照にバージョンクエリを付与
+        run: |
+          # 既存の ?v=... を除去してから新しいハッシュを付与（上書き対応）
+          HASH="${{ steps.version.outputs.hash }}"
+          sed -i -E "s/(\.js|\.css)(\?v=[^\"']*)?([\"'])/\1?v=${HASH}\3/g" index.html
+
+      - name: GitHub Pages の設定
+        uses: actions/configure-pages@v5
+
+      - name: 成果物をアップロード
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # リポジトリ全体をデプロイ対象とする
+          path: '.'
+
+      - name: GitHub Pages にデプロイ
+        id: deployment
+        uses: actions/deploy-pages@v5
