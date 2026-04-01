@@ -453,7 +453,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'stardust_legs',
-    name: '星屑の脚甲',
+    name: '星屑の欠片の脚甲',
     slot: '足',
     stats: { attack: 0, defense: 63, maxHp: 20, maxMp: 0 },
     effectType: 'none',
@@ -462,7 +462,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'stardust_boots',
-    name: '星屑の靴',
+    name: '星屑の欠片の靴',
     slot: '靴',
     stats: { attack: 0, defense: 47, maxHp: 0, maxMp: 0 },
     effectType: 'none',
@@ -501,7 +501,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'otherworld_armor',
-    name: '異界の鎧',
+    name: '異界石の鎧',
     slot: '胴',
     stats: { attack: 0, defense: 113, maxHp: 38, maxMp: 0 },
     effectType: 'damageReduction',
@@ -569,7 +569,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'dream_flower_legs',
-    name: '夢幻の脚甲',
+    name: '夢花の脚甲',
     slot: '足',
     stats: { attack: 0, defense: 96, maxHp: 32, maxMp: 0 },
     effectType: 'none',
@@ -608,7 +608,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'spacetime_helm',
-    name: '時空の兜',
+    name: '時空の欠片の兜',
     slot: '頭',
     stats: { attack: 0, defense: 98, maxHp: 108, maxMp: 18 },
     effectType: 'none',
@@ -627,7 +627,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'spacetime_legs',
-    name: '時空の脚甲',
+    name: '時空の欠片の脚甲',
     slot: '足',
     stats: { attack: 0, defense: 118, maxHp: 40, maxMp: 0 },
     effectType: 'none',
@@ -636,7 +636,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'spacetime_boots',
-    name: '時空の靴',
+    name: '時空の欠片の靴',
     slot: '靴',
     stats: { attack: 0, defense: 88, maxHp: 20, maxMp: 0 },
     effectType: 'none',
@@ -666,7 +666,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'chaos_crystal_helm',
-    name: '混沌の兜',
+    name: '混沌の結晶の兜',
     slot: '頭',
     stats: { attack: 0, defense: 120, maxHp: 130, maxMp: 22 },
     effectType: 'none',
@@ -685,7 +685,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'chaos_crystal_legs',
-    name: '混沌の脚甲',
+    name: '混沌の結晶の脚甲',
     slot: '足',
     stats: { attack: 0, defense: 142, maxHp: 50, maxMp: 0 },
     effectType: 'none',
@@ -694,7 +694,7 @@ const EQUIPMENT_DEFINITIONS = [
   },
   {
     id: 'chaos_crystal_boots',
-    name: '混沌の靴',
+    name: '混沌の結晶の靴',
     slot: '靴',
     stats: { attack: 0, defense: 108, maxHp: 25, maxMp: 0 },
     effectType: 'none',
