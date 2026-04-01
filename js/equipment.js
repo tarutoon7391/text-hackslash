@@ -143,6 +143,26 @@ function renderCraftList() {
     return true;
   });
 
+  // クラフト可能なものを優先して上に表示するためのソート
+  filtered.sort((a, b) => {
+    const getPriority = (eq) => {
+      const isEquipped = Object.values(player.equipment).includes(eq.id);
+      const isOwned    = player.ownedEquipment.includes(eq.id);
+      // 所持済み・未装備 → 最優先
+      if ((isOwned || isEquipped) && !isEquipped) return 0;
+      // 装備中 → 表示されないので最下位でOK
+      if (isEquipped) return 3;
+      // クラフト可能判定
+      const canCraft = Object.entries(eq.recipe).every(
+        ([mat, cnt]) => (player.materials[mat] || 0) >= cnt
+      );
+      const hasRequiredRecipe = !eq.requiresRecipe || !!player.permanentItems[eq.requiresRecipe];
+      if (canCraft && hasRequiredRecipe) return 1;  // クラフト可能
+      return 2;  // クラフト不可
+    };
+    return getPriority(a) - getPriority(b);
+  });
+
   el.innerHTML = filtered.map(eq => {
     // 既に所持または装備中のものはスキップ
     const isEquipped = Object.values(player.equipment).includes(eq.id);
