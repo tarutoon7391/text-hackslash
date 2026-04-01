@@ -73,6 +73,9 @@
         <button class="nav-btn" onclick="showScreen('ranking'); renderRanking();">
           🏆 ランキング
         </button>
+        <button class="nav-btn news-btn" id="btn-news" onclick="showScreen('news'); renderNews();">
+          📢 お知らせ<span class="news-badge" id="news-badge" style="display:none"></span>
+        </button>
         <button class="nav-btn back-btn" onclick="logoutUser()">🚪 ログアウト</button>
       </div>
     </div>
@@ -484,6 +487,21 @@
 
   </div><!-- /screen-ranking -->
 
+  <!-- ========================================================
+       お知らせ画面
+       ======================================================== -->
+  <div id="screen-news" class="screen" style="display:none">
+    <div class="screen-panel">
+      <h2 class="panel-title">[ NEWS ]</h2>
+      <div id="news-list">
+        <!-- JS で動的に描画 -->
+      </div>
+      <div class="screen-footer">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+    </div>
+  </div><!-- /screen-news -->
+
 </div><!-- /game-container -->
 
 <!-- 図鑑詳細モーダル -->
@@ -504,7 +522,7 @@
 
 <footer>HACK &amp; SLASH TEXT RPG — VANILLA JS EDITION</footer>
 
-<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js → gacha.js -->
+<!-- 読み込み順: ui.js → equipment.js → dungeon.js → level.js → game.js → save.js → encyclopedia.js → ranking.js → gacha.js → news-definitions.js → news.js -->
 <script src="js/ui.js"></script>
 <script src="js/equipment-definitions.js"></script>
 <script src="js/equipment.js"></script>
@@ -516,6 +534,8 @@
 <script src="js/encyclopedia.js"></script>
 <script src="js/ranking.js"></script>
 <script src="js/gacha.js"></script>
+<script src="js/news-definitions.js"></script>
+<script src="js/news.js"></script>
 
 </body>
 </html>
