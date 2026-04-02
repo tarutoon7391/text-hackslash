@@ -1366,9 +1366,15 @@ function renderSkillTree() {
   jobTabConfig.forEach(({ id, icon, label }) => {
     const btn = document.getElementById(`st-tab-${id}`);
     if (!btn) return;
-    const unlocked = isJobUnlocked(id);
-    btn.textContent = unlocked ? `${icon} ${label}` : `🔒 ${label}`;
-    btn.classList.toggle('tab-locked', !unlocked);
+    const unlocked  = isJobUnlocked(id);
+    const isCurrent = p.currentJob === id;
+    if (isCurrent) {
+      btn.textContent = `🌟 ${label}`;
+      btn.classList.remove('tab-locked');
+    } else {
+      btn.textContent = unlocked ? `${icon} ${label}` : `🔒 ${label}`;
+      btn.classList.toggle('tab-locked', !unlocked);
+    }
   });
 
   // 現在のルートを取得
@@ -1420,45 +1426,65 @@ function renderSkillTree() {
   const newJobs = ['paladin', 'assassin', 'sage', 'berserker'];
   const jobNames4 = { paladin: '聖騎士', assassin: '暗殺者', sage: '賢者', berserker: '狂戦士' };
   const jobBookNames = { paladin: '聖騎士の書', assassin: '暗殺者の書', sage: '賢者の書', berserker: '狂戦士の書' };
-  if (newJobs.includes(skillTreeCurrentRoute) && !isJobUnlocked(skillTreeCurrentRoute)) {
-    const jobId   = skillTreeCurrentRoute;
-    const jobName = jobNames4[jobId];
+  if (newJobs.includes(skillTreeCurrentRoute)) {
+    const jobId    = skillTreeCurrentRoute;
+    const jobName  = jobNames4[jobId];
     const bookName = jobBookNames[jobId];
-    const descEl2 = document.getElementById('st-route-desc');
-    if (descEl2) descEl2.textContent = '';
+    const descEl2  = document.getElementById('st-route-desc');
     const nodeList2 = document.getElementById('st-node-list');
-    if (nodeList2) {
-      const prereqMet = isJobPrerequisiteMet(jobId);
-      const stoneCount = p.materials['スキルストーン'] || 0;
-      if (prereqMet) {
-        nodeList2.innerHTML = `
-          <div class="st-locked-msg">
-            <div class="st-locked-icon">🔓</div>
-            <div class="st-locked-title">${jobName}ルートを解放できます！</div>
-            <div class="st-locked-cond">解放条件：</div>
-            <ul class="st-locked-list">
-              <li>✅ 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
-              <li>✅ 「${bookName}」を入手済み</li>
-            </ul>
-            <div class="st-locked-cond">スキルストーン所持数: ${stoneCount} 個</div>
-            <button class="st-unlock-btn" onclick="unlockJobRoute('${jobId}')" ${stoneCount < 1 ? 'disabled' : ''}>
-              🔓 アンロックする（スキルストーン×1消費）
-            </button>
-          </div>`;
-      } else {
-        nodeList2.innerHTML = `
-          <div class="st-locked-msg">
-            <div class="st-locked-icon">🔒</div>
-            <div class="st-locked-title">${jobName}ルートは未解放です</div>
-            <div class="st-locked-cond">解放条件：</div>
-            <ul class="st-locked-list">
-              <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
-              <li>「${bookName}」を入手済み（ガチャで入手可能）</li>
-            </ul>
-          </div>`;
+
+    // 現在の職業でない場合（未解放・または別職業が有効）
+    if (p.currentJob !== jobId) {
+      if (descEl2) descEl2.textContent = '';
+      if (nodeList2) {
+        const jobUnlocked = isJobUnlocked(jobId);
+        const prereqMet   = isJobPrerequisiteMet(jobId);
+        const stoneCount  = p.materials['スキルストーン'] || 0;
+
+        if (jobUnlocked) {
+          // 解放済みだが現在の職業でない → 職業変更ボタンを表示
+          nodeList2.innerHTML = `
+            <div class="st-locked-msg">
+              <div class="st-locked-icon">🔄</div>
+              <div class="st-locked-title">${jobName}は解放済みです（現在の職業: ${p.currentJob ? jobNames4[p.currentJob] || p.currentJob : 'なし'}）</div>
+              <div class="st-locked-cond">この職業に切り替えるにはスキルストーンが必要です。</div>
+              <div class="st-locked-cond">スキルストーン所持数: ${stoneCount} 個</div>
+              <button class="st-unlock-btn" onclick="unlockJobRoute('${jobId}')" ${stoneCount < 1 ? 'disabled' : ''}>
+                🔄 ${jobName}に職業変更する（スキルストーン×1消費）
+              </button>
+            </div>`;
+        } else if (prereqMet) {
+          // 条件達成済み：アンロックボタンを表示
+          nodeList2.innerHTML = `
+            <div class="st-locked-msg">
+              <div class="st-locked-icon">🔓</div>
+              <div class="st-locked-title">${jobName}ルートを解放できます！</div>
+              <div class="st-locked-cond">解放条件：</div>
+              <ul class="st-locked-list">
+                <li>✅ 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+                <li>✅ 「${bookName}」を入手済み</li>
+              </ul>
+              <div class="st-locked-cond">スキルストーン所持数: ${stoneCount} 個</div>
+              <button class="st-unlock-btn" onclick="unlockJobRoute('${jobId}')" ${stoneCount < 1 ? 'disabled' : ''}>
+                🔓 アンロックする（スキルストーン×1消費）
+              </button>
+            </div>`;
+        } else {
+          // 条件未達成：通常のロックメッセージを表示
+          nodeList2.innerHTML = `
+            <div class="st-locked-msg">
+              <div class="st-locked-icon">🔒</div>
+              <div class="st-locked-title">${jobName}ルートは未解放です</div>
+              <div class="st-locked-cond">解放条件：</div>
+              <ul class="st-locked-list">
+                <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+                <li>「${bookName}」を入手済み（ガチャで入手可能）</li>
+              </ul>
+            </div>`;
+        }
       }
+      return;
     }
-    return;
   }
 
   // ルート説明
@@ -1561,9 +1587,9 @@ function acquireSkillNode(routeId, nodeId) {
   // 魔剣士ルートは解放条件を満たしていないと取得不可
   if (routeId === 'makenshi' && !isMakenshiUnlocked()) return;
 
-  // 4職業ルートは解放済みかつ現在の職業であることが必要
+  // 4職業ルートは「現在の職業」でないとノード取得不可（排他制を保証する）
   const newJobRoutes = ['paladin', 'assassin', 'sage', 'berserker'];
-  if (newJobRoutes.includes(routeId) && !isJobUnlocked(routeId)) return;
+  if (newJobRoutes.includes(routeId) && p.currentJob !== routeId) return;
 
   // 既に取得済みか確認
   if (!p.skillTreeNodes[routeId]) p.skillTreeNodes[routeId] = [];
