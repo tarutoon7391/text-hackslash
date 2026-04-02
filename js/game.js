@@ -223,12 +223,12 @@ class Player {
     const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
       ? game.playerAtkBuff.bonus : 0;
     let base = this.attack + bonus;
-    // 賢者バフ（強化魔法・全体強化）の ATK 倍率を乗算で適用する
-    if (game.sageBuff && game.sageBuff.turnsLeft > 0) {
-      base = Math.floor(base * game.sageBuff.atkMult);
-    }
-    if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) {
-      base = Math.floor(base * game.sageMegaBuff.atkMult);
+    // 賢者バフ（強化魔法・全体強化）の ATK 倍率を乗算で一括適用する
+    {
+      let atkMult = 1;
+      if (game.sageBuff && game.sageBuff.turnsLeft > 0) atkMult *= game.sageBuff.atkMult;
+      if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) atkMult *= game.sageMegaBuff.atkMult;
+      if (atkMult !== 1) base = Math.floor(base * atkMult);
     }
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
