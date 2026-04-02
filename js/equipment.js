@@ -595,10 +595,11 @@ function getMaterialXpInfo(name) {
   for (const d of DUNGEON_DEFINITIONS) {
     const drops = d.drops;
     if (drops.common === name) {
-      // 通常モンスターの平均EXP
-      const avgExp = Math.floor(
-        d.normalEnemies.reduce((sum, e) => sum + e.expReward, 0) / d.normalEnemies.length
-      );
+      // 通常モンスターの平均EXP（配列が空の場合は0）
+      const len    = d.normalEnemies.length;
+      const avgExp = len > 0
+        ? Math.floor(d.normalEnemies.reduce((sum, e) => sum + e.expReward, 0) / len)
+        : 0;
       return { dungeonName: d.name, rarity: 'コモン', xpPerUnit: avgExp };
     }
     if ((drops.rares || []).includes(name)) {
@@ -648,8 +649,10 @@ function renderMaterialDetailModal() {
   let xpSection = '';
   if (xpInfo) {
     // XP変換セクション
-    const maxConv = have;
-    const xpPer   = xpInfo.xpPerUnit;
+    const maxConv   = have;
+    const xpPer     = xpInfo.xpPerUnit;
+    const canConvert = maxConv >= 1;
+    const initVal   = canConvert ? 1 : 0;
     xpSection = `
       <div class="mat-detail-xp-section">
         <div class="mat-detail-xp-title">🔮 XP変換</div>
@@ -664,14 +667,14 @@ function renderMaterialDetailModal() {
         <div class="mat-detail-xp-row">
           <label class="mat-detail-xp-label">変換個数</label>
           <input id="mat-xp-amount" type="number" class="mat-detail-xp-input"
-            min="1" max="${maxConv}" value="${Math.min(1, maxConv)}">
+            min="${initVal}" max="${maxConv}" value="${initVal}">
           <span class="mat-detail-xp-hint">（最大 ${maxConv}）</span>
         </div>
         <div class="mat-detail-xp-total">
-          合計 XP：<strong id="mat-xp-total">${xpPer.toLocaleString()}</strong>
+          合計 XP：<strong id="mat-xp-total">${(xpPer * initVal).toLocaleString()}</strong>
         </div>
-        <button class="inv-btn mat-detail-xp-btn${have >= 1 ? '' : ' disabled'}"
-          ${have >= 1 ? '' : 'disabled'}
+        <button class="inv-btn mat-detail-xp-btn${canConvert ? '' : ' disabled'}"
+          ${canConvert ? '' : 'disabled'}
           onclick="confirmMaterialToXp(${JSON.stringify(name)}, ${xpPer})">
           XPに変換する
         </button>
@@ -696,7 +699,7 @@ function renderMaterialDetailModal() {
     const input = document.getElementById('mat-xp-amount');
     if (input) {
       input.addEventListener('input', () => {
-        const val  = Math.max(1, Math.min(have, parseInt(input.value) || 1));
+        const val  = Math.max(0, Math.min(have, parseInt(input.value) || 0));
         const total = document.getElementById('mat-xp-total');
         if (total) total.textContent = (xpInfo.xpPerUnit * val).toLocaleString();
       });
@@ -714,10 +717,10 @@ function confirmMaterialToXp(materialName, xpPerUnit) {
   const have    = player.materials[materialName] || 0;
 
   const input   = document.getElementById('mat-xp-amount');
-  const amount  = Math.max(1, Math.min(have, parseInt((input && input.value) || '1') || 1));
+  const amount  = Math.max(0, Math.min(have, parseInt((input && input.value) || '0') || 0));
   const totalXp = xpPerUnit * amount;
 
-  if (have < amount) {
+  if (amount < 1 || have < amount) {
     alert(`${materialName}が不足しています！`);
     return;
   }
