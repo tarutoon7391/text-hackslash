@@ -239,8 +239,6 @@ function toggleCraftSortByStats() {
  * @returns {string} HTML 文字列
  */
 function buildStatDiffHtml(newEq, newEnhLv, curEq, curEnhLv, playerLevel) {
-  if (!curEq) return '';
-
   const getEffectiveStats = (eq, enhLv) => {
     const base = eq.isGrowth ? computeGrowthStats(eq, playerLevel) : eq.stats;
     if (eq.isGrowth && enhLv > 0) {
@@ -267,7 +265,8 @@ function buildStatDiffHtml(newEq, newEnhLv, curEq, curEnhLv, playerLevel) {
   };
 
   const ns = getEffectiveStats(newEq, newEnhLv);
-  const cs = getEffectiveStats(curEq, curEnhLv);
+  // 現在装備なしの場合はゼロベースで差分を計算する
+  const cs = curEq ? getEffectiveStats(curEq, curEnhLv) : { attack: 0, defense: 0, maxHp: 0, maxMp: 0 };
 
   const parts = [];
   const addDiff = (key, label) => {
@@ -447,11 +446,18 @@ function renderCraftList() {
       ? `<button class="inv-btn" onclick="craftItem('${eq.id}')">クラフト</button>`
       : `<button class="inv-btn disabled" disabled>クラフト不可</button>`;
 
+    // 未所持装備にも現在装備中アイテムとの性能差を表示する
+    const unownedCurEqId  = player.equipment[eq.slot];
+    const unownedCurEq    = unownedCurEqId ? EQUIPMENT_DEFINITIONS.find(e => e.id === unownedCurEqId) : null;
+    const unownedCurEnhLv = unownedCurEqId ? (player.enhanceLevels[unownedCurEqId] || 0) : 0;
+    const unownedDiffHtml = buildStatDiffHtml(eq, 0, unownedCurEq, unownedCurEnhLv, player.level);
+
     return `
       <div class="craft-item ${canCraftFull ? '' : 'insufficient'}">
         <div class="craft-name">[${eq.slot}] ${eq.name}${rarityBadge}</div>
         <div class="craft-stats">${statsStr}　${effectDescDisplay}</div>
         ${growthNote}
+        ${unownedDiffHtml}
         ${recipeNote}
         ${recipeHtml}
         ${btnHtml}
