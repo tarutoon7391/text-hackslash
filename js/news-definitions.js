@@ -9,6 +9,12 @@
 const NEWS_DEFINITIONS = (function () {
   const items = [
     {
+      id: 'news_007',
+      date: '2026-04-02',
+      title: '職業システムの不具合を修正しました',
+      content: '複数の上級職を同時に解放・保持できてしまう不具合を修正しました。既存のセーブデータも自動的に修復されます。',
+    },
+    {
       id: 'news_006',
       date: '2026-04-02',
       title: 'スキルツリーにPart1/Part2タブを追加しました',
