@@ -2228,7 +2228,7 @@ function useSkill(skillId) {
       // 神聖無双: 最大HP30%リジェネ3ターン + DEF1.5倍3ターン + 反撃確率100%（重複NG）
       const alreadyRegen   = !!game.playerRegen;
       const alreadyDef     = game.shieldActive.some(b => b.source === 'divine_judgment');
-      const alreadyCounter = !!(game.divineJudgmentActive && game.divineJudgmentActive.turnsLeft > 0);
+      const alreadyCounter = !!game.divineJudgmentActive;
       if (alreadyRegen && alreadyDef && alreadyCounter) {
         log('⚠ 「神聖無双」はすでに発動中です！', 'system');
         player.mp += skill.mpCost;
@@ -2245,8 +2245,8 @@ function useSkill(skillId) {
       if (!alreadyCounter) {
         game.divineJudgmentActive = { turnsLeft: 3 };
       }
-      const regenAmt = game.playerRegen ? game.playerRegen.hpPerTurn : Math.floor(player.maxHp * 0.30);
-      const defBonusVal = game.shieldActive.find(b => b.source === 'divine_judgment')?.defenseBonus ?? Math.floor(player.defense * 0.5);
+      const regenAmt    = game.playerRegen.hpPerTurn;
+      const defBonusVal = game.shieldActive.find(b => b.source === 'divine_judgment').defenseBonus;
       log(`🌟 ${player.name} は「神聖無双」を解放した！ 3 ターン毎ターン HP +${regenAmt} 回復（リジェネ）！DEF +${defBonusVal}（DEF×1.5）！反撃確率 100%！`, 'player-action');
       break;
     }

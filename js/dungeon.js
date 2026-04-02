@@ -924,7 +924,6 @@ function startNextXpDungeonBattle() {
   game.state             = GameState.PLAYER_TURN;
   game.battleCount++;
   game.shieldActive      = [];
-  game.divineJudgmentActive = null;
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
@@ -935,6 +934,7 @@ function startNextXpDungeonBattle() {
   game.playerSageBuff    = null;
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
+  game.divineJudgmentActive = null;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1110,7 +1110,6 @@ function startNextRaremonDungeonBattle() {
   game.state             = GameState.PLAYER_TURN;
   game.battleCount++;
   game.shieldActive      = [];
-  game.divineJudgmentActive = null;
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
@@ -1121,6 +1120,7 @@ function startNextRaremonDungeonBattle() {
   game.playerSageBuff    = null;
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
+  game.divineJudgmentActive = null;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1325,7 +1325,6 @@ function startNextSkillDungeonBattle() {
   game.state             = GameState.PLAYER_TURN;
   game.battleCount++;
   game.shieldActive      = [];
-  game.divineJudgmentActive = null;
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
@@ -1336,6 +1335,7 @@ function startNextSkillDungeonBattle() {
   game.playerSageBuff    = null;
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
+  game.divineJudgmentActive = null;
 
   recordMonsterEncounter(game.enemy.name);
 
