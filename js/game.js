@@ -351,7 +351,7 @@ let game = {
     gachaDifficulty: null,   // 'beginner' | 'intermediate' | 'advanced'
     ticketsEarned:   0,      // 今回の探索で獲得したチケット数
   },
-  shieldActive:      null,   // { defenseBonus: N, turnsLeft: N } — シールド・聖域
+  shieldActive:      [],     // [{ source: string, defenseBonus: N, turnsLeft: N }] — シールド・聖域（複数バフ重複可）
   enemyPoisoned:     null,   // { active: bool, damage: N, turnsLeft: N }
   playerAtkBuff:     null,   // { bonus: N, turnsLeft: N } — 祝福スキル
   playerCondense:    null,   // { atkMultiplier: N, dmgMultiplier: N, justSet: bool } — 魔力凝縮
@@ -362,6 +362,7 @@ let game = {
   playerSageBuff:    null,   // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 強化魔法（倍率バフ）
   playerSageMegaBuff: null,  // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 全体強化（倍率バフ）
   playerMakenshiAwakeningBuff: null, // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 魔剣士の覚醒（倍率バフ）
+  divineJudgmentActive: null, // { turnsLeft: N } — 神聖無双：反撃確率100%フラグ
   turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
 };
 
@@ -537,6 +538,13 @@ function tickPlayerBuffs() {
       log('🌌 魔剣士の覚醒の効果が切れた。', 'system');
     }
   }
+  if (game.divineJudgmentActive && game.divineJudgmentActive.turnsLeft > 0) {
+    game.divineJudgmentActive.turnsLeft--;
+    if (game.divineJudgmentActive.turnsLeft <= 0) {
+      game.divineJudgmentActive = null;
+      log('🌟 神聖無双の反撃強化効果が切れた。', 'system');
+    }
+  }
 }
 
 /** プレイヤーのリジェネ効果を処理する */
@@ -623,12 +631,17 @@ function doEnemyTurn() {
     rawDmg = Math.floor(rawDmg * game.playerCondense.dmgMultiplier);
   }
 
-  // シールド効果を適用（聖域スキル）
-  if (game.shieldActive && game.shieldActive.turnsLeft > 0) {
-    rawDmg = Math.max(1, rawDmg - game.shieldActive.defenseBonus);
-    game.shieldActive.turnsLeft--;
-    if (game.shieldActive.turnsLeft <= 0) {
-      game.shieldActive = null;
+  // シールド効果を適用（配列管理：全バフの defenseBonus を合算して適用）
+  if (game.shieldActive.length > 0) {
+    const totalBonus = game.shieldActive.reduce((sum, b) => sum + b.defenseBonus, 0);
+    rawDmg = Math.max(1, rawDmg - totalBonus);
+    const expired = [];
+    game.shieldActive.forEach(b => {
+      b.turnsLeft--;
+      if (b.turnsLeft <= 0) expired.push(b.source);
+    });
+    game.shieldActive = game.shieldActive.filter(b => b.turnsLeft > 0);
+    if (expired.length > 0) {
       log('🛡 防御バフの効果が切れた。', 'system');
     }
   }
@@ -637,11 +650,12 @@ function doEnemyTurn() {
   log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
   renderPlayerStatus();
 
-  // 聖騎士パッシブ: 被攻撃時30%でカウンター攻撃
+  // 聖騎士パッシブ: 被攻撃時にカウンター攻撃（神聖無双発動中は100%、通常時は30%）
   if (game.player.currentJob === 'paladin' &&
       (game.player.skillTreeNodes['paladin'] || []).includes('pl_15') &&
       game.player.isAlive()) {
-    if (Math.random() < 0.30) {
+    const counterChance = (game.divineJudgmentActive && game.divineJudgmentActive.turnsLeft > 0) ? 1.0 : 0.30;
+    if (Math.random() < counterChance) {
       const counterDmg = Math.max(1, Math.floor(game.player.attack * 0.8));
       game.enemy.takeDamage(counterDmg);
       log(`🛡 「反撃の構え」発動！カウンター攻撃で ${game.enemy.name} に ${counterDmg} ダメージ！`, 'player-action');
@@ -844,7 +858,7 @@ function initGame() {
   game.state             = null;
   game.battleCount       = 0;
   game.dungeon           = { id: null, enemyIndex: 0, materials: [], isGachaDungeon: false, gachaDifficulty: null, ticketsEarned: 0 };
-  game.shieldActive      = null;
+  game.shieldActive      = [];
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
   game.playerCondense    = null;
@@ -855,6 +869,7 @@ function initGame() {
   game.playerSageBuff    = null;
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
+  game.divineJudgmentActive = null;
   game.turnDamageDealt   = 0;
 
   // メンテナンスモードチェック
