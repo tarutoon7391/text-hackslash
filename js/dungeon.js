@@ -548,9 +548,11 @@ function renderGachaDungeonDifficultySelect() {
   list.innerHTML = '';
 
   const difficulties = [
-    { key: 'beginner',     label: '初級', icon: '🌱' },
-    { key: 'intermediate', label: '中級', icon: '⚔' },
-    { key: 'advanced',     label: '上級', icon: '🔥' },
+    { key: 'beginner',      label: '初級',  icon: '🌱' },
+    { key: 'intermediate',  label: '中級',  icon: '⚔' },
+    { key: 'advanced',      label: '上級',  icon: '🔥' },
+    { key: 'superAdvanced', label: '超級',  icon: '💥' },
+    { key: 'superElite',    label: '超上級', icon: '👑' },
   ];
 
   difficulties.forEach(({ key, label, icon }) => {
@@ -770,9 +772,11 @@ function renderXpDungeonDifficultySelect() {
   const keyCount = (game.player.materials[keyName] || 0);
 
   const difficulties = [
-    { key: 'beginner',     label: '初級', icon: '🌱' },
-    { key: 'intermediate', label: '中級', icon: '⚔' },
-    { key: 'advanced',     label: '上級', icon: '🔥' },
+    { key: 'beginner',      label: '初級',  icon: '🌱' },
+    { key: 'intermediate',  label: '中級',  icon: '⚔' },
+    { key: 'advanced',      label: '上級',  icon: '🔥' },
+    { key: 'superAdvanced', label: '超級',  icon: '💥' },
+    { key: 'superElite',    label: '超上級', icon: '👑' },
   ];
 
   difficulties.forEach(({ key, label, icon }) => {
@@ -1170,9 +1174,11 @@ function renderSkillDungeonDifficultySelect() {
   const keyCount = (game.player.materials[keyName] || 0);
 
   const difficulties = [
-    { key: 'beginner',     label: '初級', icon: '🌱' },
-    { key: 'intermediate', label: '中級', icon: '⚔' },
-    { key: 'advanced',     label: '上級', icon: '🔥' },
+    { key: 'beginner',      label: '初級',  icon: '🌱' },
+    { key: 'intermediate',  label: '中級',  icon: '⚔' },
+    { key: 'advanced',      label: '上級',  icon: '🔥' },
+    { key: 'superAdvanced', label: '超級',  icon: '💥' },
+    { key: 'superElite',    label: '超上級', icon: '👑' },
   ];
 
   difficulties.forEach(({ key, label, icon }) => {

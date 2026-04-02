@@ -122,7 +122,7 @@ function renderMaterialsList() {
   }
 
   el.innerHTML = filtered.map(k =>
-    `<button class="mat-item" onclick="showMaterialDetailModal(${JSON.stringify(k)})">` +
+    `<button class="mat-item" onclick="showMaterialDetailModal(decodeURIComponent('${encodeURIComponent(k)}'))">` +
     `${k} × ${mats[k]}</button>`
   ).join('');
 }
