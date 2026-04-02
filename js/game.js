@@ -182,12 +182,12 @@ class Player {
       }
     });
 
-    // 蒼銀の剣×魔剣士シナジー: 魔剣士ルートのノードを1つ以上取得 かつ 蒼銀の剣を装備中
+    // 蒼銀の剣×魔剣士シナジー: mk_01（魔力の心得）取得済みフラグ かつ 蒼銀の剣を装備中
     // → 会心率以外の全ステータス（ATK・DEF・HP・MP）を 1.2 倍にする
     // ※ HP/MP 調整の前にシナジーを適用することで、繰り返し呼出し時に倍率が累積しないようにする
-    const isMakenshiJob = (this.skillTreeNodes['makenshi'] || []).length > 0;
+    const hasMakenshiSynergy = !!(this.permanentItems && this.permanentItems.hasMakenshiSynergy);
     const hasAoginNoKen = Object.values(this.equipment).includes('aogin_no_ken');
-    if (isMakenshiJob && hasAoginNoKen) {
+    if (hasMakenshiSynergy && hasAoginNoKen) {
       this.attack  = Math.floor(this.attack  * 1.2);
       this.defense = Math.floor(this.defense * 1.2);
       this.maxHp   = Math.floor(this.maxHp   * 1.2);
