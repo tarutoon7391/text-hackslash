@@ -63,6 +63,42 @@ const GACHA_TABLE = [
     flag: 'hasBookMakenshi',
     weight: 10,
   },
+  {
+    id: 'book_paladin',
+    name: '聖騎士の書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookPaladin',
+    weight: 10,
+  },
+  {
+    id: 'book_assassin',
+    name: '暗殺者の書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookAssassin',
+    weight: 10,
+  },
+  {
+    id: 'book_sage',
+    name: '賢者の書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookSage',
+    weight: 10,
+  },
+  {
+    id: 'book_berserker',
+    name: '狂戦士の書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookBerserker',
+    weight: 10,
+  },
 ];
 
 /** レアリティ別の演出色 */
@@ -188,11 +224,19 @@ function renderGachaScreen() {
 
   const permEl = document.getElementById('gacha-perm-status');
   if (permEl) {
-    const hasRecipe = p.permanentItems.hasRecipeAogin   ? '✅ 入手済み' : '❌ 未入手';
-    const hasBook   = p.permanentItems.hasBookMakenshi  ? '✅ 入手済み' : '❌ 未入手';
+    const hasRecipe        = p.permanentItems.hasRecipeAogin   ? '✅ 入手済み' : '❌ 未入手';
+    const hasBook          = p.permanentItems.hasBookMakenshi  ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookPaladin   = p.permanentItems.hasBookPaladin   ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookAssassin  = p.permanentItems.hasBookAssassin  ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookSage      = p.permanentItems.hasBookSage      ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookBerserker = p.permanentItems.hasBookBerserker ? '✅ 入手済み' : '❌ 未入手';
     permEl.innerHTML =
       `<span>📜 蒼銀の剣のレシピ: ${hasRecipe}</span>` +
-      `<span>📖 魔剣士の書: ${hasBook}</span>`;
+      `<span>📖 魔剣士の書: ${hasBook}</span>` +
+      `<span>📖 聖騎士の書: ${hasBookPaladin}</span>` +
+      `<span>📖 暗殺者の書: ${hasBookAssassin}</span>` +
+      `<span>📖 賢者の書: ${hasBookSage}</span>` +
+      `<span>📖 狂戦士の書: ${hasBookBerserker}</span>`;
   }
 
   const btn1  = document.getElementById('btn-gacha-1');

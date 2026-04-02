@@ -99,6 +99,17 @@ class Player {
      */
     this.permanentItems = s.permanentItems ? { ...s.permanentItems } : {};
 
+    /**
+     * 現在の職業ID
+     * null | 'paladin' | 'assassin' | 'sage' | 'berserker'
+     */
+    this.currentJob = s.currentJob ?? null;
+
+    /**
+     * スキルの書の消費済みフラグ
+     */
+    this.usedBooks = s.usedBooks ? { ...s.usedBooks } : {};
+
     /** 有効ステータスを初期化 */
     this.attack  = this.attackBase;
     this.defense = this.defenseBase;
@@ -183,6 +194,12 @@ class Player {
       this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
+    // 暗殺者パッシブ: 最初のノード取得済みの場合、最終HP最大値・防御力を半減する
+    if (this.currentJob === 'assassin' && (this.skillTreeNodes['assassin'] || []).includes('as_01')) {
+      this.maxHp   = Math.floor(this.maxHp   * 0.5);
+      this.defense = Math.floor(this.defense * 0.5);
+    }
+
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
     // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
     const hpDelta = this.maxHp - prevMaxHp;
@@ -200,12 +217,21 @@ class Player {
   get effectiveAttack() {
     const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
       ? game.playerAtkBuff.bonus : 0;
-    const base = this.attack + bonus;
+    let base = this.attack + bonus;
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
-      return Math.floor(base * game.playerCondense.atkMultiplier);
+      base = Math.floor(base * game.playerCondense.atkMultiplier);
     }
-    return base;
+    // 狂戦士パッシブ: HP50%以下で2倍、HP25%以下で4倍（最終攻撃力に乗る）
+    if (this.currentJob === 'berserker' && (this.skillTreeNodes['berserker'] || []).includes('bk_01')) {
+      const hpRatio = this.maxHp > 0 ? this.hp / this.maxHp : 1;
+      if (hpRatio <= 0.25) {
+        base = base * 4;
+      } else if (hpRatio <= 0.5) {
+        base = base * 2;
+      }
+    }
+    return Math.floor(base);
   }
 
   /**
@@ -222,7 +248,17 @@ class Player {
 
   /** ダメージを受ける（被ダメージ軽減装備を含む）。実際に受けたダメージを返す */
   takeDamage(amount) {
-    const reduced = applyEquipmentEffects(amount, 'take');
+    let reduced = applyEquipmentEffects(amount, 'take');
+    // 聖騎士パッシブ: 被ダメージ軽減（聖盾pl_06: 10%、神聖防壁pl_12: +20%）
+    if (this.currentJob === 'paladin') {
+      const nodes = this.skillTreeNodes['paladin'] || [];
+      let dmgReduction = 0;
+      if (nodes.includes('pl_06')) dmgReduction += 0.10;
+      if (nodes.includes('pl_12')) dmgReduction += 0.20;
+      if (dmgReduction > 0) {
+        reduced = Math.max(1, Math.floor(reduced * (1 - dmgReduction)));
+      }
+    }
     this.hp = Math.max(0, this.hp - reduced);
     return reduced;
   }
@@ -285,6 +321,7 @@ let game = {
   enemyAtkDebuff:    null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
   playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
   playerDelayedHeal: null,   // { healAmt: N, turnsLeft: N } — 神聖なうたい寝（遅延回復）
+  turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
 };
 
 /* ==============================================================
@@ -325,19 +362,44 @@ function doPlayerAttack() {
   // MP回復攻撃パッシブ（魔剣士 mk_06）が有効かチェック
   const hasMpRecovery = (player.skillTreeNodes['makenshi'] || []).includes('mk_06');
 
+  // 暗殺者パッシブチェック
+  const assassinNodes = player.skillTreeNodes['assassin'] || [];
+  const hasDefPierce  = player.currentJob === 'assassin' && assassinNodes.includes('as_08');
+  const hasCrit70     = player.currentJob === 'assassin' && assassinNodes.includes('as_11');
+  const hasCrit50     = player.currentJob === 'assassin' && assassinNodes.includes('as_06');
+  // 超会心（as_11）が有効なら70%、会心強化（as_06）なら50%
+  const critChance    = hasCrit70 ? 0.70 : (hasCrit50 ? 0.50 : 0);
+  const isCrit        = critChance > 0 && Math.random() < critChance;
+
   if (hasMpRecovery) {
     // 通常攻撃の0.6倍ダメージ・MP +30 回復（maxMp を超えない）
     const rawDmg = player.calcAttackDamage(enemy);
     const dmg    = Math.max(1, Math.floor(rawDmg * 0.6));
     enemy.takeDamage(dmg);
+    game.turnDamageDealt += dmg;
     const mpBefore = player.mp;
     player.mp = Math.min(player.maxMp, player.mp + 30);
     const mpGained = player.mp - mpBefore;
     log(`⚔✨ ${player.name} の「MP回復攻撃」！ → ${enemy.name} に ${dmg} ダメージ！MP +${mpGained} 回復！`, 'player-action');
     renderPlayerStatus();
+  } else if (isCrit) {
+    // 暗殺者会心: 防御完全無視の会心攻撃
+    const raw = Math.floor(player.effectiveAttack * 1.5);
+    const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 2)), 'deal');
+    enemy.takeDamage(dmg);
+    game.turnDamageDealt += dmg;
+    log(`💥 ${player.name} の会心攻撃！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
+  } else if (hasDefPierce) {
+    // 防御貫通（as_08）: 通常攻撃が防御を無視する
+    const raw = Math.floor(player.effectiveAttack);
+    const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 2)), 'deal');
+    enemy.takeDamage(dmg);
+    game.turnDamageDealt += dmg;
+    log(`🗡 ${player.name} の防御貫通攻撃！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
   } else {
     const dmg = player.calcAttackDamage(enemy);
     enemy.takeDamage(dmg);
+    game.turnDamageDealt += dmg;
     log(`▶ ${player.name} の攻撃！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
   }
 
@@ -358,8 +420,28 @@ function doPlayerFlee() {
   }
 }
 
+/** 賢者パッシブ: このターンの与ダメージの一部をHP回復する */
+function applySageLifeDrain() {
+  const player = game.player;
+  if (player.currentJob !== 'sage') return;
+  if (game.turnDamageDealt <= 0) return;
+  const nodes = player.skillTreeNodes['sage'] || [];
+  let drainRate = 0;
+  if (nodes.includes('sg_06')) drainRate += 0.20; // 吸魔: 20%
+  if (nodes.includes('sg_12')) drainRate += 0.10; // 高等吸魔: +10%（合計30%）
+  if (drainRate <= 0) return;
+  const healAmt = Math.max(1, Math.floor(game.turnDamageDealt * drainRate));
+  player.heal(healAmt);
+  log(`💚 吸魔：与えたダメージから HP +${healAmt} 回収！`, 'player-action');
+  renderPlayerStatus();
+}
+
 /** プレイヤーのターン終了後の処理 */
 function afterPlayerTurn() {
+  // 賢者パッシブ: 与ダメージの一部をHP回復する
+  applySageLifeDrain();
+  game.turnDamageDealt = 0;
+
   // 魔力凝縮の状態を進める
   // justSet=true: 発動したばかりのターン → 次のターンに持ち越すため false に変更するだけ
   // justSet=false: 凝縮中に行動した → 消費して解除する
@@ -490,6 +572,18 @@ function doEnemyTurn() {
   const actualDmg = game.player.takeDamage(rawDmg);
   log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
   renderPlayerStatus();
+
+  // 聖騎士パッシブ: 被攻撃時30%でカウンター攻撃
+  if (game.player.currentJob === 'paladin' &&
+      (game.player.skillTreeNodes['paladin'] || []).includes('pl_15') &&
+      game.player.isAlive()) {
+    if (Math.random() < 0.30) {
+      const counterDmg = Math.max(1, Math.floor(game.player.attack * 0.8));
+      game.enemy.takeDamage(counterDmg);
+      log(`🛡 「反撃の構え」発動！カウンター攻撃で ${game.enemy.name} に ${counterDmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+    }
+  }
 
   if (!game.player.isAlive()) {
     endBattle('lose');
@@ -694,6 +788,7 @@ function initGame() {
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
   game.playerDelayedHeal = null;
+  game.turnDamageDealt   = 0;
 
   // メンテナンスモードチェック
   if (MAINTENANCE.enabled) {

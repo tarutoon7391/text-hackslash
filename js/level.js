@@ -878,6 +878,122 @@ const SKILL_TREE_DEFINITIONS = [
       },
     ],
   },
+  {
+    id: 'paladin',
+    name: '聖騎士',
+    description: '僧侶×戦士の上位ルート。被ダメージ軽減・自己回復・カウンターを備えた耐久型職業。全4ルートMAX＋聖騎士の書で解放。',
+    nodes: [
+      { id: 'pl_01', name: '聖盾の心得', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 1, requires: null },
+      { id: 'pl_02', name: '聖なる体力', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: 'pl_01' },
+      { id: 'pl_03', name: '守護の誓い', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 1, requires: 'pl_02' },
+      { id: 'pl_04', name: '神の加護', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: 'pl_03' },
+      { id: 'pl_05', name: '聖騎士の誓約', type: 'stat', description: 'DEF +8 / HP +15', bonuses: { def: 8, hp: 15 }, cost: 1, requires: 'pl_04' },
+      { id: 'pl_06', name: '聖盾', type: 'passive', description: 'パッシブ：被ダメージを10%軽減する', bonuses: {}, cost: 2, requires: 'pl_05' },
+      { id: 'pl_07', name: '聖剣の道', type: 'stat', description: 'ATK +5', bonuses: { atk: 5 }, cost: 2, requires: 'pl_06' },
+      { id: 'pl_08', name: '神聖な壁', type: 'stat', description: 'DEF +8 / HP +20', bonuses: { def: 8, hp: 20 }, cost: 2, requires: 'pl_07' },
+      { id: 'pl_09', name: '聖癒', type: 'skill', skillId: 'paladin_heal', description: '聖なる力でHPを回復（HP+50+Lv×3 / MP:20）', mpCost: 20, bonuses: {}, cost: 2, requires: 'pl_08' },
+      { id: 'pl_10', name: '神聖強化', type: 'stat', description: 'ATK +5 / DEF +5', bonuses: { atk: 5, def: 5 }, cost: 2, requires: 'pl_09' },
+      { id: 'pl_11', name: '聖騎士の鎧', type: 'stat', description: 'DEF +12 / HP +30', bonuses: { def: 12, hp: 30 }, cost: 3, requires: 'pl_10' },
+      { id: 'pl_12', name: '神聖防壁', type: 'passive', description: 'パッシブ：被ダメージをさらに20%軽減する（聖盾と合計30%軽減）', bonuses: {}, cost: 3, requires: 'pl_11' },
+      { id: 'pl_13', name: '聖剣強化', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 3, requires: 'pl_12' },
+      { id: 'pl_14', name: '神聖回復', type: 'skill', skillId: 'paladin_big_heal', description: '強力な聖癒でHPを大回復（HP+80+Lv×4 / MP:30）', mpCost: 30, bonuses: {}, cost: 3, requires: 'pl_13' },
+      { id: 'pl_15', name: '反撃の構え', type: 'passive', description: 'パッシブ：被攻撃時30%の確率でカウンター攻撃を行う', bonuses: {}, cost: 3, requires: 'pl_14' },
+      { id: 'pl_16', name: '聖域の覚醒', type: 'stat', description: 'ATK +8 / DEF +10', bonuses: { atk: 8, def: 10 }, cost: 2, requires: 'pl_15' },
+      { id: 'pl_17', name: '神盾突き', type: 'skill', skillId: 'shield_bash', description: '盾で強打しDEFバフを張る（ATK×1.8 / MP:20 / DEF+60 2ターン）', mpCost: 20, bonuses: {}, cost: 2, requires: 'pl_16' },
+      { id: 'pl_18', name: '聖騎士の覚醒', type: 'stat', description: 'ATK +10 / DEF +15 / HP +30', bonuses: { atk: 10, def: 15, hp: 30 }, cost: 2, requires: 'pl_17' },
+      { id: 'pl_19', name: '聖光斬り', type: 'skill', skillId: 'holy_slash', description: '聖なる光の斬撃（ATK×2.0 / MP:25 / 自己HP+50+Lv×3回復）', mpCost: 25, bonuses: {}, cost: 2, requires: 'pl_18' },
+      { id: 'pl_20', name: '神聖なる守護', type: 'stat', description: 'DEF +15 / HP +40', bonuses: { def: 15, hp: 40 }, cost: 3, requires: 'pl_19' },
+      { id: 'pl_21', name: '聖騎士の至高', type: 'stat', description: 'ATK +12 / DEF +20 / HP +50', bonuses: { atk: 12, def: 20, hp: 50 }, cost: 3, requires: 'pl_20' },
+      { id: 'pl_22', name: '神聖無双', type: 'skill', skillId: 'divine_judgment', description: '神聖なる審判（ATK×3.5 / MP:55 / 自己HP大回復+DEF+100 3ターン）', mpCost: 55, bonuses: {}, cost: 3, requires: 'pl_21' },
+    ],
+  },
+  {
+    id: 'assassin',
+    name: '暗殺者',
+    description: '剣士×戦士の上位ルート。HP・防御力が半減する代わりに会心率・防御無視特化の超攻撃型職業。全4ルートMAX＋暗殺者の書で解放。',
+    nodes: [
+      { id: 'as_01', name: '暗殺者の刻印', type: 'passive', description: 'パッシブ（取得必須）：HP最大値・防御力が装備込み最終値の50%になる', bonuses: {}, cost: 1, requires: null },
+      { id: 'as_02', name: '影の心得', type: 'stat', description: 'ATK +5', bonuses: { atk: 5 }, cost: 1, requires: 'as_01' },
+      { id: 'as_03', name: '急所の見切り', type: 'stat', description: 'ATK +5', bonuses: { atk: 5 }, cost: 1, requires: 'as_02' },
+      { id: 'as_04', name: '影の速さ', type: 'stat', description: 'ATK +6', bonuses: { atk: 6 }, cost: 1, requires: 'as_03' },
+      { id: 'as_05', name: '暗殺の技', type: 'stat', description: 'ATK +6', bonuses: { atk: 6 }, cost: 1, requires: 'as_04' },
+      { id: 'as_06', name: '会心強化', type: 'passive', description: 'パッシブ：会心率を大幅に上昇させる（攻撃時50%で会心・防御無視）', bonuses: {}, cost: 2, requires: 'as_05' },
+      { id: 'as_07', name: '刃の磨き', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 2, requires: 'as_06' },
+      { id: 'as_08', name: '防御貫通', type: 'passive', description: 'パッシブ：通常攻撃が常に防御を無視する', bonuses: {}, cost: 2, requires: 'as_07' },
+      { id: 'as_09', name: '四連撃', type: 'skill', skillId: 'quad_slash', description: '4回連続攻撃（各ATK×0.9 防御無視 / MP:20）', mpCost: 20, bonuses: {}, cost: 2, requires: 'as_08' },
+      { id: 'as_10', name: '暗殺者の牙', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 2, requires: 'as_09' },
+      { id: 'as_11', name: '超会心', type: 'passive', description: 'パッシブ：会心率をさらに上昇（攻撃時70%で会心・防御無視）', bonuses: {}, cost: 3, requires: 'as_10' },
+      { id: 'as_12', name: '影忍び', type: 'skill', skillId: 'shadow_stab', description: '防御を完全に無視する一撃（ATK×3.0 防御完全無視 / MP:30）', mpCost: 30, bonuses: {}, cost: 3, requires: 'as_11' },
+      { id: 'as_13', name: '死の刃', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 3, requires: 'as_12' },
+      { id: 'as_14', name: '五連撃', type: 'skill', skillId: 'penta_slash', description: '5回連続攻撃（各ATK×1.0 防御無視 / MP:25）', mpCost: 25, bonuses: {}, cost: 3, requires: 'as_13' },
+      { id: 'as_15', name: '必殺刃', type: 'skill', skillId: 'killing_edge', description: '一撃必殺の超高火力（ATK×6.0 防御完全無視 / MP:50）', mpCost: 50, bonuses: {}, cost: 3, requires: 'as_14' },
+      { id: 'as_16', name: '暗殺者の極意', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'as_15' },
+      { id: 'as_17', name: '影乱れ斬り', type: 'skill', skillId: 'shadow_flurry', description: '4連撃（ATK×1.5 防御完全無視 各ヒット / MP:45）', mpCost: 45, bonuses: {}, cost: 2, requires: 'as_16' },
+      { id: 'as_18', name: '暗殺者の真髄', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'as_17' },
+      { id: 'as_19', name: '死神の一撃', type: 'skill', skillId: 'death_reaper', description: '死神の鎌（ATK×8.0 防御完全無視 / MP:60）', mpCost: 60, bonuses: {}, cost: 2, requires: 'as_18' },
+      { id: 'as_20', name: '究極の暗殺', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'as_19' },
+      { id: 'as_21', name: '影の覚醒', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'as_20' },
+      { id: 'as_22', name: '奈落落とし', type: 'skill', skillId: 'abyss_drop', description: '奈落へ叩き落とす（ATK×12.0 防御完全無視 / MP:80）', mpCost: 80, bonuses: {}, cost: 3, requires: 'as_21' },
+    ],
+  },
+  {
+    id: 'sage',
+    name: '賢者',
+    description: '魔法×僧侶の上位ルート。攻撃魔法と回復を兼ね備えた万能型。与ダメージの一部をHP回復するパッシブが強力。全4ルートMAX＋賢者の書で解放。',
+    nodes: [
+      { id: 'sg_01', name: '賢者の素養', type: 'stat', description: 'ATK +3 / MP +5', bonuses: { atk: 3, mp: 5 }, cost: 1, requires: null },
+      { id: 'sg_02', name: '知識の蓄積', type: 'stat', description: 'ATK +3 / MP +8', bonuses: { atk: 3, mp: 8 }, cost: 1, requires: 'sg_01' },
+      { id: 'sg_03', name: '魔力の体現', type: 'stat', description: 'ATK +4 / MP +5', bonuses: { atk: 4, mp: 5 }, cost: 1, requires: 'sg_02' },
+      { id: 'sg_04', name: '治癒の流れ', type: 'stat', description: 'HP +15 / MP +8', bonuses: { hp: 15, mp: 8 }, cost: 1, requires: 'sg_03' },
+      { id: 'sg_05', name: '賢者の慧眼', type: 'stat', description: 'ATK +4 / DEF +3', bonuses: { atk: 4, def: 3 }, cost: 1, requires: 'sg_04' },
+      { id: 'sg_06', name: '吸魔', type: 'passive', description: 'パッシブ：攻撃ダメージの20%をHPとして回収する', bonuses: {}, cost: 2, requires: 'sg_05' },
+      { id: 'sg_07', name: '魔力強化', type: 'stat', description: 'ATK +6 / MP +10', bonuses: { atk: 6, mp: 10 }, cost: 2, requires: 'sg_06' },
+      { id: 'sg_08', name: '属性魔法', type: 'skill', skillId: 'sage_blast', description: '攻撃しながら自己回復（ATK×1.8 / HP+30+Lv×2回復 / MP:30）', mpCost: 30, bonuses: {}, cost: 2, requires: 'sg_07' },
+      { id: 'sg_09', name: '弱体魔法', type: 'skill', skillId: 'sage_debuff', description: '敵ATKを大幅低下（3ターン ATK×0.45 / MP:18）', mpCost: 18, bonuses: {}, cost: 2, requires: 'sg_08' },
+      { id: 'sg_10', name: '知恵の光', type: 'stat', description: 'ATK +6 / HP +20 / MP +10', bonuses: { atk: 6, hp: 20, mp: 10 }, cost: 2, requires: 'sg_09' },
+      { id: 'sg_11', name: '強化魔法', type: 'skill', skillId: 'sage_buff', description: '自己ATK・DEFを大幅強化（ATK+45 / DEF+25 / 5ターン / MP:22）', mpCost: 22, bonuses: {}, cost: 3, requires: 'sg_10' },
+      { id: 'sg_12', name: '高等吸魔', type: 'passive', description: 'パッシブ：吸魔効果がさらに強化（与ダメの30%をHP回収・合計）', bonuses: {}, cost: 3, requires: 'sg_11' },
+      { id: 'sg_13', name: '賢者の技', type: 'stat', description: 'ATK +8 / MP +15', bonuses: { atk: 8, mp: 15 }, cost: 3, requires: 'sg_12' },
+      { id: 'sg_14', name: '聖魔融合', type: 'skill', skillId: 'holy_magic_fusion', description: '攻撃と回復を同時に行う（ATK×2.5 / HP+70+Lv×4回復 / MP:40）', mpCost: 40, bonuses: {}, cost: 3, requires: 'sg_13' },
+      { id: 'sg_15', name: '魔力崩壊', type: 'skill', skillId: 'magic_collapse', description: '敵を弱体化しつつ攻撃（ATK×1.5 / 3ターン ATK×0.40デバフ / MP:35）', mpCost: 35, bonuses: {}, cost: 3, requires: 'sg_14' },
+      { id: 'sg_16', name: '賢者の極意', type: 'stat', description: 'ATK +10 / MP +20', bonuses: { atk: 10, mp: 20 }, cost: 2, requires: 'sg_15' },
+      { id: 'sg_17', name: '賢者の覚醒', type: 'stat', description: 'ATK +10 / HP +30 / MP +15', bonuses: { atk: 10, hp: 30, mp: 15 }, cost: 2, requires: 'sg_16' },
+      { id: 'sg_18', name: '知恵の波動', type: 'skill', skillId: 'wisdom_wave', description: '攻撃と大回復（ATK×3.5 / HP+100+Lv×5回復 / MP:55）', mpCost: 55, bonuses: {}, cost: 2, requires: 'sg_17' },
+      { id: 'sg_19', name: '全体強化', type: 'skill', skillId: 'sage_mega_buff', description: '強力な自己バフ（ATK+50 / DEF+40 / 5ターン / MP:40）', mpCost: 40, bonuses: {}, cost: 2, requires: 'sg_18' },
+      { id: 'sg_20', name: '究極吸魔', type: 'stat', description: 'ATK +12 / HP +30 / MP +20', bonuses: { atk: 12, hp: 30, mp: 20 }, cost: 3, requires: 'sg_19' },
+      { id: 'sg_21', name: '賢者の真髄', type: 'stat', description: 'ATK +15 / MP +25', bonuses: { atk: 15, mp: 25 }, cost: 3, requires: 'sg_20' },
+      { id: 'sg_22', name: '絶対魔法', type: 'skill', skillId: 'absolute_magic', description: '究極魔法（ATK×7.0 / 与えたダメージの50%HP回復 / MP:100）', mpCost: 100, bonuses: {}, cost: 3, requires: 'sg_21' },
+    ],
+  },
+  {
+    id: 'berserker',
+    name: '狂戦士',
+    description: '戦士×剣士の上位ルート。HP50%以下で攻撃力2倍、HP25%以下で4倍になる超ハイリスクハイリターン型。全4ルートMAX＋狂戦士の書で解放。',
+    nodes: [
+      { id: 'bk_01', name: '狂戦士の刻印', type: 'passive', description: 'パッシブ（取得必須）：HP50%以下で攻撃力2倍、HP25%以下で攻撃力4倍（装備ATK込み最終攻撃力に乗る）', bonuses: {}, cost: 1, requires: null },
+      { id: 'bk_02', name: '血の咆哮', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'bk_01' },
+      { id: 'bk_03', name: '怒りの力', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'bk_02' },
+      { id: 'bk_04', name: '破壊本能', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'bk_03' },
+      { id: 'bk_05', name: '狂乱の目', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'bk_04' },
+      { id: 'bk_06', name: '血の代償', type: 'skill', skillId: 'blood_price', description: 'HP30を消費して強烈な一撃（ATK×2.5 防御無視 / MP:10 / HP:30消費）', mpCost: 10, bonuses: {}, cost: 2, requires: 'bk_05' },
+      { id: 'bk_07', name: '獣化', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 2, requires: 'bk_06' },
+      { id: 'bk_08', name: '血の嵐', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 2, requires: 'bk_07' },
+      { id: 'bk_09', name: '狂乱突き', type: 'skill', skillId: 'berserk_stab', description: '狂乱の突き（ATK×2.0 / MP:15）', mpCost: 15, bonuses: {}, cost: 2, requires: 'bk_08' },
+      { id: 'bk_10', name: '怒りの炎', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'bk_09' },
+      { id: 'bk_11', name: '狂戦士の鼓動', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 3, requires: 'bk_10' },
+      { id: 'bk_12', name: '自傷攻撃', type: 'skill', skillId: 'self_harm_strike', description: '最大HPの20%を消費して強烈な一撃（ATK×3.5 防御完全無視 / MP:20）', mpCost: 20, bonuses: {}, cost: 3, requires: 'bk_11' },
+      { id: 'bk_13', name: '血の一撃', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 3, requires: 'bk_12' },
+      { id: 'bk_14', name: '絶命の刃', type: 'skill', skillId: 'lethal_blade', description: '致命の一撃（ATK×4.0 / MP:30）', mpCost: 30, bonuses: {}, cost: 3, requires: 'bk_13' },
+      { id: 'bk_15', name: '死力の境地', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'bk_14' },
+      { id: 'bk_16', name: '狂乱の極意', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 2, requires: 'bk_15' },
+      { id: 'bk_17', name: '血の蹂躙', type: 'skill', skillId: 'blood_rampage', description: '血に狂った2連撃（ATK×3.0×2 / MP:25）', mpCost: 25, bonuses: {}, cost: 2, requires: 'bk_16' },
+      { id: 'bk_18', name: '狂戦士の真髄', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 2, requires: 'bk_17' },
+      { id: 'bk_19', name: '怒りの暴走', type: 'skill', skillId: 'berserk_rampage', description: '最大HPの30%を消費して大爆発（ATK×6.0 防御完全無視 / MP:30）', mpCost: 30, bonuses: {}, cost: 2, requires: 'bk_18' },
+      { id: 'bk_20', name: '終末の力', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 3, requires: 'bk_19' },
+      { id: 'bk_21', name: '狂神の覚醒', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 3, requires: 'bk_20' },
+      { id: 'bk_22', name: '絶滅の一撃', type: 'skill', skillId: 'annihilation_strike', description: '最大HPの50%を消費して究極爆発（ATK×12.0 防御完全無視 / MP:50）', mpCost: 50, bonuses: {}, cost: 3, requires: 'bk_21' },
+    ],
+  },
 ];
 
 /**
@@ -959,6 +1075,156 @@ function unlockMakenshiRoute() {
   // 画面再描画
   renderSkillTree();
   renderLobbyStatus();
+
+  // 自動セーブ
+  autoSave();
+}
+
+/**
+ * 新規4職業の共通解放前提条件を確認する（全4基本ルートMAX済み）
+ * @returns {boolean}
+ */
+function isJobBasePrerequisiteMet() {
+  const baseRoutes = ['swordsman', 'mage', 'cleric', 'warrior'];
+  for (const routeId of baseRoutes) {
+    const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
+    if (!route) return false;
+    const acquired = game.player.skillTreeNodes[routeId] || [];
+    if (acquired.length < route.nodes.length) return false;
+  }
+  return true;
+}
+
+/**
+ * 指定職業のアンロック済みフラグ名を返す
+ */
+function getJobUnlockFlag(jobId) {
+  return `${jobId}RouteUnlocked`;
+}
+
+/**
+ * 指定職業が解放済みかを判定する
+ */
+function isJobUnlocked(jobId) {
+  return !!game.player.permanentItems[getJobUnlockFlag(jobId)];
+}
+
+/**
+ * 指定職業の書フラグ名を返す
+ */
+function getJobBookFlag(jobId) {
+  const map = {
+    paladin:    'hasBookPaladin',
+    assassin:   'hasBookAssassin',
+    sage:       'hasBookSage',
+    berserker:  'hasBookBerserker',
+  };
+  return map[jobId];
+}
+
+/**
+ * 指定職業の解放前提条件（全4ルートMAX＋対応する書）を確認する
+ */
+function isJobPrerequisiteMet(jobId) {
+  if (!isJobBasePrerequisiteMet()) return false;
+  const bookFlag = getJobBookFlag(jobId);
+  if (!bookFlag) return false;
+  return !!game.player.permanentItems[bookFlag];
+}
+
+/**
+ * 現在の職業スキルツリーをリセットし使用済みSPを返還する
+ * @param {string} jobId - リセットするジョブID
+ */
+function resetJobSkillTree(jobId) {
+  const p = game.player;
+  const route = SKILL_TREE_DEFINITIONS.find(r => r.id === jobId);
+  if (!route) return;
+
+  const acquired = p.skillTreeNodes[jobId] || [];
+  if (acquired.length === 0) return;
+
+  // SP返還
+  let spRefund = 0;
+  acquired.forEach(nodeId => {
+    const node = route.nodes.find(n => n.id === nodeId);
+    if (node) spRefund += node.cost;
+  });
+
+  // スキルを learnedSkills から削除
+  const jobSkillIds = route.nodes
+    .filter(n => n.type === 'skill' && n.skillId)
+    .map(n => n.skillId);
+  p.learnedSkills = p.learnedSkills.filter(s => !jobSkillIds.includes(s));
+  // お気に入りからも削除
+  p.favoriteSkills = p.favoriteSkills.filter(s => !jobSkillIds.includes(s));
+
+  // ノードをクリア
+  p.skillTreeNodes[jobId] = [];
+
+  // SP返還
+  p.skillPoints += spRefund;
+
+  return spRefund;
+}
+
+/**
+ * 新規職業をアンロックする共通処理
+ * @param {string} jobId - アンロックするジョブID
+ */
+function unlockJobRoute(jobId) {
+  const p = game.player;
+  const SKILL_STONE_NAME = 'スキルストーン';
+  const stoneCount = p.materials[SKILL_STONE_NAME] || 0;
+
+  if (stoneCount < 1) {
+    alert('スキルストーンが足りません！');
+    return;
+  }
+
+  const jobNames = { paladin: '聖騎士', assassin: '暗殺者', sage: '賢者', berserker: '狂戦士' };
+  const jobName = jobNames[jobId] || jobId;
+  const bookFlag = getJobBookFlag(jobId);
+  const unlockFlag = getJobUnlockFlag(jobId);
+
+  if (!confirm(`スキルストーンを1つ消費して${jobName}ルートをアンロックしますか？`)) {
+    return;
+  }
+
+  // 現在の職業がある場合はリセット
+  const currentJob = p.currentJob;
+  if (currentJob && currentJob !== jobId) {
+    const oldSpRefund = resetJobSkillTree(currentJob);
+    if (oldSpRefund > 0) {
+      log(`🔄 ${currentJob}ルートをリセットしました。SP +${oldSpRefund} 返還。`, 'system');
+    }
+  }
+
+  // スキルストーンを1消費
+  p.materials[SKILL_STONE_NAME] -= 1;
+  if (p.materials[SKILL_STONE_NAME] <= 0) {
+    delete p.materials[SKILL_STONE_NAME];
+  }
+
+  // 書が未消費の場合は消費してフラグを立てる
+  if (bookFlag && p.permanentItems[bookFlag] && !p.usedBooks[bookFlag]) {
+    p.usedBooks[bookFlag] = true;
+  }
+
+  // 職業アンロックフラグを立てる
+  p.permanentItems[unlockFlag] = true;
+
+  // 現在の職業を設定
+  p.currentJob = jobId;
+
+  // ステータス再計算
+  p.recalcStats();
+
+  // 画面再描画
+  renderSkillTree();
+  renderLobbyStatus();
+
+  alert(`✨ ${jobName}ルートが解放されました！`);
 
   // 自動セーブ
   autoSave();
@@ -1090,6 +1356,21 @@ function renderSkillTree() {
     makenshiTabBtn.classList.toggle('tab-locked', !makenshiUnlocked);
   }
 
+  // 4職業タブのロック/解放状態を更新する
+  const jobTabConfig = [
+    { id: 'paladin',   icon: '⚔',  label: '聖騎士' },
+    { id: 'assassin',  icon: '🗡',  label: '暗殺者' },
+    { id: 'sage',      icon: '📖', label: '賢者'   },
+    { id: 'berserker', icon: '💢', label: '狂戦士' },
+  ];
+  jobTabConfig.forEach(({ id, icon, label }) => {
+    const btn = document.getElementById(`st-tab-${id}`);
+    if (!btn) return;
+    const unlocked = isJobUnlocked(id);
+    btn.textContent = unlocked ? `${icon} ${label}` : `🔒 ${label}`;
+    btn.classList.toggle('tab-locked', !unlocked);
+  });
+
   // 現在のルートを取得
   const route = SKILL_TREE_DEFINITIONS.find(r => r.id === skillTreeCurrentRoute);
   if (!route) return;
@@ -1128,6 +1409,51 @@ function renderSkillTree() {
             <ul class="st-locked-list">
               <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
               <li>「魔剣士の書」を入手済み（ガチャで入手可能）</li>
+            </ul>
+          </div>`;
+      }
+    }
+    return;
+  }
+
+  // 4職業のロック表示
+  const newJobs = ['paladin', 'assassin', 'sage', 'berserker'];
+  const jobNames4 = { paladin: '聖騎士', assassin: '暗殺者', sage: '賢者', berserker: '狂戦士' };
+  const jobBookNames = { paladin: '聖騎士の書', assassin: '暗殺者の書', sage: '賢者の書', berserker: '狂戦士の書' };
+  if (newJobs.includes(skillTreeCurrentRoute) && !isJobUnlocked(skillTreeCurrentRoute)) {
+    const jobId   = skillTreeCurrentRoute;
+    const jobName = jobNames4[jobId];
+    const bookName = jobBookNames[jobId];
+    const descEl2 = document.getElementById('st-route-desc');
+    if (descEl2) descEl2.textContent = '';
+    const nodeList2 = document.getElementById('st-node-list');
+    if (nodeList2) {
+      const prereqMet = isJobPrerequisiteMet(jobId);
+      const stoneCount = p.materials['スキルストーン'] || 0;
+      if (prereqMet) {
+        nodeList2.innerHTML = `
+          <div class="st-locked-msg">
+            <div class="st-locked-icon">🔓</div>
+            <div class="st-locked-title">${jobName}ルートを解放できます！</div>
+            <div class="st-locked-cond">解放条件：</div>
+            <ul class="st-locked-list">
+              <li>✅ 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+              <li>✅ 「${bookName}」を入手済み</li>
+            </ul>
+            <div class="st-locked-cond">スキルストーン所持数: ${stoneCount} 個</div>
+            <button class="st-unlock-btn" onclick="unlockJobRoute('${jobId}')" ${stoneCount < 1 ? 'disabled' : ''}>
+              🔓 アンロックする（スキルストーン×1消費）
+            </button>
+          </div>`;
+      } else {
+        nodeList2.innerHTML = `
+          <div class="st-locked-msg">
+            <div class="st-locked-icon">🔒</div>
+            <div class="st-locked-title">${jobName}ルートは未解放です</div>
+            <div class="st-locked-cond">解放条件：</div>
+            <ul class="st-locked-list">
+              <li>全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み</li>
+              <li>「${bookName}」を入手済み（ガチャで入手可能）</li>
             </ul>
           </div>`;
       }
@@ -1234,6 +1560,10 @@ function acquireSkillNode(routeId, nodeId) {
 
   // 魔剣士ルートは解放条件を満たしていないと取得不可
   if (routeId === 'makenshi' && !isMakenshiUnlocked()) return;
+
+  // 4職業ルートは解放済みかつ現在の職業であることが必要
+  const newJobRoutes = ['paladin', 'assassin', 'sage', 'berserker'];
+  if (newJobRoutes.includes(routeId) && !isJobUnlocked(routeId)) return;
 
   // 既に取得済みか確認
   if (!p.skillTreeNodes[routeId]) p.skillTreeNodes[routeId] = [];
@@ -1735,6 +2065,362 @@ function useSkill(skillId) {
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 10)), 'deal');
       enemy.takeDamage(dmg);
       log(`🌌⚡ ${player.name} は「絶界魔剣斬」を解放した！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── 聖騎士スキル ── */
+
+    case 'paladin_heal': {
+      // 聖癒: HP+50+Lv×3 回復
+      const healAmt = 50 + player.level * 3;
+      player.heal(healAmt);
+      log(`✨ ${player.name} は「聖癒」を唱えた！ HP +${healAmt} 回復！`, 'player-action');
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'paladin_big_heal': {
+      // 神聖回復: HP+80+Lv×4 大回復
+      const healAmt = 80 + player.level * 4;
+      player.heal(healAmt);
+      log(`💖 ${player.name} は「神聖回復」を唱えた！ HP +${healAmt} 大回復！`, 'player-action');
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'shield_bash': {
+      // 神盾突き: ATK×1.8 + DEF+60 バフ 2 ターン
+      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      game.shieldActive = { defenseBonus: 60, turnsLeft: 2 };
+      log(`🛡 ${player.name} は「神盾突き」を放った！ → ${enemy.name} に ${dmg} ダメージ！DEF +60（2ターン）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'holy_slash': {
+      // 聖光斬り: ATK×2.0 + 自己HP回復
+      const raw = Math.floor(player.effectiveAttack * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      const healAmt = 50 + player.level * 3;
+      player.heal(healAmt);
+      log(`⚔✨ ${player.name} は「聖光斬り」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
+      renderEnemyStatus();
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'divine_judgment': {
+      // 神聖無双: ATK×3.5 + 自己HP大回復 + DEF+100 バフ 3 ターン
+      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      const healAmt = 100 + player.level * 5;
+      player.heal(healAmt);
+      game.shieldActive = { defenseBonus: 100, turnsLeft: 3 };
+      log(`🌟 ${player.name} は「神聖無双」を解放した！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！DEF +100（3ターン）`, 'player-action');
+      renderEnemyStatus();
+      renderPlayerStatus();
+      break;
+    }
+
+    /* ── 暗殺者スキル ── */
+
+    case 'quad_slash': {
+      // 四連撃: 4回 ATK×0.9 防御無視
+      let totalDmg = 0;
+      const hits = [];
+      for (let i = 0; i < 4; i++) {
+        const raw = Math.floor(player.effectiveAttack * 0.9);
+        const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-1, 2)), 'deal');
+        enemy.takeDamage(dmg);
+        game.turnDamageDealt += dmg;
+        hits.push(dmg);
+        totalDmg += dmg;
+        if (!enemy.isAlive()) break;
+      }
+      log(`🗡 ${player.name} は「四連撃」を放った！ → ${hits.join('+')} = ${totalDmg} ダメージ！（防御無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'shadow_stab': {
+      // 影忍び: ATK×3.0 防御完全無視
+      const raw = Math.floor(player.effectiveAttack * 3.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`🌑 ${player.name} は「影忍び」を放った！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'penta_slash': {
+      // 五連撃: 5回 ATK×1.0 防御無視
+      let totalDmg = 0;
+      const hits = [];
+      for (let i = 0; i < 5; i++) {
+        const raw = Math.floor(player.effectiveAttack * 1.0);
+        const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-1, 3)), 'deal');
+        enemy.takeDamage(dmg);
+        game.turnDamageDealt += dmg;
+        hits.push(dmg);
+        totalDmg += dmg;
+        if (!enemy.isAlive()) break;
+      }
+      log(`🗡🗡 ${player.name} は「五連撃」を放った！ → ${hits.join('+')} = ${totalDmg} ダメージ！（防御無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'killing_edge': {
+      // 必殺刃: ATK×6.0 防御完全無視
+      const raw = Math.floor(player.effectiveAttack * 6.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 8)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💀 ${player.name} は「必殺刃」を放った！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'shadow_flurry': {
+      // 影乱れ斬り: 4連撃 各ATK×1.5 防御完全無視
+      let totalDmg = 0;
+      const hits = [];
+      for (let i = 0; i < 4; i++) {
+        const raw = Math.floor(player.effectiveAttack * 1.5);
+        const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
+        enemy.takeDamage(dmg);
+        game.turnDamageDealt += dmg;
+        hits.push(dmg);
+        totalDmg += dmg;
+        if (!enemy.isAlive()) break;
+      }
+      log(`🌑💨 ${player.name} は「影乱れ斬り」を放った！ → ${hits.join('+')} = ${totalDmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'death_reaper': {
+      // 死神の一撃: ATK×8.0 防御完全無視
+      const raw = Math.floor(player.effectiveAttack * 8.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-6, 10)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💀🌑 ${player.name} は「死神の一撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'abyss_drop': {
+      // 奈落落とし: ATK×12.0 防御完全無視
+      const raw = Math.floor(player.effectiveAttack * 12.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-8, 12)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`🕳 ${player.name} は「奈落落とし」を解放した！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── 賢者スキル ── */
+
+    case 'sage_blast': {
+      // 属性魔法: ATK×1.8 攻撃 + 自己HP回復
+      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      const healAmt = 30 + player.level * 2;
+      player.heal(healAmt);
+      log(`🔮 ${player.name} は「属性魔法」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
+      renderEnemyStatus();
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'sage_debuff': {
+      // 弱体魔法: 敵ATK大幅低下（3ターン × 0.45）
+      game.enemyAtkDebuff = { factor: 0.45, turnsLeft: 3 };
+      log(`📖 ${player.name} は「弱体魔法」を唱えた！ ${enemy.name} のATKが大幅低下！（3ターン）`, 'player-action');
+      break;
+    }
+
+    case 'sage_buff': {
+      // 強化魔法: ATK+45 / DEF+25 5ターン
+      game.playerAtkBuff = { bonus: 45, turnsLeft: 5 };
+      game.shieldActive  = { defenseBonus: 25, turnsLeft: 5 };
+      log(`📖✨ ${player.name} は「強化魔法」を唱えた！ 5ターン ATK +45 / DEF +25`, 'player-action');
+      break;
+    }
+
+    case 'holy_magic_fusion': {
+      // 聖魔融合: ATK×2.5 攻撃 + 自己HP回復
+      const raw = Math.floor(player.effectiveAttack * 2.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      const healAmt = 70 + player.level * 4;
+      player.heal(healAmt);
+      log(`⚔📖 ${player.name} は「聖魔融合」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
+      renderEnemyStatus();
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'magic_collapse': {
+      // 魔力崩壊: ATK×1.5 攻撃 + 敵ATK大幅デバフ
+      const raw = Math.floor(player.effectiveAttack * 1.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      game.enemyAtkDebuff = { factor: 0.40, turnsLeft: 3 };
+      log(`💥📖 ${player.name} は「魔力崩壊」を放った！ → ${enemy.name} に ${dmg} ダメージ！ATKが壊滅的に低下！（3ターン）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'wisdom_wave': {
+      // 知恵の波動: ATK×3.5 攻撃 + 自己HP大回復
+      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 6)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      const healAmt = 100 + player.level * 5;
+      player.heal(healAmt);
+      log(`🌊📖 ${player.name} は「知恵の波動」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
+      renderEnemyStatus();
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'sage_mega_buff': {
+      // 全体強化: ATK+50 / DEF+40 5ターン
+      game.playerAtkBuff = { bonus: 50, turnsLeft: 5 };
+      game.shieldActive  = { defenseBonus: 40, turnsLeft: 5 };
+      log(`📖🌟 ${player.name} は「全体強化」を唱えた！ 5ターン ATK +50 / DEF +40`, 'player-action');
+      break;
+    }
+
+    case 'absolute_magic': {
+      // 絶対魔法: ATK×7.0 + 与ダメージの50%HP回復
+      const raw = Math.floor(player.effectiveAttack * 7.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-6, 10)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      const healAmt = Math.max(1, Math.floor(dmg * 0.5));
+      player.heal(healAmt);
+      log(`🌌📖 ${player.name} は「絶対魔法」を解放した！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
+      renderEnemyStatus();
+      renderPlayerStatus();
+      break;
+    }
+
+    /* ── 狂戦士スキル ── */
+
+    case 'blood_price': {
+      // 血の代償: HP30消費 + ATK×2.5 防御無視
+      const hpCost = Math.min(30, player.hp - 1);
+      player.hp = Math.max(1, player.hp - hpCost);
+      log(`🩸 ${player.name} はHPを ${hpCost} 消費した！（残HP: ${player.hp}）`, 'player-action');
+      renderPlayerStatus();
+      const raw = Math.floor(player.effectiveAttack * 2.5);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💢 ${player.name} は「血の代償」を放った！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'berserk_stab': {
+      // 狂乱突き: ATK×2.0
+      const raw = Math.floor(player.effectiveAttack * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💢 ${player.name} は「狂乱突き」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'self_harm_strike': {
+      // 自傷攻撃: 最大HPの20%消費 + ATK×3.5 防御完全無視
+      const hpCost = Math.min(Math.floor(player.maxHp * 0.20), player.hp - 1);
+      player.hp = Math.max(1, player.hp - hpCost);
+      log(`🩸 ${player.name} はHPを ${hpCost} 消費した！（残HP: ${player.hp}）`, 'player-action');
+      renderPlayerStatus();
+      const raw = Math.floor(player.effectiveAttack * 3.5);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💢🩸 ${player.name} は「自傷攻撃」を放った！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'lethal_blade': {
+      // 絶命の刃: ATK×4.0
+      const raw = Math.floor(player.effectiveAttack * 4.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 7)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`⚔💀 ${player.name} は「絶命の刃」を放った！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'blood_rampage': {
+      // 血の蹂躙: ATK×3.0 × 2 連撃
+      const raw1 = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const dmg1 = applyEquipmentEffects(Math.max(1, raw1 + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(dmg1);
+      game.turnDamageDealt += dmg1;
+      let dmg2 = 0;
+      if (enemy.isAlive()) {
+        const raw2 = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        dmg2 = applyEquipmentEffects(Math.max(1, raw2 + randInt(-3, 5)), 'deal');
+        enemy.takeDamage(dmg2);
+        game.turnDamageDealt += dmg2;
+      }
+      log(`💢🩸 ${player.name} は「血の蹂躙」を放った！ → ${dmg1}+${dmg2} = ${dmg1 + dmg2} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'berserk_rampage': {
+      // 怒りの暴走: 最大HPの30%消費 + ATK×6.0 防御完全無視
+      const hpCost = Math.min(Math.floor(player.maxHp * 0.30), player.hp - 1);
+      player.hp = Math.max(1, player.hp - hpCost);
+      log(`🩸 ${player.name} はHPを ${hpCost} 消費した！（残HP: ${player.hp}）`, 'player-action');
+      renderPlayerStatus();
+      const raw = Math.floor(player.effectiveAttack * 6.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-5, 9)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💢🌋 ${player.name} は「怒りの暴走」を放った！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'annihilation_strike': {
+      // 絶滅の一撃: 最大HPの50%消費 + ATK×12.0 防御完全無視
+      const hpCost = Math.min(Math.floor(player.maxHp * 0.50), player.hp - 1);
+      player.hp = Math.max(1, player.hp - hpCost);
+      log(`🩸 ${player.name} はHPを ${hpCost} 消費した！（残HP: ${player.hp}）`, 'player-action');
+      renderPlayerStatus();
+      const raw = Math.floor(player.effectiveAttack * 12.0);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-8, 15)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`💀🌌 ${player.name} は「絶滅の一撃」を解放した！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
       renderEnemyStatus();
       break;
     }
