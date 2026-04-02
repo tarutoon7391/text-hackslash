@@ -2180,6 +2180,7 @@ function useSkill(skillId) {
       }
       // bonus = defense * 0.5 → 敵攻撃からの軽減はbase+bonus = defense*1.5 相当
       const bonus = Math.floor(player.defense * 0.5);
+      game.shieldActive.push({ defenseBonus: bonus, turnsLeft: 3, source: 'paladin_heal', name: '聖盾展開' });
       log(`✨ ${player.name} は「聖盾展開」を展開した！ 3 ターン DEF ×1.5（+${bonus}）`, 'player-action');
       break;
     }
@@ -2206,12 +2207,14 @@ function useSkill(skillId) {
         setButtonsEnabled(true);
         return;
       }
+      }
       const raw = Math.floor(player.effectiveAttack * 1.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
       // bonus = defense * 0.3 → 敵攻撃からの軽減はbase+bonus = defense*1.3 相当
       const bonus = Math.floor(player.defense * 0.3);
+      game.shieldActive.push({ defenseBonus: bonus, turnsLeft: 4, source: 'shield_bash', name: '神盾突き' });
       log(`🛡 ${player.name} は「神盾突き」を放った！ → ${enemy.name} に ${dmg} ダメージ！DEF ×1.3（+${bonus}、4ターン）`, 'player-action');
       renderEnemyStatus();
       break;
