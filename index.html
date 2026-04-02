@@ -102,6 +102,9 @@
 
     <div class="screen-panel">
       <h2 class="panel-title">[ DUNGEON TYPE ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
       <div id="dungeon-type-list">
         <!-- JS で動的に描画 -->
       </div>
@@ -119,6 +122,9 @@
 
     <div class="screen-panel">
       <h2 class="panel-title">[ DUNGEON SELECT ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('dungeon-type'); renderDungeonTypeSelect();">⬅ 戻る</button>
+      </div>
       <div id="dungeon-list">
         <!-- JS で動的に描画 -->
       </div>
@@ -136,6 +142,9 @@
 
     <div class="screen-panel">
       <h2 class="panel-title">[ SPECIAL DUNGEON ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('dungeon-type'); renderDungeonTypeSelect();">⬅ 戻る</button>
+      </div>
       <div id="special-dungeon-list">
         <!-- JS で動的に描画 -->
       </div>
@@ -153,6 +162,9 @@
 
     <div class="screen-panel">
       <h2 class="panel-title">[ TICKET DUNGEON ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('special-dungeon-select'); renderSpecialDungeonSelect();">⬅ 戻る</button>
+      </div>
       <p class="dungeon-description">🎫 ガチャチケットを獲得できる特殊ダンジョン！<br>
         全 30 体を討伐してクリアすると獲得チケットがインベントリに加算されます。<br>
         撤退・全滅時はその探索で獲得したチケットは没収されます。
@@ -173,6 +185,9 @@
   <div id="screen-xp-dungeon-difficulty" class="screen" style="display:none">
     <div class="screen-panel">
       <h2 class="panel-title">[ XP DUNGEON ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('special-dungeon-select'); renderSpecialDungeonSelect();">⬅ 戻る</button>
+      </div>
       <p class="dungeon-description">✨ 経験値特化のダンジョン！エメラルド系モンスターが出現。<br>
         全 30 体を討伐してクリアすると獲得EXPがキャラクターに反映されます。<br>
         撤退・全滅時はその探索で獲得したEXPは没収されます。<br>
@@ -194,6 +209,9 @@
   <div id="screen-raremon-dungeon-select" class="screen" style="display:none">
     <div class="screen-panel">
       <h2 class="panel-title">[ RARE MONSTER DUNGEON ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('special-dungeon-select'); renderSpecialDungeonSelect();">⬅ 戻る</button>
+      </div>
       <p class="dungeon-description">💎 対応ダンジョンのレアモン・ボスが出現する素材収集特化ダンジョン！<br>
         全 30 体を討伐してクリアすると獲得素材がインベントリに追加されます。<br>
         撤退・全滅時はその探索で獲得した素材は没収されます。<br>
@@ -215,6 +233,9 @@
   <div id="screen-skill-dungeon-difficulty" class="screen" style="display:none">
     <div class="screen-panel">
       <h2 class="panel-title">[ SKILL DUNGEON ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('special-dungeon-select'); renderSpecialDungeonSelect();">⬅ 戻る</button>
+      </div>
       <p class="dungeon-description">🎓 スキルストーンを入手できるダンジョン！<br>
         全 30 体を討伐してクリアするとスキルストーンがインベントリに追加されます。<br>
         撤退・全滅時はその探索で獲得したスキルストーンは没収されます。<br>
@@ -305,50 +326,89 @@
 
       <!-- 所持素材 -->
       <div class="inv-section">
-        <h3 class="inv-section-title">📦 所持素材</h3>
-        <div id="materials-list" class="materials-grid"></div>
+        <h3 class="inv-section-title">
+          <button class="inv-toggle-btn" onclick="toggleInventorySection('section-materials')" data-section="section-materials">▼</button>
+          📦 所持素材
+        </h3>
+        <div id="section-materials" class="inv-section-body">
+          <div id="materials-tab-bar" class="mat-tabs"></div>
+          <div id="materials-list" class="materials-grid"></div>
+        </div>
       </div>
 
       <!-- 装備中一覧 -->
       <div class="inv-section">
-        <h3 class="inv-section-title">🛡 現在の装備</h3>
-        <div id="equipped-list"></div>
+        <h3 class="inv-section-title">
+          <button class="inv-toggle-btn" onclick="toggleInventorySection('section-equipped')" data-section="section-equipped">▼</button>
+          🛡 現在の装備
+        </h3>
+        <div id="section-equipped" class="inv-section-body">
+          <div id="equipped-list"></div>
+        </div>
       </div>
 
       <!-- クラフト / 装備リスト -->
       <div class="inv-section">
-        <h3 class="inv-section-title">🔨 クラフト・装備一覧</h3>
+        <h3 class="inv-section-title">
+          <button class="inv-toggle-btn" onclick="toggleInventorySection('section-craft')" data-section="section-craft">▼</button>
+          🔨 クラフト・装備一覧
+        </h3>
+        <div id="section-craft" class="inv-section-body">
 
-        <!-- 絞り込みタブ（部位） -->
-        <div class="craft-filter-group">
-          <span class="craft-filter-label">部位：</span>
-          <div class="craft-filter-tabs" id="craft-slot-tabs">
-            <button class="craft-filter-btn active" data-filter="all"       onclick="setCraftSlotFilter('all')">すべて</button>
-            <button class="craft-filter-btn"         data-filter="頭"        onclick="setCraftSlotFilter('頭')">頭</button>
-            <button class="craft-filter-btn"         data-filter="胴"        onclick="setCraftSlotFilter('胴')">胴</button>
-            <button class="craft-filter-btn"         data-filter="足"        onclick="setCraftSlotFilter('足')">足</button>
-            <button class="craft-filter-btn"         data-filter="靴"        onclick="setCraftSlotFilter('靴')">靴</button>
-            <button class="craft-filter-btn"         data-filter="アクセサリー" onclick="setCraftSlotFilter('アクセサリー')">アクセサリー</button>
-            <button class="craft-filter-btn"         data-filter="武器"      onclick="setCraftSlotFilter('武器')">武器</button>
+          <!-- 所有状態フィルタ + 性能順ソート -->
+          <div class="craft-filter-group">
+            <span class="craft-filter-label">所有：</span>
+            <div class="craft-filter-tabs" id="craft-ownership-tabs">
+              <button class="craft-filter-btn active" data-filter="all"       onclick="setCraftOwnershipFilter('all')">すべて</button>
+              <button class="craft-filter-btn"         data-filter="owned"     onclick="setCraftOwnershipFilter('owned')">所有済み</button>
+              <button class="craft-filter-btn"         data-filter="unowned"   onclick="setCraftOwnershipFilter('unowned')">未所有</button>
+              <button class="craft-filter-btn"         data-filter="craftable" onclick="setCraftOwnershipFilter('craftable')">作成可能</button>
+            </div>
+            <button class="craft-filter-btn" id="craft-sort-stats-btn" onclick="toggleCraftSortByStats()">性能順</button>
           </div>
-        </div>
 
-        <!-- 絞り込みタブ（レア度） -->
-        <div class="craft-filter-group">
-          <span class="craft-filter-label">レア度：</span>
-          <div class="craft-filter-tabs" id="craft-rarity-tabs">
-            <button class="craft-filter-btn active" data-filter="all"      onclick="setCraftRarityFilter('all')">すべて</button>
-            <button class="craft-filter-btn"         data-filter="normal"   onclick="setCraftRarityFilter('normal')">ノーマル</button>
-            <button class="craft-filter-btn"         data-filter="rare"     onclick="setCraftRarityFilter('rare')">レア</button>
-            <button class="craft-filter-btn"         data-filter="bossRare" onclick="setCraftRarityFilter('bossRare')">ボスレア</button>
-            <button class="craft-filter-btn"         data-filter="end"      onclick="setCraftRarityFilter('end')">エンド</button>
-            <button class="craft-filter-btn"         data-filter="legend"   onclick="setCraftRarityFilter('legend')">レジェンド</button>
-            <button class="craft-filter-btn"         data-filter="charm"    onclick="setCraftRarityFilter('charm')">チャーム</button>
-            <button class="craft-filter-btn"         data-filter="limited"  onclick="setCraftRarityFilter('limited')">限定</button>
+          <!-- 絞り込みタブ（部位） -->
+          <div class="craft-filter-group">
+            <span class="craft-filter-label">部位：</span>
+            <div class="craft-filter-tabs" id="craft-slot-tabs">
+              <button class="craft-filter-btn active" data-filter="all"       onclick="setCraftSlotFilter('all')">すべて</button>
+              <button class="craft-filter-btn"         data-filter="頭"        onclick="setCraftSlotFilter('頭')">頭</button>
+              <button class="craft-filter-btn"         data-filter="胴"        onclick="setCraftSlotFilter('胴')">胴</button>
+              <button class="craft-filter-btn"         data-filter="足"        onclick="setCraftSlotFilter('足')">足</button>
+              <button class="craft-filter-btn"         data-filter="靴"        onclick="setCraftSlotFilter('靴')">靴</button>
+              <button class="craft-filter-btn"         data-filter="アクセサリー" onclick="setCraftSlotFilter('アクセサリー')">アクセサリー</button>
+              <button class="craft-filter-btn"         data-filter="武器"      onclick="setCraftSlotFilter('武器')">武器</button>
+            </div>
           </div>
-        </div>
 
-        <div id="craft-list"></div>
+          <!-- 絞り込みタブ（レア度） -->
+          <div class="craft-filter-group">
+            <span class="craft-filter-label">レア度：</span>
+            <div class="craft-filter-tabs" id="craft-rarity-tabs">
+              <button class="craft-filter-btn active" data-filter="all"      onclick="setCraftRarityFilter('all')">すべて</button>
+              <button class="craft-filter-btn"         data-filter="normal"   onclick="setCraftRarityFilter('normal')">ノーマル</button>
+              <button class="craft-filter-btn"         data-filter="rare"     onclick="setCraftRarityFilter('rare')">レア</button>
+              <button class="craft-filter-btn"         data-filter="bossRare" onclick="setCraftRarityFilter('bossRare')">ボスレア</button>
+              <button class="craft-filter-btn"         data-filter="end"      onclick="setCraftRarityFilter('end')">エンド</button>
+              <button class="craft-filter-btn"         data-filter="legend"   onclick="setCraftRarityFilter('legend')">レジェンド</button>
+              <button class="craft-filter-btn"         data-filter="charm"    onclick="setCraftRarityFilter('charm')">チャーム</button>
+              <button class="craft-filter-btn"         data-filter="limited"  onclick="setCraftRarityFilter('limited')">限定</button>
+            </div>
+          </div>
+
+          <div id="craft-list"></div>
+        </div>
+      </div>
+
+      <!-- 素材変換 -->
+      <div class="inv-section">
+        <h3 class="inv-section-title">
+          <button class="inv-toggle-btn" onclick="toggleInventorySection('section-conversion')" data-section="section-conversion">▼</button>
+          🔄 素材変換
+        </h3>
+        <div id="section-conversion" class="inv-section-body">
+          <div id="conversion-list"></div>
+        </div>
       </div>
 
       <div class="screen-footer">
@@ -365,6 +425,11 @@
 
     <div class="screen-panel">
       <h2 class="panel-title">[ SKILL TREE ]</h2>
+
+      <!-- 画面上部の戻るボタン -->
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
 
       <div class="sp-remaining" id="st-remaining">残りポイント: 0 pt</div>
 
@@ -398,6 +463,11 @@
     <div class="screen-panel">
       <h2 class="panel-title">[ ENCYCLOPEDIA ]</h2>
 
+      <!-- 画面上部の戻るボタン -->
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+
       <!-- タブ -->
       <div class="enc-tabs">
         <button class="enc-tab-btn active" id="enc-tab-monster" onclick="switchEncTab('monster')">
@@ -428,6 +498,11 @@
 
     <div class="screen-panel">
       <h2 class="panel-title">[ GACHA ]</h2>
+
+      <!-- 画面上部の戻るボタン -->
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
 
       <!-- チケット枚数 -->
       <div id="gacha-status" class="gacha-status-box">
@@ -469,6 +544,11 @@
     <div class="screen-panel">
       <h2 class="panel-title">[ RANKING ]</h2>
 
+      <!-- 画面上部の戻るボタン -->
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
+
       <!-- タブ -->
       <div class="enc-tabs">
         <button class="enc-tab-btn active" id="ranking-tab-level" onclick="switchRankingTab('level')">
@@ -506,6 +586,9 @@
   <div id="screen-news" class="screen" style="display:none">
     <div class="screen-panel">
       <h2 class="panel-title">[ NEWS ]</h2>
+      <div class="screen-header">
+        <button class="nav-btn back-btn" onclick="showScreen('lobby'); renderLobby();">⬅ ロビーに戻る</button>
+      </div>
       <div id="news-list">
         <!-- JS で動的に描画 -->
       </div>
