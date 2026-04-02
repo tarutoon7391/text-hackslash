@@ -122,7 +122,7 @@ function renderMaterialsList() {
   }
 
   el.innerHTML = filtered.map(k =>
-    `<button class="mat-item" onclick="showMaterialDetailModal('${k.replace(/'/g, "\\'")}')">` +
+    `<button class="mat-item" onclick="showMaterialDetailModal(${JSON.stringify(k)})">` +
     `${k} × ${mats[k]}</button>`
   ).join('');
 }
@@ -672,7 +672,7 @@ function renderMaterialDetailModal() {
         </div>
         <button class="inv-btn mat-detail-xp-btn${have >= 1 ? '' : ' disabled'}"
           ${have >= 1 ? '' : 'disabled'}
-          onclick="confirmMaterialToXp('${name.replace(/'/g, "\\'")}', ${xpPer})">
+          onclick="confirmMaterialToXp(${JSON.stringify(name)}, ${xpPer})">
           XPに変換する
         </button>
       </div>`;
