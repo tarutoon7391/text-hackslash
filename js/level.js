@@ -1335,6 +1335,26 @@ function expToNextLevel() {
 /** 現在表示中のルートタブ */
 let skillTreeCurrentRoute = 'swordsman';
 
+/** 現在表示中のパート（1: 基本4ルート, 2: 上位職ルート） */
+let skillTreeCurrentPart = 1;
+
+/**
+ * スキルツリーのパートタブ（Part1 / Part2）を切り替える
+ * @param {number} part - 1 または 2
+ */
+function switchSkillTreePart(part) {
+  skillTreeCurrentPart = part;
+
+  // パートに応じてデフォルトルートを変更する
+  if (part === 1) {
+    skillTreeCurrentRoute = 'swordsman';
+  } else {
+    skillTreeCurrentRoute = 'makenshi';
+  }
+
+  renderSkillTree();
+}
+
 /** スキルツリー画面を描画する */
 function renderSkillTree() {
   const p = game.player;
@@ -1342,6 +1362,18 @@ function renderSkillTree() {
   // 残りポイント表示
   const remaining = document.getElementById('st-remaining');
   if (remaining) remaining.textContent = `残りポイント: ${p.skillPoints} pt`;
+
+  // Part1/Part2 ボタンのアクティブ状態を更新する
+  const partBtn1 = document.getElementById('st-part-btn-1');
+  const partBtn2 = document.getElementById('st-part-btn-2');
+  if (partBtn1) partBtn1.classList.toggle('active', skillTreeCurrentPart === 1);
+  if (partBtn2) partBtn2.classList.toggle('active', skillTreeCurrentPart === 2);
+
+  // パートに応じてルートタブを切り替える
+  const tabsPart1 = document.getElementById('st-tabs-part1');
+  const tabsPart2 = document.getElementById('st-tabs-part2');
+  if (tabsPart1) tabsPart1.style.display = skillTreeCurrentPart === 1 ? '' : 'none';
+  if (tabsPart2) tabsPart2.style.display = skillTreeCurrentPart === 2 ? '' : 'none';
 
   // タブのアクティブ状態を更新
   document.querySelectorAll('.st-tab-btn').forEach(btn => {
