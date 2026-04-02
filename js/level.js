@@ -1080,6 +1080,9 @@ function unlockMakenshiRoute() {
   autoSave();
 }
 
+/** 上級職のジョブID一覧 */
+const JOB_IDS = ['paladin', 'assassin', 'sage', 'berserker'];
+
 /**
  * 新規4職業の共通解放前提条件を確認する（全4基本ルートMAX済み）
  * @returns {boolean}
@@ -1187,18 +1190,19 @@ function unlockJobRoute(jobId) {
   const bookFlag = getJobBookFlag(jobId);
   const unlockFlag = getJobUnlockFlag(jobId);
 
-  if (!confirm(`スキルストーンを1つ消費して${jobName}ルートをアンロックしますか？`)) {
+  if (!confirm(`スキルストーンを1つ消費して${jobName}ルートをアンロックしますか？\n※ 他の職業のスキルツリーは消去され、SPが返還されます。`)) {
     return;
   }
 
-  // 現在の職業がある場合はリセット
-  const currentJob = p.currentJob;
-  if (currentJob && currentJob !== jobId) {
-    const oldSpRefund = resetJobSkillTree(currentJob);
-    if (oldSpRefund > 0) {
-      log(`🔄 ${currentJob}ルートをリセットしました。SP +${oldSpRefund} 返還。`, 'system');
+  // 他の全職業をリセット＋アンロックフラグを削除（常に1職業のみ保持）
+  JOB_IDS.forEach(otherId => {
+    if (otherId === jobId) return;
+    const refund = resetJobSkillTree(otherId);
+    if (refund > 0) {
+      log(`🔄 ${otherId}ルートをリセットしました。SP +${refund} 返還。`, 'system');
     }
-  }
+    delete p.permanentItems[getJobUnlockFlag(otherId)];
+  });
 
   // スキルストーンを1消費
   p.materials[SKILL_STONE_NAME] -= 1;

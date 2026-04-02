@@ -106,6 +106,19 @@ function applyLoadedSave(saved) {
     currentJob:      saved.currentJob      ?? null,
     usedBooks:       saved.usedBooks       ?? {},
   });
+
+  // 壊れたセーブデータのクリーンアップ:
+  // currentJob 以外に *RouteUnlocked フラグが残っている場合は削除し SP を返還する
+  const p = game.player;
+  JOB_IDS.forEach(jobId => {
+    if (jobId === p.currentJob) return;
+    const flag = getJobUnlockFlag(jobId);
+    if (p.permanentItems[flag]) {
+      resetJobSkillTree(jobId);
+      delete p.permanentItems[flag];
+    }
+  });
+
   game.dungeon = { id: null, enemyIndex: 0, materials: [] };
 }
 
