@@ -107,6 +107,20 @@ function applyLoadedSave(saved) {
     usedBooks:       saved.usedBooks       ?? {},
   });
   game.dungeon = { id: null, enemyIndex: 0, materials: [] };
+
+  // 複数の職業アンロックフラグが保存されていた場合はクリーンアップする（バグ修正用）
+  const p = game.player;
+  JOB_IDS.forEach(id => {
+    if (id === p.currentJob) return;
+    const flag = `${id}RouteUnlocked`;
+    if (!p.permanentItems[flag]) return;
+    // 不正なアンロックフラグを削除し、スキルツリーのSPを返還する
+    delete p.permanentItems[flag];
+    resetJobSkillTree(id);
+  });
+  if (p.currentJob) {
+    p.recalcStats();
+  }
 }
 
 /** デフォルトの初期プレイヤーを生成してゲームに設定する */
