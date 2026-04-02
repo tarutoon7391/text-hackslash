@@ -659,11 +659,11 @@ function doEnemyTurn() {
   log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
   renderPlayerStatus();
 
-  // 聖騎士パッシブ: 被攻撃時にカウンター攻撃（神聖無双発動中は100%、通常は30%）
+  // 聖騎士パッシブ: 被攻撃時にカウンター攻撃（神聖無双発動中は100%、通常時は30%）
   if (game.player.currentJob === 'paladin' &&
       (game.player.skillTreeNodes['paladin'] || []).includes('pl_15') &&
       game.player.isAlive()) {
-    const counterChance = game.divineJudgmentActive ? 1.0 : 0.30;
+    const counterChance = (game.divineJudgmentActive && game.divineJudgmentActive.turnsLeft > 0) ? 1.0 : 0.30;
     if (Math.random() < counterChance) {
       const counterDmg = Math.max(1, Math.floor(game.player.attack * 0.8));
       game.enemy.takeDamage(counterDmg);
