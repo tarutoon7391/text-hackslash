@@ -946,23 +946,23 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'sg_03', name: '魔力の体現', type: 'stat', description: 'ATK +4 / MP +5', bonuses: { atk: 4, mp: 5 }, cost: 1, requires: 'sg_02' },
       { id: 'sg_04', name: '治癒の流れ', type: 'stat', description: 'HP +15 / MP +8', bonuses: { hp: 15, mp: 8 }, cost: 1, requires: 'sg_03' },
       { id: 'sg_05', name: '賢者の慧眼', type: 'stat', description: 'ATK +4 / DEF +3', bonuses: { atk: 4, def: 3 }, cost: 1, requires: 'sg_04' },
-      { id: 'sg_06', name: '吸魔', type: 'passive', description: 'パッシブ：攻撃ダメージの20%をHPとして回収する', bonuses: {}, cost: 2, requires: 'sg_05' },
+      { id: 'sg_06', name: '吸魔', type: 'passive', description: 'パッシブ：攻撃ダメージの5%をHPとして回収する', bonuses: {}, cost: 2, requires: 'sg_05' },
       { id: 'sg_07', name: '魔力強化', type: 'stat', description: 'ATK +6 / MP +10', bonuses: { atk: 6, mp: 10 }, cost: 2, requires: 'sg_06' },
-      { id: 'sg_08', name: '属性魔法', type: 'skill', skillId: 'sage_blast', description: '攻撃しながら自己回復（ATK×1.8 / HP+30+Lv×2回復 / MP:30）', mpCost: 30, bonuses: {}, cost: 2, requires: 'sg_07' },
-      { id: 'sg_09', name: '弱体魔法', type: 'skill', skillId: 'sage_debuff', description: '敵ATKを大幅低下（3ターン ATK×0.45 / MP:18）', mpCost: 18, bonuses: {}, cost: 2, requires: 'sg_08' },
+      { id: 'sg_08', name: '属性魔法', type: 'skill', skillId: 'sage_blast', description: '属性攻撃+自己回復（ATK×1.0 / 最大HPの15%回復 / MP:60）', mpCost: 60, bonuses: {}, cost: 2, requires: 'sg_07' },
+      { id: 'sg_09', name: '弱体魔法', type: 'skill', skillId: 'sage_debuff', description: '敵ATKを大幅低下（3ターン ATK×0.45 / MP:36）', mpCost: 36, bonuses: {}, cost: 2, requires: 'sg_08' },
       { id: 'sg_10', name: '知恵の光', type: 'stat', description: 'ATK +6 / HP +20 / MP +10', bonuses: { atk: 6, hp: 20, mp: 10 }, cost: 2, requires: 'sg_09' },
-      { id: 'sg_11', name: '強化魔法', type: 'skill', skillId: 'sage_buff', description: '自己ATK・DEFを大幅強化（ATK+45 / DEF+25 / 5ターン / MP:22）', mpCost: 22, bonuses: {}, cost: 3, requires: 'sg_10' },
-      { id: 'sg_12', name: '高等吸魔', type: 'passive', description: 'パッシブ：吸魔効果がさらに強化（与ダメの30%をHP回収・合計）', bonuses: {}, cost: 3, requires: 'sg_11' },
+      { id: 'sg_11', name: '強化魔法', type: 'skill', skillId: 'sage_buff', description: '自己ATK・DEFを倍率強化（ATK×1.2 / DEF×1.2 / 5ターン / MP:44）', mpCost: 44, bonuses: {}, cost: 3, requires: 'sg_10' },
+      { id: 'sg_12', name: '魔力増幅', type: 'passive', description: 'パッシブ：最大MPが1.3倍になる', bonuses: {}, cost: 3, requires: 'sg_11' },
       { id: 'sg_13', name: '賢者の技', type: 'stat', description: 'ATK +8 / MP +15', bonuses: { atk: 8, mp: 15 }, cost: 3, requires: 'sg_12' },
-      { id: 'sg_14', name: '聖魔融合', type: 'skill', skillId: 'holy_magic_fusion', description: '攻撃と回復を同時に行う（ATK×2.5 / HP+70+Lv×4回復 / MP:40）', mpCost: 40, bonuses: {}, cost: 3, requires: 'sg_13' },
-      { id: 'sg_15', name: '魔力崩壊', type: 'skill', skillId: 'magic_collapse', description: '敵を弱体化しつつ攻撃（ATK×1.5 / 3ターン ATK×0.40デバフ / MP:35）', mpCost: 35, bonuses: {}, cost: 3, requires: 'sg_14' },
+      { id: 'sg_14', name: '聖魔融合', type: 'skill', skillId: 'holy_magic_fusion', description: '攻撃+回復（ATK×2.5 / 最大HPの10%回復 / MP:80）', mpCost: 80, bonuses: {}, cost: 3, requires: 'sg_13' },
+      { id: 'sg_15', name: '魔力崩壊', type: 'skill', skillId: 'magic_collapse', description: '敵を弱体化しつつ攻撃（ATK×1.5 / 3ターン ATK×0.40デバフ / MP:70）', mpCost: 70, bonuses: {}, cost: 3, requires: 'sg_14' },
       { id: 'sg_16', name: '賢者の極意', type: 'stat', description: 'ATK +10 / MP +20', bonuses: { atk: 10, mp: 20 }, cost: 2, requires: 'sg_15' },
       { id: 'sg_17', name: '賢者の覚醒', type: 'stat', description: 'ATK +10 / HP +30 / MP +15', bonuses: { atk: 10, hp: 30, mp: 15 }, cost: 2, requires: 'sg_16' },
-      { id: 'sg_18', name: '知恵の波動', type: 'skill', skillId: 'wisdom_wave', description: '攻撃と大回復（ATK×3.5 / HP+100+Lv×5回復 / MP:55）', mpCost: 55, bonuses: {}, cost: 2, requires: 'sg_17' },
-      { id: 'sg_19', name: '全体強化', type: 'skill', skillId: 'sage_mega_buff', description: '強力な自己バフ（ATK+50 / DEF+40 / 5ターン / MP:40）', mpCost: 40, bonuses: {}, cost: 2, requires: 'sg_18' },
+      { id: 'sg_18', name: '知恵の波動', type: 'skill', skillId: 'wisdom_wave', description: '攻撃+大回復（ATK×3.5 / 最大HPの20%回復 / MP:110）', mpCost: 110, bonuses: {}, cost: 2, requires: 'sg_17' },
+      { id: 'sg_19', name: '全体強化', type: 'skill', skillId: 'sage_mega_buff', description: '強力な自己倍率バフ（ATK×1.5 / DEF×1.4 / 4ターン / MP:80）', mpCost: 80, bonuses: {}, cost: 2, requires: 'sg_18' },
       { id: 'sg_20', name: '究極吸魔', type: 'stat', description: 'ATK +12 / HP +30 / MP +20', bonuses: { atk: 12, hp: 30, mp: 20 }, cost: 3, requires: 'sg_19' },
       { id: 'sg_21', name: '賢者の真髄', type: 'stat', description: 'ATK +15 / MP +25', bonuses: { atk: 15, mp: 25 }, cost: 3, requires: 'sg_20' },
-      { id: 'sg_22', name: '絶対魔法', type: 'skill', skillId: 'absolute_magic', description: '究極魔法（ATK×7.0 / 与えたダメージの50%HP回復 / MP:100）', mpCost: 100, bonuses: {}, cost: 3, requires: 'sg_21' },
+      { id: 'sg_22', name: '絶対魔法', type: 'skill', skillId: 'absolute_magic', description: '究極魔法（ATK×7.0 / 与えたダメージの50%HP回復 / MP:200）', mpCost: 200, bonuses: {}, cost: 3, requires: 'sg_21' },
     ],
   },
   {
@@ -2329,12 +2329,12 @@ function useSkill(skillId) {
     /* ── 賢者スキル ── */
 
     case 'sage_blast': {
-      // 属性魔法: ATK×1.8 攻撃 + 自己HP回復
-      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 属性魔法: ATK×1.0 攻撃 + 最大HPの15%回復
+      const raw = Math.floor(player.effectiveAttack * 1.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
-      const healAmt = 30 + player.level * 2;
+      const healAmt = Math.max(1, Math.floor(player.maxHp * 0.15));
       player.heal(healAmt);
       log(`🔮 ${player.name} は「属性魔法」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
       renderEnemyStatus();
@@ -2350,20 +2350,19 @@ function useSkill(skillId) {
     }
 
     case 'sage_buff': {
-      // 強化魔法: ATK+45 / DEF+25 5ターン
-      game.playerAtkBuff = { bonus: 45, turnsLeft: 5 };
-      game.shieldActive  = { defenseBonus: 25, turnsLeft: 5 };
-      log(`📖✨ ${player.name} は「強化魔法」を唱えた！ 5ターン ATK +45 / DEF +25`, 'player-action');
+      // 強化魔法: ATK×1.2 / DEF×1.2 倍率バフ 5ターン（全体強化と相乗）
+      game.playerSageBuff = { atkMultiplier: 1.2, defMultiplier: 1.2, turnsLeft: 5 };
+      log(`📖✨ ${player.name} は「強化魔法」を唱えた！ 5ターン ATK×1.2 / DEF×1.2`, 'player-action');
       break;
     }
 
     case 'holy_magic_fusion': {
-      // 聖魔融合: ATK×2.5 攻撃 + 自己HP回復
+      // 聖魔融合: ATK×2.5 攻撃 + 最大HPの10%回復
       const raw = Math.floor(player.effectiveAttack * 2.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 5)), 'deal');
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
-      const healAmt = 70 + player.level * 4;
+      const healAmt = Math.max(1, Math.floor(player.maxHp * 0.10));
       player.heal(healAmt);
       log(`⚔📖 ${player.name} は「聖魔融合」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
       renderEnemyStatus();
@@ -2384,12 +2383,12 @@ function useSkill(skillId) {
     }
 
     case 'wisdom_wave': {
-      // 知恵の波動: ATK×3.5 攻撃 + 自己HP大回復
+      // 知恵の波動: ATK×3.5 攻撃 + 最大HPの20%大回復
       const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-4, 6)), 'deal');
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
-      const healAmt = 100 + player.level * 5;
+      const healAmt = Math.max(1, Math.floor(player.maxHp * 0.20));
       player.heal(healAmt);
       log(`🌊📖 ${player.name} は「知恵の波動」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
       renderEnemyStatus();
@@ -2398,10 +2397,9 @@ function useSkill(skillId) {
     }
 
     case 'sage_mega_buff': {
-      // 全体強化: ATK+50 / DEF+40 5ターン
-      game.playerAtkBuff = { bonus: 50, turnsLeft: 5 };
-      game.shieldActive  = { defenseBonus: 40, turnsLeft: 5 };
-      log(`📖🌟 ${player.name} は「全体強化」を唱えた！ 5ターン ATK +50 / DEF +40`, 'player-action');
+      // 全体強化: ATK×1.5 / DEF×1.4 倍率バフ 4ターン（強化魔法と相乗）
+      game.playerSageMegaBuff = { atkMultiplier: 1.5, defMultiplier: 1.4, turnsLeft: 4 };
+      log(`📖🌟 ${player.name} は「全体強化」を唱えた！ 4ターン ATK×1.5 / DEF×1.4`, 'player-action');
       break;
     }
 

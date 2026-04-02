@@ -200,6 +200,11 @@ class Player {
       this.defense = Math.floor(this.defense * 0.5);
     }
 
+    // 賢者パッシブ sg_12 (魔力増幅): 最大MPを1.3倍にする
+    if (this.currentJob === 'sage' && (this.skillTreeNodes['sage'] || []).includes('sg_12')) {
+      this.maxMp = Math.floor(this.maxMp * 1.3);
+    }
+
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
     // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
     const hpDelta = this.maxHp - prevMaxHp;
@@ -218,6 +223,13 @@ class Player {
     const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
       ? game.playerAtkBuff.bonus : 0;
     let base = this.attack + bonus;
+    // 倍率バフ（強化魔法・全体強化）を適用する（乗算で相乗）
+    let atkMult = 1.0;
+    if (game.playerSageBuff && game.playerSageBuff.turnsLeft > 0)
+      atkMult *= game.playerSageBuff.atkMultiplier;
+    if (game.playerSageMegaBuff && game.playerSageMegaBuff.turnsLeft > 0)
+      atkMult *= game.playerSageMegaBuff.atkMultiplier;
+    if (atkMult !== 1.0) base = Math.floor(base * atkMult);
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
       base = Math.floor(base * game.playerCondense.atkMultiplier);
@@ -233,6 +245,18 @@ class Player {
       }
     }
     return Math.floor(base);
+  }
+
+  /**
+   * DEF 倍率バフを適用した実効防御力を返す
+   */
+  get effectiveDefense() {
+    let mult = 1.0;
+    if (game.playerSageBuff && game.playerSageBuff.turnsLeft > 0)
+      mult *= game.playerSageBuff.defMultiplier;
+    if (game.playerSageMegaBuff && game.playerSageMegaBuff.turnsLeft > 0)
+      mult *= game.playerSageMegaBuff.defMultiplier;
+    return Math.floor(this.defense * mult);
   }
 
   /**
@@ -283,7 +307,8 @@ class Enemy {
   }
 
   calcAttackDamage(target) {
-    const raw = this.attack - Math.floor(target.defense * DEFENSE_FACTOR);
+    const def = target.effectiveDefense ?? target.defense;
+    const raw = this.attack - Math.floor(def * DEFENSE_FACTOR);
     return Math.max(1, raw + randInt(-2, 2));
   }
 
@@ -322,6 +347,8 @@ let game = {
   enemyAtkDebuff:    null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
   playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
   playerDelayedHeal: null,   // { healAmt: N, turnsLeft: N } — 神聖なうたい寝（遅延回復）
+  playerSageBuff:    null,   // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 強化魔法（倍率バフ）
+  playerSageMegaBuff: null,  // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 全体強化（倍率バフ）
   turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
 };
 
@@ -422,9 +449,9 @@ function doPlayerFlee() {
 }
 
 /** 賢者パッシブ: このターンの与ダメージの一部をHP回復する */
-// 吸魔の回収率定数（パッシブ増強前後）
-const SAGE_DRAIN_RATE_BASE     = 0.20; // sg_06 吸魔: 20%
-const SAGE_DRAIN_RATE_ENHANCED = 0.10; // sg_12 高等吸魔: +10%（合計30%）
+// 吸魔の回収率定数
+const SAGE_DRAIN_RATE_BASE = 0.05; // sg_06 吸魔: 5%
+// ※ sg_12 (魔力増幅) はMP最大値倍率パッシブに変更されたため、ここでは参照しない（recalcStats で処理）
 function applySageLifeDrain() {
   const player = game.player;
   if (player.currentJob !== 'sage') return;
@@ -432,7 +459,6 @@ function applySageLifeDrain() {
   const nodes = player.skillTreeNodes['sage'] || [];
   let drainRate = 0;
   if (nodes.includes('sg_06')) drainRate += SAGE_DRAIN_RATE_BASE;
-  if (nodes.includes('sg_12')) drainRate += SAGE_DRAIN_RATE_ENHANCED;
   if (drainRate <= 0) return;
   const healAmt = Math.max(1, Math.floor(game.turnDamageDealt * drainRate));
   player.heal(healAmt);
@@ -475,6 +501,20 @@ function tickPlayerBuffs() {
     if (game.playerAtkBuff.turnsLeft <= 0) {
       game.playerAtkBuff = null;
       log('🌟 祝福の効果が切れた。', 'system');
+    }
+  }
+  if (game.playerSageBuff && game.playerSageBuff.turnsLeft > 0) {
+    game.playerSageBuff.turnsLeft--;
+    if (game.playerSageBuff.turnsLeft <= 0) {
+      game.playerSageBuff = null;
+      log('📖 強化魔法の効果が切れた。', 'system');
+    }
+  }
+  if (game.playerSageMegaBuff && game.playerSageMegaBuff.turnsLeft > 0) {
+    game.playerSageMegaBuff.turnsLeft--;
+    if (game.playerSageMegaBuff.turnsLeft <= 0) {
+      game.playerSageMegaBuff = null;
+      log('📖 全体強化の効果が切れた。', 'system');
     }
   }
 }
@@ -792,6 +832,8 @@ function initGame() {
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
   game.playerDelayedHeal = null;
+  game.playerSageBuff    = null;
+  game.playerSageMegaBuff = null;
   game.turnDamageDealt   = 0;
 
   // メンテナンスモードチェック
