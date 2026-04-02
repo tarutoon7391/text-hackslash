@@ -621,6 +621,103 @@ footer {
   margin-bottom: 8px;
   color: #00ff41;
   text-shadow: 0 0 4px #00ff41;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* セクション開閉トグルボタン */
+.inv-toggle-btn {
+  background: none;
+  border: 1px solid #00cc33;
+  color: #00ff41;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  padding: 1px 6px;
+  cursor: pointer;
+  line-height: 1.2;
+  flex-shrink: 0;
+  transition: background-color 0.15s;
+}
+
+.inv-toggle-btn:hover {
+  background-color: #00ff4122;
+}
+
+.inv-section-body {
+  margin-top: 6px;
+}
+
+/* ===== 素材タブ ===== */
+.mat-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.mat-tab-btn {
+  background-color: #0a0a0a;
+  color: #555;
+  border: 1px solid #333;
+  padding: 3px 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.mat-tab-btn:hover:not(.active) {
+  color: #00cc33;
+  border-color: #00cc33;
+  background-color: #00ff4111;
+}
+
+.mat-tab-btn.active {
+  color: #00ff41;
+  border-color: #00ff41;
+  box-shadow: 0 0 6px #00ff4166;
+}
+
+/* ===== 性能差表示 ===== */
+.stat-diff-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.stat-diff-up {
+  color: #00ff41;
+}
+
+.stat-diff-down {
+  color: #ff4444;
+}
+
+/* ===== 素材変換セクション ===== */
+.conversion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 1px solid #ffaa00;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background-color: #0a0a0a;
+  font-size: 0.85rem;
+}
+
+.conversion-desc {
+  color: #ffdd00;
+  flex: 1;
+}
+
+.conversion-have {
+  color: #aaaaaa;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .materials-grid {

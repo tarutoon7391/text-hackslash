@@ -13,6 +13,15 @@
 let craftFilterSlot   = 'all';
 let craftFilterRarity = 'all';
 
+/** 所持素材タブフィルタ */
+let materialTabFilter = 'all';
+
+/** クラフトリストの所有状態フィルタ */
+let craftOwnershipFilter = 'all'; // 'all' | 'owned' | 'unowned' | 'craftable'
+
+/** クラフトリストを性能順（ATK+DEF合計）でソートするか */
+let craftSortByStats = false;
+
 /** レア度の表示ラベルマッピング */
 const RARITY_LABELS = {
   normal:   'ノーマル',
@@ -26,14 +35,71 @@ const RARITY_LABELS = {
 
 /** インベントリ画面を描画する */
 function renderInventory() {
+  restoreInventorySectionStates();
   renderMaterialsList();
   renderEquippedList();
   renderCraftFilterTabs();
   renderCraftList();
+  renderConversionSection();
+}
+
+/**
+ * 素材名からダンジョングループを返す
+ * @param {string} name - 素材名
+ * @returns {'d1-6'|'d7-12'|'d13-18'|'d19-24'|'limited'|'other'}
+ */
+function getMaterialDungeonGroup(name) {
+  const groups = [
+    { key: 'd1-6',    start: 0,  end: 6  },
+    { key: 'd7-12',   start: 6,  end: 12 },
+    { key: 'd13-18',  start: 12, end: 18 },
+    { key: 'd19-24',  start: 18, end: 24 },
+  ];
+  for (const { key, start, end } of groups) {
+    for (let i = start; i < end && i < DUNGEON_DEFINITIONS.length; i++) {
+      const d = DUNGEON_DEFINITIONS[i];
+      if (
+        d.drops.common === name ||
+        (d.drops.rares || []).includes(name) ||
+        d.drops.boss === name ||
+        d.drops.bossRare === name
+      ) {
+        return key;
+      }
+    }
+  }
+  // 限定素材（ガチャテーブルの limitedMaterial）
+  if (typeof GACHA_TABLE !== 'undefined' &&
+      GACHA_TABLE.some(g => g.type === 'limitedMaterial' && g.name === name)) {
+    return 'limited';
+  }
+  return 'other';
+}
+
+/** 素材タブボタンを描画する */
+function renderMaterialTabButtons() {
+  const bar = document.getElementById('materials-tab-bar');
+  if (!bar) return;
+
+  const tabs = [
+    { key: 'all',     label: 'すべて'   },
+    { key: 'd1-6',    label: 'D1〜D6'  },
+    { key: 'd7-12',   label: 'D7〜D12' },
+    { key: 'd13-18',  label: 'D13〜D18' },
+    { key: 'd19-24',  label: 'D19〜D24' },
+    { key: 'limited', label: '限定'     },
+    { key: 'other',   label: 'その他'   },
+  ];
+
+  bar.innerHTML = tabs.map(t =>
+    `<button class="mat-tab-btn${materialTabFilter === t.key ? ' active' : ''}" onclick="setMaterialTabFilter('${t.key}')">${t.label}</button>`
+  ).join('');
 }
 
 /** 所持素材一覧を描画する */
 function renderMaterialsList() {
+  renderMaterialTabButtons();
+
   const el = document.getElementById('materials-list');
   if (!el) return;
 
@@ -45,7 +111,26 @@ function renderMaterialsList() {
     return;
   }
 
-  el.innerHTML = keys.map(k => `<span class="mat-item">${k} × ${mats[k]}</span>`).join('');
+  // タブフィルタを適用
+  const filtered = materialTabFilter === 'all'
+    ? keys
+    : keys.filter(k => getMaterialDungeonGroup(k) === materialTabFilter);
+
+  if (filtered.length === 0) {
+    el.innerHTML = '<span class="inv-empty">この分類の素材なし</span>';
+    return;
+  }
+
+  el.innerHTML = filtered.map(k => `<span class="mat-item">${k} × ${mats[k]}</span>`).join('');
+}
+
+/**
+ * 素材タブフィルタを設定する
+ * @param {string} tab
+ */
+function setMaterialTabFilter(tab) {
+  materialTabFilter = tab;
+  renderMaterialsList();
 }
 
 /** 現在装備中の一覧を描画する */
@@ -79,8 +164,10 @@ function renderEquippedList() {
 
 /** クラフトフィルタータブのアクティブ状態を更新する */
 function renderCraftFilterTabs() {
-  const slotTabs   = document.getElementById('craft-slot-tabs');
-  const rarityTabs = document.getElementById('craft-rarity-tabs');
+  const slotTabs      = document.getElementById('craft-slot-tabs');
+  const rarityTabs    = document.getElementById('craft-rarity-tabs');
+  const ownershipTabs = document.getElementById('craft-ownership-tabs');
+  const sortBtn       = document.getElementById('craft-sort-stats-btn');
 
   if (slotTabs) {
     slotTabs.querySelectorAll('.craft-filter-btn').forEach(btn => {
@@ -91,6 +178,14 @@ function renderCraftFilterTabs() {
     rarityTabs.querySelectorAll('.craft-filter-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.filter === craftFilterRarity);
     });
+  }
+  if (ownershipTabs) {
+    ownershipTabs.querySelectorAll('.craft-filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === craftOwnershipFilter);
+    });
+  }
+  if (sortBtn) {
+    sortBtn.classList.toggle('active', craftSortByStats);
   }
 }
 
@@ -114,6 +209,80 @@ function setCraftRarityFilter(rarity) {
   renderCraftList();
 }
 
+/**
+ * クラフトリストの所有状態フィルタを設定する
+ * @param {string} filter - 'all' | 'owned' | 'unowned' | 'craftable'
+ */
+function setCraftOwnershipFilter(filter) {
+  craftOwnershipFilter = filter;
+  renderCraftFilterTabs();
+  renderCraftList();
+}
+
+/** クラフトリストの性能順ソートを切り替える */
+function toggleCraftSortByStats() {
+  craftSortByStats = !craftSortByStats;
+  renderCraftFilterTabs();
+  renderCraftList();
+}
+
+/**
+ * 2つの装備の性能差を HTML 文字列で返す
+ * @param {object} newEq - 新しい装備定義
+ * @param {number} newEnhLv - 新しい装備の強化レベル
+ * @param {object|null} curEq - 現在の装備定義（null の場合は差分なし）
+ * @param {number} curEnhLv - 現在の装備の強化レベル
+ * @param {number} playerLevel - プレイヤーレベル
+ * @returns {string} HTML 文字列
+ */
+function buildStatDiffHtml(newEq, newEnhLv, curEq, curEnhLv, playerLevel) {
+  if (!curEq) return '';
+
+  const getEffectiveStats = (eq, enhLv) => {
+    const base = eq.isGrowth ? computeGrowthStats(eq, playerLevel) : eq.stats;
+    if (eq.isGrowth && enhLv > 0) {
+      const factor = 1 + 0.1 * enhLv;
+      return {
+        attack:  Math.floor(base.attack  * factor),
+        defense: Math.floor(base.defense * factor),
+        maxHp:   Math.floor(base.maxHp   * factor),
+        maxMp:   Math.floor(base.maxMp   * factor),
+      };
+    }
+    const boost = getEnhanceStatBoost(eq);
+    const totalBonus = enhLv * boost;
+    const slot = eq.slot;
+    const atkBonus = slot === '武器' ? totalBonus : 0;
+    const defBonus = ['頭', '胴', '足', '靴'].includes(slot) ? totalBonus : 0;
+    const hpBonus  = slot === 'アクセサリー' ? totalBonus : 0;
+    return {
+      attack:  (base.attack  || 0) + atkBonus,
+      defense: (base.defense || 0) + defBonus,
+      maxHp:   (base.maxHp   || 0) + hpBonus,
+      maxMp:    base.maxMp   || 0,
+    };
+  };
+
+  const ns = getEffectiveStats(newEq, newEnhLv);
+  const cs = getEffectiveStats(curEq, curEnhLv);
+
+  const parts = [];
+  const addDiff = (key, label) => {
+    const d = ns[key] - cs[key];
+    if (d === 0) return;
+    const cls  = d > 0 ? 'stat-diff-up' : 'stat-diff-down';
+    const sign = d > 0 ? '+' : '';
+    parts.push(`<span class="${cls}">${label}${sign}${d}</span>`);
+  };
+  addDiff('attack',  'ATK');
+  addDiff('defense', 'DEF');
+  addDiff('maxHp',   'HP');
+  addDiff('maxMp',   'MP');
+
+  if (parts.length === 0) return '';
+  return `<div class="stat-diff-row">${parts.join(' ')}</div>`;
+}
+
 /** クラフト可能な装備一覧を描画する */
 function renderCraftList() {
   const el = document.getElementById('craft-list');
@@ -125,7 +294,7 @@ function renderCraftList() {
   // チャームアイテム（rarity='charm'）は「チャーム」タブ選択時のみ表示し、
   // 通常フィルター（すべて・ノーマル・レアなど）には含めない
   // 限定アイテム（rarity='limited'）は「限定」タブ選択時にレシピ入手済みのもののみ表示する
-  const filtered = EQUIPMENT_DEFINITIONS.filter(eq => {
+  let filtered = EQUIPMENT_DEFINITIONS.filter(eq => {
     const eqRarity = eq.rarity || 'normal';
     // チャームは「チャーム」タブ専用
     if (eqRarity === 'charm') return craftFilterRarity === 'charm';
@@ -142,6 +311,20 @@ function renderCraftList() {
     if (craftFilterRarity !== 'all' && eqRarity !== craftFilterRarity) return false;
     return true;
   });
+
+  // 所有状態フィルタを適用
+  if (craftOwnershipFilter !== 'all') {
+    filtered = filtered.filter(eq => {
+      const isEquipped = Object.values(player.equipment).includes(eq.id);
+      const isOwned    = player.ownedEquipment.includes(eq.id);
+      const canCraft   = Object.entries(eq.recipe).every(([m, c]) => (player.materials[m] || 0) >= c);
+      const hasRecipe  = !eq.requiresRecipe || !!player.permanentItems[eq.requiresRecipe];
+      if (craftOwnershipFilter === 'owned')     return (isOwned || isEquipped);
+      if (craftOwnershipFilter === 'unowned')   return !isOwned && !isEquipped;
+      if (craftOwnershipFilter === 'craftable') return !isOwned && !isEquipped && canCraft && hasRecipe;
+      return true;
+    });
+  }
 
   // クラフト可能なものを優先して上に表示するためのソート
   filtered.sort((a, b) => {
@@ -160,7 +343,18 @@ function renderCraftList() {
       if (canCraft && hasRequiredRecipe) return 1;  // クラフト可能
       return 2;  // クラフト不可
     };
-    return getPriority(a) - getPriority(b);
+    const pa = getPriority(a);
+    const pb = getPriority(b);
+    if (pa !== pb) return pa - pb;
+    // 同一優先度内で性能順ソートが有効な場合は ATK+DEF 合計値で降順ソート
+    if (craftSortByStats) {
+      const getStatTotal = (eq) => {
+        const s = eq.isGrowth ? computeGrowthStats(eq, player.level) : eq.stats;
+        return (s.attack || 0) + (s.defense || 0);
+      };
+      return getStatTotal(b) - getStatTotal(a);
+    }
+    return 0;
   });
 
   el.innerHTML = filtered.map(eq => {
@@ -226,11 +420,17 @@ function renderCraftList() {
         const enhBtn = isCharm ? '' : `<button class="inv-btn enhance-btn${canEnh ? '' : ' disabled'}" onclick="showEnhanceModal('${eq.id}')">⬆ 強化</button>`;
         // 強化済みの場合は強化分を黄色で表示する
         const ownedStatsStr = buildEnhancedStatsStr(eq, ownedEnhLv, player.level);
+        // 現在装備中のアイテムとの性能差を表示する
+        const curEqId  = player.equipment[eq.slot];
+        const curEq    = curEqId ? EQUIPMENT_DEFINITIONS.find(e => e.id === curEqId) : null;
+        const curEnhLv = curEqId ? (player.enhanceLevels[curEqId] || 0) : 0;
+        const diffHtml = buildStatDiffHtml(eq, ownedEnhLv, curEq, curEnhLv, player.level);
         return `
           <div class="craft-item owned">
             <div class="craft-name">[${eq.slot}] ${ownedDisplayName}${rarityBadge}</div>
             <div class="craft-stats">${ownedStatsStr}　${effectDescDisplay}</div>
             ${growthNote}
+            ${diffHtml}
             <button class="inv-btn" onclick="equipItem('${eq.id}')">装備する</button>
             ${enhBtn}
           </div>`;
@@ -330,6 +530,96 @@ function buildEnhancedStatsStr(eq, enhLv, playerLevel) {
 /* ==============================================================
    クラフト・装備操作
    ============================================================== */
+
+/* ==============================================================
+   インベントリセクションのトグル
+   ============================================================== */
+
+/** セッション中のセクション開閉状態を復元する */
+function restoreInventorySectionStates() {
+  ['section-materials', 'section-equipped', 'section-craft', 'section-conversion'].forEach(id => {
+    const state = sessionStorage.getItem(`inv-section-${id}`);
+    const body  = document.getElementById(id);
+    const btn   = document.querySelector(`[data-section="${id}"]`);
+    if (state === 'closed' && body) {
+      body.style.display = 'none';
+      if (btn) btn.textContent = '▶';
+    } else if (body) {
+      body.style.display = '';
+      if (btn) btn.textContent = '▼';
+    }
+  });
+}
+
+/**
+ * インベントリセクションの開閉を切り替える
+ * @param {string} sectionId
+ */
+function toggleInventorySection(sectionId) {
+  const body = document.getElementById(sectionId);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  const btn = document.querySelector(`[data-section="${sectionId}"]`);
+  if (btn) btn.textContent = isOpen ? '▶' : '▼';
+  sessionStorage.setItem(`inv-section-${sectionId}`, isOpen ? 'closed' : 'open');
+}
+
+/* ==============================================================
+   素材変換セクション
+   ============================================================== */
+
+/** 変換可能な限定素材の定義 */
+const MATERIAL_CONVERSION_TABLE = [
+  { material: 'ミスリル', tickets: 1 },
+  { material: '蒼天晶',  tickets: 1 },
+];
+
+/** 素材変換セクションを描画する */
+function renderConversionSection() {
+  const el = document.getElementById('conversion-list');
+  if (!el) return;
+
+  const player = game.player;
+
+  el.innerHTML = MATERIAL_CONVERSION_TABLE.map(entry => {
+    const have    = player.materials[entry.material] || 0;
+    const canConv = have >= 1;
+    return `
+      <div class="conversion-item">
+        <span class="conversion-desc">${entry.material} × 1 → ガチャチケット × ${entry.tickets}</span>
+        <span class="conversion-have">所持数: ${have}</span>
+        <button class="inv-btn${canConv ? '' : ' disabled'}" ${canConv ? '' : 'disabled'}
+          onclick="convertMaterial('${entry.material}', ${entry.tickets})">変換する</button>
+      </div>`;
+  }).join('');
+}
+
+/**
+ * 限定素材をガチャチケットに変換する
+ * @param {string} materialName - 変換する素材名
+ * @param {number} tickets      - 獲得チケット枚数
+ */
+function convertMaterial(materialName, tickets) {
+  const player = game.player;
+  const have   = player.materials[materialName] || 0;
+
+  if (have < 1) {
+    alert(`${materialName}が不足しています！`);
+    return;
+  }
+
+  const ok = confirm(`${materialName} × 1 → ガチャチケット × ${tickets} に変換しますか？`);
+  if (!ok) return;
+
+  player.materials[materialName] = have - 1;
+  player.gachaTickets            = (player.gachaTickets || 0) + tickets;
+
+  // セーブデータに反映
+  if (typeof saveData === 'function') saveData();
+
+  renderInventory();
+}
 
 /**
  * アイテムをクラフトする

@@ -611,9 +611,13 @@ function showSkillPanel(route) {
     return;
   }
 
-  // 選択中のタブが有効でない場合は「すべて」タブに切り替え
+  // 選択中のタブが有効でない場合はデフォルトタブに切り替え
+  // お気に入りスキルが存在する場合は「お気に入り」タブを初期表示とする
   if (!route || (route !== 'all' && route !== 'favorite' && !routeMap[route])) {
-    route = 'all';
+    const hasFavorites = SKILL_DEFINITIONS.some(
+      s => player.favoriteSkills.includes(s.id) && player.learnedSkills.includes(s.id)
+    );
+    route = hasFavorites ? 'favorite' : 'all';
   }
   _skillPanelRoute = route;
 
