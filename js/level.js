@@ -760,7 +760,7 @@ const SKILL_TREE_DEFINITIONS = [
     nodes: [
       {
         id: 'mk_01', name: '魔力の心得',
-        type: 'stat', description: 'MP +8',
+        type: 'stat', description: 'MP +8（蒼銀の剣装備時、全ステータス1.2倍）',
         bonuses: { mp: 8 }, cost: 1, requires: null,
       },
       {
@@ -1181,6 +1181,11 @@ function resetJobSkillTree(jobId) {
 
   // ノードをクリア
   p.skillTreeNodes[jobId] = [];
+
+  // 魔剣士ルートリセット時はシナジーフラグを削除
+  if (jobId === 'makenshi' && p.permanentItems) {
+    delete p.permanentItems.hasMakenshiSynergy;
+  }
 
   // SP返還
   p.skillPoints += spRefund;
@@ -1666,6 +1671,12 @@ function acquireSkillNode(routeId, nodeId) {
   // ノードを取得
   p.skillPoints -= node.cost;
   p.skillTreeNodes[routeId].push(nodeId);
+
+  // mk_01 取得時にシナジーフラグを設定
+  if (routeId === 'makenshi' && nodeId === 'mk_01') {
+    if (!p.permanentItems) p.permanentItems = {};
+    p.permanentItems.hasMakenshiSynergy = true;
+  }
 
   // スキルマスの場合は learnedSkills に追加
   if (node.type === 'skill' && node.skillId) {
