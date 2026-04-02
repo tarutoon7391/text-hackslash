@@ -351,18 +351,18 @@ let game = {
     gachaDifficulty: null,   // 'beginner' | 'intermediate' | 'advanced'
     ticketsEarned:   0,      // 今回の探索で獲得したチケット数
   },
-  shieldActive:      [],     // [{ source: string, defenseBonus: N, turnsLeft: N }] — シールド・聖域（複数バフ重複可）
+  shieldActive:      [],     // [{ defenseBonus: N, turnsLeft: N, source: 'skillId', name: '...' }] — DEFバフ（複数重複可）
   enemyPoisoned:     null,   // { active: bool, damage: N, turnsLeft: N }
   playerAtkBuff:     null,   // { bonus: N, turnsLeft: N } — 祝福スキル
   playerCondense:    null,   // { atkMultiplier: N, dmgMultiplier: N, justSet: bool } — 魔力凝縮
   enemyStunned:      false,  // 足払い・体当たりによるスタン
   enemyAtkDebuff:    null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
-  playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
+  playerRegen:       [],     // [{ hpPerTurn: N, turnsLeft: N, source: 'skillId', preTurn: bool }] — リジェネスキル（複数重複可）
   playerDelayedHeal: null,   // { healAmt: N, turnsLeft: N } — 神聖なうたい寝（遅延回復）
   playerSageBuff:    null,   // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 強化魔法（倍率バフ）
   playerSageMegaBuff: null,  // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 全体強化（倍率バフ）
   playerMakenshiAwakeningBuff: null, // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 魔剣士の覚醒（倍率バフ）
-  divineJudgmentActive: null, // { turnsLeft: N } — 神聖無双：反撃確率100%フラグ
+  divineJudgmentActive: null, // { turnsLeft: N } — 神聖無双：反撃の構え100%化用フラグ
   turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
 };
 
@@ -547,16 +547,21 @@ function tickPlayerBuffs() {
   }
 }
 
-/** プレイヤーのリジェネ効果を処理する */
-function tickPlayerRegen() {
-  if (game.playerRegen && game.playerRegen.turnsLeft > 0) {
-    const healAmt = game.playerRegen.hpPerTurn;
+/**
+ * プレイヤーのリジェネ効果を処理する
+ * @param {boolean} preTurn - true: 敵攻撃前リジェネ / false: 敵攻撃後リジェネ
+ */
+function tickPlayerRegen(preTurn = false) {
+  for (let i = game.playerRegen.length - 1; i >= 0; i--) {
+    const regen = game.playerRegen[i];
+    if (regen.preTurn !== preTurn) continue;
+    const healAmt = regen.hpPerTurn;
     game.player.heal(healAmt);
-    game.playerRegen.turnsLeft--;
-    log(`💚 リジェネで HP +${healAmt} 回復！（残${game.playerRegen.turnsLeft}ターン）`, 'player-action');
+    regen.turnsLeft--;
+    log(`💚 リジェネで HP +${healAmt} 回復！（残${regen.turnsLeft}ターン）`, 'player-action');
     renderPlayerStatus();
-    if (game.playerRegen.turnsLeft <= 0) {
-      game.playerRegen = null;
+    if (regen.turnsLeft <= 0) {
+      game.playerRegen.splice(i, 1);
       log('リジェネの効果が切れた。', 'system');
     }
   }
@@ -586,7 +591,8 @@ function doEnemyTurn() {
     game.enemyStunned = false;
     log(`⚡ ${game.enemy.name} はスタンして行動できない！`, 'system');
     tickPlayerBuffs();
-    tickPlayerRegen();
+    tickPlayerRegen(true);
+    tickPlayerRegen(false);
     tickPlayerDelayedHeal();
     game.state = GameState.PLAYER_TURN;
     log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
@@ -613,6 +619,9 @@ function doEnemyTurn() {
     }
   }
 
+  // 敵攻撃前リジェネを適用（聖騎士リジェネ系スキル）
+  tickPlayerRegen(true);
+
   // 敵の通常攻撃
   let rawDmg = game.enemy.calcAttackDamage(game.player);
 
@@ -631,19 +640,19 @@ function doEnemyTurn() {
     rawDmg = Math.floor(rawDmg * game.playerCondense.dmgMultiplier);
   }
 
-  // シールド効果を適用（配列管理：全バフの defenseBonus を合算して適用）
+  // シールド効果を適用（DEFバフ：複数重複可）
   if (game.shieldActive.length > 0) {
-    const totalBonus = game.shieldActive.reduce((sum, b) => sum + b.defenseBonus, 0);
+    const totalBonus = game.shieldActive.reduce((sum, s) => sum + s.defenseBonus, 0);
     rawDmg = Math.max(1, rawDmg - totalBonus);
-    const expired = [];
-    game.shieldActive.forEach(b => {
-      b.turnsLeft--;
-      if (b.turnsLeft <= 0) expired.push(b.source);
-    });
-    game.shieldActive = game.shieldActive.filter(b => b.turnsLeft > 0);
-    if (expired.length > 0) {
-      log('🛡 防御バフの効果が切れた。', 'system');
-    }
+    game.shieldActive = game.shieldActive
+      .map(s => ({ ...s, turnsLeft: s.turnsLeft - 1 }))
+      .filter(s => {
+        if (s.turnsLeft <= 0) {
+          log(`🛡 ${s.name}の効果が切れた。`, 'system');
+          return false;
+        }
+        return true;
+      });
   }
 
   const actualDmg = game.player.takeDamage(rawDmg);
@@ -670,7 +679,7 @@ function doEnemyTurn() {
 
   // プレイヤー ATK バフのターン管理
   tickPlayerBuffs();
-  tickPlayerRegen();
+  tickPlayerRegen(false);
   tickPlayerDelayedHeal();
 
   game.state = GameState.PLAYER_TURN;
@@ -864,7 +873,7 @@ function initGame() {
   game.playerCondense    = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
-  game.playerRegen       = null;
+  game.playerRegen       = [];
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
   game.playerSageMegaBuff = null;

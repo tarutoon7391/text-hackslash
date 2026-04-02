@@ -272,7 +272,7 @@ function startNextDungeonBattle() {
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
-  game.playerRegen       = null;
+  game.playerRegen       = [];
   game.playerCondense    = null;
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
@@ -689,7 +689,7 @@ function startNextGachaDungeonBattle() {
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
-  game.playerRegen       = null;
+  game.playerRegen       = [];
   game.playerCondense    = null;
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
@@ -928,7 +928,7 @@ function startNextXpDungeonBattle() {
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
-  game.playerRegen       = null;
+  game.playerRegen       = [];
   game.playerCondense    = null;
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
@@ -1114,7 +1114,7 @@ function startNextRaremonDungeonBattle() {
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
-  game.playerRegen       = null;
+  game.playerRegen       = [];
   game.playerCondense    = null;
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
@@ -1329,7 +1329,7 @@ function startNextSkillDungeonBattle() {
   game.playerAtkBuff     = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
-  game.playerRegen       = null;
+  game.playerRegen       = [];
   game.playerCondense    = null;
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
