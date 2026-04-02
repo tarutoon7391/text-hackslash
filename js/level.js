@@ -1059,9 +1059,18 @@ function unlockMakenshiRoute() {
     return;
   }
 
-  if (!confirm('スキルストーンを1つ消費して魔剣士ルートをアンロックしますか？')) {
+  if (!confirm('スキルストーンを1つ消費して魔剣士ルートをアンロックしますか？\n※ 他の職業のスキルツリーは消去され、SPが返還されます。')) {
     return;
   }
+
+  // 他の全職業をリセット＋アンロックフラグを削除（常に1職業のみ保持）
+  JOB_IDS.forEach(otherId => {
+    const refund = resetJobSkillTree(otherId);
+    if (refund > 0) {
+      log(`🔄 ${otherId}ルートをリセットしました。SP +${refund} 返還。`, 'system');
+    }
+    delete p.permanentItems[getJobUnlockFlag(otherId)];
+  });
 
   // スキルストーンを1消費
   p.materials[SKILL_STONE_NAME] -= 1;
@@ -1070,11 +1079,19 @@ function unlockMakenshiRoute() {
   }
 
   // アンロックフラグを立てる
-  p.permanentItems.makenshiRouteUnlocked = true;
+  p.permanentItems[getJobUnlockFlag('makenshi')] = true;
+
+  // 現在の職業を設定
+  p.currentJob = 'makenshi';
+
+  // ステータス再計算
+  p.recalcStats();
 
   // 画面再描画
   renderSkillTree();
   renderLobbyStatus();
+
+  alert('✨ 魔剣士ルートが解放されました！');
 
   // 自動セーブ
   autoSave();
@@ -1203,6 +1220,12 @@ function unlockJobRoute(jobId) {
     }
     delete p.permanentItems[getJobUnlockFlag(otherId)];
   });
+  // makenshiルートもリセット＋アンロックフラグを削除
+  const makenshiRefund = resetJobSkillTree('makenshi');
+  if (makenshiRefund > 0) {
+    log(`🔄 makenshiルートをリセットしました。SP +${makenshiRefund} 返還。`, 'system');
+  }
+  delete p.permanentItems[getJobUnlockFlag('makenshi')];
 
   // スキルストーンを1消費
   p.materials[SKILL_STONE_NAME] -= 1;

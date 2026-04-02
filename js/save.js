@@ -118,6 +118,11 @@ function applyLoadedSave(saved) {
       delete p.permanentItems[flag];
     }
   });
+  // makenshiルートのクリーンアップ
+  if (p.currentJob !== 'makenshi' && p.permanentItems[getJobUnlockFlag('makenshi')]) {
+    resetJobSkillTree('makenshi');
+    delete p.permanentItems[getJobUnlockFlag('makenshi')];
+  }
 
   game.dungeon = { id: null, enemyIndex: 0, materials: [] };
 }
