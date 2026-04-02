@@ -483,6 +483,51 @@ footer {
   box-shadow: 0 0 8px #ffdd00;
 }
 
+/* ===== ドロップ情報（折りたたみ） ===== */
+.drop-info-toggle-btn {
+  display: inline-block;
+  margin-top: 6px;
+  background-color: transparent;
+  color: #00cc99;
+  border: 1px solid #00cc99;
+  padding: 3px 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.drop-info-toggle-btn:hover {
+  background-color: #00cc9922;
+  box-shadow: 0 0 6px #00cc99;
+}
+
+.drop-info-panel {
+  margin-top: 6px;
+  border: 1px solid #005533;
+  background-color: #020e06;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  color: #aaaaaa;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.drop-info-row {
+  display: flex;
+  gap: 8px;
+}
+
+.drop-info-label {
+  color: #00cc33;
+  min-width: 110px;
+}
+
+.drop-info-value {
+  color: #dddddd;
+}
+
 /* ===== 戦闘画面追加要素 ===== */
 .dungeon-info-bar {
   font-size: 0.85rem;

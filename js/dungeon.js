@@ -115,6 +115,11 @@ function renderSpecialDungeonSelect() {
   });
 }
 
+/** ドロップ率を % 文字列に変換するヘルパー */
+function _fmtRate(rate) {
+  return Math.round(rate * 100) + '%';
+}
+
 /** ダンジョン選択画面を描画する */
 function renderDungeonSelect() {
   const list = document.getElementById('dungeon-list');
@@ -122,6 +127,11 @@ function renderDungeonSelect() {
 
   DUNGEON_DEFINITIONS.forEach(dungeon => {
     const cleared = game.player.dungeonProgress[dungeon.id] === true;
+    const d = dungeon.drops;
+    const panelId = `drop-info-${dungeon.id}`;
+
+    // レア素材名（配列の場合は「・」で結合）
+    const raresText = Array.isArray(d.rares) ? d.rares.join('・') : d.rares;
 
     const item = document.createElement('div');
     item.className = 'dungeon-item';
@@ -130,11 +140,43 @@ function renderDungeonSelect() {
       <div class="dungeon-info">
         <span class="dungeon-name">${dungeon.name}</span>
         <span class="dungeon-meta">推奨 Lv ${dungeon.recommendedLevel}〜　${cleared ? '✅ クリア済み' : '　　　　　　'}</span>
+        <button class="drop-info-toggle-btn" onclick="toggleDropInfo('${panelId}', this)">▶ ドロップ情報</button>
+        <div class="drop-info-panel" id="${panelId}" style="display:none">
+          <div class="drop-info-row">
+            <span class="drop-info-label">コモン素材</span>
+            <span class="drop-info-value">${d.common} ${_fmtRate(d.commonDropRate)}</span>
+          </div>
+          <div class="drop-info-row">
+            <span class="drop-info-label">レア素材</span>
+            <span class="drop-info-value">${raresText} ${_fmtRate(d.rareDropRate)}</span>
+          </div>
+          <div class="drop-info-row">
+            <span class="drop-info-label">ボスドロップ</span>
+            <span class="drop-info-value">${d.boss} ${_fmtRate(d.bossDropRate)}</span>
+          </div>
+          <div class="drop-info-row">
+            <span class="drop-info-label">ボスレア</span>
+            <span class="drop-info-value">${d.bossRare} ${_fmtRate(d.bossRareDropRate)}</span>
+          </div>
+          <div class="drop-info-row">
+            <span class="drop-info-label">レアモン出現率</span>
+            <span class="drop-info-value">${_fmtRate(dungeon.rareChance)}</span>
+          </div>
+        </div>
       </div>
       <button class="dungeon-enter-btn" onclick="enterDungeon(${dungeon.id})">⚔ 挑戦する</button>
     `;
     list.appendChild(item);
   });
+}
+
+/** ドロップ情報パネルの展開・折りたたみを切り替える */
+function toggleDropInfo(panelId, btn) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  btn.textContent = isOpen ? '▶ ドロップ情報' : '▼ ドロップ情報';
 }
 
 /* ==============================================================
