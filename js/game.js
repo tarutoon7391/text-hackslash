@@ -223,6 +223,15 @@ class Player {
     const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
       ? game.playerAtkBuff.bonus : 0;
     let base = this.attack + bonus;
+    // mk_10 魔剣の極意パッシブ: 現在MPの割合に応じてATKが上昇（魔剣士職のみ）
+    if (this.currentJob === 'makenshi' && (this.skillTreeNodes['makenshi'] || []).includes('mk_10')) {
+      const mpRatio = this.maxMp > 0 ? this.mp / this.maxMp : 0;
+      base = Math.floor(base * (1 + mpRatio));
+    }
+    // 魔剣士の覚醒 ATK倍率バフ
+    if (game.playerMakenshiAwakeningBuff && game.playerMakenshiAwakeningBuff.turnsLeft > 0) {
+      base = Math.floor(base * game.playerMakenshiAwakeningBuff.atkMultiplier);
+    }
     // 倍率バフ（強化魔法・全体強化）を適用する（乗算で相乗）
     let atkMult = 1.0;
     if (game.playerSageBuff && game.playerSageBuff.turnsLeft > 0)
@@ -256,6 +265,9 @@ class Player {
       mult *= game.playerSageBuff.defMultiplier;
     if (game.playerSageMegaBuff && game.playerSageMegaBuff.turnsLeft > 0)
       mult *= game.playerSageMegaBuff.defMultiplier;
+    // 魔剣士の覚醒 DEF倍率バフ
+    if (game.playerMakenshiAwakeningBuff && game.playerMakenshiAwakeningBuff.turnsLeft > 0)
+      mult *= game.playerMakenshiAwakeningBuff.defMultiplier;
     return Math.floor(this.defense * mult);
   }
 
@@ -349,6 +361,7 @@ let game = {
   playerDelayedHeal: null,   // { healAmt: N, turnsLeft: N } — 神聖なうたい寝（遅延回復）
   playerSageBuff:    null,   // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 強化魔法（倍率バフ）
   playerSageMegaBuff: null,  // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 全体強化（倍率バフ）
+  playerMakenshiAwakeningBuff: null, // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 魔剣士の覚醒（倍率バフ）
   turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
 };
 
@@ -515,6 +528,13 @@ function tickPlayerBuffs() {
     if (game.playerSageMegaBuff.turnsLeft <= 0) {
       game.playerSageMegaBuff = null;
       log('📖 全体強化の効果が切れた。', 'system');
+    }
+  }
+  if (game.playerMakenshiAwakeningBuff && game.playerMakenshiAwakeningBuff.turnsLeft > 0) {
+    game.playerMakenshiAwakeningBuff.turnsLeft--;
+    if (game.playerMakenshiAwakeningBuff.turnsLeft <= 0) {
+      game.playerMakenshiAwakeningBuff = null;
+      log('🌌 魔剣士の覚醒の効果が切れた。', 'system');
     }
   }
 }
@@ -834,6 +854,7 @@ function initGame() {
   game.playerDelayedHeal = null;
   game.playerSageBuff    = null;
   game.playerSageMegaBuff = null;
+  game.playerMakenshiAwakeningBuff = null;
   game.turnDamageDealt   = 0;
 
   // メンテナンスモードチェック

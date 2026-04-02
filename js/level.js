@@ -808,8 +808,8 @@ const SKILL_TREE_DEFINITIONS = [
       },
       {
         id: 'mk_10', name: '魔剣の極意',
-        type: 'stat', description: 'ATK +8',
-        bonuses: { atk: 8 }, cost: 2, requires: 'mk_09',
+        type: 'passive', description: '【パッシブ】現在MPの割合に応じてATKが上昇（ATK × (1 + MP/MaxMP)）',
+        bonuses: {}, cost: 2, requires: 'mk_09',
       },
       {
         id: 'mk_11', name: '魔剣強撃',
@@ -862,7 +862,7 @@ const SKILL_TREE_DEFINITIONS = [
       {
         id: 'mk_20', name: '魔剣士の覚醒',
         type: 'skill', skillId: 'makenshi_awakening',
-        description: '魔剣士として覚醒（ATK+80 / 4ターン + DEF+35 / 3ターン / MP:70）',
+        description: '魔剣士として覚醒（ATK×1.5 / 3ターン + DEF×1.3 / 3ターン / MP:70）',
         mpCost: 70, bonuses: {}, cost: 3, requires: 'mk_19',
       },
       {
@@ -2148,10 +2148,9 @@ function useSkill(skillId) {
     }
 
     case 'makenshi_awakening': {
-      // 魔剣士の覚醒: ATK+80 バフ 4 ターン + DEF+35 バフ 3 ターン
-      game.playerAtkBuff = { bonus: 80, turnsLeft: 4 };
-      game.shieldActive  = { defenseBonus: 35, turnsLeft: 3 };
-      log(`🌌 ${player.name} は「魔剣士の覚醒」を発動！4 ターン ATK +80 / 3 ターン DEF +35！`, 'player-action');
+      // 魔剣士の覚醒: ATK×1.5 倍率バフ 3 ターン + DEF×1.3 倍率バフ 3 ターン
+      game.playerMakenshiAwakeningBuff = { atkMultiplier: 1.5, defMultiplier: 1.3, turnsLeft: 3 };
+      log(`🌌 ${player.name} は「魔剣士の覚醒」を発動！3 ターン ATK ×1.5 / DEF ×1.3！`, 'player-action');
       break;
     }
 
