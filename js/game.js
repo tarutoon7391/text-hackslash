@@ -200,6 +200,11 @@ class Player {
       this.defense = Math.floor(this.defense * 0.5);
     }
 
+    // 賢者パッシブ: sg_12（高等吸魔）取得済みの場合、最大MPを1.3倍にする
+    if (this.currentJob === 'sage' && (this.skillTreeNodes['sage'] || []).includes('sg_12')) {
+      this.maxMp = Math.floor(this.maxMp * 1.3);
+    }
+
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
     // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
     const hpDelta = this.maxHp - prevMaxHp;
@@ -218,6 +223,13 @@ class Player {
     const bonus = (game.playerAtkBuff && game.playerAtkBuff.turnsLeft > 0)
       ? game.playerAtkBuff.bonus : 0;
     let base = this.attack + bonus;
+    // 賢者バフ（強化魔法・全体強化）の ATK 倍率を乗算で適用する
+    if (game.sageBuff && game.sageBuff.turnsLeft > 0) {
+      base = Math.floor(base * game.sageBuff.atkMult);
+    }
+    if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) {
+      base = Math.floor(base * game.sageMegaBuff.atkMult);
+    }
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
       base = Math.floor(base * game.playerCondense.atkMultiplier);
@@ -323,6 +335,8 @@ let game = {
   playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
   playerDelayedHeal: null,   // { healAmt: N, turnsLeft: N } — 神聖なうたい寝（遅延回復）
   turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
+  sageBuff:          null,   // { atkMult: N, defMult: N, turnsLeft: N } — 強化魔法（sg_11）
+  sageMegaBuff:      null,   // { atkMult: N, defMult: N, turnsLeft: N } — 全体強化（sg_19）
 };
 
 /* ==============================================================
@@ -422,9 +436,8 @@ function doPlayerFlee() {
 }
 
 /** 賢者パッシブ: このターンの与ダメージの一部をHP回復する */
-// 吸魔の回収率定数（パッシブ増強前後）
-const SAGE_DRAIN_RATE_BASE     = 0.20; // sg_06 吸魔: 20%
-const SAGE_DRAIN_RATE_ENHANCED = 0.10; // sg_12 高等吸魔: +10%（合計30%）
+// 吸魔の回収率定数
+const SAGE_DRAIN_RATE_BASE = 0.05; // sg_06 吸魔: 5%
 function applySageLifeDrain() {
   const player = game.player;
   if (player.currentJob !== 'sage') return;
@@ -432,7 +445,6 @@ function applySageLifeDrain() {
   const nodes = player.skillTreeNodes['sage'] || [];
   let drainRate = 0;
   if (nodes.includes('sg_06')) drainRate += SAGE_DRAIN_RATE_BASE;
-  if (nodes.includes('sg_12')) drainRate += SAGE_DRAIN_RATE_ENHANCED;
   if (drainRate <= 0) return;
   const healAmt = Math.max(1, Math.floor(game.turnDamageDealt * drainRate));
   player.heal(healAmt);
@@ -475,6 +487,20 @@ function tickPlayerBuffs() {
     if (game.playerAtkBuff.turnsLeft <= 0) {
       game.playerAtkBuff = null;
       log('🌟 祝福の効果が切れた。', 'system');
+    }
+  }
+  if (game.sageBuff && game.sageBuff.turnsLeft > 0) {
+    game.sageBuff.turnsLeft--;
+    if (game.sageBuff.turnsLeft <= 0) {
+      game.sageBuff = null;
+      log('📖 強化魔法の効果が切れた。', 'system');
+    }
+  }
+  if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) {
+    game.sageMegaBuff.turnsLeft--;
+    if (game.sageMegaBuff.turnsLeft <= 0) {
+      game.sageMegaBuff = null;
+      log('📖🌟 全体強化の効果が切れた。', 'system');
     }
   }
 }
@@ -570,6 +596,18 @@ function doEnemyTurn() {
     if (game.shieldActive.turnsLeft <= 0) {
       game.shieldActive = null;
       log('🛡 防御バフの効果が切れた。', 'system');
+    }
+  }
+
+  // 賢者バフ（強化魔法・全体強化）の DEF 倍率を乗算で適用する
+  // DEF 倍率の合計を算出し、増加分だけ被ダメージを軽減する
+  {
+    let defMult = 1;
+    if (game.sageBuff && game.sageBuff.turnsLeft > 0) defMult *= game.sageBuff.defMult;
+    if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) defMult *= game.sageMegaBuff.defMult;
+    if (defMult > 1) {
+      const defReduction = Math.floor(game.player.defense * (defMult - 1) * DEFENSE_FACTOR);
+      rawDmg = Math.max(1, rawDmg - defReduction);
     }
   }
 
@@ -793,6 +831,8 @@ function initGame() {
   game.playerRegen       = null;
   game.playerDelayedHeal = null;
   game.turnDamageDealt   = 0;
+  game.sageBuff          = null;
+  game.sageMegaBuff      = null;
 
   // メンテナンスモードチェック
   if (MAINTENANCE.enabled) {
