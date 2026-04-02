@@ -121,7 +121,10 @@ function renderMaterialsList() {
     return;
   }
 
-  el.innerHTML = filtered.map(k => `<span class="mat-item">${k} × ${mats[k]}</span>`).join('');
+  el.innerHTML = filtered.map(k =>
+    `<button class="mat-item" onclick="showMaterialDetailModal(${JSON.stringify(k)})">` +
+    `${k} × ${mats[k]}</button>`
+  ).join('');
 }
 
 /**
@@ -574,6 +577,180 @@ const MATERIAL_CONVERSION_TABLE = [
   { material: 'ミスリル', tickets: 1 },
   { material: '蒼天晶',  tickets: 1 },
 ];
+
+/* ==============================================================
+   素材詳細モーダル（XP変換機能）
+   ============================================================== */
+
+/**
+ * 素材名からXP変換情報を返す
+ * 限定素材（ミスリル・蒼天晶）はガチャチケット変換のみのため対象外
+ * @param {string} name - 素材名
+ * @returns {{ dungeonName: string, rarity: string, xpPerUnit: number }|null}
+ */
+function getMaterialXpInfo(name) {
+  // 限定素材はXP変換対象外
+  if (MATERIAL_CONVERSION_TABLE.some(e => e.material === name)) return null;
+
+  for (const d of DUNGEON_DEFINITIONS) {
+    const drops = d.drops;
+    if (drops.common === name) {
+      // 通常モンスターの平均EXP（配列が空の場合は0）
+      const len    = d.normalEnemies.length;
+      const avgExp = len > 0
+        ? Math.floor(d.normalEnemies.reduce((sum, e) => sum + e.expReward, 0) / len)
+        : 0;
+      return { dungeonName: d.name, rarity: 'コモン', xpPerUnit: avgExp };
+    }
+    if ((drops.rares || []).includes(name)) {
+      return { dungeonName: d.name, rarity: 'レア', xpPerUnit: d.rareEnemy.expReward };
+    }
+    if (drops.boss === name) {
+      return { dungeonName: d.name, rarity: 'ボスドロップ', xpPerUnit: d.boss.expReward };
+    }
+    if (drops.bossRare === name) {
+      return { dungeonName: d.name, rarity: 'ボスレア', xpPerUnit: d.boss.expReward * 3 };
+    }
+  }
+  return null;
+}
+
+/** 素材詳細モーダルに表示中の素材名 */
+let materialDetailModalName = null;
+
+/**
+ * 素材詳細モーダルを表示する
+ * @param {string} materialName - 素材名
+ */
+function showMaterialDetailModal(materialName) {
+  materialDetailModalName = materialName;
+  renderMaterialDetailModal();
+  const overlay = document.getElementById('material-detail-modal-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+
+/** 素材詳細モーダルを閉じる */
+function closeMaterialDetailModal() {
+  const overlay = document.getElementById('material-detail-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+  materialDetailModalName = null;
+}
+
+/** 素材詳細モーダルの内容を描画する */
+function renderMaterialDetailModal() {
+  const content = document.getElementById('material-detail-modal-content');
+  if (!content || !materialDetailModalName) return;
+
+  const name    = materialDetailModalName;
+  const player  = game.player;
+  const have    = player.materials[name] || 0;
+  const xpInfo  = getMaterialXpInfo(name);
+
+  let xpSection = '';
+  if (xpInfo) {
+    // XP変換セクション
+    const maxConv   = have;
+    const xpPer     = xpInfo.xpPerUnit;
+    const canConvert = maxConv >= 1;
+    const initVal   = canConvert ? 1 : 0;
+    xpSection = `
+      <div class="mat-detail-xp-section">
+        <div class="mat-detail-xp-title">🔮 XP変換</div>
+        <div class="mat-detail-xp-info">
+          <span class="mat-detail-xp-label">入手元</span>
+          <span>${xpInfo.dungeonName}（${xpInfo.rarity}素材）</span>
+        </div>
+        <div class="mat-detail-xp-info">
+          <span class="mat-detail-xp-label">変換レート</span>
+          <span>× 1 → XP ${xpPer.toLocaleString()}</span>
+        </div>
+        <div class="mat-detail-xp-row">
+          <label class="mat-detail-xp-label">変換個数</label>
+          <input id="mat-xp-amount" type="number" class="mat-detail-xp-input"
+            min="${initVal}" max="${maxConv}" value="${initVal}">
+          <span class="mat-detail-xp-hint">（最大 ${maxConv}）</span>
+        </div>
+        <div class="mat-detail-xp-total">
+          合計 XP：<strong id="mat-xp-total">${(xpPer * initVal).toLocaleString()}</strong>
+        </div>
+        <button class="inv-btn mat-detail-xp-btn${canConvert ? '' : ' disabled'}"
+          ${canConvert ? '' : 'disabled'}
+          onclick="confirmMaterialToXp(${JSON.stringify(name)}, ${xpPer})">
+          XPに変換する
+        </button>
+      </div>`;
+  } else {
+    xpSection = `<div class="mat-detail-xp-section mat-detail-xp-na">
+      ⚠ この素材はXP変換の対象外です（ガチャチケット変換のみ）
+    </div>`;
+  }
+
+  content.innerHTML = `
+    <div class="enc-modal-title">${name}</div>
+    <div class="enc-modal-row">
+      <span class="enc-modal-label">所持数</span>
+      <span>${have}</span>
+    </div>
+    ${xpSection}
+  `;
+
+  // 個数変更時に合計XPをリアルタイム更新
+  if (xpInfo) {
+    const input = document.getElementById('mat-xp-amount');
+    if (input) {
+      input.addEventListener('input', () => {
+        const val  = Math.max(0, Math.min(have, parseInt(input.value) || 0));
+        const total = document.getElementById('mat-xp-total');
+        if (total) total.textContent = (xpInfo.xpPerUnit * val).toLocaleString();
+      });
+    }
+  }
+}
+
+/**
+ * 素材をXPに変換する（確認ダイアログ付き）
+ * @param {string} materialName - 素材名
+ * @param {number} xpPerUnit    - 1個あたりのXP
+ */
+function confirmMaterialToXp(materialName, xpPerUnit) {
+  const player  = game.player;
+  const have    = player.materials[materialName] || 0;
+
+  const input   = document.getElementById('mat-xp-amount');
+  const amount  = Math.max(0, Math.min(have, parseInt((input && input.value) || '0') || 0));
+  const totalXp = xpPerUnit * amount;
+
+  if (amount < 1 || have < amount) {
+    alert(`${materialName}が不足しています！`);
+    return;
+  }
+
+  const ok = confirm(
+    `${materialName} × ${amount} を XP ${totalXp.toLocaleString()} に変換しますか？`
+  );
+  if (!ok) return;
+
+  // 変換前のレベルを記録
+  const prevLevel = player.level;
+
+  // 素材を消費
+  player.materials[materialName] = have - amount;
+
+  // XP付与（gainExp はレベルアップ処理・ステータス再計算・renderPlayerStatus を含む）
+  gainExp(totalXp);
+
+  // レベルアップした場合はポップアップで通知
+  if (player.level > prevLevel) {
+    alert(`レベルアップ！Lv${prevLevel} → Lv${player.level}`);
+  }
+
+  // セーブデータに反映
+  if (typeof saveData === 'function') saveData();
+
+  // モーダルを閉じてインベントリを更新
+  closeMaterialDetailModal();
+  renderInventory();
+}
 
 /** 素材変換セクションを描画する */
 function renderConversionSection() {

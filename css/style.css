@@ -732,6 +732,75 @@ footer {
   font-size: 0.85rem;
   color: #00ff41;
   background-color: #0a0a0a;
+  cursor: pointer;
+}
+
+.mat-item:hover {
+  background-color: #001a00;
+  border-color: #00ff41;
+}
+
+/* 素材詳細モーダル内 XP変換セクション */
+.mat-detail-xp-section {
+  border-top: 1px solid #00cc33;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mat-detail-xp-title {
+  color: #00ff41;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.mat-detail-xp-info {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  align-items: baseline;
+}
+
+.mat-detail-xp-label {
+  color: #aaaaaa;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.mat-detail-xp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.mat-detail-xp-input {
+  background-color: #111;
+  border: 1px solid #00cc33;
+  color: #00ff41;
+  padding: 3px 6px;
+  width: 70px;
+  font-size: 0.85rem;
+}
+
+.mat-detail-xp-hint {
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.mat-detail-xp-total {
+  font-size: 0.85rem;
+  color: #ccffcc;
+}
+
+.mat-detail-xp-btn {
+  align-self: flex-start;
+}
+
+.mat-detail-xp-na {
+  color: #888;
+  font-size: 0.82rem;
 }
 
 .inv-empty {
