@@ -108,16 +108,31 @@ function applyLoadedSave(saved) {
   });
 
   // 壊れたセーブデータのクリーンアップ:
-  // currentJob 以外に *RouteUnlocked フラグが残っている場合は削除し SP を返還する
+  // currentJob 以外の職業にアンロックフラグ・習得ノード・孤立スキルが残っている場合は
+  // すべて除去し SP を返還する
   const p = game.player;
   JOB_IDS.forEach(jobId => {
     if (jobId === p.currentJob) return;
     const flag = getJobUnlockFlag(jobId);
-    if (p.permanentItems[flag]) {
+    const hasUnlockFlag = !!p.permanentItems[flag];
+    const hasNodes = (p.skillTreeNodes[jobId] || []).length > 0;
+    if (hasUnlockFlag || hasNodes) {
+      resetJobSkillTree(jobId);
+      delete p.permanentItems[flag];
+      return;
+    }
+    const route = SKILL_TREE_DEFINITIONS.find(r => r.id === jobId);
+    const hasOrphanSkills = route && route.nodes
+      .filter(n => n.type === 'skill' && n.skillId)
+      .some(n => p.learnedSkills.includes(n.skillId));
+    if (hasOrphanSkills) {
       resetJobSkillTree(jobId);
       delete p.permanentItems[flag];
     }
   });
+
+  // クリーンアップ後にステータスを再計算して他職の残存効果を除去する
+  p.recalcStats();
 
   game.dungeon = { id: null, enemyIndex: 0, materials: [] };
 }

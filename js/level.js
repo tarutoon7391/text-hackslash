@@ -1142,10 +1142,18 @@ function isJobPrerequisiteMet(jobId) {
 function resetJobSkillTree(jobId) {
   const p = game.player;
   const route = SKILL_TREE_DEFINITIONS.find(r => r.id === jobId);
-  if (!route) return;
+  if (!route) return 0;
+
+  // スキルを learnedSkills から削除（skillTreeNodes が空でも確実に削除する）
+  const jobSkillIds = route.nodes
+    .filter(n => n.type === 'skill' && n.skillId)
+    .map(n => n.skillId);
+  p.learnedSkills  = p.learnedSkills.filter(s => !jobSkillIds.includes(s));
+  // お気に入りからも削除
+  p.favoriteSkills = p.favoriteSkills.filter(s => !jobSkillIds.includes(s));
 
   const acquired = p.skillTreeNodes[jobId] || [];
-  if (acquired.length === 0) return;
+  if (acquired.length === 0) return 0;
 
   // SP返還
   let spRefund = 0;
@@ -1153,14 +1161,6 @@ function resetJobSkillTree(jobId) {
     const node = route.nodes.find(n => n.id === nodeId);
     if (node) spRefund += node.cost;
   });
-
-  // スキルを learnedSkills から削除
-  const jobSkillIds = route.nodes
-    .filter(n => n.type === 'skill' && n.skillId)
-    .map(n => n.skillId);
-  p.learnedSkills = p.learnedSkills.filter(s => !jobSkillIds.includes(s));
-  // お気に入りからも削除
-  p.favoriteSkills = p.favoriteSkills.filter(s => !jobSkillIds.includes(s));
 
   // ノードをクリア
   p.skillTreeNodes[jobId] = [];
