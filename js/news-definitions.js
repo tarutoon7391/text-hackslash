@@ -9,6 +9,12 @@
 const NEWS_DEFINITIONS = (function () {
   const items = [
     {
+      id: 'news_002',
+      date: '2026-04-02',
+      title: 'メンテナンス終了いたしました。',
+      content: 'ご迷惑おかけして申し訳ございませんでした。',
+    },
+    {
       id: 'news_001',
       date: '2026-03-30',
       title: 'ニュース機能を追加しました！',
