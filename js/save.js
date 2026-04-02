@@ -108,20 +108,33 @@ function applyLoadedSave(saved) {
   });
 
   // 壊れたセーブデータのクリーンアップ:
-  // currentJob 以外に *RouteUnlocked フラグが残っている場合は削除し SP を返還する
+  // currentJob 以外の職業のスキルツリーに習得済みノードが残っている場合、
+  // またはアンロックフラグが残っている場合はリセットして SP を返還する
   const p = game.player;
+  let cleanupDone = false;
   JOB_IDS.forEach(jobId => {
     if (jobId === p.currentJob) return;
     const flag = getJobUnlockFlag(jobId);
-    if (p.permanentItems[flag]) {
+    const hasNodes = (p.skillTreeNodes[jobId] || []).length > 0;
+    if (p.permanentItems[flag] || hasNodes) {
       resetJobSkillTree(jobId);
       delete p.permanentItems[flag];
+      cleanupDone = true;
     }
   });
   // makenshiルートのクリーンアップ
-  if (p.currentJob !== 'makenshi' && p.permanentItems[getJobUnlockFlag('makenshi')]) {
-    resetJobSkillTree('makenshi');
-    delete p.permanentItems[getJobUnlockFlag('makenshi')];
+  if (p.currentJob !== 'makenshi') {
+    const makenshiFlag = getJobUnlockFlag('makenshi');
+    const hasMakenshiNodes = (p.skillTreeNodes['makenshi'] || []).length > 0;
+    if (p.permanentItems[makenshiFlag] || hasMakenshiNodes) {
+      resetJobSkillTree('makenshi');
+      delete p.permanentItems[makenshiFlag];
+      cleanupDone = true;
+    }
+  }
+  // クリーンアップが行われた場合はステータスを再計算し、永続効果を確実に除去する
+  if (cleanupDone) {
+    p.recalcStats();
   }
 
   game.dungeon = { id: null, enemyIndex: 0, materials: [] };
