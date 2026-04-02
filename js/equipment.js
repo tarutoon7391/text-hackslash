@@ -681,7 +681,7 @@ function renderMaterialDetailModal() {
         </div>
         <button class="inv-btn mat-detail-xp-btn${canConvert ? '' : ' disabled'}"
           ${canConvert ? '' : 'disabled'}
-          onclick="confirmMaterialToXp(${JSON.stringify(name)}, ${xpPer})">
+          onclick="confirmMaterialToXp(decodeURIComponent('${encodeURIComponent(name)}'), ${xpPer})">
           XPに変換する
         </button>
       </div>`;
