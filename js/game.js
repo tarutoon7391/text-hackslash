@@ -224,6 +224,7 @@ class Player {
     }
     // 狂戦士パッシブ: HP50%以下で2倍、HP25%以下で4倍（最終攻撃力に乗る）
     if (this.currentJob === 'berserker' && (this.skillTreeNodes['berserker'] || []).includes('bk_01')) {
+      // maxHp が0以下の場合は倍率を適用しない（安全フォールバック）
       const hpRatio = this.maxHp > 0 ? this.hp / this.maxHp : 1;
       if (hpRatio <= 0.25) {
         base = base * 4;
@@ -421,14 +422,17 @@ function doPlayerFlee() {
 }
 
 /** 賢者パッシブ: このターンの与ダメージの一部をHP回復する */
+// 吸魔の回収率定数（パッシブ増強前後）
+const SAGE_DRAIN_RATE_BASE     = 0.20; // sg_06 吸魔: 20%
+const SAGE_DRAIN_RATE_ENHANCED = 0.10; // sg_12 高等吸魔: +10%（合計30%）
 function applySageLifeDrain() {
   const player = game.player;
   if (player.currentJob !== 'sage') return;
   if (game.turnDamageDealt <= 0) return;
   const nodes = player.skillTreeNodes['sage'] || [];
   let drainRate = 0;
-  if (nodes.includes('sg_06')) drainRate += 0.20; // 吸魔: 20%
-  if (nodes.includes('sg_12')) drainRate += 0.10; // 高等吸魔: +10%（合計30%）
+  if (nodes.includes('sg_06')) drainRate += SAGE_DRAIN_RATE_BASE;
+  if (nodes.includes('sg_12')) drainRate += SAGE_DRAIN_RATE_ENHANCED;
   if (drainRate <= 0) return;
   const healAmt = Math.max(1, Math.floor(game.turnDamageDealt * drainRate));
   player.heal(healAmt);
