@@ -891,20 +891,20 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'pl_06', name: '聖盾', type: 'passive', description: 'パッシブ：被ダメージを10%軽減する', bonuses: {}, cost: 2, requires: 'pl_05' },
       { id: 'pl_07', name: '聖剣の道', type: 'stat', description: 'ATK +5', bonuses: { atk: 5 }, cost: 2, requires: 'pl_06' },
       { id: 'pl_08', name: '神聖な壁', type: 'stat', description: 'DEF +8 / HP +20', bonuses: { def: 8, hp: 20 }, cost: 2, requires: 'pl_07' },
-      { id: 'pl_09', name: '聖癒', type: 'skill', skillId: 'paladin_heal', description: '聖なる力でHPを回復（HP+50+Lv×3 / MP:20）', mpCost: 20, bonuses: {}, cost: 2, requires: 'pl_08' },
+      { id: 'pl_09', name: '聖盾展開', type: 'skill', skillId: 'paladin_heal', description: 'DEF1.5倍を3ターン継続（重複NG / MP:40）', mpCost: 40, bonuses: {}, cost: 2, requires: 'pl_08' },
       { id: 'pl_10', name: '神聖強化', type: 'stat', description: 'ATK +5 / DEF +5', bonuses: { atk: 5, def: 5 }, cost: 2, requires: 'pl_09' },
       { id: 'pl_11', name: '聖騎士の鎧', type: 'stat', description: 'DEF +12 / HP +30', bonuses: { def: 12, hp: 30 }, cost: 3, requires: 'pl_10' },
       { id: 'pl_12', name: '神聖防壁', type: 'passive', description: 'パッシブ：被ダメージをさらに20%軽減する（聖盾と合計30%軽減）', bonuses: {}, cost: 3, requires: 'pl_11' },
       { id: 'pl_13', name: '聖剣強化', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 3, requires: 'pl_12' },
-      { id: 'pl_14', name: '神聖回復', type: 'skill', skillId: 'paladin_big_heal', description: '強力な聖癒でHPを大回復（HP+80+Lv×4 / MP:30）', mpCost: 30, bonuses: {}, cost: 3, requires: 'pl_13' },
+      { id: 'pl_14', name: '神聖回復', type: 'skill', skillId: 'paladin_big_heal', description: '最大HP15%回復を2ターン継続（リジェネ / 重複NG / MP:50）', mpCost: 50, bonuses: {}, cost: 3, requires: 'pl_13' },
       { id: 'pl_15', name: '反撃の構え', type: 'passive', description: 'パッシブ：被攻撃時30%の確率でカウンター攻撃を行う', bonuses: {}, cost: 3, requires: 'pl_14' },
       { id: 'pl_16', name: '聖域の覚醒', type: 'stat', description: 'ATK +8 / DEF +10', bonuses: { atk: 8, def: 10 }, cost: 2, requires: 'pl_15' },
-      { id: 'pl_17', name: '神盾突き', type: 'skill', skillId: 'shield_bash', description: '盾で強打しDEFバフを張る（ATK×1.8 / MP:20 / DEF+60 2ターン）', mpCost: 20, bonuses: {}, cost: 2, requires: 'pl_16' },
+      { id: 'pl_17', name: '神盾突き', type: 'skill', skillId: 'shield_bash', description: '盾で強打しDEFバフを張る（ATK×1.5 / DEF1.3倍4ターン / 重複NG / MP:60）', mpCost: 60, bonuses: {}, cost: 2, requires: 'pl_16' },
       { id: 'pl_18', name: '聖騎士の覚醒', type: 'stat', description: 'ATK +10 / DEF +15 / HP +30', bonuses: { atk: 10, def: 15, hp: 30 }, cost: 2, requires: 'pl_17' },
-      { id: 'pl_19', name: '聖光斬り', type: 'skill', skillId: 'holy_slash', description: '聖なる光の斬撃（ATK×2.0 / MP:25 / 自己HP+50+Lv×3回復）', mpCost: 25, bonuses: {}, cost: 2, requires: 'pl_18' },
+      { id: 'pl_19', name: '聖光斬り', type: 'skill', skillId: 'holy_slash', description: '聖なる光の斬撃（ATK×3 / 最大HP35%即時回復 / MP:80）', mpCost: 80, bonuses: {}, cost: 2, requires: 'pl_18' },
       { id: 'pl_20', name: '神聖なる守護', type: 'stat', description: 'DEF +15 / HP +40', bonuses: { def: 15, hp: 40 }, cost: 3, requires: 'pl_19' },
       { id: 'pl_21', name: '聖騎士の至高', type: 'stat', description: 'ATK +12 / DEF +20 / HP +50', bonuses: { atk: 12, def: 20, hp: 50 }, cost: 3, requires: 'pl_20' },
-      { id: 'pl_22', name: '神聖無双', type: 'skill', skillId: 'divine_judgment', description: '神聖なる審判（ATK×3.5 / MP:55 / 自己HP大回復+DEF+100 3ターン）', mpCost: 55, bonuses: {}, cost: 3, requires: 'pl_21' },
+      { id: 'pl_22', name: '神聖無双', type: 'skill', skillId: 'divine_judgment', description: '神聖なる審判（最大HP30%リジェネ3ターン / DEF1.5倍 / 反撃100% / 重複NG / MP:250）', mpCost: 250, bonuses: {}, cost: 3, requires: 'pl_21' },
     ],
   },
   {
@@ -1860,7 +1860,7 @@ function useSkill(skillId) {
 
     case 'sanctuary': {
       // 聖域: DEF +40 バフ 4 ターン
-      game.shieldActive = { defenseBonus: 40, turnsLeft: 4 };
+      game.shieldActive.push({ source: 'sanctuary', defenseBonus: 40, turnsLeft: 4 });
       log(`🛡 ${player.name} は「聖域」を展開した！ 4 ターン DEF +40`, 'player-action');
       break;
     }
@@ -2024,7 +2024,7 @@ function useSkill(skillId) {
 
     case 'divine_shield': {
       // 神の護り: DEF+80 バフ 5 ターン
-      game.shieldActive = { defenseBonus: 80, turnsLeft: 5 };
+      game.shieldActive.push({ source: 'divine_shield', defenseBonus: 80, turnsLeft: 5 });
       log(`🛡 ${player.name} は「神の護り」を展開した！ 5 ターン DEF +80`, 'player-action');
       break;
     }
@@ -2071,7 +2071,7 @@ function useSkill(skillId) {
     case 'battle_trance': {
       // 戦神の覚醒: ATK+35 バフ 4 ターン + DEF+25 バフ 4 ターン
       game.playerAtkBuff = { bonus: 35, turnsLeft: 4 };
-      game.shieldActive  = { defenseBonus: 25, turnsLeft: 4 };
+      game.shieldActive.push({ source: 'battle_trance', defenseBonus: 25, turnsLeft: 4 });
       log(`⚡ ${player.name} は「戦神の覚醒」を発動！ 4 ターン ATK +35 / DEF +25`, 'player-action');
       break;
     }
@@ -2167,42 +2167,56 @@ function useSkill(skillId) {
     /* ── 聖騎士スキル ── */
 
     case 'paladin_heal': {
-      // 聖癒: HP+50+Lv×3 回復
-      const healAmt = 50 + player.level * 3;
-      player.heal(healAmt);
-      log(`✨ ${player.name} は「聖癒」を唱えた！ HP +${healAmt} 回復！`, 'player-action');
-      renderPlayerStatus();
+      // 聖盾展開: DEF1.5倍を3ターン継続（重複NG）
+      if (game.shieldActive.some(b => b.source === 'paladin_heal')) {
+        log('⚠ 「聖盾展開」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        break;
+      }
+      const defBonus = Math.floor(player.defense * 0.5);
+      game.shieldActive.push({ source: 'paladin_heal', defenseBonus: defBonus, turnsLeft: 3 });
+      log(`🛡 ${player.name} は「聖盾展開」を発動！ 3 ターン DEF +${defBonus}（DEF×1.5）`, 'player-action');
       break;
     }
 
     case 'paladin_big_heal': {
-      // 神聖回復: HP+80+Lv×4 大回復
-      const healAmt = 80 + player.level * 4;
-      player.heal(healAmt);
-      log(`💖 ${player.name} は「神聖回復」を唱えた！ HP +${healAmt} 大回復！`, 'player-action');
-      renderPlayerStatus();
+      // 神聖回復: 最大HP15%回復を2ターン継続（リジェネ / 重複NG）
+      if (game.playerRegen) {
+        log('⚠ 「神聖回復」はすでにリジェネが発動中です！', 'system');
+        player.mp += skill.mpCost;
+        break;
+      }
+      const hpPerTurn = Math.floor(player.maxHp * 0.15);
+      game.playerRegen = { hpPerTurn, turnsLeft: 2 };
+      log(`💖 ${player.name} は「神聖回復」を唱えた！ 2 ターン毎ターン HP +${hpPerTurn} 回復（リジェネ）！`, 'player-action');
       break;
     }
 
     case 'shield_bash': {
-      // 神盾突き: ATK×1.8 + DEF+60 バフ 2 ターン
-      const raw = Math.floor(player.effectiveAttack * 1.8) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 神盾突き: ATK×1.5 + DEF1.3倍バフ 4 ターン（重複NG）
+      if (game.shieldActive.some(b => b.source === 'shield_bash')) {
+        log('⚠ 「神盾突き」の防御バフはすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        break;
+      }
+      const raw = Math.floor(player.effectiveAttack * 1.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
-      game.shieldActive = { defenseBonus: 60, turnsLeft: 2 };
-      log(`🛡 ${player.name} は「神盾突き」を放った！ → ${enemy.name} に ${dmg} ダメージ！DEF +60（2ターン）`, 'player-action');
+      const defBonus = Math.floor(player.defense * 0.3);
+      game.shieldActive.push({ source: 'shield_bash', defenseBonus: defBonus, turnsLeft: 4 });
+      log(`🛡 ${player.name} は「神盾突き」を放った！ → ${enemy.name} に ${dmg} ダメージ！DEF +${defBonus}（DEF×1.3 / 4ターン）`, 'player-action');
       renderEnemyStatus();
       break;
     }
 
     case 'holy_slash': {
-      // 聖光斬り: ATK×2.0 + 自己HP回復
-      const raw = Math.floor(player.effectiveAttack * 2.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      // 聖光斬り: ATK×3 + 最大HP35%即時回復
+      const raw = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 4)), 'deal');
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
-      const healAmt = 50 + player.level * 3;
+      const healAmt = Math.floor(player.maxHp * 0.35);
       player.heal(healAmt);
       log(`⚔✨ ${player.name} は「聖光斬り」を放った！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！`, 'player-action');
       renderEnemyStatus();
@@ -2211,17 +2225,29 @@ function useSkill(skillId) {
     }
 
     case 'divine_judgment': {
-      // 神聖無双: ATK×3.5 + 自己HP大回復 + DEF+100 バフ 3 ターン
-      const raw = Math.floor(player.effectiveAttack * 3.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
-      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-3, 6)), 'deal');
-      enemy.takeDamage(dmg);
-      game.turnDamageDealt += dmg;
-      const healAmt = 100 + player.level * 5;
-      player.heal(healAmt);
-      game.shieldActive = { defenseBonus: 100, turnsLeft: 3 };
-      log(`🌟 ${player.name} は「神聖無双」を解放した！ → ${enemy.name} に ${dmg} ダメージ！HP +${healAmt} 回復！DEF +100（3ターン）`, 'player-action');
-      renderEnemyStatus();
-      renderPlayerStatus();
+      // 神聖無双: 最大HP30%リジェネ3ターン + DEF1.5倍3ターン + 反撃確率100%（重複NG）
+      const alreadyRegen   = !!game.playerRegen;
+      const alreadyDef     = game.shieldActive.some(b => b.source === 'divine_judgment');
+      const alreadyCounter = !!game.divineJudgmentActive;
+      if (alreadyRegen && alreadyDef && alreadyCounter) {
+        log('⚠ 「神聖無双」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        break;
+      }
+      if (!alreadyRegen) {
+        const hpPerTurn = Math.floor(player.maxHp * 0.30);
+        game.playerRegen = { hpPerTurn, turnsLeft: 3 };
+      }
+      if (!alreadyDef) {
+        const defBonus = Math.floor(player.defense * 0.5);
+        game.shieldActive.push({ source: 'divine_judgment', defenseBonus: defBonus, turnsLeft: 3 });
+      }
+      if (!alreadyCounter) {
+        game.divineJudgmentActive = { turnsLeft: 3 };
+      }
+      const regenAmt    = game.playerRegen.hpPerTurn;
+      const defBonusVal = game.shieldActive.find(b => b.source === 'divine_judgment').defenseBonus;
+      log(`🌟 ${player.name} は「神聖無双」を解放した！ 3 ターン毎ターン HP +${regenAmt} 回復（リジェネ）！DEF +${defBonusVal}（DEF×1.5）！反撃確率 100%！`, 'player-action');
       break;
     }
 
