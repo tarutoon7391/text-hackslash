@@ -200,6 +200,11 @@ class Player {
       this.defense = Math.floor(this.defense * 0.5);
     }
 
+    // 賢者パッシブ: sg_12（高等吸魔）取得済みの場合、最大MPを1.3倍にする
+    if (this.currentJob === 'sage' && (this.skillTreeNodes['sage'] || []).includes('sg_12')) {
+      this.maxMp = Math.floor(this.maxMp * 1.3);
+    }
+
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
     // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
     const hpDelta = this.maxHp - prevMaxHp;
@@ -221,6 +226,13 @@ class Player {
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
       base = Math.floor(base * game.playerCondense.atkMultiplier);
+    }
+    // 賢者倍率バフ（強化魔法・全体強化）を乗算で適用する
+    if (game.sageBuff && game.sageBuff.turnsLeft > 0) {
+      base = Math.floor(base * game.sageBuff.atkMultiplier);
+    }
+    if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) {
+      base = Math.floor(base * game.sageMegaBuff.atkMultiplier);
     }
     // 狂戦士パッシブ: HP50%以下で2倍、HP25%以下で4倍（最終攻撃力に乗る）
     if (this.currentJob === 'berserker' && (this.skillTreeNodes['berserker'] || []).includes('bk_01')) {
@@ -318,6 +330,8 @@ let game = {
   enemyPoisoned:     null,   // { active: bool, damage: N, turnsLeft: N }
   playerAtkBuff:     null,   // { bonus: N, turnsLeft: N } — 祝福スキル
   playerCondense:    null,   // { atkMultiplier: N, dmgMultiplier: N, justSet: bool } — 魔力凝縮
+  sageBuff:          null,   // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 強化魔法（倍率バフ）
+  sageMegaBuff:      null,   // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 全体強化（倍率バフ）
   enemyStunned:      false,  // 足払い・体当たりによるスタン
   enemyAtkDebuff:    null,   // { factor: 0.7, turnsLeft: N } — 威嚇・破壊の一撃
   playerRegen:       null,   // { hpPerTurn: N, turnsLeft: N } — リジェネスキル
@@ -422,9 +436,8 @@ function doPlayerFlee() {
 }
 
 /** 賢者パッシブ: このターンの与ダメージの一部をHP回復する */
-// 吸魔の回収率定数（パッシブ増強前後）
-const SAGE_DRAIN_RATE_BASE     = 0.20; // sg_06 吸魔: 20%
-const SAGE_DRAIN_RATE_ENHANCED = 0.10; // sg_12 高等吸魔: +10%（合計30%）
+// 吸魔の回収率定数
+const SAGE_DRAIN_RATE_BASE = 0.05; // sg_06 吸魔: 5%
 function applySageLifeDrain() {
   const player = game.player;
   if (player.currentJob !== 'sage') return;
@@ -432,7 +445,6 @@ function applySageLifeDrain() {
   const nodes = player.skillTreeNodes['sage'] || [];
   let drainRate = 0;
   if (nodes.includes('sg_06')) drainRate += SAGE_DRAIN_RATE_BASE;
-  if (nodes.includes('sg_12')) drainRate += SAGE_DRAIN_RATE_ENHANCED;
   if (drainRate <= 0) return;
   const healAmt = Math.max(1, Math.floor(game.turnDamageDealt * drainRate));
   player.heal(healAmt);
@@ -475,6 +487,20 @@ function tickPlayerBuffs() {
     if (game.playerAtkBuff.turnsLeft <= 0) {
       game.playerAtkBuff = null;
       log('🌟 祝福の効果が切れた。', 'system');
+    }
+  }
+  if (game.sageBuff && game.sageBuff.turnsLeft > 0) {
+    game.sageBuff.turnsLeft--;
+    if (game.sageBuff.turnsLeft <= 0) {
+      game.sageBuff = null;
+      log('📖 「強化魔法」の効果が切れた。', 'system');
+    }
+  }
+  if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) {
+    game.sageMegaBuff.turnsLeft--;
+    if (game.sageMegaBuff.turnsLeft <= 0) {
+      game.sageMegaBuff = null;
+      log('📖 「全体強化」の効果が切れた。', 'system');
     }
   }
 }
@@ -570,6 +596,23 @@ function doEnemyTurn() {
     if (game.shieldActive.turnsLeft <= 0) {
       game.shieldActive = null;
       log('🛡 防御バフの効果が切れた。', 'system');
+    }
+  }
+
+  // 賢者倍率DEFバフ（強化魔法・全体強化）を乗算で適用する
+  // DEF倍率バフは、プレイヤーの防御力を実質的に増加させることで被ダメージを軽減する
+  {
+    let defMult = 1.0;
+    if (game.sageBuff && game.sageBuff.turnsLeft > 0) {
+      defMult *= game.sageBuff.defMultiplier;
+    }
+    if (game.sageMegaBuff && game.sageMegaBuff.turnsLeft > 0) {
+      defMult *= game.sageMegaBuff.defMultiplier;
+    }
+    if (defMult > 1.0) {
+      // DEF×defMult に相当する追加ダメージ軽減を計算して適用する
+      const extraDef = Math.floor(game.player.defense * (defMult - 1) * DEFENSE_FACTOR);
+      rawDmg = Math.max(1, rawDmg - extraDef);
     }
   }
 
@@ -788,6 +831,8 @@ function initGame() {
   game.enemyPoisoned     = null;
   game.playerAtkBuff     = null;
   game.playerCondense    = null;
+  game.sageBuff          = null;
+  game.sageMegaBuff      = null;
   game.enemyStunned      = false;
   game.enemyAtkDebuff    = null;
   game.playerRegen       = null;
