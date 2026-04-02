@@ -1288,6 +1288,37 @@ footer {
 /* ===== スキルツリー画面 ===== */
 
 /* ルートタブ */
+/* Part1 / Part2 タブ切り替えボタン */
+.st-part-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.st-part-btn {
+  background-color: #0a0a0a;
+  color: #888;
+  border: 1px solid #555;
+  padding: 6px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.st-part-btn.active {
+  color: #00ff88;
+  border-color: #00ff88;
+  box-shadow: 0 0 8px #00ff8844;
+}
+
+.st-part-btn:hover:not(.active) {
+  color: #00cc66;
+  border-color: #00cc66;
+  background-color: #00ff8811;
+}
+
 .st-tabs {
   display: flex;
   gap: 6px;

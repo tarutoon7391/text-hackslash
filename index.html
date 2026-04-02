@@ -433,12 +433,22 @@
 
       <div class="sp-remaining" id="st-remaining">残りポイント: 0 pt</div>
 
-      <!-- ルートタブ -->
-      <div class="st-tabs" id="st-tabs">
+      <!-- Part1 / Part2 タブ切り替え -->
+      <div class="st-part-tabs" id="st-part-tabs">
+        <button class="st-part-btn active" id="st-part-btn-1" onclick="switchSkillTreePart(1)">◆ Part 1</button>
+        <button class="st-part-btn" id="st-part-btn-2" onclick="switchSkillTreePart(2)">◇ Part 2</button>
+      </div>
+
+      <!-- Part1 ルートタブ（剣士・魔法・僧侶・戦士） -->
+      <div class="st-tabs" id="st-tabs-part1">
         <button class="st-tab-btn active" data-route="swordsman" onclick="switchSkillTreeTab('swordsman')">⚔ 剣士</button>
         <button class="st-tab-btn" data-route="mage"       onclick="switchSkillTreeTab('mage')">🔮 魔法</button>
         <button class="st-tab-btn" data-route="cleric"     onclick="switchSkillTreeTab('cleric')">✨ 僧侶</button>
         <button class="st-tab-btn" data-route="warrior"    onclick="switchSkillTreeTab('warrior')">🥊 戦士</button>
+      </div>
+
+      <!-- Part2 ルートタブ（魔剣士・聖騎士・暗殺者・賢者・狂戦士） -->
+      <div class="st-tabs" id="st-tabs-part2" style="display:none">
         <button class="st-tab-btn tab-locked" id="st-tab-makenshi" data-route="makenshi" onclick="switchSkillTreeTab('makenshi')">🔒 魔剣士</button>
         <button class="st-tab-btn tab-locked" id="st-tab-paladin"   data-route="paladin"   onclick="switchSkillTreeTab('paladin')">🔒 聖騎士</button>
         <button class="st-tab-btn tab-locked" id="st-tab-assassin"  data-route="assassin"  onclick="switchSkillTreeTab('assassin')">🔒 暗殺者</button>
