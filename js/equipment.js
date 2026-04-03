@@ -926,6 +926,7 @@ function applyEquipmentEffects(rawDamage, direction) {
 
 /**
  * 攻撃ターン開始時に MP を回復する装備効果を処理する（金の聖剣・蒼銀の剣）
+ * effectLevelCalc が定義されている場合は段階式計算関数を使用する
  * effectLevelCoeff が定義されている場合はプレイヤーレベル × 係数（端数切り捨て・最低1）で計算する
  */
 function applyMpRegenEffect() {
@@ -936,7 +937,9 @@ function applyMpRegenEffect() {
     if (!eqId) return;
     const eq = EQUIPMENT_DEFINITIONS.find(e => e.id === eqId);
     if (eq && eq.effectType === 'mpRegen') {
-      if (eq.effectLevelCoeff !== undefined) {
+      if (eq.effectLevelCalc) {
+        mpRegen += eq.effectLevelCalc(player.level);
+      } else if (eq.effectLevelCoeff !== undefined) {
         mpRegen += Math.max(1, Math.floor(player.level * eq.effectLevelCoeff));
       } else {
         mpRegen += eq.effectValue;

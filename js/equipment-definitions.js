@@ -5377,8 +5377,8 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
     growthCoeff: { attack: 2.0, defense: 0.8, maxHp: 1.5, maxMp: 2.0 },
     effectType: 'mpRegen',
-    effectLevelCoeff: 0.5,
-    effectDesc: '毎ターン MP+Lv×0.5（端数切り捨て・最低1）',
+    effectLevelCalc: calcAoginMpRegen,
+    effectDesc: '毎ターン MP回復（Lv99以下：Lv×0.5 / Lv100〜199：段階減衰 / Lv200以上：緩やかに増加・上限100）',
     recipe: { 'ミスリル': 3, '蒼天晶': 3 },
   },
 
@@ -5472,6 +5472,34 @@ const EQUIPMENT_DEFINITIONS = [
   },
 
 ];
+
+/* ==============================================================
+   蒼銀の剣 — 段階式MP回復量計算
+   ============================================================== */
+
+/**
+ * 蒼銀の剣の MP 回復量をプレイヤーレベルに応じて段階的に計算する
+ * - Lv1〜99  : Lv × 0.5
+ * - Lv100〜199: 50 + (Lv - 100) × 0.2
+ * - Lv200〜499: 70 + (Lv - 200) × 0.1
+ * - Lv500    : 上限 100 固定
+ * 端数切り捨て・最低 1 を適用した整数値を返す
+ * @param {number} level - プレイヤーレベル
+ * @returns {number} 計算後のMP回復量（整数・最低1）
+ */
+function calcAoginMpRegen(level) {
+  let raw;
+  if (level >= 500) {
+    raw = 100;
+  } else if (level >= 200) {
+    raw = 70 + (level - 200) * 0.1;
+  } else if (level >= 100) {
+    raw = 50 + (level - 100) * 0.2;
+  } else {
+    raw = level * 0.5;
+  }
+  return Math.max(1, Math.floor(raw));
+}
 
 /* ==============================================================
    成長型武器のステータス計算
