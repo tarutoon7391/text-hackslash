@@ -2222,7 +2222,6 @@ function useSkill(skillId) {
         setButtonsEnabled(true);
         return;
       }
-      }
       const raw = Math.floor(player.effectiveAttack * 1.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
       const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 3)), 'deal');
       enemy.takeDamage(dmg);
