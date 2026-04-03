@@ -834,7 +834,18 @@ function showSkillPanel(route) {
     listHtml = displaySkills
       .map(s => {
         const noMp = player.mp < s.mpCost;
-        return `<button class="skill-btn${noMp ? ' disabled' : ''}" ${noMp ? 'disabled' : ''} onclick="useSkill('${s.id}')">
+        const noHp = (() => {
+          // HP消費スキルの使用条件チェック
+          switch (s.id) {
+            case 'blood_price':        return player.hp <= 30;
+            case 'self_harm_strike':   return player.hp / player.maxHp <= 0.20;
+            case 'berserk_rampage':    return player.hp / player.maxHp <= 0.30;
+            case 'annihilation_strike': return player.hp / player.maxHp <= 0.50;
+            default: return false;
+          }
+        })();
+        const disabled = noMp || noHp;
+        return `<button class="skill-btn${disabled ? ' disabled' : ''}" ${disabled ? 'disabled' : ''} onclick="useSkill('${s.id}')">
           ${s.name}（MP:${s.mpCost}）<br><small>${s.description}</small>
         </button>`;
       })

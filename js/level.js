@@ -975,23 +975,23 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'bk_03', name: '怒りの力', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'bk_02' },
       { id: 'bk_04', name: '破壊本能', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'bk_03' },
       { id: 'bk_05', name: '狂乱の目', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'bk_04' },
-      { id: 'bk_06', name: '血の代償', type: 'skill', skillId: 'blood_price', description: 'HP30を消費して強烈な一撃（ATK×2.5 防御無視 / MP:10 / HP:30消費）', mpCost: 10, bonuses: {}, cost: 2, requires: 'bk_05' },
+      { id: 'bk_06', name: '血の代償', type: 'skill', skillId: 'blood_price', description: 'HP30を消費して強烈な一撃（ATK×2.5 防御無視 / MP:20 / HP:30消費）', mpCost: 20, bonuses: {}, cost: 2, requires: 'bk_05' },
       { id: 'bk_07', name: '獣化', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 2, requires: 'bk_06' },
       { id: 'bk_08', name: '血の嵐', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 2, requires: 'bk_07' },
-      { id: 'bk_09', name: '狂乱突き', type: 'skill', skillId: 'berserk_stab', description: '狂乱の突き（ATK×2.0 / MP:15）', mpCost: 15, bonuses: {}, cost: 2, requires: 'bk_08' },
+      { id: 'bk_09', name: '狂乱突き', type: 'skill', skillId: 'berserk_stab', description: '狂乱の突き（ATK×2.0 / MP:30）', mpCost: 30, bonuses: {}, cost: 2, requires: 'bk_08' },
       { id: 'bk_10', name: '怒りの炎', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'bk_09' },
       { id: 'bk_11', name: '狂戦士の鼓動', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 3, requires: 'bk_10' },
-      { id: 'bk_12', name: '自傷攻撃', type: 'skill', skillId: 'self_harm_strike', description: '最大HPの20%を消費して強烈な一撃（ATK×3.5 防御完全無視 / MP:20）', mpCost: 20, bonuses: {}, cost: 3, requires: 'bk_11' },
+      { id: 'bk_12', name: '自傷攻撃', type: 'skill', skillId: 'self_harm_strike', description: '最大HPの20%を消費して強烈な一撃（ATK×3.5 防御完全無視 / MP:40）', mpCost: 40, bonuses: {}, cost: 3, requires: 'bk_11' },
       { id: 'bk_13', name: '血の一撃', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 3, requires: 'bk_12' },
-      { id: 'bk_14', name: '絶命の刃', type: 'skill', skillId: 'lethal_blade', description: '致命の一撃（ATK×4.0 / MP:30）', mpCost: 30, bonuses: {}, cost: 3, requires: 'bk_13' },
+      { id: 'bk_14', name: '絶命の刃', type: 'skill', skillId: 'lethal_blade', description: '致命の一撃（ATK×4.0 / MP:60）', mpCost: 60, bonuses: {}, cost: 3, requires: 'bk_13' },
       { id: 'bk_15', name: '死力の境地', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'bk_14' },
       { id: 'bk_16', name: '狂乱の極意', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 2, requires: 'bk_15' },
-      { id: 'bk_17', name: '血の蹂躙', type: 'skill', skillId: 'blood_rampage', description: '血に狂った2連撃（ATK×3.0×2 / MP:25）', mpCost: 25, bonuses: {}, cost: 2, requires: 'bk_16' },
+      { id: 'bk_17', name: '血の蹂躙', type: 'skill', skillId: 'blood_rampage', description: '血に狂った2連撃（ATK×3.0×2 / MP:50）', mpCost: 50, bonuses: {}, cost: 2, requires: 'bk_16' },
       { id: 'bk_18', name: '狂戦士の真髄', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 2, requires: 'bk_17' },
-      { id: 'bk_19', name: '怒りの暴走', type: 'skill', skillId: 'berserk_rampage', description: '最大HPの30%を消費して大爆発（ATK×6.0 防御完全無視 / MP:30）', mpCost: 30, bonuses: {}, cost: 2, requires: 'bk_18' },
+      { id: 'bk_19', name: '怒りの暴走', type: 'skill', skillId: 'berserk_rampage', description: '最大HPの30%を消費して大爆発（ATK×6.0 防御完全無視 / MP:60）', mpCost: 60, bonuses: {}, cost: 2, requires: 'bk_18' },
       { id: 'bk_20', name: '終末の力', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 3, requires: 'bk_19' },
       { id: 'bk_21', name: '狂神の覚醒', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 3, requires: 'bk_20' },
-      { id: 'bk_22', name: '絶滅の一撃', type: 'skill', skillId: 'annihilation_strike', description: '最大HPの50%を消費して究極爆発（ATK×12.0 防御完全無視 / MP:50）', mpCost: 50, bonuses: {}, cost: 3, requires: 'bk_21' },
+      { id: 'bk_22', name: '絶滅の一撃', type: 'skill', skillId: 'annihilation_strike', description: '最大HPの50%を消費して究極爆発（ATK×12.0 防御完全無視 / MP:100）', mpCost: 100, bonuses: {}, cost: 3, requires: 'bk_21' },
     ],
   },
 ];
@@ -1712,6 +1712,21 @@ function useSkill(skillId) {
 
   if (player.mp < skill.mpCost) {
     log('⚠ MP が足りない！', 'system');
+    return;
+  }
+
+  // HP消費スキルの使用条件チェック
+  const hpInsufficient = (() => {
+    switch (skillId) {
+      case 'blood_price':        return player.hp <= 30;
+      case 'self_harm_strike':   return player.hp / player.maxHp <= 0.20;
+      case 'berserk_rampage':    return player.hp / player.maxHp <= 0.30;
+      case 'annihilation_strike': return player.hp / player.maxHp <= 0.50;
+      default: return false;
+    }
+  })();
+  if (hpInsufficient) {
+    log('⚠ HP が足りない！', 'system');
     return;
   }
 
