@@ -5382,6 +5382,94 @@ const EQUIPMENT_DEFINITIONS = [
     recipe: { 'ミスリル': 3, '蒼天晶': 3 },
   },
 
+  /**
+   * 神聖の穿槍 — 聖騎士専用の成長型限定武器
+   * ATK×0.8 / DEF×2.0 / HP×2.0 / MP×1.5
+   * isSpecialEnhance: true でサンストーン＋聖光晶×強化レベル数の素材を消費する
+   * requiresRecipe: 'hasRecipeSeisou' のフラグが必要（ガチャで入手）
+   * 強化: 基本ステータス × (1 + 0.1 × 強化レベル)
+   * 特殊効果: 聖騎士装備中のみ反撃ダメージ+50%（強化ごとに+10%追加）
+   */
+  {
+    id: 'seisou_no_sou',
+    name: '神聖の穿槍',
+    slot: '武器',
+    rarity: 'limited',
+    isGrowth: true,
+    isSpecialEnhance: true,
+    requiresRecipe: 'hasRecipeSeisou',
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    growthCoeff: { attack: 0.8, defense: 2.0, maxHp: 2.0, maxMp: 1.5 },
+    effectType: 'counter',
+    effectDesc: '聖騎士装備中：反撃ダメージ+50%（強化ごとに+10%追加）',
+    recipe: { 'サンストーン': 3, '聖光晶': 3 },
+  },
+
+  /**
+   * 黒曜の短剣 — 暗殺者専用の成長型限定武器（強化なし）
+   * ATK×3.3 / DEF×0.5 / HP×0.5 / MP×2.0
+   * requiresRecipe: 'hasRecipeKokuyou' のフラグが必要（ガチャで入手）
+   * 特殊効果: 暗殺者装備中のみ30%の確率で敵の行動をスキップして追加ターンを獲得
+   */
+  {
+    id: 'kokuyou_no_tanken',
+    name: '黒曜の短剣',
+    slot: '武器',
+    rarity: 'limited',
+    isGrowth: true,
+    requiresRecipe: 'hasRecipeKokuyou',
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    growthCoeff: { attack: 3.3, defense: 0.5, maxHp: 0.5, maxMp: 2.0 },
+    effectType: 'extraTurn',
+    effectDesc: '暗殺者装備中：30%の確率で敵の行動をスキップして追加ターン獲得',
+    recipe: { 'ダークオパール': 3, '黒曜石': 3 },
+  },
+
+  /**
+   * 翠賢の杖 — 賢者専用の成長型限定武器
+   * ATK×1.5 / DEF×1.0 / HP×1.0 / MP×2.8
+   * isSpecialEnhance: true でマラカイト＋翠晶×強化レベル数の素材を消費する
+   * requiresRecipe: 'hasRecipeSuiken' のフラグが必要（ガチャで入手）
+   * 強化: 基本ステータス × (1 + 0.1 × 強化レベル)
+   * 特殊効果: MP20以上で通常攻撃にMP20消費・火力×1.4倍 / MP20未満はATK×0.8倍
+   */
+  {
+    id: 'suiken_no_tsue',
+    name: '翠賢の杖',
+    slot: '武器',
+    rarity: 'limited',
+    isGrowth: true,
+    isSpecialEnhance: true,
+    requiresRecipe: 'hasRecipeSuiken',
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    growthCoeff: { attack: 1.5, defense: 1.0, maxHp: 1.0, maxMp: 2.8 },
+    effectType: 'mpAttack',
+    effectDesc: 'MP20以上：通常攻撃にMP20消費・火力×1.4倍 / MP20未満：ATK×0.8倍（MP消費なし）',
+    recipe: { 'マラカイト': 3, '翠晶': 3 },
+  },
+
+  /**
+   * 狂血斧 — 狂戦士専用の成長型限定武器
+   * ATK×3.0 / DEF×3.0 / HP×0 / MP×0.3
+   * isSpecialEnhance: true でブラッドストーン＋紅炎石×強化レベル数の素材を消費する
+   * requiresRecipe: 'hasRecipeKyouketsu' のフラグが必要（ガチャで入手）
+   * 強化: 基本ステータス × (1 + 0.1 × 強化レベル)
+   * 特殊効果: 装備中はHP回復不可・ATK×1.5倍（職業問わず）
+   */
+  {
+    id: 'kyouketsu_no_ono',
+    name: '狂血斧',
+    slot: '武器',
+    rarity: 'limited',
+    isGrowth: true,
+    isSpecialEnhance: true,
+    requiresRecipe: 'hasRecipeKyouketsu',
+    stats: { attack: 0, defense: 0, maxHp: 0, maxMp: 0 },
+    growthCoeff: { attack: 3.0, defense: 3.0, maxHp: 0, maxMp: 0.3 },
+    effectType: 'noHeal',
+    effectDesc: '装備中はHP回復不可（スキル・リジェネ・全て無効）・ATK×1.5倍（職業問わず）',
+    recipe: { 'ブラッドストーン': 3, '紅炎石': 3 },
+  },
 
 ];
 
