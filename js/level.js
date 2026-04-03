@@ -1097,8 +1097,8 @@ function unlockMakenshiRoute() {
   autoSave();
 }
 
-/** 上級職のジョブID一覧 */
-const JOB_IDS = ['paladin', 'assassin', 'sage', 'berserker'];
+/** 上級職のジョブID一覧（グローバルスコープに置くため var を使用） */
+var JOB_IDS = ['paladin', 'assassin', 'sage', 'berserker'];
 
 /**
  * 新規4職業の共通解放前提条件を確認する（全4基本ルートMAX済み）
