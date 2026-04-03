@@ -1,7 +1,5 @@
 // ranking.js — ランキング機能
 
-const RANKING_API_URL = 'https://lomo-s2409009.ssl-lolipop.jp/public_html/api.php';
-
 // 現在表示中のタブ ('level' | 'legend')
 let currentRankingTab = 'level';
 
@@ -27,17 +25,13 @@ async function renderRanking() {
   document.getElementById('ranking-loading').style.display = '';
 
   try {
-    const response = await fetch(RANKING_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'ranking' }),
+    // save.js の apiRequest を使うことで、エラーハンドリングを統一する。
+    // ログイン中であればユーザー名・パスワードも渡す（サーバーが認証を要求する場合に対応）。
+    const data = await apiRequest({
+      action:   'ranking',
+      username: auth.username || undefined,
+      password: auth.password || undefined,
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
 
     if (!data.success) {
       throw new Error(data.message || 'ランキングの取得に失敗しました');
@@ -68,8 +62,9 @@ async function renderRanking() {
   } catch (e) {
     document.getElementById('ranking-loading').style.display = 'none';
     const errEl = document.getElementById('ranking-error');
-    errEl.textContent = `⚠ データの取得に失敗しました: ${e.message}`;
+    errEl.textContent = `⚠ ランキングの取得に失敗しました。しばらく時間をおいてから再度お試しください。`;
     errEl.style.display = '';
+    console.error('ランキング取得エラー:', e.message);
   }
 }
 

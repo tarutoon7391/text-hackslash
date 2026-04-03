@@ -166,10 +166,20 @@ async function apiRequest(body) {
   // 手動でパースする。BOM や前後の空白も除去して対応する。
   const text = await response.text();
   try {
-    return JSON.parse(text.replace(/^\uFEFF/, '').trim());
+    const parsed = JSON.parse(text.replace(/^\uFEFF/, '').trim());
+    // サーバーが 4xx/5xx を返した場合でも JSON が取れた場合はそのまま返す
+    // （呼び出し側で success / status を確認して処理する）
+    return parsed;
   } catch (_e) {
     console.error('JSON パース失敗:', _e, 'レスポンス冒頭:', text.substring(0, 200));
-    throw new Error(`サーバーから不正なレスポンスが返されました（ステータス: ${response.status}）`);
+    // HTTP ステータスに応じて分かりやすいメッセージを返す
+    if (response.status >= 500) {
+      throw new Error('サーバーで問題が発生しました。しばらく時間をおいてから再度お試しください。');
+    }
+    if (response.status >= 400) {
+      throw new Error('サーバーとの通信に失敗しました。再度ログインするか、しばらく時間をおいてからお試しください。');
+    }
+    throw new Error('サーバーから不正なレスポンスが返されました。しばらく時間をおいてから再度お試しください。');
   }
 }
 
@@ -272,6 +282,10 @@ async function logoutUser() {
   auth.password = null;
   game.player   = null;
 
+  // 自動セーブの失敗カウントをリセットする
+  autoSaveFailCount    = 0;
+  autoSaveFailNotified = false;
+
   // ガチャ履歴をクリアする（別アカウントに引き継がれないようにする）
   const gachaLogEl = document.getElementById('gacha-log');
   if (gachaLogEl) gachaLogEl.innerHTML = '';
@@ -288,21 +302,57 @@ async function logoutUser() {
 
 // ── 自動セーブ ────────────────────────────────────────────────────
 
+/** 自動セーブの連続失敗回数 */
+let autoSaveFailCount = 0;
+
+/** 自動セーブ失敗を通知済みかどうか */
+let autoSaveFailNotified = false;
+
 /**
  * 現在のゲームデータをサーバーにセーブする（サイレント）。
  * ログインしていない場合は何もしない。
+ * 連続して失敗した場合はゲームログに警告を表示する。
  */
 async function autoSave() {
   if (!auth.username || !auth.password || !game.player) return;
   try {
-    await apiRequest({
+    const result = await apiRequest({
       action:   'save',
       username: auth.username,
       password: auth.password,
       save:     buildSaveData(),
     });
+    // 成功した場合は失敗カウントをリセットする
+    if (result && (result.status === 'ok' || result.success)) {
+      autoSaveFailCount = 0;
+      autoSaveFailNotified = false;
+    } else if (result && (result.status === 'error' || result.message)) {
+      // サーバーがエラーを返した場合
+      autoSaveFailCount++;
+      _notifyAutoSaveFailureIfNeeded(result.message);
+    }
   } catch (_err) {
-    // 自動セーブの失敗は無視する
+    autoSaveFailCount++;
+    _notifyAutoSaveFailureIfNeeded(_err.message);
+  }
+}
+
+/**
+ * 一定回数以上の自動セーブ失敗を検知した場合にゲームログで警告する。
+ * @param {string} [serverMessage] - サーバーから返ってきたエラーメッセージ（任意）
+ */
+function _notifyAutoSaveFailureIfNeeded(serverMessage) {
+  const FAIL_THRESHOLD = 3;
+  if (autoSaveFailCount >= FAIL_THRESHOLD && !autoSaveFailNotified) {
+    autoSaveFailNotified = true;
+    const msg = serverMessage
+      ? `⚠ 自動セーブに失敗し続けています。データが保存されていない可能性があります。（${serverMessage}）`
+      : '⚠ 自動セーブに失敗し続けています。データが保存されていない可能性があります。';
+    if (typeof log === 'function') {
+      log(msg, 'error');
+    } else {
+      console.warn(msg);
+    }
   }
 }
 
