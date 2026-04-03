@@ -1455,9 +1455,9 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'rk_08', name: '魔剣の蓄積', type: 'stat', description: 'ATK +10 / MP +18', bonuses: { atk: 10, mp: 18 }, cost: 2, requires: 'rk_07' },
       { id: 'rk_09', name: 'ルーンナイトの技I', type: 'skill', skillId: 'rk_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_08' },
       { id: 'rk_10', name: '魔剣の極限', type: 'stat', description: 'ATK +12 / MP +20', bonuses: { atk: 12, mp: 20 }, cost: 2, requires: 'rk_09' },
-      { id: 'rk_11', name: '深淵の魔力II', type: 'stat', description: 'ATK +14 / MP +25', bonuses: { atk: 14, mp: 25 }, cost: 3, requires: 'rk_10' },
+      { id: 'rk_11', name: '深淵の魔力', type: 'stat', description: 'ATK +14 / MP +25', bonuses: { atk: 14, mp: 25 }, cost: 3, requires: 'rk_10' },
       { id: 'rk_12', name: 'ルーンの奥義', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'rk_11' },
-      { id: 'rk_13', name: '究極の剣技II', type: 'stat', description: 'ATK +16 / MP +20', bonuses: { atk: 16, mp: 20 }, cost: 3, requires: 'rk_12' },
+      { id: 'rk_13', name: '究極の剣技', type: 'stat', description: 'ATK +16 / MP +20', bonuses: { atk: 16, mp: 20 }, cost: 3, requires: 'rk_12' },
       { id: 'rk_14', name: 'ルーンナイトの技II', type: 'skill', skillId: 'rk_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'rk_13' },
       { id: 'rk_15', name: '魔法剣の覚醒', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'rk_14' },
       { id: 'rk_16', name: 'ルーンの海', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 2, requires: 'rk_15' },
@@ -2533,14 +2533,6 @@ function acquireAllSkillNodes(routeId) {
   if (!p.skillTreeNodes[routeId]) p.skillTreeNodes[routeId] = [];
 
   for (const node of acquirable) {
-    // 特級職の場合、ノード取得ごとに上級職ノード数を再チェックする
-    if (ELITE_JOB_IDS.includes(routeId)) {
-      const parentId         = ELITE_TO_PARENT[routeId];
-      const parentAcquiredCnt = (p.skillTreeNodes[parentId] || []).length;
-      const eliteAcquiredCnt  = p.skillTreeNodes[routeId].length;
-      if (parentAcquiredCnt < eliteAcquiredCnt + 1) break;
-    }
-
     p.skillPoints -= node.cost;
     p.skillTreeNodes[routeId].push(node.id);
 
