@@ -279,6 +279,29 @@ function startNextDungeonBattle() {
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
   game.divineJudgmentActive = null;
+  // 特級職バトル状態を初期化する
+  game.phantomAvoidChance       = 0;
+  game.phantomAvoidSuccessCount = 0;
+  game.pendingEffects           = [];
+  game.runeGrantActive          = false;
+  game.runeGrantAtkMult         = 1.0;
+  game.runeGrantDmgMult         = 1.0;
+  game.runeReleaseActive        = false;
+  game.runeReleaseUsed          = false;
+  game.runeStrikeAtkBuff        = null;
+  game.enemyDefDebuff           = null;
+  game.enemyAmpDmgActive        = null;
+  game.crusaderApocCooldown     = 0;
+  game.phantomBladeDoT          = null;
+  game.phantomDeathStrikeActive = null;
+  game.prophecyActive           = null;
+  game.oracleProphecyFlowActive = false;
+  game.oracleEnhanceBuff        = null;
+  game.oracleBurstActive        = null;
+  game.oracleSpiritActive       = null;
+  game.divinePunishmentDoT      = null;
+  game.divineJudgmentDebuff     = null;
+  game.ctRuinousWoundBuff       = null;
 
   // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
   recordMonsterEncounter(game.enemy.name);
@@ -696,6 +719,29 @@ function startNextGachaDungeonBattle() {
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
   game.divineJudgmentActive = null;
+  // 特級職バトル状態を初期化する
+  game.phantomAvoidChance       = 0;
+  game.phantomAvoidSuccessCount = 0;
+  game.pendingEffects           = [];
+  game.runeGrantActive          = false;
+  game.runeGrantAtkMult         = 1.0;
+  game.runeGrantDmgMult         = 1.0;
+  game.runeReleaseActive        = false;
+  game.runeReleaseUsed          = false;
+  game.runeStrikeAtkBuff        = null;
+  game.enemyDefDebuff           = null;
+  game.enemyAmpDmgActive        = null;
+  game.crusaderApocCooldown     = 0;
+  game.phantomBladeDoT          = null;
+  game.phantomDeathStrikeActive = null;
+  game.prophecyActive           = null;
+  game.oracleProphecyFlowActive = false;
+  game.oracleEnhanceBuff        = null;
+  game.oracleBurstActive        = null;
+  game.oracleSpiritActive       = null;
+  game.divinePunishmentDoT      = null;
+  game.divineJudgmentDebuff     = null;
+  game.ctRuinousWoundBuff       = null;
 
   // 図鑑: 遭遇を記録する
   recordMonsterEncounter(game.enemy.name);
@@ -935,6 +981,29 @@ function startNextXpDungeonBattle() {
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
   game.divineJudgmentActive = null;
+  // 特級職バトル状態を初期化する
+  game.phantomAvoidChance       = 0;
+  game.phantomAvoidSuccessCount = 0;
+  game.pendingEffects           = [];
+  game.runeGrantActive          = false;
+  game.runeGrantAtkMult         = 1.0;
+  game.runeGrantDmgMult         = 1.0;
+  game.runeReleaseActive        = false;
+  game.runeReleaseUsed          = false;
+  game.runeStrikeAtkBuff        = null;
+  game.enemyDefDebuff           = null;
+  game.enemyAmpDmgActive        = null;
+  game.crusaderApocCooldown     = 0;
+  game.phantomBladeDoT          = null;
+  game.phantomDeathStrikeActive = null;
+  game.prophecyActive           = null;
+  game.oracleProphecyFlowActive = false;
+  game.oracleEnhanceBuff        = null;
+  game.oracleBurstActive        = null;
+  game.oracleSpiritActive       = null;
+  game.divinePunishmentDoT      = null;
+  game.divineJudgmentDebuff     = null;
+  game.ctRuinousWoundBuff       = null;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1121,6 +1190,29 @@ function startNextRaremonDungeonBattle() {
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
   game.divineJudgmentActive = null;
+  // 特級職バトル状態を初期化する
+  game.phantomAvoidChance       = 0;
+  game.phantomAvoidSuccessCount = 0;
+  game.pendingEffects           = [];
+  game.runeGrantActive          = false;
+  game.runeGrantAtkMult         = 1.0;
+  game.runeGrantDmgMult         = 1.0;
+  game.runeReleaseActive        = false;
+  game.runeReleaseUsed          = false;
+  game.runeStrikeAtkBuff        = null;
+  game.enemyDefDebuff           = null;
+  game.enemyAmpDmgActive        = null;
+  game.crusaderApocCooldown     = 0;
+  game.phantomBladeDoT          = null;
+  game.phantomDeathStrikeActive = null;
+  game.prophecyActive           = null;
+  game.oracleProphecyFlowActive = false;
+  game.oracleEnhanceBuff        = null;
+  game.oracleBurstActive        = null;
+  game.oracleSpiritActive       = null;
+  game.divinePunishmentDoT      = null;
+  game.divineJudgmentDebuff     = null;
+  game.ctRuinousWoundBuff       = null;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1336,6 +1428,29 @@ function startNextSkillDungeonBattle() {
   game.playerSageMegaBuff = null;
   game.playerMakenshiAwakeningBuff = null;
   game.divineJudgmentActive = null;
+  // 特級職バトル状態を初期化する
+  game.phantomAvoidChance       = 0;
+  game.phantomAvoidSuccessCount = 0;
+  game.pendingEffects           = [];
+  game.runeGrantActive          = false;
+  game.runeGrantAtkMult         = 1.0;
+  game.runeGrantDmgMult         = 1.0;
+  game.runeReleaseActive        = false;
+  game.runeReleaseUsed          = false;
+  game.runeStrikeAtkBuff        = null;
+  game.enemyDefDebuff           = null;
+  game.enemyAmpDmgActive        = null;
+  game.crusaderApocCooldown     = 0;
+  game.phantomBladeDoT          = null;
+  game.phantomDeathStrikeActive = null;
+  game.prophecyActive           = null;
+  game.oracleProphecyFlowActive = false;
+  game.oracleEnhanceBuff        = null;
+  game.oracleBurstActive        = null;
+  game.oracleSpiritActive       = null;
+  game.divinePunishmentDoT      = null;
+  game.divineJudgmentDebuff     = null;
+  game.ctRuinousWoundBuff       = null;
 
   recordMonsterEncounter(game.enemy.name);
 
