@@ -6,6 +6,6 @@
  * アップデート完了後に false に戻してデプロイすればメンテナンス解除。
  */
 const MAINTENANCE = {
-  enabled: false,
+  enabled: true,
   message: 'メンテナンス中です。 🔧情報はこちらから ▶︎ https://discord.gg/KTGPJuuMY ',
 };
