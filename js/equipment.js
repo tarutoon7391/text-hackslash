@@ -1030,9 +1030,14 @@ function getEnhanceStatBoost(eq) {
  * @returns {object} - { 素材名: 必要数, ... }
  */
 function getEnhanceCost(eq, nextLevel) {
-  // 特殊強化: 蒼銀の剣など isSpecialEnhance フラグのある装備
+  // 特殊強化: 蒼銀の剣・上級職専用武器など isSpecialEnhance フラグのある装備
+  // 各武器のレシピ素材名を使い、強化後レベル数ずつ消費する
   if (eq.isSpecialEnhance) {
-    return { 'ミスリル': nextLevel, '蒼天晶': nextLevel };
+    const cost = {};
+    if (eq.recipe) {
+      Object.keys(eq.recipe).forEach(mat => { cost[mat] = nextLevel; });
+    }
+    return cost;
   }
 
   const rarity = eq.rarity || 'normal';

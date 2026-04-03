@@ -42,6 +42,16 @@ const GACHA_TABLE = [
   { id: 'gacha_mithril',   name: 'ミスリル',  type: 'limitedMaterial', rarity: 'limited', weight: 30 },
   { id: 'gacha_souten',    name: '蒼天晶',    type: 'limitedMaterial', rarity: 'limited', weight: 30 },
 
+  /* ── 上級職専用武器の限定素材 ── */
+  { id: 'gacha_sunstone',     name: 'サンストーン',   type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_seikoushou',   name: '聖光晶',         type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_darkopal',     name: 'ダークオパール',  type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_obsidian',     name: '黒曜石',         type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_malachite',    name: 'マラカイト',      type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_suishou',      name: '翠晶',           type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_bloodstone',   name: 'ブラッドストーン', type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+  { id: 'gacha_kouenteki',    name: '紅炎石',          type: 'limitedMaterial', rarity: 'limited', weight: 15 },
+
   /* ── クラフトレシピ（永続品） ── */
   {
     id: 'recipe_aogin',
@@ -51,6 +61,42 @@ const GACHA_TABLE = [
     permanent: true,
     flag: 'hasRecipeAogin',
     weight: 20,
+  },
+  {
+    id: 'recipe_seisou',
+    name: '神聖の穿槍のレシピ',
+    type: 'recipe',
+    rarity: 'recipe',
+    permanent: true,
+    flag: 'hasRecipeSeisou',
+    weight: 10,
+  },
+  {
+    id: 'recipe_kokuyou',
+    name: '黒曜の短剣のレシピ',
+    type: 'recipe',
+    rarity: 'recipe',
+    permanent: true,
+    flag: 'hasRecipeKokuyou',
+    weight: 10,
+  },
+  {
+    id: 'recipe_suiken',
+    name: '翠賢の杖のレシピ',
+    type: 'recipe',
+    rarity: 'recipe',
+    permanent: true,
+    flag: 'hasRecipeSuiken',
+    weight: 10,
+  },
+  {
+    id: 'recipe_kyouketsu',
+    name: '狂血斧のレシピ',
+    type: 'recipe',
+    rarity: 'recipe',
+    permanent: true,
+    flag: 'hasRecipeKyouketsu',
+    weight: 10,
   },
 
   /* ── スキルツリーの書（永続品） ── */
@@ -224,19 +270,27 @@ function renderGachaScreen() {
 
   const permEl = document.getElementById('gacha-perm-status');
   if (permEl) {
-    const hasRecipe        = p.permanentItems.hasRecipeAogin   ? '✅ 入手済み' : '❌ 未入手';
-    const hasBook          = p.permanentItems.hasBookMakenshi  ? '✅ 入手済み' : '❌ 未入手';
-    const hasBookPaladin   = p.permanentItems.hasBookPaladin   ? '✅ 入手済み' : '❌ 未入手';
-    const hasBookAssassin  = p.permanentItems.hasBookAssassin  ? '✅ 入手済み' : '❌ 未入手';
-    const hasBookSage      = p.permanentItems.hasBookSage      ? '✅ 入手済み' : '❌ 未入手';
-    const hasBookBerserker = p.permanentItems.hasBookBerserker ? '✅ 入手済み' : '❌ 未入手';
+    const hasRecipe        = p.permanentItems.hasRecipeAogin     ? '✅ 入手済み' : '❌ 未入手';
+    const hasBook          = p.permanentItems.hasBookMakenshi    ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookPaladin   = p.permanentItems.hasBookPaladin     ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookAssassin  = p.permanentItems.hasBookAssassin    ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookSage      = p.permanentItems.hasBookSage        ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookBerserker = p.permanentItems.hasBookBerserker   ? '✅ 入手済み' : '❌ 未入手';
+    const hasRecipeSeisou    = p.permanentItems.hasRecipeSeisou    ? '✅ 入手済み' : '❌ 未入手';
+    const hasRecipeKokuyou   = p.permanentItems.hasRecipeKokuyou   ? '✅ 入手済み' : '❌ 未入手';
+    const hasRecipeSuiken    = p.permanentItems.hasRecipeSuiken    ? '✅ 入手済み' : '❌ 未入手';
+    const hasRecipeKyouketsu = p.permanentItems.hasRecipeKyouketsu ? '✅ 入手済み' : '❌ 未入手';
     permEl.innerHTML =
       `<span>📜 蒼銀の剣のレシピ: ${hasRecipe}</span>` +
       `<span>📖 魔剣士の書: ${hasBook}</span>` +
       `<span>📖 聖騎士の書: ${hasBookPaladin}</span>` +
       `<span>📖 暗殺者の書: ${hasBookAssassin}</span>` +
       `<span>📖 賢者の書: ${hasBookSage}</span>` +
-      `<span>📖 狂戦士の書: ${hasBookBerserker}</span>`;
+      `<span>📖 狂戦士の書: ${hasBookBerserker}</span>` +
+      `<span>📜 神聖の穿槍のレシピ: ${hasRecipeSeisou}</span>` +
+      `<span>📜 黒曜の短剣のレシピ: ${hasRecipeKokuyou}</span>` +
+      `<span>📜 翠賢の杖のレシピ: ${hasRecipeSuiken}</span>` +
+      `<span>📜 狂血斧のレシピ: ${hasRecipeKyouketsu}</span>`;
   }
 
   const btn1  = document.getElementById('btn-gacha-1');

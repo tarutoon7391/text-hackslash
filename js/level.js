@@ -883,7 +883,7 @@ const SKILL_TREE_DEFINITIONS = [
     name: '聖騎士',
     description: '僧侶×戦士の上位ルート。被ダメージ軽減・自己回復・カウンターを備えた耐久型職業。全4ルートMAX＋聖騎士の書で解放。',
     nodes: [
-      { id: 'pl_01', name: '聖盾の心得', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 1, requires: null },
+      { id: 'pl_01', name: '聖騎士の刻印', type: 'passive', description: 'パッシブ：神聖の穿槍装備中：全ステータス×1.2倍', bonuses: {}, cost: 1, requires: null },
       { id: 'pl_02', name: '聖なる体力', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: 'pl_01' },
       { id: 'pl_03', name: '守護の誓い', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 1, requires: 'pl_02' },
       { id: 'pl_04', name: '神の加護', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: 'pl_03' },
@@ -912,7 +912,7 @@ const SKILL_TREE_DEFINITIONS = [
     name: '暗殺者',
     description: '剣士×戦士の上位ルート。HP・防御力が半減する代わりに会心率・防御無視特化の超攻撃型職業。全4ルートMAX＋暗殺者の書で解放。',
     nodes: [
-      { id: 'as_01', name: '暗殺者の刻印', type: 'passive', description: 'パッシブ（取得必須）：HP最大値・防御力が装備込み最終値の50%になる', bonuses: {}, cost: 1, requires: null },
+      { id: 'as_01', name: '暗殺者の刻印', type: 'passive', description: 'パッシブ：黒曜の短剣装備中：全ステータス×1.2倍', bonuses: {}, cost: 1, requires: null },
       { id: 'as_02', name: '影の心得', type: 'stat', description: 'ATK +5', bonuses: { atk: 5 }, cost: 1, requires: 'as_01' },
       { id: 'as_03', name: '急所の見切り', type: 'stat', description: 'ATK +5', bonuses: { atk: 5 }, cost: 1, requires: 'as_02' },
       { id: 'as_04', name: '影の速さ', type: 'stat', description: 'ATK +6', bonuses: { atk: 6 }, cost: 1, requires: 'as_03' },
@@ -941,7 +941,7 @@ const SKILL_TREE_DEFINITIONS = [
     name: '賢者',
     description: '魔法×僧侶の上位ルート。攻撃魔法と回復を兼ね備えた万能型。与ダメージの一部をHP回復するパッシブが強力。全4ルートMAX＋賢者の書で解放。',
     nodes: [
-      { id: 'sg_01', name: '賢者の素養', type: 'stat', description: 'ATK +3 / MP +5', bonuses: { atk: 3, mp: 5 }, cost: 1, requires: null },
+      { id: 'sg_01', name: '賢者の素養', type: 'passive', description: 'パッシブ：翠賢の杖装備中：全ステータス×1.2倍', bonuses: {}, cost: 1, requires: null },
       { id: 'sg_02', name: '知識の蓄積', type: 'stat', description: 'ATK +3 / MP +8', bonuses: { atk: 3, mp: 8 }, cost: 1, requires: 'sg_01' },
       { id: 'sg_03', name: '魔力の体現', type: 'stat', description: 'ATK +4 / MP +5', bonuses: { atk: 4, mp: 5 }, cost: 1, requires: 'sg_02' },
       { id: 'sg_04', name: '治癒の流れ', type: 'stat', description: 'HP +15 / MP +8', bonuses: { hp: 15, mp: 8 }, cost: 1, requires: 'sg_03' },
@@ -970,7 +970,7 @@ const SKILL_TREE_DEFINITIONS = [
     name: '狂戦士',
     description: '戦士×剣士の上位ルート。HP50%以下で攻撃力2倍、HP25%以下で4倍になる超ハイリスクハイリターン型。全4ルートMAX＋狂戦士の書で解放。',
     nodes: [
-      { id: 'bk_01', name: '狂戦士の刻印', type: 'passive', description: 'パッシブ（取得必須）：HP50%以下で攻撃力2倍、HP25%以下で攻撃力4倍（装備ATK込み最終攻撃力に乗る）', bonuses: {}, cost: 1, requires: null },
+      { id: 'bk_01', name: '狂戦士の刻印', type: 'passive', description: 'パッシブ：狂血斧装備中：全ステータス×1.2倍', bonuses: {}, cost: 1, requires: null },
       { id: 'bk_02', name: '血の咆哮', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'bk_01' },
       { id: 'bk_03', name: '怒りの力', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'bk_02' },
       { id: 'bk_04', name: '破壊本能', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'bk_03' },
@@ -1343,7 +1343,10 @@ function gainExp(expGained) {
     // ステータス再計算（装備含む）
     player.recalcStats();
     // HP / MP を最大値まで回復（レベルアップボーナス）
-    player.hp = player.maxHp;
+    // 狂血斧装備中はHP回復不可のため現在HPはそのまま保持する
+    if (!Object.values(player.equipment).includes('kyouketsu_no_ono')) {
+      player.hp = player.maxHp;
+    }
     player.mp = player.maxMp;
   }
 

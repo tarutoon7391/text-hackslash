@@ -194,10 +194,48 @@ class Player {
       this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
-    // 暗殺者パッシブ: 最初のノード取得済みの場合、最終HP最大値・防御力を半減する
-    if (this.currentJob === 'assassin' && (this.skillTreeNodes['assassin'] || []).includes('as_01')) {
-      this.maxHp   = Math.floor(this.maxHp   * 0.5);
-      this.defense = Math.floor(this.defense * 0.5);
+    // 神聖の穿槍×聖騎士シナジー: pl_01 取得済み かつ 神聖の穿槍を装備中
+    // → 会心率以外の全ステータス×1.2倍
+    const hasPaladinSynergy  = this.currentJob === 'paladin'   && (this.skillTreeNodes['paladin']   || []).includes('pl_01');
+    const hasSeisouNoSou     = Object.values(this.equipment).includes('seisou_no_sou');
+    if (hasPaladinSynergy && hasSeisouNoSou) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
+    }
+
+    // 黒曜の短剣×暗殺者シナジー: as_01 取得済み かつ 黒曜の短剣を装備中
+    // → 会心率以外の全ステータス×1.2倍
+    const hasAssassinSynergy = this.currentJob === 'assassin'  && (this.skillTreeNodes['assassin']  || []).includes('as_01');
+    const hasKokuyouNoTanken = Object.values(this.equipment).includes('kokuyou_no_tanken');
+    if (hasAssassinSynergy && hasKokuyouNoTanken) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
+    }
+
+    // 翠賢の杖×賢者シナジー: sg_01 取得済み かつ 翠賢の杖を装備中
+    // → 会心率以外の全ステータス×1.2倍
+    const hasSageSynergy     = this.currentJob === 'sage'      && (this.skillTreeNodes['sage']      || []).includes('sg_01');
+    const hasSuikenNoTsue    = Object.values(this.equipment).includes('suiken_no_tsue');
+    if (hasSageSynergy && hasSuikenNoTsue) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
+    }
+
+    // 狂血斧×狂戦士シナジー: bk_01 取得済み かつ 狂血斧を装備中
+    // → 会心率以外の全ステータス×1.2倍
+    const hasBerserkerSynergy = this.currentJob === 'berserker' && (this.skillTreeNodes['berserker'] || []).includes('bk_01');
+    const hasKyouketsuNoOno   = Object.values(this.equipment).includes('kyouketsu_no_ono');
+    if (hasBerserkerSynergy && hasKyouketsuNoOno) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
     // 賢者パッシブ sg_12 (魔力増幅): 最大MPを1.3倍にする
@@ -243,15 +281,9 @@ class Player {
     if (game.playerCondense && !game.playerCondense.justSet) {
       base = Math.floor(base * game.playerCondense.atkMultiplier);
     }
-    // 狂戦士パッシブ: HP50%以下で2倍、HP25%以下で4倍（最終攻撃力に乗る）
-    if (this.currentJob === 'berserker' && (this.skillTreeNodes['berserker'] || []).includes('bk_01')) {
-      // maxHp が0以下の場合は倍率を適用しない（安全フォールバック）
-      const hpRatio = this.maxHp > 0 ? this.hp / this.maxHp : 1;
-      if (hpRatio <= 0.25) {
-        base = base * 4;
-      } else if (hpRatio <= 0.5) {
-        base = base * 2;
-      }
+    // 狂血斧: 装備中は職業問わず ATK×1.5倍
+    if (Object.values(this.equipment).includes('kyouketsu_no_ono')) {
+      base = Math.floor(base * 1.5);
     }
     return Math.floor(base);
   }
@@ -300,8 +332,11 @@ class Player {
     return reduced;
   }
 
-  /** HP を回復する（maxHp を超えない） */
-  heal(amount) { this.hp = Math.min(this.maxHp, this.hp + amount); }
+  /** HP を回復する（maxHp を超えない）。狂血斧装備中はHP回復を完全に無効化する。 */
+  heal(amount) {
+    if (Object.values(this.equipment).includes('kyouketsu_no_ono')) return;
+    this.hp = Math.min(this.maxHp, this.hp + amount);
+  }
 }
 
 /* ==============================================================
@@ -404,6 +439,10 @@ function doPlayerAttack() {
   // MP回復攻撃パッシブ（魔剣士 mk_06）が有効かチェック
   const hasMpRecovery = (player.skillTreeNodes['makenshi'] || []).includes('mk_06');
 
+  // 翠賢の杖: 賢者装備中のみ通常攻撃が特殊効果に変化
+  const hasSuikenNoTsue = Object.values(player.equipment).includes('suiken_no_tsue');
+  const suikenActive    = player.currentJob === 'sage' && hasSuikenNoTsue;
+
   // 暗殺者パッシブチェック
   const assassinNodes = player.skillTreeNodes['assassin'] || [];
   const hasDefPierce  = player.currentJob === 'assassin' && assassinNodes.includes('as_08');
@@ -412,6 +451,10 @@ function doPlayerAttack() {
   // 超会心（as_11）が有効なら70%、会心強化（as_06）なら50%
   const critChance    = hasCrit70 ? 0.70 : (hasCrit50 ? 0.50 : 0);
   const isCrit        = critChance > 0 && Math.random() < critChance;
+
+  // 黒曜の短剣: 暗殺者装備中のみ30%の確率で追加ターン獲得（攻撃前に判定）
+  const hasKokuyouNoTanken = Object.values(player.equipment).includes('kokuyou_no_tanken');
+  const kokuyouExtraTurn   = player.currentJob === 'assassin' && hasKokuyouNoTanken && Math.random() < 0.30;
 
   if (hasMpRecovery) {
     // 通常攻撃の0.6倍ダメージ・MP +30 回復（maxMp を超えない）
@@ -424,6 +467,24 @@ function doPlayerAttack() {
     const mpGained = player.mp - mpBefore;
     log(`⚔✨ ${player.name} の「MP回復攻撃」！ → ${enemy.name} に ${dmg} ダメージ！MP +${mpGained} 回復！`, 'player-action');
     renderPlayerStatus();
+  } else if (suikenActive) {
+    // 翠賢の杖: MP20以上で火力×1.4倍（MP20消費）、MP20未満で杖で殴る（ATK×0.8倍）
+    if (player.mp >= 20) {
+      player.mp -= 20;
+      const rawDmg = player.calcAttackDamage(enemy);
+      const dmg    = applyEquipmentEffects(Math.max(1, Math.floor(rawDmg * 1.4)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`🔮 ${player.name} の「翠賢の杖」魔力攻撃！ → ${enemy.name} に ${dmg} ダメージ！（MP -20）`, 'player-action');
+      renderPlayerStatus();
+    } else {
+      // MP不足: ATK×0.8倍・MP消費なし
+      const raw = Math.floor(player.effectiveAttack * 0.8) - Math.floor(enemy.defense * DEFENSE_FACTOR);
+      const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 2)), 'deal');
+      enemy.takeDamage(dmg);
+      game.turnDamageDealt += dmg;
+      log(`🪄 ${player.name} は「翠賢の杖」で殴った！ → ${enemy.name} に ${dmg} ダメージ！（MP不足）`, 'player-action');
+    }
   } else if (isCrit) {
     // 暗殺者会心: 防御完全無視の会心攻撃
     const raw = Math.floor(player.effectiveAttack * 1.5);
@@ -446,6 +507,29 @@ function doPlayerAttack() {
   }
 
   renderEnemyStatus();
+
+  // 黒曜の短剣: 追加ターン処理（暗殺者装備中のみ・敵が生存時に発動）
+  if (kokuyouExtraTurn && enemy.isAlive()) {
+    log(`⚡ 「黒曜の短剣」の効果発動！敵の行動をスキップして追加ターン獲得！`, 'player-action');
+    // 賢者吸魔パッシブを適用してからターンダメージをリセット
+    applySageLifeDrain();
+    game.turnDamageDealt = 0;
+    // 魔力凝縮の状態を進める（justSet なら false に変更、凝縮中なら解除）
+    if (game.playerCondense) {
+      if (game.playerCondense.justSet) {
+        game.playerCondense.justSet = false;
+      } else {
+        game.playerCondense = null;
+      }
+    }
+    renderPlayerStatus();
+    game.state = GameState.PLAYER_TURN;
+    log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
+    log('追加ターン！アクションを選んでください。', 'system');
+    setButtonsEnabled(true);
+    return;
+  }
+
   afterPlayerTurn();
 }
 
@@ -665,9 +749,18 @@ function doEnemyTurn() {
       game.player.isAlive()) {
     const counterChance = (game.divineJudgmentActive && game.divineJudgmentActive.turnsLeft > 0) ? 1.0 : 0.30;
     if (Math.random() < counterChance) {
-      const counterDmg = Math.max(1, Math.floor(game.player.attack * 0.8));
+      // 神聖の穿槍装備中：反撃ダメージ+50%（強化ごとに+10%追加）
+      // 聖騎士以外装備時は反撃効果は発動しない（currentJob === 'paladin' で担保済み）
+      const seisouEquipped = Object.values(game.player.equipment).includes('seisou_no_sou');
+      let counterMult = 0.8;
+      if (seisouEquipped) {
+        const seisouEnhLv = game.player.enhanceLevels['seisou_no_sou'] || 0;
+        counterMult = 0.8 * (1.5 + 0.1 * seisouEnhLv);
+      }
+      const counterDmg = Math.max(1, Math.floor(game.player.attack * counterMult));
       game.enemy.takeDamage(counterDmg);
-      log(`🛡 「反撃の構え」発動！カウンター攻撃で ${game.enemy.name} に ${counterDmg} ダメージ！`, 'player-action');
+      const seisouMsg = seisouEquipped ? '（神聖の穿槍強化）' : '';
+      log(`🛡 「反撃の構え」発動！カウンター攻撃で ${game.enemy.name} に ${counterDmg} ダメージ！${seisouMsg}`, 'player-action');
       renderEnemyStatus();
     }
   }
