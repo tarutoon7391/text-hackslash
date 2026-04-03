@@ -9,6 +9,12 @@
 const NEWS_DEFINITIONS = (function () {
   const items = [
     {
+      id: 'news_009',
+      date: '2026-04-03',
+      title: 'レベル上限をLv500に引き上げました',
+      content: 'キャラクターの最大レベルをLv200からLv500に拡張しました。Lv150以降はレベルアップごとにATK+2・DEF+2・HP+7・MP+4を獲得できます。また、Lv100以降は10レベルごとにSPを5pt獲得できます（Lv500到達時の累計SP：441pt）。',
+    },
+    {
       id: 'news_008',
       date: '2026-04-03',
       title: '上級職専用武器4種を実装しました',
