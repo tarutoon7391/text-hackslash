@@ -1029,11 +1029,11 @@ function doEnemyTurn() {
       });
   }
 
-  // クルセイダーパッシブ①（聖域の守護）：被ダメージ15%軽減
-  if (game.player.currentJob === 'crusader') {
+  // クルセイダーパッシブ①（聖域の守護）：被ダメージ15%軽減（絶対防壁中はすでに0のため適用しない）
+  if (!absoluteShield && game.player.currentJob === 'crusader') {
     const crNodes = game.player.skillTreeNodes['crusader'] || [];
     if (crNodes.includes('cr_06')) {
-      rawDmg = Math.max(absoluteShield ? 0 : 1, Math.floor(rawDmg * 0.85));
+      rawDmg = Math.max(1, Math.floor(rawDmg * 0.85));
     }
   }
 
