@@ -1562,6 +1562,97 @@ function unlockJobRoute(jobId) {
   autoSave();
 }
 
+/**
+ * 特級職への転職処理
+ * @param {string} jobId - 特級職のジョブID（crusader / phantom / oracle / catastrophe / rune_knight）
+ */
+function unlockEliteJobRoute(jobId) {
+  const p = game.player;
+  const SKILL_STONE_NAME = 'スキルストーン';
+  const REQUIRED_STONES = 10;
+
+  // 特級職名マップ
+  const eliteJobNames = {
+    crusader:    'クルセイダー',
+    phantom:     'ファントム',
+    oracle:      'オラクル',
+    catastrophe: 'カタストロフ',
+    rune_knight: 'ルーンナイト',
+  };
+
+  // 特級職の書フラグマップ
+  const eliteBookFlags = {
+    crusader:    'hasBookCrusader',
+    phantom:     'hasBookPhantom',
+    oracle:      'hasBookOracle',
+    catastrophe: 'hasBookCatastrophe',
+    rune_knight: 'hasBookRuneKnight',
+  };
+
+  // 特級職の昇格元（上級職）マップ
+  const eliteSourceJobs = {
+    crusader:    'paladin',
+    phantom:     'assassin',
+    oracle:      'sage',
+    catastrophe: 'berserker',
+    rune_knight: 'makenshi',
+  };
+
+  const jobName   = eliteJobNames[jobId]   || jobId;
+  const bookFlag  = eliteBookFlags[jobId];
+  const sourceJob = eliteSourceJobs[jobId];
+
+  // 1. 対応する書の所持チェック
+  if (!bookFlag || !p.permanentItems[bookFlag]) {
+    alert('スキルの書が必要です');
+    return;
+  }
+
+  // 2. Lv100以上チェック
+  if (p.level < 100) {
+    alert('Lv100以上が必要です');
+    return;
+  }
+
+  // 3. スキルストーン10個チェック
+  const stoneCount = p.materials[SKILL_STONE_NAME] || 0;
+  if (stoneCount < REQUIRED_STONES) {
+    alert('スキルストーンが10個必要です');
+    return;
+  }
+
+  // 4. 対応する上級職に就いているか確認
+  if (p.currentJob !== sourceJob) {
+    alert('対応する上級職に就いている必要があります');
+    return;
+  }
+
+  // 5. スキルストーンを10個消費
+  p.materials[SKILL_STONE_NAME] -= REQUIRED_STONES;
+  if (p.materials[SKILL_STONE_NAME] <= 0) {
+    delete p.materials[SKILL_STONE_NAME];
+  }
+
+  // 6. 書を消費済みにする
+  p.usedBooks[bookFlag] = true;
+
+  // 7. 特級職をセット
+  p.currentJob = jobId;
+
+  // 8. ステータス再計算
+  p.recalcStats();
+
+  // 9. ログに就職メッセージを表示
+  log(`✨ 特級職${jobName}に就職しました！`, 'system');
+
+  // 画面再描画
+  renderSkillTree();
+  renderLobbyStatus();
+
+  // 自動セーブ
+  autoSave();
+}
+
 /* ==============================================================
    EXP 加算・レベルアップ処理
    ============================================================== */

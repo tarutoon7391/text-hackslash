@@ -243,6 +243,36 @@ class Player {
       this.maxMp = Math.floor(this.maxMp * 1.3);
     }
 
+    // 特級職: クルセイダー（paladin の上位職）
+    // Phase 4 のパッシブ実装時にステータス補正を追加予定
+    if (this.currentJob === 'crusader') {
+      // 特級職ステータス補正（Phase 4 で追加）
+    }
+
+    // 特級職: ファントム（assassin の上位職）
+    // Phase 4 のパッシブ実装時にステータス補正を追加予定
+    if (this.currentJob === 'phantom') {
+      // 特級職ステータス補正（Phase 4 で追加）
+    }
+
+    // 特級職: オラクル（sage の上位職）
+    // Phase 4 のパッシブ実装時にステータス補正を追加予定
+    if (this.currentJob === 'oracle') {
+      // 特級職ステータス補正（Phase 4 で追加）
+    }
+
+    // 特級職: カタストロフ（berserker の上位職）
+    // Phase 4 のパッシブ実装時にステータス補正を追加予定
+    if (this.currentJob === 'catastrophe') {
+      // 特級職ステータス補正（Phase 4 で追加）
+    }
+
+    // 特級職: ルーンナイト（makenshi の上位職）
+    // Phase 4 のパッシブ実装時にステータス補正を追加予定
+    if (this.currentJob === 'rune_knight') {
+      // 特級職ステータス補正（Phase 4 で追加）
+    }
+
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
     // 最大HPが減少した場合は現在HPを新しい最大HPにクランプする
     const hpDelta = this.maxHp - prevMaxHp;
