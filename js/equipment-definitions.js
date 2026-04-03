@@ -5491,7 +5491,7 @@ const EQUIPMENT_DEFINITIONS = [
  */
 function computeGrowthStats(eq, level) {
   if (!eq.isGrowth) return eq.stats;
-  const lv = Math.max(1, Math.min(200, level || 1));
+  const lv = Math.max(1, Math.min(500, level || 1));
   const coeff = eq.growthCoeff || { attack: 0, defense: 0, maxHp: 0, maxMp: 0 };
   return {
     attack:  Math.floor(lv * coeff.attack),
