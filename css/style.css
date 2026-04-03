@@ -1582,6 +1582,61 @@ footer {
   line-height: 1;
 }
 
+/* 全解放ボタン */
+.st-all-unlock {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+  border-bottom: 1px solid #222;
+  margin-bottom: 8px;
+}
+
+.st-all-unlock-btn {
+  background-color: #0a1a0a;
+  color: #00ff88;
+  border: 1px solid #00aa55;
+  padding: 8px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.88rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.st-all-unlock-btn:hover:not(:disabled) {
+  background-color: #0a2a1a;
+  box-shadow: 0 0 8px #00aa55;
+}
+
+.st-all-unlock-btn:disabled {
+  color: #555;
+  border-color: #333;
+  cursor: not-allowed;
+}
+
+/* 特級職プレビューモードのノード */
+.st-node.st-node-preview {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.st-node.st-node-preview.available {
+  border-color: #444;
+  cursor: default;
+}
+
+.st-node.st-node-preview.available:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* 特級職閲覧モードのプレビューエリア */
+.st-elite-preview {
+  margin-top: 12px;
+  border-top: 1px dashed #333;
+  padding-top: 8px;
+}
+
 /* ===== 装備強化ボタン ===== */
 .enhance-btn {
   color: #ffaa00;
