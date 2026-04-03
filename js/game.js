@@ -306,6 +306,18 @@ class Player {
       atkMult *= game.playerSageBuff.atkMultiplier;
     if (game.playerSageMegaBuff && game.playerSageMegaBuff.turnsLeft > 0)
       atkMult *= game.playerSageMegaBuff.atkMultiplier;
+    // 特級職バフ：ルーン付与（ルーンナイト）
+    if (game.runeGrantActive) atkMult *= game.runeGrantAtkMult;
+    // 特級職バフ：天啓強化（オラクル）
+    if (game.oracleEnhanceBuff) atkMult *= game.oracleEnhanceBuff.atkMult;
+    // 特級職バフ：オラクルバースト（オラクル）
+    if (game.oracleBurstActive) atkMult *= game.oracleBurstActive.atkMult;
+    // 特級職バフ：破滅の傷（カタストロフ）
+    if (game.ctRuinousWoundBuff) atkMult *= game.ctRuinousWoundBuff.atkMult;
+    // 特級職バフ：ルーンストライク自ATKバフ
+    if (game.runeStrikeAtkBuff) atkMult *= game.runeStrikeAtkBuff.factor;
+    // 特級職バフ：ファントム攻撃回避後ATKバフ（影の極致）
+    if (game.phantomAvoidBuff && game.phantomAvoidBuff.turnsLeft > 0) atkMult *= game.phantomAvoidBuff.factor;
     if (atkMult !== 1.0) base = Math.floor(base * atkMult);
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
@@ -330,6 +342,10 @@ class Player {
     // 魔剣士の覚醒 DEF倍率バフ
     if (game.playerMakenshiAwakeningBuff && game.playerMakenshiAwakeningBuff.turnsLeft > 0)
       mult *= game.playerMakenshiAwakeningBuff.defMultiplier;
+    // 特級職バフ：天啓強化（オラクル）
+    if (game.oracleEnhanceBuff) mult *= game.oracleEnhanceBuff.defMult;
+    // 特級職バフ：オラクルバースト（オラクル）
+    if (game.oracleBurstActive) mult *= game.oracleBurstActive.defMult;
     return Math.floor(this.defense * mult);
   }
 
@@ -391,6 +407,15 @@ class Enemy {
 
   isAlive()       { return this.hp > 0; }
   takeDamage(amt) { this.hp = Math.max(0, this.hp - amt); }
+
+  /** DEFデバフを適用した実効防御力を返す（スキルダメージ計算用） */
+  get effectiveDefense() {
+    let def = this.defense;
+    if (game.enemyDefDebuff && game.enemyDefDebuff.turnsLeft > 0) {
+      def = Math.floor(def * game.enemyDefDebuff.factor);
+    }
+    return def;
+  }
 }
 
 /* ==============================================================
@@ -429,6 +454,30 @@ let game = {
   playerMakenshiAwakeningBuff: null, // { atkMultiplier: N, defMultiplier: N, turnsLeft: N } — 魔剣士の覚醒（倍率バフ）
   divineJudgmentActive: null, // { turnsLeft: N } — 神聖無双：反撃の構え100%化用フラグ
   turnDamageDealt:   0,      // このターンにプレイヤーが与えた総ダメージ（賢者吸魔パッシブ用）
+  // 特級職バトル状態（バトル開始時に初期化）
+  phantomAvoidChance:       0,     // ファントム攻撃無効化確率（%整数）
+  phantomAvoidSuccessCount: 0,     // バトル中の攻撃無効化成功回数（亡霊の死撃用）
+  pendingEffects:           [],    // 遅延エフェクト配列
+  runeGrantActive:          false, // ルーン付与発動中フラグ
+  runeGrantAtkMult:         1.0,   // ルーン付与ATK倍率
+  runeGrantDmgMult:         1.0,   // ルーン付与被ダメ倍率
+  runeReleaseActive:        false, // ルーン解放発動中フラグ（スキル効果×2）
+  runeReleaseUsed:          false, // ルーン解放使用済みフラグ（バトル中1回）
+  runeStrikeAtkBuff:        null,  // ルーンストライクATKバフ
+  enemyDefDebuff:           null,  // 敵DEFデバフ { factor: N, turnsLeft: N, source: '...' }
+  enemyAmpDmgActive:        null,  // 敵被ダメ増加（災厄の咆哮）{ factor: N, turnsLeft: N }
+  crusaderApocCooldown:     0,     // クルセイドアポカリプスクールダウン
+  phantomBladeDoT:          null,  // 亡霊の刃毎ターン追加ダメージ
+  phantomDeathStrikeActive: null,  // 亡霊の死撃避け追加中
+  prophecyActive:           null,  // 予言系スキル待機状態
+  oracleProphecyFlowActive: false, // 予言の奔流発動中フラグ
+  oracleEnhanceBuff:        null,  // 天啓強化バフ
+  oracleBurstActive:        null,  // オラクルバーストバフ
+  oracleSpiritActive:       null,  // 天啓聖魔召喚状態
+  divinePunishmentDoT:      null,  // 神罰魔法毎ターンDoT
+  divineJudgmentDebuff:     null,  // 神罰魔法敵デバフ
+  ctRuinousWoundBuff:       null,  // 破滅の傷バフ（カタストロフ）
+  phantomAvoidBuff:         null,  // ファントム無効化後ATKバフ
 };
 
 /* ==============================================================
@@ -659,6 +708,13 @@ function tickPlayerBuffs() {
       log('🌟 神聖無双の反撃強化効果が切れた。', 'system');
     }
   }
+  // 敵DEFデバフのターン管理（スキルによる設定）
+  if (game.enemyDefDebuff && game.enemyDefDebuff.turnsLeft > 0 && game.enemyDefDebuff.turnsLeft < 999) {
+    game.enemyDefDebuff.turnsLeft--;
+    if (game.enemyDefDebuff.turnsLeft <= 0) {
+      game.enemyDefDebuff = null;
+    }
+  }
 }
 
 /**
@@ -696,6 +752,130 @@ function tickPlayerDelayedHeal() {
   }
 }
 
+/**
+ * 遅延エフェクト（pendingEffects）を処理する
+ * ターン終了時に呼ばれ、各エフェクトのturnsLeftを-1し、0になったら発動して削除する
+ */
+function processPendingEffects() {
+  const player = game.player;
+  const enemy  = game.enemy;
+
+  for (let i = game.pendingEffects.length - 1; i >= 0; i--) {
+    const eff = game.pendingEffects[i];
+    eff.turnsLeft--;
+
+    if (eff.turnsLeft <= 0) {
+      // エフェクト発動
+      switch (eff.type) {
+        case 'heal': {
+          player.heal(eff.value);
+          log(`💚 「${eff.skillId}」遅延回復発動！HP +${eff.value} 回復！`, 'player-action');
+          renderPlayerStatus();
+          break;
+        }
+        case 'damage_noDef': {
+          const dName = eff.msgTemplate || eff.skillId;
+          if (enemy.isAlive()) {
+            enemy.takeDamage(eff.value);
+            log(`💥 「${dName}」発動！ → ${enemy.name} に ${eff.value} ダメージ！（防御無視）`, 'player-action');
+            renderEnemyStatus();
+          }
+          break;
+        }
+        case 'debuff_atkFactor': {
+          // 次ターン敵ATKデバフ（ルーン爆裂斬）
+          if (!game.enemyAtkDebuff || game.enemyAtkDebuff.factor > eff.value) {
+            game.enemyAtkDebuff = { factor: eff.value, turnsLeft: 1 };
+          }
+          log(`💢 遅延デバフ発動：${enemy.name} のATK×${eff.value}デバフ（1ターン）！`, 'system');
+          break;
+        }
+        case 'self_debuff_atkdef': {
+          // 自ATK・DEFデバフ（ルーンカタクリズム）
+          if (!game.pendingRkSelfDebuff) {
+            game.pendingRkSelfDebuff = { factor: eff.value, turnsLeft: 1 };
+          }
+          log(`⚠ ルーンカタクリズムの反動：自ATK・DEF×${eff.value}デバフが発動！（1ターン）`, 'system');
+          break;
+        }
+        case 'self_debuff_def': {
+          // 自DEFデバフ（亡霊の死撃）
+          if (!game.pendingPhDefDebuff) {
+            game.pendingPhDefDebuff = { factor: eff.value, turnsLeft: 99 };
+          }
+          log(`⚠ 亡霊の死撃の代償：自DEFが1/3に低下した！`, 'system');
+          break;
+        }
+        case 'self_damage_pct': {
+          // 自傷ダメージ（破滅の傷）
+          const selfDmg = Math.floor(player.maxHp * eff.value);
+          player.hp = Math.max(1, player.hp - selfDmg);
+          log(`💀 「破滅の傷」自傷：HP -${selfDmg} ！`, 'player-action');
+          renderPlayerStatus();
+          break;
+        }
+        case 'damage_phantom_death': {
+          // 亡霊の死撃遅延ダメージ（無効化回数×ATK×20）
+          if (enemy.isAlive()) {
+            const countM = game.phantomAvoidSuccessCount > 0
+              ? game.phantomAvoidSuccessCount * eff.value.mult
+              : eff.value.fallbackMult;
+            const phdDmg = Math.max(1, Math.floor(player.effectiveAttack * countM));
+            enemy.takeDamage(phdDmg);
+            log(`👻💀 「亡霊の死撃」発動！（無効化${game.phantomAvoidSuccessCount}回 × ATK×${eff.value.mult}）→ ${enemy.name} に ${phdDmg} ダメージ！`, 'player-action');
+            renderEnemyStatus();
+          }
+          break;
+        }
+        case 'avoid_add': {
+          // 攻撃無効化確率加算（ファントムアビス）
+          game.phantomAvoidChance += eff.value;
+          break;
+        }
+        case 'prophecy_01': {
+          // 予言魔法発動
+          if (enemy.isAlive()) {
+            const pDmg = eff.value.dmg;
+            enemy.takeDamage(pDmg);
+            log(`🔮 「予言魔法」発動！ → ${enemy.name} に ${pDmg} ダメージ！`, 'player-action');
+            renderEnemyStatus();
+          }
+          const pHeal = eff.value.heal;
+          player.heal(pHeal);
+          log(`🔮 「予言魔法」HP +${pHeal} 回復！`, 'player-action');
+          renderPlayerStatus();
+          if (game.prophecyActive && game.prophecyActive.type === 'oc_skill_01') {
+            game.prophecyActive = null;
+          }
+          break;
+        }
+        case 'debuff_enemy_multiturn': {
+          // クルセイドアポカリプス段階デバフ
+          if (eff.value.atk !== undefined) {
+            if (!game.divineJudgmentDebuff) game.divineJudgmentDebuff = { atkFactor: 1.0, defFactor: 1.0, permanent: false };
+            game.divineJudgmentDebuff.atkFactor = Math.min(game.divineJudgmentDebuff.atkFactor, eff.value.atk || 1.0);
+            if (eff.value.atk === 0) game.enemyAtkDebuff = { factor: 0, turnsLeft: 1 };
+            else if (eff.value.atk < 1) game.enemyAtkDebuff = { factor: eff.value.atk, turnsLeft: 1 };
+            if (eff.value.def !== undefined && eff.value.def < 1) game.enemyDefDebuff = { factor: eff.value.def, turnsLeft: 1, source: 'cr_skill_05' };
+          }
+          break;
+        }
+        default:
+          break;
+      }
+
+      // 発動済みエフェクトを削除
+      game.pendingEffects.splice(i, 1);
+
+      // 敵が倒れた場合は即座に戦闘終了
+      if (enemy && !enemy.isAlive()) {
+        endBattle('win');
+        return;
+      }
+    }
+  }
+}
+
 /** 敵のターン処理 */
 function doEnemyTurn() {
   if (game.state !== GameState.ENEMY_TURN) return;
@@ -708,6 +888,7 @@ function doEnemyTurn() {
     tickPlayerRegen(true);
     tickPlayerRegen(false);
     tickPlayerDelayedHeal();
+    processPendingEffects();
     game.state = GameState.PLAYER_TURN;
     log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
     log('あなたのターンです。アクションを選んでください。', 'system');
@@ -733,6 +914,55 @@ function doEnemyTurn() {
     }
   }
 
+  // ファントムパッシブ①（完全幻影）：敵ターン開始時に攻撃無効化確率+20%加算
+  if (game.player.currentJob === 'phantom') {
+    const phantomNodes = game.player.skillTreeNodes['phantom'] || [];
+    if (phantomNodes.includes('ph_06')) {
+      game.phantomAvoidChance += 20;
+    }
+    // 亡霊の死撃アクティブ中は追加加算
+    if (game.phantomDeathStrikeActive && game.phantomDeathStrikeActive.turnsLeft > 0) {
+      game.phantomAvoidChance += game.phantomDeathStrikeActive.avoidAdd;
+      game.phantomDeathStrikeActive.turnsLeft--;
+      if (game.phantomDeathStrikeActive.turnsLeft <= 0) game.phantomDeathStrikeActive = null;
+    }
+  }
+
+  // 攻撃無効化判定（ファントム攻撃回避システム）
+  if (game.phantomAvoidChance > 0) {
+    const avoidRoll = Math.random() * 100;
+    const avoidChance = game.phantomAvoidChance;
+    game.phantomAvoidChance = 0; // ターン終了後に0リセット
+    if (avoidRoll < avoidChance) {
+      // 無効化成功
+      log(`✨ ${game.player.name} は ${game.enemy.name} の攻撃を無効化した！`, 'player-action');
+      game.phantomAvoidSuccessCount++;
+      // ファントムパッシブ②（影の極致）：無効化成功後次ターンATK×1.5バフ
+      if (game.player.currentJob === 'phantom') {
+        const phantomNodes = game.player.skillTreeNodes['phantom'] || [];
+        if (phantomNodes.includes('ph_12')) {
+          if (!game.playerAtkBuff) game.playerAtkBuff = { bonus: 0, turnsLeft: 0 };
+          // 一時的ATK倍率バフ（次ターン有効）
+          game.phantomAvoidBuff = { factor: 1.5, turnsLeft: 1 };
+          log(`🌟 「影の極致」発動！次ターンATK×1.5バフ！`, 'player-action');
+        }
+      }
+      tickPlayerBuffs();
+      tickPlayerRegen(true);
+      tickPlayerRegen(false);
+      tickPlayerDelayedHeal();
+      processPendingEffects();
+      game.state = GameState.PLAYER_TURN;
+      log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
+      log('あなたのターンです。アクションを選んでください。', 'system');
+      setButtonsEnabled(true);
+      return;
+    }
+    // 無効化失敗：通常攻撃を受ける
+  } else {
+    game.phantomAvoidChance = 0;
+  }
+
   // 敵攻撃前リジェネを適用（聖騎士リジェネ系スキル）
   tickPlayerRegen(true);
 
@@ -749,13 +979,43 @@ function doEnemyTurn() {
     }
   }
 
+  // 神罰魔法デバフ（オラクル）
+  if (game.divineJudgmentDebuff) {
+    rawDmg = Math.floor(rawDmg * game.divineJudgmentDebuff.atkFactor);
+  }
+
   // 魔力凝縮中は被ダメージ増加（凝縮エネルギーを溜めているため隙が大きい）
   if (game.playerCondense && !game.playerCondense.justSet) {
     rawDmg = Math.floor(rawDmg * game.playerCondense.dmgMultiplier);
   }
 
+  // ルーン付与中は被ダメージ増加
+  if (game.runeGrantActive) {
+    rawDmg = Math.floor(rawDmg * game.runeGrantDmgMult);
+  }
+
   // シールド効果を適用（DEFバフ：複数重複可）
-  if (game.shieldActive.length > 0) {
+  // クルセイダーパッシブ③（絶対防壁）：シールド中の被ダメージを0にする
+  let absoluteShield = false;
+  if (game.player.currentJob === 'crusader') {
+    const crNodes = game.player.skillTreeNodes['crusader'] || [];
+    if (crNodes.includes('cr_15') && game.shieldActive.length > 0) {
+      absoluteShield = true;
+    }
+  }
+  if (absoluteShield) {
+    rawDmg = 0;
+    game.shieldActive = game.shieldActive
+      .map(s => ({ ...s, turnsLeft: s.turnsLeft - 1 }))
+      .filter(s => {
+        if (s.turnsLeft <= 0) {
+          log(`🛡 ${s.name}の効果が切れた。`, 'system');
+          return false;
+        }
+        return true;
+      });
+    log(`🛡 「絶対防壁」発動！シールド中のダメージを完全に無効化した！`, 'player-action');
+  } else if (game.shieldActive.length > 0) {
     const totalBonus = game.shieldActive.reduce((sum, s) => sum + s.defenseBonus, 0);
     rawDmg = Math.max(1, rawDmg - totalBonus);
     game.shieldActive = game.shieldActive
@@ -769,9 +1029,44 @@ function doEnemyTurn() {
       });
   }
 
-  const actualDmg = game.player.takeDamage(rawDmg);
-  log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
-  renderPlayerStatus();
+  // クルセイダーパッシブ①（聖域の守護）：被ダメージ15%軽減
+  if (game.player.currentJob === 'crusader') {
+    const crNodes = game.player.skillTreeNodes['crusader'] || [];
+    if (crNodes.includes('cr_06')) {
+      rawDmg = Math.max(absoluteShield ? 0 : 1, Math.floor(rawDmg * 0.85));
+    }
+  }
+
+  // カタストロフ被ダメ増加（disaster_howl）
+  if (game.enemyAmpDmgActive && game.enemyAmpDmgActive.turnsLeft > 0) {
+    rawDmg = Math.floor(rawDmg * game.enemyAmpDmgActive.factor);
+    game.enemyAmpDmgActive.turnsLeft--;
+    if (game.enemyAmpDmgActive.turnsLeft <= 0) {
+      game.enemyAmpDmgActive = null;
+    }
+  }
+
+  if (rawDmg > 0) {
+    const actualDmg = game.player.takeDamage(rawDmg);
+    log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
+    renderPlayerStatus();
+  }
+
+  // 亡霊の刃パッシブDoT（毎ターン追加ダメージ）
+  if (game.phantomBladeDoT && game.phantomBladeDoT.active && game.enemy.isAlive()) {
+    const dotDmg = Math.max(1, Math.floor(game.player.effectiveAttack * game.phantomBladeDoT.baseMult));
+    game.enemy.takeDamage(dotDmg);
+    log(`👻 「亡霊の刃」追加ダメージ：${game.enemy.name} に ${dotDmg} ダメージ！（防御無視）`, 'player-action');
+    renderEnemyStatus();
+  }
+
+  // 神罰魔法DoT（毎ターン追加ダメージ）
+  if (game.divinePunishmentDoT && game.divinePunishmentDoT.active && game.enemy.isAlive()) {
+    const dotDmg2 = Math.max(1, Math.floor(game.player.effectiveAttack * game.divinePunishmentDoT.mult));
+    game.enemy.takeDamage(dotDmg2);
+    log(`🔮 「神罰魔法」追加ダメージ：${game.enemy.name} に ${dotDmg2} ダメージ！`, 'player-action');
+    renderEnemyStatus();
+  }
 
   // 聖騎士パッシブ: 被攻撃時にカウンター攻撃（神聖無双発動中は100%、通常時は30%）
   if (game.player.currentJob === 'paladin' &&
@@ -779,8 +1074,6 @@ function doEnemyTurn() {
       game.player.isAlive()) {
     const counterChance = (game.divineJudgmentActive && game.divineJudgmentActive.turnsLeft > 0) ? 1.0 : 0.30;
     if (Math.random() < counterChance) {
-      // 神聖の穿槍装備中：反撃ダメージ+50%（強化ごとに+10%追加）
-      // 聖騎士以外装備時は反撃効果は発動しない（currentJob === 'paladin' で担保済み）
       const seisouEquipped = Object.values(game.player.equipment).includes('seisou_no_sou');
       let counterMult = 0.8;
       if (seisouEquipped) {
@@ -791,8 +1084,23 @@ function doEnemyTurn() {
       game.enemy.takeDamage(counterDmg);
       const seisouMsg = seisouEquipped ? '（神聖の穿槍強化）' : '';
       log(`🛡 「反撃の構え」発動！カウンター攻撃で ${game.enemy.name} に ${counterDmg} ダメージ！${seisouMsg}`, 'player-action');
+      // クルセイダーパッシブ②（聖なる反撃）：カウンター時HP5%回復
+      if (game.player.currentJob === 'crusader') {
+        const crNodes = game.player.skillTreeNodes['crusader'] || [];
+        if (crNodes.includes('cr_12')) {
+          const healAmt = Math.floor(game.player.maxHp * 0.05);
+          game.player.heal(healAmt);
+          log(`✝ 「聖なる反撃」：HP +${healAmt} 回復！`, 'player-action');
+          renderPlayerStatus();
+        }
+      }
       renderEnemyStatus();
     }
+  }
+
+  if (!game.enemy.isAlive()) {
+    endBattle('win');
+    return;
   }
 
   if (!game.player.isAlive()) {
@@ -804,6 +1112,49 @@ function doEnemyTurn() {
   tickPlayerBuffs();
   tickPlayerRegen(false);
   tickPlayerDelayedHeal();
+  processPendingEffects();
+
+  // ファントム無効化バフのカウントダウン
+  if (game.phantomAvoidBuff && game.phantomAvoidBuff.turnsLeft > 0) {
+    game.phantomAvoidBuff.turnsLeft--;
+    if (game.phantomAvoidBuff.turnsLeft <= 0) {
+      game.phantomAvoidBuff = null;
+    }
+  }
+
+  // クルセイドアポカリプスのクールダウン
+  if (game.crusaderApocCooldown > 0) {
+    game.crusaderApocCooldown--;
+    if (game.crusaderApocCooldown <= 0) {
+      log(`✝ 「クルセイドアポカリプス」が再使用可能になった！`, 'system');
+    }
+  }
+
+  // 天啓聖魔：召喚中のランダム行動
+  if (game.oracleSpiritActive && game.oracleSpiritActive.turnsLeft > 0 && game.enemy.isAlive()) {
+    const pat = randInt(1, 3);
+    if (pat === 1) {
+      const spDmgRaw = Math.floor(game.player.effectiveAttack * 3.0) - Math.floor(game.enemy.defense * SKILL_DEFENSE_FACTOR);
+      const spDmg = applyEquipmentEffects(Math.max(1, spDmgRaw), 'deal');
+      game.enemy.takeDamage(spDmg);
+      log(`🔮 聖魔が攻撃！ → ${game.enemy.name} に ${spDmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+    } else if (pat === 2) {
+      const spHeal = Math.floor(game.player.maxHp * 0.10);
+      game.player.heal(spHeal);
+      log(`🔮 聖魔が回復！HP +${spHeal} 回復！`, 'player-action');
+      renderPlayerStatus();
+    }
+    game.oracleSpiritActive.turnsLeft--;
+    if (game.oracleSpiritActive.turnsLeft <= 0) {
+      log(`🔮 聖魔が消えた。4ターン目に聖魔暴走が使用可能になった！（天啓聖魔を再度使用してください）`, 'system');
+    }
+  }
+
+  if (!game.enemy.isAlive()) {
+    endBattle('win');
+    return;
+  }
 
   game.state = GameState.PLAYER_TURN;
   log('─'.repeat(LOG_SEPARATOR_LENGTH), 'system');
@@ -1014,6 +1365,30 @@ function initGame() {
   game.playerMakenshiAwakeningBuff = null;
   game.divineJudgmentActive = null;
   game.turnDamageDealt   = 0;
+  // 特級職バトル状態を初期化する（initGame）
+  game.phantomAvoidChance       = 0;
+  game.phantomAvoidSuccessCount = 0;
+  game.pendingEffects           = [];
+  game.runeGrantActive          = false;
+  game.runeGrantAtkMult         = 1.0;
+  game.runeGrantDmgMult         = 1.0;
+  game.runeReleaseActive        = false;
+  game.runeReleaseUsed          = false;
+  game.runeStrikeAtkBuff        = null;
+  game.enemyDefDebuff           = null;
+  game.enemyAmpDmgActive        = null;
+  game.crusaderApocCooldown     = 0;
+  game.phantomBladeDoT          = null;
+  game.phantomDeathStrikeActive = null;
+  game.prophecyActive           = null;
+  game.oracleProphecyFlowActive = false;
+  game.oracleEnhanceBuff        = null;
+  game.oracleBurstActive        = null;
+  game.oracleSpiritActive       = null;
+  game.divinePunishmentDoT      = null;
+  game.divineJudgmentDebuff     = null;
+  game.ctRuinousWoundBuff       = null;
+  game.phantomAvoidBuff         = null;
 
   // メンテナンスモードチェック
   if (MAINTENANCE.enabled) {

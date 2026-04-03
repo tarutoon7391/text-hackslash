@@ -1297,176 +1297,191 @@ const SKILL_TREE_DEFINITIONS = [
 
   /* ──────────────────────────────────────────────────────────
      クルセイダールート（聖騎士の特級職）
-     聖騎士の上位特級職。さらなる堅守と神聖な力を極めた究極の守護者。
-     スキル詳細は Phase 3 で実装予定。
+     合計SPコスト：105SP（特級職専用コスト体系）
      ────────────────────────────────────────────────────────── */
   {
     id: 'crusader',
     name: 'クルセイダー',
-    description: '聖騎士の特級職。絶対的な守護と神聖なる剣技を極めた究極の守護者。（スキル詳細はPhase 3で実装予定）',
+    description: '聖騎士の特級職。絶対的な守護と神聖なる剣技を極めた究極の守護者。',
     nodes: [
-      { id: 'cr_01', name: 'クルセイダーの刻印', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: null },
-      { id: 'cr_02', name: '神聖な防壁', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 1, requires: 'cr_01' },
-      { id: 'cr_03', name: '聖盾の強化', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: 'cr_02' },
-      { id: 'cr_04', name: '神聖の誓い', type: 'stat', description: 'DEF +8 / HP +15', bonuses: { def: 8, hp: 15 }, cost: 1, requires: 'cr_03' },
-      { id: 'cr_05', name: '天守の加護', type: 'stat', description: 'ATK +5 / DEF +5', bonuses: { atk: 5, def: 5 }, cost: 1, requires: 'cr_04' },
-      { id: 'cr_06', name: '聖域の守護', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'cr_05' },
-      { id: 'cr_07', name: '神撃の腕力', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 2, requires: 'cr_06' },
-      { id: 'cr_08', name: '鉄壁の聖鎧', type: 'stat', description: 'DEF +10 / HP +25', bonuses: { def: 10, hp: 25 }, cost: 2, requires: 'cr_07' },
-      { id: 'cr_09', name: 'クルセイダーの技I', type: 'skill', skillId: 'cr_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'cr_08' },
-      { id: 'cr_10', name: '聖騎士の極意', type: 'stat', description: 'ATK +8 / DEF +8', bonuses: { atk: 8, def: 8 }, cost: 2, requires: 'cr_09' },
-      { id: 'cr_11', name: '天盾の守り', type: 'stat', description: 'DEF +15 / HP +35', bonuses: { def: 15, hp: 35 }, cost: 3, requires: 'cr_10' },
-      { id: 'cr_12', name: '聖なる反撃', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'cr_11' },
-      { id: 'cr_13', name: '神聖なる剛腕', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 3, requires: 'cr_12' },
-      { id: 'cr_14', name: 'クルセイダーの技II', type: 'skill', skillId: 'cr_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'cr_13' },
-      { id: 'cr_15', name: '絶対防壁', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'cr_14' },
-      { id: 'cr_16', name: '聖域の覚醒', type: 'stat', description: 'ATK +10 / DEF +12', bonuses: { atk: 10, def: 12 }, cost: 2, requires: 'cr_15' },
-      { id: 'cr_17', name: 'クルセイダーの技III', type: 'skill', skillId: 'cr_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'cr_16' },
-      { id: 'cr_18', name: '天守の真髄', type: 'stat', description: 'ATK +12 / DEF +18 / HP +40', bonuses: { atk: 12, def: 18, hp: 40 }, cost: 2, requires: 'cr_17' },
-      { id: 'cr_19', name: 'クルセイダーの技IV', type: 'skill', skillId: 'cr_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'cr_18' },
-      { id: 'cr_20', name: '神聖なる究極守護', type: 'stat', description: 'DEF +20 / HP +50', bonuses: { def: 20, hp: 50 }, cost: 3, requires: 'cr_19' },
-      { id: 'cr_21', name: 'クルセイダーの至高', type: 'stat', description: 'ATK +15 / DEF +25 / HP +60', bonuses: { atk: 15, def: 25, hp: 60 }, cost: 3, requires: 'cr_20' },
-      { id: 'cr_22', name: '神聖無双・極', type: 'skill', skillId: 'cr_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'cr_21' },
+      { id: 'cr_01', name: 'クルセイダーの刻印', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 3, requires: null },
+      { id: 'cr_02', name: '神聖な防壁', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 3, requires: 'cr_01' },
+      { id: 'cr_03', name: '聖盾の強化', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 3, requires: 'cr_02' },
+      { id: 'cr_04', name: '神聖の誓い', type: 'stat', description: 'DEF +8 / HP +15', bonuses: { def: 8, hp: 15 }, cost: 3, requires: 'cr_03' },
+      { id: 'cr_05', name: '天守の加護', type: 'stat', description: 'ATK +5 / DEF +5', bonuses: { atk: 5, def: 5 }, cost: 3, requires: 'cr_04' },
+      // パッシブ①（刻印系）：被ダメージ15%軽減（聖騎士の軽減に追加）
+      { id: 'cr_06', name: '聖域の守護', type: 'passive', description: 'パッシブ：被ダメージをさらに15%軽減する（聖騎士の聖盾・神聖防壁に加算）', bonuses: {}, cost: 5, requires: 'cr_05' },
+      { id: 'cr_07', name: '神撃の腕力', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 4, requires: 'cr_06' },
+      { id: 'cr_08', name: '鉄壁の聖鎧', type: 'stat', description: 'DEF +10 / HP +25', bonuses: { def: 10, hp: 25 }, cost: 4, requires: 'cr_07' },
+      { id: 'cr_09', name: '聖域展開', type: 'skill', skillId: 'cr_skill_01', description: '聖域を展開しDEF×1.7バフ2ターン＋即時HP10%回復（MP:70 / 重複不可）', mpCost: 70, bonuses: {}, cost: 4, requires: 'cr_08' },
+      { id: 'cr_10', name: '聖騎士の極意', type: 'stat', description: 'ATK +8 / DEF +8', bonuses: { atk: 8, def: 8 }, cost: 4, requires: 'cr_09' },
+      { id: 'cr_11', name: '天盾の守り', type: 'stat', description: 'DEF +15 / HP +35', bonuses: { def: 15, hp: 35 }, cost: 4, requires: 'cr_10' },
+      // パッシブ②：聖盾展開スキルを上書き
+      { id: 'cr_12', name: '聖なる反撃', type: 'passive', description: 'パッシブ：カウンター攻撃時にHP最大値の5%を回復する。「聖盾展開」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'paladin_heal', requires: 'cr_11' },
+      { id: 'cr_13', name: '神聖なる剛腕', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 5, requires: 'cr_12' },
+      { id: 'cr_14', name: 'クルセイドヒール', type: 'skill', skillId: 'cr_skill_02', description: '即時最大HP20%回復＋2ターン後に最大HP20%回復（MP:80）', mpCost: 80, bonuses: {}, cost: 5, requires: 'cr_13' },
+      // パッシブ③：神聖回復スキルを上書き
+      { id: 'cr_15', name: '絶対防壁', type: 'passive', description: 'パッシブ：シールド効果中の全被ダメージを0にする。「神聖回復」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'paladin_big_heal', requires: 'cr_14' },
+      { id: 'cr_16', name: '聖域の覚醒', type: 'stat', description: 'ATK +10 / DEF +12', bonuses: { atk: 10, def: 12 }, cost: 5, requires: 'cr_15' },
+      { id: 'cr_17', name: 'クルセイドバッシュ', type: 'skill', skillId: 'cr_skill_03', description: 'ATK×1.5ダメージ＋DEF×1.5バフ3ターン＋敵ATK×0.7デバフ3ターン（MP:120）', mpCost: 120, bonuses: {}, cost: 5, requires: 'cr_16' },
+      { id: 'cr_18', name: '天守の真髄', type: 'stat', description: 'ATK +12 / DEF +18 / HP +40', bonuses: { atk: 12, def: 18, hp: 40 }, cost: 6, requires: 'cr_17' },
+      { id: 'cr_19', name: '聖十字斬', type: 'skill', skillId: 'cr_skill_04', description: 'ATK×2.5の2連撃＋最大HP40%即時回復（MP:130）', mpCost: 130, bonuses: {}, cost: 6, requires: 'cr_18' },
+      { id: 'cr_20', name: '神聖なる究極守護', type: 'stat', description: 'DEF +20 / HP +50', bonuses: { def: 20, hp: 50 }, cost: 6, requires: 'cr_19' },
+      { id: 'cr_21', name: 'クルセイダーの至高', type: 'stat', description: 'ATK +15 / DEF +25 / HP +60', bonuses: { atk: 15, def: 25, hp: 60 }, cost: 6, requires: 'cr_20' },
+      // 最終奥義
+      { id: 'cr_22', name: 'クルセイドアポカリプス', type: 'skill', skillId: 'cr_skill_05', description: '即時HP50%回復＋敵ATK・DEF段階デバフ＋3ターン後ATK×20防御無視ダメージ（MP:450 / バトル中3ターンに1回）', mpCost: 450, bonuses: {}, cost: 9, requires: 'cr_21' },
     ],
   },
 
   /* ──────────────────────────────────────────────────────────
      ファントムルート（暗殺者の特級職）
-     暗殺者の上位特級職。影の極致に達した絶対的な暗殺者。
-     スキル詳細は Phase 3 で実装予定。
+     合計SPコスト：105SP（特級職専用コスト体系）
      ────────────────────────────────────────────────────────── */
   {
     id: 'phantom',
     name: 'ファントム',
-    description: '暗殺者の特級職。影の極致に達した絶対的な暗殺者。（スキル詳細はPhase 3で実装予定）',
+    description: '暗殺者の特級職。影の極致に達した絶対的な暗殺者。',
     nodes: [
-      { id: 'ph_01', name: 'ファントムの刻印', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: null },
-      { id: 'ph_02', name: '幻影の速さ', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'ph_01' },
-      { id: 'ph_03', name: '闇の技法', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'ph_02' },
-      { id: 'ph_04', name: '影の刃', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'ph_03' },
-      { id: 'ph_05', name: '幻影の切れ味', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 1, requires: 'ph_04' },
-      { id: 'ph_06', name: '完全幻影', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'ph_05' },
-      { id: 'ph_07', name: '闇の覇気', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'ph_06' },
-      { id: 'ph_08', name: '幻影強化', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'ph_07' },
-      { id: 'ph_09', name: 'ファントムの技I', type: 'skill', skillId: 'ph_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ph_08' },
-      { id: 'ph_10', name: '暗殺極意', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 2, requires: 'ph_09' },
-      { id: 'ph_11', name: '幻影の鋭刃', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'ph_10' },
-      { id: 'ph_12', name: '影の極致', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ph_11' },
-      { id: 'ph_13', name: '暗黒の刃', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'ph_12' },
-      { id: 'ph_14', name: 'ファントムの技II', type: 'skill', skillId: 'ph_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ph_13' },
-      { id: 'ph_15', name: '完全暗殺', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ph_14' },
-      { id: 'ph_16', name: '幻影の真髄', type: 'stat', description: 'ATK +22', bonuses: { atk: 22 }, cost: 2, requires: 'ph_15' },
-      { id: 'ph_17', name: 'ファントムの技III', type: 'skill', skillId: 'ph_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ph_16' },
-      { id: 'ph_18', name: '影の覚醒', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 2, requires: 'ph_17' },
-      { id: 'ph_19', name: 'ファントムの技IV', type: 'skill', skillId: 'ph_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ph_18' },
-      { id: 'ph_20', name: '暗殺神の覚醒', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 3, requires: 'ph_19' },
-      { id: 'ph_21', name: 'ファントムの至高', type: 'stat', description: 'ATK +35', bonuses: { atk: 35 }, cost: 3, requires: 'ph_20' },
-      { id: 'ph_22', name: '幻影絶殺', type: 'skill', skillId: 'ph_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ph_21' },
+      { id: 'ph_01', name: 'ファントムの刻印', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 3, requires: null },
+      { id: 'ph_02', name: '幻影の速さ', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 3, requires: 'ph_01' },
+      { id: 'ph_03', name: '闇の技法', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 3, requires: 'ph_02' },
+      { id: 'ph_04', name: '影の刃', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 3, requires: 'ph_03' },
+      { id: 'ph_05', name: '幻影の切れ味', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 3, requires: 'ph_04' },
+      // パッシブ①（刻印系）：毎ターン開始時に攻撃無効化確率+20%加算
+      { id: 'ph_06', name: '完全幻影', type: 'passive', description: 'パッシブ：敵ターン開始時に攻撃無効化確率+20%加算（phantomAvoidChance）', bonuses: {}, cost: 5, requires: 'ph_05' },
+      { id: 'ph_07', name: '闇の覇気', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 4, requires: 'ph_06' },
+      { id: 'ph_08', name: '幻影強化', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 4, requires: 'ph_07' },
+      { id: 'ph_09', name: '影四連斬', type: 'skill', skillId: 'ph_skill_01', description: 'ATK×1.0の4連撃・防御無視＋使用ターン攻撃無効化確率+30%（MP:200）', mpCost: 200, bonuses: {}, cost: 4, requires: 'ph_08' },
+      { id: 'ph_10', name: '幻影忍び', type: 'skill', skillId: 'ph_skill_02', description: '使用ターン攻撃無効化確率+50%加算＋次ターンATK×4.0ダメージ（MP:90）', mpCost: 90, bonuses: {}, cost: 4, requires: 'ph_09' },
+      { id: 'ph_11', name: '幻影の鋭刃', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 5, requires: 'ph_10' },
+      // パッシブ②：影忍びスキルを上書き
+      { id: 'ph_12', name: '影の極致', type: 'passive', description: 'パッシブ：攻撃無効化成功後に次ターンATK×1.5バフを付与する。「影忍び」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'shadow_stab', requires: 'ph_11' },
+      { id: 'ph_13', name: 'ファントムラッシュ', type: 'skill', skillId: 'ph_skill_03', description: '会心率+30%＋ATK×1.2の5連撃・防御無視（MP:120）', mpCost: 120, bonuses: {}, cost: 4, requires: 'ph_12' },
+      { id: 'ph_14', name: '亡霊の刃', type: 'skill', skillId: 'ph_skill_04', description: 'ATK×3.0防御無視＋攻撃無効化確率+20%＋毎ターンATK×4.0防御無視追加ダメージ（MP:180）', mpCost: 180, bonuses: {}, cost: 5, requires: 'ph_13' },
+      // パッシブ③：必殺刃スキルを上書き
+      { id: 'ph_15', name: '完全暗殺', type: 'passive', description: 'パッシブ：防御無視攻撃のダメージが10%増加する。「必殺刃」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'killing_edge', requires: 'ph_14' },
+      { id: 'ph_16', name: '虚影乱れ斬り', type: 'skill', skillId: 'ph_skill_05', description: 'ATK×2.0の4連撃・防御無視（各撃25%で攻撃無効化確率加算・重複なし）（MP:220）', mpCost: 220, bonuses: {}, cost: 5, requires: 'ph_15' },
+      { id: 'ph_17', name: '亡霊の死撃', type: 'skill', skillId: 'ph_skill_06', description: '2ターン間敵攻撃無効化確率+50%＋3ターン後に無効化回数×ATK×20防御無視ダメージ（MP:400）', mpCost: 400, bonuses: {}, cost: 5, requires: 'ph_16' },
+      { id: 'ph_18', name: '影の覚醒', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 6, requires: 'ph_17' },
+      { id: 'ph_19', name: '暗殺神の覚醒', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 6, requires: 'ph_18' },
+      { id: 'ph_20', name: '影の極限', type: 'stat', description: 'ATK +35', bonuses: { atk: 35 }, cost: 6, requires: 'ph_19' },
+      { id: 'ph_21', name: 'ファントムの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 6, requires: 'ph_20' },
+      // 最終奥義
+      { id: 'ph_22', name: 'ファントムアビス', type: 'skill', skillId: 'ph_skill_07', description: '使用ターン攻撃無効化+100%→その後2ターン+30%→3ターン後ATK×100防御完全無視（MP:800）', mpCost: 800, bonuses: {}, cost: 9, requires: 'ph_21' },
     ],
   },
 
   /* ──────────────────────────────────────────────────────────
      オラクルルート（賢者の特級職）
-     賢者の上位特級職。神の啓示を受けた全知全能の術者。
-     スキル詳細は Phase 3 で実装予定。
+     合計SPコスト：105SP（特級職専用コスト体系）
      ────────────────────────────────────────────────────────── */
   {
     id: 'oracle',
     name: 'オラクル',
-    description: '賢者の特級職。神の啓示を受けた全知全能の術者。（スキル詳細はPhase 3で実装予定）',
+    description: '賢者の特級職。神の啓示を受けた全知全能の術者。',
     nodes: [
-      { id: 'oc_01', name: 'オラクルの刻印', type: 'stat', description: 'ATK +5 / MP +10', bonuses: { atk: 5, mp: 10 }, cost: 1, requires: null },
-      { id: 'oc_02', name: '神託の知識', type: 'stat', description: 'ATK +5 / MP +8', bonuses: { atk: 5, mp: 8 }, cost: 1, requires: 'oc_01' },
-      { id: 'oc_03', name: '啓示の力', type: 'stat', description: 'ATK +6 / MP +10', bonuses: { atk: 6, mp: 10 }, cost: 1, requires: 'oc_02' },
-      { id: 'oc_04', name: '神の眼', type: 'stat', description: 'HP +20 / MP +12', bonuses: { hp: 20, mp: 12 }, cost: 1, requires: 'oc_03' },
-      { id: 'oc_05', name: '全知の慧眼', type: 'stat', description: 'ATK +6 / DEF +4', bonuses: { atk: 6, def: 4 }, cost: 1, requires: 'oc_04' },
-      { id: 'oc_06', name: '神の摂理', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'oc_05' },
-      { id: 'oc_07', name: '啓示の魔力', type: 'stat', description: 'ATK +8 / MP +15', bonuses: { atk: 8, mp: 15 }, cost: 2, requires: 'oc_06' },
-      { id: 'oc_08', name: '神の恵み', type: 'stat', description: 'HP +25 / MP +15', bonuses: { hp: 25, mp: 15 }, cost: 2, requires: 'oc_07' },
-      { id: 'oc_09', name: 'オラクルの技I', type: 'skill', skillId: 'oc_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'oc_08' },
-      { id: 'oc_10', name: '全知の光', type: 'stat', description: 'ATK +8 / HP +25 / MP +12', bonuses: { atk: 8, hp: 25, mp: 12 }, cost: 2, requires: 'oc_09' },
-      { id: 'oc_11', name: '神託の極意', type: 'stat', description: 'ATK +10 / MP +20', bonuses: { atk: 10, mp: 20 }, cost: 3, requires: 'oc_10' },
-      { id: 'oc_12', name: '啓示の奇跡', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'oc_11' },
-      { id: 'oc_13', name: '神の知恵', type: 'stat', description: 'ATK +10 / MP +25', bonuses: { atk: 10, mp: 25 }, cost: 3, requires: 'oc_12' },
-      { id: 'oc_14', name: 'オラクルの技II', type: 'skill', skillId: 'oc_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'oc_13' },
-      { id: 'oc_15', name: '全能の法則', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'oc_14' },
-      { id: 'oc_16', name: '神の覚醒', type: 'stat', description: 'ATK +12 / MP +25', bonuses: { atk: 12, mp: 25 }, cost: 2, requires: 'oc_15' },
-      { id: 'oc_17', name: 'オラクルの技III', type: 'skill', skillId: 'oc_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'oc_16' },
-      { id: 'oc_18', name: '啓示の真髄', type: 'stat', description: 'ATK +15 / HP +35 / MP +20', bonuses: { atk: 15, hp: 35, mp: 20 }, cost: 2, requires: 'oc_17' },
-      { id: 'oc_19', name: 'オラクルの技IV', type: 'skill', skillId: 'oc_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'oc_18' },
-      { id: 'oc_20', name: '全知全能の力', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 3, requires: 'oc_19' },
-      { id: 'oc_21', name: 'オラクルの至高', type: 'stat', description: 'ATK +18 / HP +40 / MP +30', bonuses: { atk: 18, hp: 40, mp: 30 }, cost: 3, requires: 'oc_20' },
-      { id: 'oc_22', name: '神の啓示・極', type: 'skill', skillId: 'oc_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'oc_21' },
+      { id: 'oc_01', name: 'オラクルの刻印', type: 'stat', description: 'ATK +5 / MP +10', bonuses: { atk: 5, mp: 10 }, cost: 3, requires: null },
+      { id: 'oc_02', name: '神託の知識', type: 'stat', description: 'ATK +5 / MP +8', bonuses: { atk: 5, mp: 8 }, cost: 3, requires: 'oc_01' },
+      { id: 'oc_03', name: '啓示の力', type: 'stat', description: 'ATK +6 / MP +10', bonuses: { atk: 6, mp: 10 }, cost: 3, requires: 'oc_02' },
+      { id: 'oc_04', name: '神の眼', type: 'stat', description: 'HP +20 / MP +12', bonuses: { hp: 20, mp: 12 }, cost: 3, requires: 'oc_03' },
+      { id: 'oc_05', name: '全知の慧眼', type: 'stat', description: 'ATK +6 / DEF +4', bonuses: { atk: 6, def: 4 }, cost: 3, requires: 'oc_04' },
+      // パッシブ①（刻印系）：MP消費×0.9
+      { id: 'oc_06', name: '神の摂理', type: 'passive', description: 'パッシブ：スキルのMP消費を×0.9にする（端数切り上げ）', bonuses: {}, cost: 5, requires: 'oc_05' },
+      { id: 'oc_07', name: '啓示の魔力', type: 'stat', description: 'ATK +8 / MP +15', bonuses: { atk: 8, mp: 15 }, cost: 4, requires: 'oc_06' },
+      { id: 'oc_08', name: '神の恵み', type: 'stat', description: 'HP +25 / MP +15', bonuses: { hp: 25, mp: 15 }, cost: 4, requires: 'oc_07' },
+      { id: 'oc_09', name: '予言魔法', type: 'skill', skillId: 'oc_skill_01', description: '2ターン後にATK×5ダメージ＋最大HP30%回復（予言系 / MP:130）', mpCost: 130, bonuses: {}, cost: 4, requires: 'oc_08' },
+      { id: 'oc_10', name: '神罰魔法', type: 'skill', skillId: 'oc_skill_02', description: 'バトル中敵ATK・DEF×0.5デバフ＋毎ターンATK×1ダメージ（MP:180）', mpCost: 180, bonuses: {}, cost: 4, requires: 'oc_09' },
+      { id: 'oc_11', name: '神託の極意', type: 'stat', description: 'ATK +10 / MP +20', bonuses: { atk: 10, mp: 20 }, cost: 5, requires: 'oc_10' },
+      // パッシブ②：属性攻撃スキルを上書き
+      { id: 'oc_12', name: '啓示の奇跡', type: 'passive', description: 'パッシブ：予言系スキル（pendingEffects）の発動が1ターン早まる。「属性攻撃」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'sage_blast', requires: 'oc_11' },
+      { id: 'oc_13', name: '天啓強化', type: 'skill', skillId: 'oc_skill_03', description: 'バトル中自ATK×1.3・DEF×1.3バフ＋MP消費×0.7（MP:250）', mpCost: 250, bonuses: {}, cost: 4, requires: 'oc_12' },
+      { id: 'oc_14', name: '天啓聖魔', type: 'skill', skillId: 'oc_skill_04', description: '聖魔を3ターン召喚→ランダム行動、4ターン目に聖魔暴走（MP:350）', mpCost: 350, bonuses: {}, cost: 5, requires: 'oc_13' },
+      // パッシブ③：弱体魔法スキルを上書き
+      { id: 'oc_15', name: '全能の法則', type: 'passive', description: 'パッシブ：バトル中ATK×1.2の倍率バフを付与する（永続）。「弱体魔法」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'sage_debuff', requires: 'oc_14' },
+      { id: 'oc_16', name: '予言の崩壊', type: 'skill', skillId: 'oc_skill_05', description: '予言待機中→強化即時発動、通常時→ATK×20＋最大HP20%回復（予言系 / MP:600）', mpCost: 600, bonuses: {}, cost: 5, requires: 'oc_15' },
+      { id: 'oc_17', name: '予言の奔流', type: 'skill', skillId: 'oc_skill_06', description: 'バトル中予言系スキル効果×2（永続 / 予言系 / MP:500）', mpCost: 500, bonuses: {}, cost: 5, requires: 'oc_16' },
+      { id: 'oc_18', name: '啓示の真髄', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 6, requires: 'oc_17' },
+      { id: 'oc_19', name: 'オラクルバースト', type: 'skill', skillId: 'oc_skill_07', description: 'バトル中ATK×3・DEF×2バフ＋MP消費×1.2デバフ（MP:400）', mpCost: 400, bonuses: {}, cost: 6, requires: 'oc_18' },
+      { id: 'oc_20', name: '全知全能の力', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 6, requires: 'oc_19' },
+      { id: 'oc_21', name: 'オラクルの至高', type: 'stat', description: 'ATK +18 / HP +40 / MP +30', bonuses: { atk: 18, hp: 40, mp: 30 }, cost: 6, requires: 'oc_20' },
+      // 最終奥義
+      { id: 'oc_22', name: '終末予言', type: 'skill', skillId: 'oc_skill_08', description: '即時最大HP30%回復＋3ターン後ATK×200防御無視（予言系 / MP:1500）', mpCost: 1500, bonuses: {}, cost: 9, requires: 'oc_21' },
     ],
   },
 
   /* ──────────────────────────────────────────────────────────
      カタストロフルート（狂戦士の特級職）
-     狂戦士の上位特級職。全てを破壊する終末の化身。
-     スキル詳細は Phase 3 で実装予定。
+     合計SPコスト：105SP（特級職専用コスト体系）
      ────────────────────────────────────────────────────────── */
   {
     id: 'catastrophe',
     name: 'カタストロフ',
-    description: '狂戦士の特級職。全てを破壊する終末の化身。（スキル詳細はPhase 3で実装予定）',
+    description: '狂戦士の特級職。全てを破壊する終末の化身。',
     nodes: [
-      { id: 'ct_01', name: 'カタストロフの刻印', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 1, requires: null },
-      { id: 'ct_02', name: '終末の咆哮', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 1, requires: 'ct_01' },
-      { id: 'ct_03', name: '破壊の怒り', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 1, requires: 'ct_02' },
-      { id: 'ct_04', name: '滅亡本能', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 1, requires: 'ct_03' },
-      { id: 'ct_05', name: '終焉の瞳', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 1, requires: 'ct_04' },
-      { id: 'ct_06', name: '絶滅の本能', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'ct_05' },
-      { id: 'ct_07', name: '破壊神の腕力', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 2, requires: 'ct_06' },
-      { id: 'ct_08', name: '終末の嵐', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 2, requires: 'ct_07' },
-      { id: 'ct_09', name: 'カタストロフの技I', type: 'skill', skillId: 'ct_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ct_08' },
-      { id: 'ct_10', name: '破壊の炎', type: 'stat', description: 'ATK +22', bonuses: { atk: 22 }, cost: 2, requires: 'ct_09' },
-      { id: 'ct_11', name: '終末の鼓動', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 3, requires: 'ct_10' },
-      { id: 'ct_12', name: '破滅の意志', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ct_11' },
-      { id: 'ct_13', name: '終焉の刃', type: 'stat', description: 'ATK +28', bonuses: { atk: 28 }, cost: 3, requires: 'ct_12' },
-      { id: 'ct_14', name: 'カタストロフの技II', type: 'skill', skillId: 'ct_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ct_13' },
-      { id: 'ct_15', name: '完全破壊', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ct_14' },
-      { id: 'ct_16', name: '終末の極意', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 2, requires: 'ct_15' },
-      { id: 'ct_17', name: 'カタストロフの技III', type: 'skill', skillId: 'ct_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ct_16' },
-      { id: 'ct_18', name: '破壊神の真髄', type: 'stat', description: 'ATK +32', bonuses: { atk: 32 }, cost: 2, requires: 'ct_17' },
-      { id: 'ct_19', name: 'カタストロフの技IV', type: 'skill', skillId: 'ct_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ct_18' },
-      { id: 'ct_20', name: '終末の力', type: 'stat', description: 'ATK +35', bonuses: { atk: 35 }, cost: 3, requires: 'ct_19' },
-      { id: 'ct_21', name: 'カタストロフの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 3, requires: 'ct_20' },
-      { id: 'ct_22', name: '絶滅の一撃・極', type: 'skill', skillId: 'ct_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ct_21' },
+      { id: 'ct_01', name: 'カタストロフの刻印', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 3, requires: null },
+      { id: 'ct_02', name: '終末の咆哮', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 3, requires: 'ct_01' },
+      { id: 'ct_03', name: '破壊の怒り', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 3, requires: 'ct_02' },
+      { id: 'ct_04', name: '滅亡本能', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 3, requires: 'ct_03' },
+      { id: 'ct_05', name: '終焉の瞳', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 3, requires: 'ct_04' },
+      // パッシブ①（刻印系）：HP50%以下でATK+20%
+      { id: 'ct_06', name: '絶滅の本能', type: 'passive', description: 'パッシブ：HP50%以下の時、ATKが20%上昇する', bonuses: {}, cost: 5, requires: 'ct_05' },
+      { id: 'ct_07', name: '破壊神の腕力', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 4, requires: 'ct_06' },
+      { id: 'ct_08', name: '終末の嵐', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 4, requires: 'ct_07' },
+      { id: 'ct_09', name: '血の災厄', type: 'skill', skillId: 'ct_skill_01', description: 'ATK×6.0ダメージ＋最大HP10%消費（MP:250）', mpCost: 250, bonuses: {}, cost: 4, requires: 'ct_08' },
+      { id: 'ct_10', name: '災厄の咆哮', type: 'skill', skillId: 'ct_skill_02', description: '30%でスタン＋3ターン間敵被ダメ×1.5（重複なし）（MP:120）', mpCost: 120, bonuses: {}, cost: 4, requires: 'ct_09' },
+      { id: 'ct_11', name: '終末の鼓動', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 5, requires: 'ct_10' },
+      // パッシブ②：血の代償スキルを上書き
+      { id: 'ct_12', name: '破滅の意志', type: 'passive', description: 'パッシブ：HP消費スキル使用時、消費HP分の20%をダメージに加算する。「血の代償」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'blood_price', requires: 'ct_11' },
+      { id: 'ct_13', name: '破滅の傷', type: 'skill', skillId: 'ct_skill_03', description: '3ターン間毎ターン最大HP10%自傷＋バトル中ATK×5バフ＋確定会心（MP:300）', mpCost: 300, bonuses: {}, cost: 4, requires: 'ct_12' },
+      { id: 'ct_14', name: '滅びの刃', type: 'skill', skillId: 'ct_skill_04', description: 'ATK×(最大HP-現在HP)×2倍ダメージ（MP:450）', mpCost: 450, bonuses: {}, cost: 5, requires: 'ct_13' },
+      // パッシブ③：狂乱突きスキルを上書き
+      { id: 'ct_15', name: '完全破壊', type: 'passive', description: 'パッシブ：通常攻撃がクリティカル時、追加でATK×1.0の防御無視ダメージを与える。「狂乱突き」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'berserk_stab', requires: 'ct_14' },
+      { id: 'ct_16', name: '終末の極意', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 5, requires: 'ct_15' },
+      { id: 'ct_17', name: '狂血蹂躙', type: 'skill', skillId: 'ct_skill_05', description: 'ATK×4.0＋最大HP10%減少ごとに2連撃追加＋会心率+30%（MP:600）', mpCost: 600, bonuses: {}, cost: 5, requires: 'ct_16' },
+      { id: 'ct_18', name: '破壊神の真髄', type: 'stat', description: 'ATK +32', bonuses: { atk: 32 }, cost: 6, requires: 'ct_17' },
+      { id: 'ct_19', name: '滅亡の眼光', type: 'skill', skillId: 'ct_skill_06', description: '2ターン間敵ATK×0.2・DEF×0.5デバフ（MP:500）', mpCost: 500, bonuses: {}, cost: 6, requires: 'ct_18' },
+      { id: 'ct_20', name: '終末の力', type: 'stat', description: 'ATK +35', bonuses: { atk: 35 }, cost: 6, requires: 'ct_19' },
+      { id: 'ct_21', name: 'カタストロフの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 6, requires: 'ct_20' },
+      // 最終奥義
+      { id: 'ct_22', name: '破滅の絶撃', type: 'skill', skillId: 'ct_skill_07', description: '現在HP50%消費＋HP残量に応じてATK×50〜300（HP100%時→ATK×300）（MP:1000）', mpCost: 1000, bonuses: {}, cost: 9, requires: 'ct_21' },
     ],
   },
 
   /* ──────────────────────────────────────────────────────────
      ルーンナイトルート（魔剣士の特級職）
-     魔剣士の上位特級職。魔法と剣の究極融合を極めた存在。
-     スキル詳細は Phase 3 で実装予定。
+     合計SPコスト：105SP（特級職専用コスト体系）
      ────────────────────────────────────────────────────────── */
   {
     id: 'rune_knight',
     name: 'ルーンナイト',
-    description: '魔剣士の特級職。魔法と剣の究極融合を極めた存在。（スキル詳細はPhase 3で実装予定）',
+    description: '魔剣士の特級職。魔法と剣の究極融合を極めた存在。',
     nodes: [
-      { id: 'rk_01', name: 'ルーンナイトの刻印', type: 'stat', description: 'ATK +5 / MP +10', bonuses: { atk: 5, mp: 10 }, cost: 1, requires: null },
-      { id: 'rk_02', name: 'ルーン刻印', type: 'stat', description: 'ATK +5 / MP +8', bonuses: { atk: 5, mp: 8 }, cost: 1, requires: 'rk_01' },
-      { id: 'rk_03', name: '魔力の鎖', type: 'stat', description: 'ATK +6 / MP +12', bonuses: { atk: 6, mp: 12 }, cost: 1, requires: 'rk_02' },
-      { id: 'rk_04', name: '剣魔の極意', type: 'stat', description: 'ATK +8 / MP +10', bonuses: { atk: 8, mp: 10 }, cost: 1, requires: 'rk_03' },
-      { id: 'rk_05', name: 'ルーンの力', type: 'stat', description: 'ATK +8 / MP +8', bonuses: { atk: 8, mp: 8 }, cost: 1, requires: 'rk_04' },
-      { id: 'rk_06', name: '魔法剣の真髄', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'rk_05' },
-      { id: 'rk_07', name: 'ルーン強化', type: 'stat', description: 'ATK +10 / MP +15', bonuses: { atk: 10, mp: 15 }, cost: 2, requires: 'rk_06' },
-      { id: 'rk_08', name: '魔剣の蓄積', type: 'stat', description: 'ATK +10 / MP +18', bonuses: { atk: 10, mp: 18 }, cost: 2, requires: 'rk_07' },
-      { id: 'rk_09', name: 'ルーンナイトの技I', type: 'skill', skillId: 'rk_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_08' },
-      { id: 'rk_10', name: '魔剣の極限', type: 'stat', description: 'ATK +12 / MP +20', bonuses: { atk: 12, mp: 20 }, cost: 2, requires: 'rk_09' },
-      { id: 'rk_11', name: '深淵の魔力', type: 'stat', description: 'ATK +14 / MP +25', bonuses: { atk: 14, mp: 25 }, cost: 3, requires: 'rk_10' },
-      { id: 'rk_12', name: 'ルーンの奥義', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'rk_11' },
-      { id: 'rk_13', name: '究極の剣技', type: 'stat', description: 'ATK +16 / MP +20', bonuses: { atk: 16, mp: 20 }, cost: 3, requires: 'rk_12' },
-      { id: 'rk_14', name: 'ルーンナイトの技II', type: 'skill', skillId: 'rk_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'rk_13' },
-      { id: 'rk_15', name: '魔法剣の覚醒', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'rk_14' },
-      { id: 'rk_16', name: 'ルーンの海', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 2, requires: 'rk_15' },
-      { id: 'rk_17', name: 'ルーンナイトの技III', type: 'skill', skillId: 'rk_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_16' },
-      { id: 'rk_18', name: '魔剣士の至境', type: 'stat', description: 'ATK +18 / MP +25', bonuses: { atk: 18, mp: 25 }, cost: 2, requires: 'rk_17' },
-      { id: 'rk_19', name: 'ルーンナイトの技IV', type: 'skill', skillId: 'rk_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_18' },
-      { id: 'rk_20', name: '無限のルーン', type: 'stat', description: 'ATK +20 / MP +35', bonuses: { atk: 20, mp: 35 }, cost: 3, requires: 'rk_19' },
-      { id: 'rk_21', name: 'ルーンナイトの至高', type: 'stat', description: 'ATK +22 / MP +40', bonuses: { atk: 22, mp: 40 }, cost: 3, requires: 'rk_20' },
-      { id: 'rk_22', name: '絶界ルーン斬', type: 'skill', skillId: 'rk_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'rk_21' },
+      { id: 'rk_01', name: 'ルーンナイトの刻印', type: 'stat', description: 'ATK +5 / MP +10', bonuses: { atk: 5, mp: 10 }, cost: 3, requires: null },
+      { id: 'rk_02', name: 'ルーン刻印', type: 'stat', description: 'ATK +5 / MP +8', bonuses: { atk: 5, mp: 8 }, cost: 3, requires: 'rk_01' },
+      { id: 'rk_03', name: '魔力の鎖', type: 'stat', description: 'ATK +6 / MP +12', bonuses: { atk: 6, mp: 12 }, cost: 3, requires: 'rk_02' },
+      { id: 'rk_04', name: '剣魔の極意', type: 'stat', description: 'ATK +8 / MP +10', bonuses: { atk: 8, mp: 10 }, cost: 3, requires: 'rk_03' },
+      { id: 'rk_05', name: 'ルーンの力', type: 'stat', description: 'ATK +8 / MP +8', bonuses: { atk: 8, mp: 8 }, cost: 3, requires: 'rk_04' },
+      // パッシブ①（刻印系）：スキル使用時ATK×1.1
+      { id: 'rk_06', name: '魔法剣の真髄', type: 'passive', description: 'パッシブ：スキル使用時のATKが10%上昇する（当ターン中）', bonuses: {}, cost: 5, requires: 'rk_05' },
+      { id: 'rk_07', name: 'ルーン強化', type: 'stat', description: 'ATK +10 / MP +15', bonuses: { atk: 10, mp: 15 }, cost: 4, requires: 'rk_06' },
+      { id: 'rk_08', name: '魔剣の蓄積', type: 'stat', description: 'ATK +10 / MP +18', bonuses: { atk: 10, mp: 18 }, cost: 4, requires: 'rk_07' },
+      { id: 'rk_09', name: 'ルーン付与', type: 'skill', skillId: 'rk_skill_01', description: 'バトル終了までATK×4.0バフ・被ダメ×1.5（重複不可 / MP:80）', mpCost: 80, bonuses: {}, cost: 4, requires: 'rk_08' },
+      { id: 'rk_10', name: 'ルーン強撃', type: 'skill', skillId: 'rk_skill_02', description: 'ATK×4.0ダメージ＋50%で敵DEF3ターン0＋会心率+50%（MP:70）', mpCost: 70, bonuses: {}, cost: 4, requires: 'rk_09' },
+      { id: 'rk_11', name: '深淵の魔力', type: 'stat', description: 'ATK +14 / MP +20', bonuses: { atk: 14, mp: 20 }, cost: 5, requires: 'rk_10' },
+      // パッシブ②：魔力凝縮スキルを上書き
+      { id: 'rk_12', name: 'ルーンの奥義', type: 'passive', description: 'パッシブ：ルーン付与発動中、全スキルの攻撃倍率が1.2倍になる。「魔力凝縮」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'magic_condense', requires: 'rk_11' },
+      { id: 'rk_13', name: '究極の剣技', type: 'stat', description: 'ATK +15 / MP +20', bonuses: { atk: 15, mp: 20 }, cost: 5, requires: 'rk_12' },
+      { id: 'rk_14', name: 'ルーン爆裂斬', type: 'skill', skillId: 'rk_skill_03', description: '1撃目ATK×4.0＋2撃目ATK×2.5（50%で次ターン敵ATK×0.5デバフ）（MP:80）', mpCost: 80, bonuses: {}, cost: 5, requires: 'rk_13' },
+      // パッシブ③：魔剣強撃スキルを上書き
+      { id: 'rk_15', name: '魔法剣の覚醒', type: 'passive', description: 'パッシブ：ルーン付与発動中の通常攻撃が防御無視になる。「魔剣強撃」スキルを上書き。', bonuses: {}, cost: 6, overridesSkillId: 'magic_sword_strike', requires: 'rk_14' },
+      { id: 'rk_16', name: 'ルーンの海', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 5, requires: 'rk_15' },
+      { id: 'rk_17', name: 'ルーンストライク', type: 'skill', skillId: 'rk_skill_04', description: 'ATK×2.4の3連撃（1撃30%でATK×1.3バフ永続・2撃30%で敵DEF×0.6・3撃15%でスタン）（MP:90）', mpCost: 90, bonuses: {}, cost: 5, requires: 'rk_16' },
+      { id: 'rk_18', name: '魔剣士の至境', type: 'stat', description: 'ATK +18 / MP +25', bonuses: { atk: 18, mp: 25 }, cost: 5, requires: 'rk_17' },
+      { id: 'rk_19', name: 'ルーン解放', type: 'skill', skillId: 'rk_skill_05', description: 'バトル中消費MP×2の代わりにスキル効果×2（攻撃倍率・デバフ・バフ発動確率 / バトル中1回 / MP:250）', mpCost: 250, bonuses: {}, cost: 6, requires: 'rk_18' },
+      { id: 'rk_20', name: '無限のルーン', type: 'stat', description: 'ATK +20 / MP +35', bonuses: { atk: 20, mp: 35 }, cost: 6, requires: 'rk_19' },
+      { id: 'rk_21', name: 'ルーンナイトの至高', type: 'stat', description: 'ATK +22 / MP +40', bonuses: { atk: 22, mp: 40 }, cost: 6, requires: 'rk_20' },
+      // 最終奥義
+      { id: 'rk_22', name: 'ルーンカタクリズム', type: 'skill', skillId: 'rk_skill_06', description: '自身次ターンATK・DEF×0.5＋ATK×4.0の5連撃＋バトル中敵DEF永続0（MP:300）', mpCost: 300, bonuses: {}, cost: 9, requires: 'rk_21' },
     ],
   },
 ];
@@ -1654,6 +1669,20 @@ function resetJobSkillTree(jobId) {
   // お気に入りからも削除
   p.favoriteSkills = p.favoriteSkills.filter(s => !jobSkillIds.includes(s));
 
+  // 特級職ルートリセット時：パッシブ②③が上書きした上級職スキルを復元する
+  const eliteJobIdsList = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  if (eliteJobIdsList.includes(jobId)) {
+    acquired.forEach(nodeId => {
+      const node = route.nodes.find(n => n.id === nodeId);
+      if (node && node.type === 'passive' && node.overridesSkillId) {
+        // 上書きされた上級職スキルを復元（まだlearnedSkillsにない場合のみ）
+        if (!p.learnedSkills.includes(node.overridesSkillId)) {
+          p.learnedSkills.push(node.overridesSkillId);
+        }
+      }
+    });
+  }
+
   // ノードをクリア
   p.skillTreeNodes[jobId] = [];
 
@@ -1686,6 +1715,16 @@ function resetJobSkillTree(jobId) {
         .map(n => n.skillId);
       p.learnedSkills   = p.learnedSkills.filter(s => !eliteSkillIds.includes(s));
       p.favoriteSkills  = p.favoriteSkills.filter(s => !eliteSkillIds.includes(s));
+
+      // 特級職パッシブ②③が上書きした上級職スキルを復元する
+      eliteAcquired.forEach(nodeId => {
+        const node = eliteRoute.nodes.find(n => n.id === nodeId);
+        if (node && node.type === 'passive' && node.overridesSkillId) {
+          if (!p.learnedSkills.includes(node.overridesSkillId)) {
+            p.learnedSkills.push(node.overridesSkillId);
+          }
+        }
+      });
     }
     // ノードをクリア
     p.skillTreeNodes[linkedEliteId] = [];
@@ -1920,6 +1959,7 @@ function gainExp(expGained) {
     // Lv2〜50: 5の倍数は5pt、Lv21〜50の非5倍数は4pt、Lv20以下の非5倍数は3pt
     // Lv51〜99: 5の倍数は5pt、それ以外は0pt
     // Lv100〜500: 10の倍数のみ5pt、それ以外は0pt
+    //   ※ Lv100〜300での合計：Lv100,110,...,300 → 21回 × 5pt = 105pt（特級職1ルート分）
     let pointsGained;
     if (player.level > 99) {
       pointsGained = (player.level % 10 === 0) ? 5 : 0;
@@ -2263,8 +2303,9 @@ function renderSkillTree() {
             <button class="st-unlock-btn" onclick="unlockEliteJobRoute('${eliteId}')" ${canPromote ? '' : 'disabled'}>
               ✨ ${eliteName}に昇格する（スキルストーン×10消費）
             </button>`;
-          // 閲覧用ノードHTMLを生成（disabled）
-          const previewHtml = buildNodeListHtml(eliteId, true);
+          // 閲覧用ノードHTMLを生成（disabled）。上級職の取得済みノード数を渡して進捗を表示。
+          const parentAcquiredCount = (p.skillTreeNodes[parentId] || []).length;
+          const previewHtml = buildNodeListHtml(eliteId, true, parentAcquiredCount);
           nodeListE.innerHTML = `
             <div class="st-locked-msg">
               <div class="st-locked-title">🔓 ${eliteName}ルート（閲覧モード）</div>
@@ -2309,9 +2350,10 @@ function renderSkillTree() {
  * ノードリストのHTMLを生成する
  * @param {string} routeId - ルートID
  * @param {boolean} previewMode - trueの場合はノード取得不可（閲覧のみ）
+ * @param {number} [parentNodeCount=-1] - 上級職プレビュー時の上級職取得済みノード数（-1で無効）
  * @returns {string} HTML文字列
  */
-function buildNodeListHtml(routeId, previewMode) {
+function buildNodeListHtml(routeId, previewMode, parentNodeCount = -1) {
   const p = game.player;
   const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
   if (!route) return '';
@@ -2338,7 +2380,18 @@ function buildNodeListHtml(routeId, previewMode) {
 
     let statusText;
     if (previewMode && !isAcquired) {
-      statusText = '🔒 特級職に就職すると解放されます';
+      if (parentNodeCount >= 0) {
+        // 上級職就任中のプレビューモード：上級職ノード数に基づく解放進捗を表示
+        const neededParentNodes = idx + 1;
+        const remaining = neededParentNodes - parentNodeCount;
+        if (remaining <= 0) {
+          statusText = '✅ 上級職条件達成！昇格後に取得可能';
+        } else {
+          statusText = `🔒 あと${remaining}ノード上級職を進めると解放できます`;
+        }
+      } else {
+        statusText = '🔒 特級職に就職すると解放されます';
+      }
     } else if (isAcquired) {
       statusText = '✓ 取得済み';
     } else if (!prevAcquired) {
@@ -2548,6 +2601,13 @@ function acquireAllSkillNodes(routeId) {
         p.learnedSkills.push(node.skillId);
       }
     }
+
+    // 特級職パッシブ②③：対応する上級職スキルIDをlearnedSkillsから削除（上書き）
+    const eliteJobRoutesListAll = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+    if (eliteJobRoutesListAll.includes(routeId) && node.type === 'passive' && node.overridesSkillId) {
+      p.learnedSkills  = p.learnedSkills.filter(s => s !== node.overridesSkillId);
+      p.favoriteSkills = p.favoriteSkills.filter(s => s !== node.overridesSkillId);
+    }
   }
 
   p.recalcStats();
@@ -2593,7 +2653,8 @@ function acquireSkillNode(routeId, nodeId) {
     const parentAcquired  = (p.skillTreeNodes[parentJobId] || []).length;
     const eliteAcquired   = (p.skillTreeNodes[routeId]    || []).length;
     if (parentAcquired < eliteAcquired + 1) {
-      alert('上級職のスキルツリーを先に進める必要があります');
+      const needed = (eliteAcquired + 1) - parentAcquired;
+      alert(`あと${needed}ノード上級職を進めると解放できます`);
       return;
     }
   }
@@ -2626,6 +2687,13 @@ function acquireSkillNode(routeId, nodeId) {
     if (!p.learnedSkills.includes(node.skillId)) {
       p.learnedSkills.push(node.skillId);
     }
+  }
+
+  // 特級職パッシブ②③：対応する上級職スキルIDをlearnedSkillsから削除（上書き）
+  const eliteJobRoutesList = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  if (eliteJobRoutesList.includes(routeId) && node.type === 'passive' && node.overridesSkillId) {
+    p.learnedSkills    = p.learnedSkills.filter(s => s !== node.overridesSkillId);
+    p.favoriteSkills   = p.favoriteSkills.filter(s => s !== node.overridesSkillId);
   }
 
   // ステータス再計算
@@ -2665,6 +2733,8 @@ function useSkill(skillId) {
       case 'self_harm_strike':   return player.hp / player.maxHp <= 0.20;
       case 'berserk_rampage':    return player.hp / player.maxHp <= 0.30;
       case 'annihilation_strike': return player.hp / player.maxHp <= 0.50;
+      case 'ct_skill_01':        return player.hp <= 1;
+      case 'ct_skill_07':        return player.hp <= 1;
       default: return false;
     }
   })();
@@ -3498,6 +3568,667 @@ function useSkill(skillId) {
       enemy.takeDamage(dmg);
       game.turnDamageDealt += dmg;
       log(`💀🌌 ${player.name} は「絶滅の一撃」を解放した！ → ${enemy.name} に ${dmg} ダメージ！（防御完全無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── ルーンナイトスキル ── */
+
+    case 'rk_skill_01': {
+      // ルーン付与: バトル終了までATK×4.0バフ・被ダメ×1.5（重複不可）
+      if (game.runeGrantActive) {
+        log('⚠ 「ルーン付与」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      game.runeGrantActive = true;
+      game.runeGrantAtkMult = 4.0;
+      game.runeGrantDmgMult = 1.5;
+      log(`✨ ${player.name} は「ルーン付与」を発動！ATK×4.0バフ・被ダメ×1.5（バトル終了まで）`, 'player-action');
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'rk_skill_02': {
+      // ルーン強撃: ATK×4.0ダメージ＋50%で敵DEF3ターン0＋会心率+50%判定
+      const rkCrit = Math.random() < 0.50;
+      const rkMultiplier = game.runeReleaseActive ? 8.0 : 4.0;
+      const rkRaw = Math.floor(player.effectiveAttack * rkMultiplier);
+      const rkDmg = applyEquipmentEffects(Math.max(1, rkRaw + randInt(-5, 8)), 'deal');
+      enemy.takeDamage(rkDmg);
+      game.turnDamageDealt += rkDmg;
+      log(`⚡ ${player.name} は「ルーン強撃」を放った！ → ${enemy.name} に ${rkDmg} ダメージ！`, 'player-action');
+      if (rkCrit) {
+        const debuffTurns = game.runeReleaseActive ? 6 : 3;
+        if (!game.enemyDefDebuff) {
+          game.enemyDefDebuff = { factor: 0, turnsLeft: debuffTurns, source: 'rk_skill_02' };
+        } else {
+          game.enemyDefDebuff.factor   = 0;
+          game.enemyDefDebuff.turnsLeft = debuffTurns;
+        }
+        log(`💥 会心！${enemy.name} のDEFが${debuffTurns}ターン間0になった！`, 'player-action');
+      }
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'rk_skill_03': {
+      // ルーン爆裂斬: 1撃目ATK×4.0＋2撃目ATK×2.5（50%で次ターン敵ATK×0.5デバフ）
+      const rkM1 = game.runeReleaseActive ? 8.0 : 4.0;
+      const rkM2 = game.runeReleaseActive ? 5.0 : 2.5;
+      const rkD1Raw = Math.floor(player.effectiveAttack * rkM1) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const rkD1 = applyEquipmentEffects(Math.max(1, rkD1Raw + randInt(-5, 8)), 'deal');
+      enemy.takeDamage(rkD1);
+      game.turnDamageDealt += rkD1;
+      let rkD2 = 0;
+      if (enemy.isAlive()) {
+        const rkD2Raw = Math.floor(player.effectiveAttack * rkM2) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        rkD2 = applyEquipmentEffects(Math.max(1, rkD2Raw + randInt(-3, 5)), 'deal');
+        enemy.takeDamage(rkD2);
+        game.turnDamageDealt += rkD2;
+        const debuffChance = game.runeReleaseActive ? 1.0 : 0.50;
+        if (Math.random() < debuffChance) {
+          game.pendingEffects.push({ type: 'debuff_atkFactor', turnsLeft: 1, value: 0.5, skillId: 'rk_skill_03' });
+          log(`💢 次ターン敵ATK×0.5デバフを付与！`, 'player-action');
+        }
+      }
+      log(`⚡💥 ${player.name} は「ルーン爆裂斬」を放った！ → ${enemy.name} に ${rkD1}＋${rkD2} = ${rkD1 + rkD2} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'rk_skill_04': {
+      // ルーンストライク: ATK×2.4の3連撃（各種確率効果）
+      const rkSMult = game.runeReleaseActive ? 4.8 : 2.4;
+      let rkTotal = 0;
+      for (let i = 0; i < 3; i++) {
+        if (!enemy.isAlive()) break;
+        const rkHitRaw = Math.floor(player.effectiveAttack * rkSMult) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const rkHit = applyEquipmentEffects(Math.max(1, rkHitRaw + randInt(-3, 5)), 'deal');
+        enemy.takeDamage(rkHit);
+        game.turnDamageDealt += rkHit;
+        rkTotal += rkHit;
+        const chance1 = game.runeReleaseActive ? 0.60 : 0.30;
+        const chance2 = game.runeReleaseActive ? 0.60 : 0.30;
+        const chance3 = game.runeReleaseActive ? 0.30 : 0.15;
+        if (i === 0 && Math.random() < chance1) {
+          if (!game.runeStrikeAtkBuff) game.runeStrikeAtkBuff = { factor: 1.0, permanent: true };
+          game.runeStrikeAtkBuff.factor *= 1.3;
+          log(`✨ 1撃目：自ATK×1.3バフ付与（累積）！`, 'player-action');
+        }
+        if (i === 1 && Math.random() < chance2) {
+          if (!game.enemyDefDebuff || game.enemyDefDebuff.factor > 0.6) {
+            game.enemyDefDebuff = { factor: 0.6, turnsLeft: 99, source: 'rk_skill_04' };
+          }
+          log(`💢 2撃目：敵DEF×0.6デバフ付与！`, 'player-action');
+        }
+        if (i === 2 && Math.random() < chance3) {
+          game.enemyStunned = true;
+          log(`⚡ 3撃目：スタン発動！`, 'player-action');
+        }
+      }
+      log(`⚡⚡⚡ ${player.name} は「ルーンストライク」で3連撃！ → ${enemy.name} に合計 ${rkTotal} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'rk_skill_05': {
+      // ルーン解放: バトル中消費MP×2の代わりにスキル効果×2（バトル中1回）
+      if (game.runeReleaseActive) {
+        log('⚠ 「ルーン解放」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      if (game.runeReleaseUsed) {
+        log('⚠ 「ルーン解放」はバトル中1回しか使用できません！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      game.runeReleaseActive = true;
+      game.runeReleaseUsed   = true;
+      log(`✨🌌 ${player.name} は「ルーン解放」を発動！消費MP×2・スキル効果×2（バトル終了まで）`, 'player-action');
+      break;
+    }
+
+    case 'rk_skill_06': {
+      // ルーンカタクリズム: 自ATK・DEF×0.5（次ターン）＋ATK×4.0の5連撃＋敵DEF永続0
+      const rkCMult = game.runeReleaseActive ? 8.0 : 4.0;
+      let rkCTotal = 0;
+      for (let i = 0; i < 5; i++) {
+        if (!enemy.isAlive()) break;
+        const rkCRaw = Math.floor(player.effectiveAttack * rkCMult) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const rkCHit = applyEquipmentEffects(Math.max(1, rkCRaw + randInt(-5, 10)), 'deal');
+        enemy.takeDamage(rkCHit);
+        game.turnDamageDealt += rkCHit;
+        rkCTotal += rkCHit;
+      }
+      // 次ターン自ATK・DEF×0.5（pendingEffectsで管理）
+      game.pendingEffects.push({ type: 'self_debuff_atkdef', turnsLeft: 1, value: 0.5, skillId: 'rk_skill_06' });
+      // 敵DEF永続0
+      game.enemyDefDebuff = { factor: 0, turnsLeft: 999, source: 'rk_skill_06' };
+      log(`🌌💥 ${player.name} は「ルーンカタクリズム」を解放！ → ${enemy.name} に5連撃 合計 ${rkCTotal} ダメージ！敵DEF永続0！（次ターン自ATK・DEF×0.5）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    /* ── クルセイダースキル ── */
+
+    case 'cr_skill_01': {
+      // 聖域展開: DEF×1.7バフ2ターン＋即時HP10%回復（重複不可）
+      const existingCrShield = game.shieldActive.find(s => s.source === 'cr_skill_01');
+      if (existingCrShield) {
+        log('⚠ 「聖域展開」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      const crDefBonus = Math.floor(player.effectiveDefense * 0.7);
+      game.shieldActive.push({ defenseBonus: crDefBonus, turnsLeft: 2, source: 'cr_skill_01', name: '聖域展開' });
+      const crHeal = Math.floor(player.maxHp * 0.10);
+      player.heal(crHeal);
+      log(`✝ ${player.name} は「聖域展開」を発動！DEF+${crDefBonus}バフ2ターン＋HP +${crHeal} 回復！`, 'player-action');
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'cr_skill_02': {
+      // クルセイドヒール: 即時最大HP20%回復＋2ターン後に最大HP20%回復
+      const crH1 = Math.floor(player.maxHp * 0.20);
+      player.heal(crH1);
+      log(`💚 ${player.name} は「クルセイドヒール」を使用！即時HP +${crH1} 回復！`, 'player-action');
+      const crH2 = Math.floor(player.maxHp * 0.20);
+      game.pendingEffects.push({ type: 'heal', turnsLeft: 2, value: crH2, skillId: 'cr_skill_02' });
+      log(`💚 2ターン後にさらにHP +${crH2} 回復予定…`, 'system');
+      renderPlayerStatus();
+      break;
+    }
+
+    case 'cr_skill_03': {
+      // クルセイドバッシュ: ATK×1.5ダメージ＋DEF×1.5バフ3ターン＋敵ATK×0.7デバフ3ターン
+      const crBRaw = Math.floor(player.effectiveAttack * 1.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const crBDmg = applyEquipmentEffects(Math.max(1, crBRaw + randInt(-3, 5)), 'deal');
+      enemy.takeDamage(crBDmg);
+      game.turnDamageDealt += crBDmg;
+      const crBDef = Math.floor(player.effectiveDefense * 0.5);
+      game.shieldActive.push({ defenseBonus: crBDef, turnsLeft: 3, source: 'cr_skill_03', name: 'クルセイドバッシュ防御バフ' });
+      if (!game.enemyAtkDebuff || game.enemyAtkDebuff.factor > 0.7) {
+        game.enemyAtkDebuff = { factor: 0.7, turnsLeft: 3 };
+      }
+      log(`✝⚔ ${player.name} は「クルセイドバッシュ」！ → ${enemy.name} に ${crBDmg} ダメージ！DEFバフ3ターン＋敵ATK×0.7デバフ3ターン！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'cr_skill_04': {
+      // 聖十字斬: ATK×2.5の2連撃＋最大HP40%即時回復
+      const crX1Raw = Math.floor(player.effectiveAttack * 2.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const crX1 = applyEquipmentEffects(Math.max(1, crX1Raw + randInt(-4, 7)), 'deal');
+      enemy.takeDamage(crX1);
+      game.turnDamageDealt += crX1;
+      let crX2 = 0;
+      if (enemy.isAlive()) {
+        const crX2Raw = Math.floor(player.effectiveAttack * 2.5) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        crX2 = applyEquipmentEffects(Math.max(1, crX2Raw + randInt(-4, 7)), 'deal');
+        enemy.takeDamage(crX2);
+        game.turnDamageDealt += crX2;
+      }
+      const crXHeal = Math.floor(player.maxHp * 0.40);
+      player.heal(crXHeal);
+      log(`✝✨ ${player.name} は「聖十字斬」を放った！ → ${enemy.name} に ${crX1}＋${crX2} ダメージ！HP +${crXHeal} 回復！`, 'player-action');
+      renderPlayerStatus();
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'cr_skill_05': {
+      // クルセイドアポカリプス: 即時HP50%回復＋敵ATK・DEF段階デバフ＋3ターン後ATK×20防御無視ダメージ
+      // バトル中3ターンに1回のみ使用可能
+      if (game.crusaderApocCooldown > 0) {
+        log(`⚠ 「クルセイドアポカリプス」はあと${game.crusaderApocCooldown}ターン使用できません！`, 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      game.crusaderApocCooldown = 3;
+      const crApHeal = Math.floor(player.maxHp * 0.50);
+      player.heal(crApHeal);
+      log(`✝💥 ${player.name} は「クルセイドアポカリプス」を解放！即時HP +${crApHeal} 回復！`, 'player-action');
+      // 敵デバフ（ターンカウントダウン式）
+      game.pendingEffects.push({ type: 'debuff_enemy_multiturn', turnsLeft: 1, value: { atk: 0, def: 0 }, skillId: 'cr_skill_05' });
+      game.pendingEffects.push({ type: 'debuff_enemy_multiturn', turnsLeft: 2, value: { atk: 0.5, def: 0.5 }, skillId: 'cr_skill_05_t2' });
+      game.pendingEffects.push({ type: 'debuff_enemy_multiturn', turnsLeft: 3, value: { atk: 0.75, def: 0.75 }, skillId: 'cr_skill_05_t3' });
+      // 3ターン後ATK×20防御無視ダメージ
+      const crApDmgVal = Math.floor(player.effectiveAttack * 20.0);
+      game.pendingEffects.push({ type: 'damage_noDef', turnsLeft: 3, value: crApDmgVal, skillId: 'cr_skill_05_dmg', msgTemplate: 'クルセイドアポカリプス' });
+      log(`💫 3ターン後にATK×20の防御無視ダメージが発動します…`, 'system');
+      renderPlayerStatus();
+      break;
+    }
+
+    /* ── ファントムスキル ── */
+
+    case 'ph_skill_01': {
+      // 影四連斬: ATK×1.0の4連撃・防御無視＋使用ターン攻撃無効化確率+30%
+      const phAvoidAdd = game.runeReleaseActive ? 60 : 30;
+      game.phantomAvoidChance += phAvoidAdd;
+      let phFTotal = 0;
+      for (let i = 0; i < 4; i++) {
+        if (!enemy.isAlive()) break;
+        const phFRaw = Math.floor(player.effectiveAttack * 1.0);
+        const phFHit = applyEquipmentEffects(Math.max(1, phFRaw + randInt(-2, 4)), 'deal');
+        enemy.takeDamage(phFHit);
+        game.turnDamageDealt += phFHit;
+        phFTotal += phFHit;
+      }
+      log(`👻⚔ ${player.name} は「影四連斬」で4連撃！ → ${enemy.name} に合計 ${phFTotal} ダメージ！（防御無視）攻撃無効化+${phAvoidAdd}%加算！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ph_skill_02': {
+      // 幻影忍び: 使用ターン攻撃無効化確率+50%＋次ターンATK×4.0ダメージ
+      const phMiAdd = game.runeReleaseActive ? 100 : 50;
+      game.phantomAvoidChance += phMiAdd;
+      const phMiDmgVal = Math.floor(player.effectiveAttack * (game.runeReleaseActive ? 8.0 : 4.0));
+      game.pendingEffects.push({ type: 'damage_noDef', turnsLeft: 1, value: phMiDmgVal, skillId: 'ph_skill_02', msgTemplate: '幻影忍び（遅延攻撃）' });
+      log(`👻 ${player.name} は「幻影忍び」を使用！攻撃無効化+${phMiAdd}%加算＋次ターンATK×4.0ダメージ予約！`, 'player-action');
+      break;
+    }
+
+    case 'ph_skill_03': {
+      // ファントムラッシュ: 会心率+30%＋ATK×1.2の5連撃・防御無視
+      const phRCritChance = game.runeReleaseActive ? 0.60 : 0.30;
+      const phRMult = game.runeReleaseActive ? 2.4 : 1.2;
+      const phRCrit = Math.random() < phRCritChance;
+      let phRTotal = 0;
+      const hitCount = 5;
+      for (let i = 0; i < hitCount; i++) {
+        if (!enemy.isAlive()) break;
+        let phRHit = Math.floor(player.effectiveAttack * phRMult);
+        if (phRCrit) phRHit = Math.floor(phRHit * 1.5);
+        phRHit = applyEquipmentEffects(Math.max(1, phRHit + randInt(-3, 5)), 'deal');
+        enemy.takeDamage(phRHit);
+        game.turnDamageDealt += phRHit;
+        phRTotal += phRHit;
+      }
+      const critMsg = phRCrit ? '（会心！）' : '';
+      log(`👻💫 ${player.name} は「ファントムラッシュ」で5連撃！${critMsg} → ${enemy.name} に合計 ${phRTotal} ダメージ！（防御無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ph_skill_04': {
+      // 亡霊の刃: ATK×3.0防御無視＋攻撃無効化確率+20%＋毎ターンATK×4.0防御無視追加ダメージ
+      const phBMult = game.runeReleaseActive ? 6.0 : 3.0;
+      const phBRaw = Math.floor(player.effectiveAttack * phBMult);
+      const phBDmg = applyEquipmentEffects(Math.max(1, phBRaw + randInt(-5, 8)), 'deal');
+      enemy.takeDamage(phBDmg);
+      game.turnDamageDealt += phBDmg;
+      const phBAvoid = game.runeReleaseActive ? 40 : 20;
+      game.phantomAvoidChance += phBAvoid;
+      // 毎ターン追加ダメージをpendingEffectsに追加（永続：10ターン）
+      if (!game.phantomBladeDoT) {
+        game.phantomBladeDoT = { active: true, baseMult: 4.0 };
+      }
+      log(`👻🗡 ${player.name} は「亡霊の刃」を使用！ → ${enemy.name} に ${phBDmg} ダメージ！攻撃無効化+${phBAvoid}%＋毎ターン追加ダメージ付与！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ph_skill_05': {
+      // 虚影乱れ斬り: ATK×2.0の4連撃・防御無視（各撃25%で攻撃無効化確率加算、重複なし）
+      const phFMult = game.runeReleaseActive ? 4.0 : 2.0;
+      const phFAvoidChance = game.runeReleaseActive ? 0.50 : 0.25;
+      let phFTotalDmg = 0;
+      let phFAvoidAdded = false;
+      for (let i = 0; i < 4; i++) {
+        if (!enemy.isAlive()) break;
+        const phFHRaw = Math.floor(player.effectiveAttack * phFMult);
+        const phFH = applyEquipmentEffects(Math.max(1, phFHRaw + randInt(-3, 5)), 'deal');
+        enemy.takeDamage(phFH);
+        game.turnDamageDealt += phFH;
+        phFTotalDmg += phFH;
+        if (!phFAvoidAdded && Math.random() < phFAvoidChance) {
+          game.phantomAvoidChance += 25;
+          phFAvoidAdded = true;
+          log(`✨ ${i + 1}撃目：攻撃無効化確率+25%加算！`, 'player-action');
+        }
+      }
+      log(`👻⚔ ${player.name} は「虚影乱れ斬り」で4連撃！ → ${enemy.name} に合計 ${phFTotalDmg} ダメージ！（防御無視）`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ph_skill_06': {
+      // 亡霊の死撃: 2ターン間敵攻撃無効化確率+50%加算＋3ターン後に無効化回数×ATK×20防御無視ダメージ
+      const phDMAvoidAdd = game.runeReleaseActive ? 100 : 50;
+      // 2ターン間、毎ターン開始時にphantomAvoidChance+50%加算
+      game.phantomDeathStrikeActive = { turnsLeft: 2, avoidAdd: phDMAvoidAdd };
+      const phDMDmgBase = game.runeReleaseActive ? 40.0 : 20.0;
+      game.pendingEffects.push({
+        type: 'damage_phantom_death',
+        turnsLeft: 3,
+        value: { mult: phDMDmgBase, fallbackMult: game.runeReleaseActive ? 20.0 : 10.0 },
+        skillId: 'ph_skill_06',
+        msgTemplate: '亡霊の死撃'
+      });
+      log(`👻💀 ${player.name} は「亡霊の死撃」を発動！2ターン間攻撃無効化+${phDMAvoidAdd}%加算＋3ターン後に無効化回数×ATK×${phDMDmgBase}の防御無視ダメージ！`, 'player-action');
+      // 発動後自DEF×1/3
+      game.pendingEffects.push({ type: 'self_debuff_def', turnsLeft: 0, value: 1 / 3, skillId: 'ph_skill_06_def' });
+      break;
+    }
+
+    case 'ph_skill_07': {
+      // ファントムアビス: 使用ターン攻撃無効化+100%→2ターン+30%→3ターン後ATK×100防御完全無視
+      game.phantomAvoidChance += 100;
+      game.pendingEffects.push({ type: 'avoid_add', turnsLeft: 1, value: 30, skillId: 'ph_skill_07_t1' });
+      game.pendingEffects.push({ type: 'avoid_add', turnsLeft: 2, value: 30, skillId: 'ph_skill_07_t2' });
+      const phAbMult = game.runeReleaseActive ? 200.0 : 100.0;
+      const phAbDmgVal = Math.floor(player.effectiveAttack * phAbMult);
+      game.pendingEffects.push({ type: 'damage_noDef', turnsLeft: 3, value: phAbDmgVal, skillId: 'ph_skill_07_dmg', msgTemplate: 'ファントムアビス' });
+      log(`👻🌌 ${player.name} は「ファントムアビス」を解放！使用ターン攻撃無効化+100%！3ターン後にATK×${phAbMult}の防御完全無視ダメージ！`, 'player-action');
+      break;
+    }
+
+    /* ── オラクルスキル ── */
+
+    case 'oc_skill_01': {
+      // 予言魔法: 2ターン後にATK×5ダメージ＋最大HP30%回復（予言系）
+      if (game.prophecyActive) {
+        log('⚠ すでに予言が待機中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      const ocP1Mult = (game.oracleProphecyFlowActive ? 2.0 : 1.0) * (game.oracleOmegaProphecyActive ? 1.0 : 1.0);
+      const ocP1DmgVal = Math.floor(player.effectiveAttack * 5.0 * ocP1Mult);
+      const ocP1HealVal = Math.floor(player.maxHp * 0.30 * ocP1Mult);
+      game.prophecyActive = { type: 'oc_skill_01', dmgVal: ocP1DmgVal, healVal: ocP1HealVal, turnsLeft: 2, mult: ocP1Mult };
+      game.pendingEffects.push({ type: 'prophecy_01', turnsLeft: 2, value: { dmg: ocP1DmgVal, heal: ocP1HealVal }, skillId: 'oc_skill_01', msgTemplate: '予言魔法' });
+      log(`🔮 ${player.name} は「予言魔法」を詠唱！2ターン後にATK×${5 * ocP1Mult}ダメージ＋HP+${ocP1HealVal}回復予定…`, 'system');
+      break;
+    }
+
+    case 'oc_skill_02': {
+      // 神罰魔法: バトル中敵ATK・DEF×0.5デバフ＋毎ターンATK×1ダメージ
+      if (!game.divineJudgmentDebuff) {
+        game.divineJudgmentDebuff = { atkFactor: 0.5, defFactor: 0.5, permanent: true };
+        const ocDJRaw = Math.floor(player.effectiveAttack * 1.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const ocDJDmg = applyEquipmentEffects(Math.max(1, ocDJRaw + randInt(-2, 3)), 'deal');
+        enemy.takeDamage(ocDJDmg);
+        game.turnDamageDealt += ocDJDmg;
+        game.divinePunishmentDoT = { active: true, mult: 1.0 };
+        log(`🔮⚡ ${player.name} は「神罰魔法」を解放！敵ATK・DEF×0.5デバフ（永続）＋毎ターンATK×1ダメージ付与！初撃: ${ocDJDmg} ダメージ！`, 'player-action');
+        renderEnemyStatus();
+      } else {
+        log('⚠ 「神罰魔法」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      break;
+    }
+
+    case 'oc_skill_03': {
+      // 天啓強化: バトル中自ATK×1.3・DEF×1.3バフ＋MP消費×0.7
+      if (!game.oracleEnhanceBuff) {
+        game.oracleEnhanceBuff = { atkMult: 1.3, defMult: 1.3, mpCostMult: 0.7, permanent: true };
+        log(`🔮✨ ${player.name} は「天啓強化」を発動！ATK×1.3・DEF×1.3バフ＋MP消費×0.7（バトル終了まで）`, 'player-action');
+        renderPlayerStatus();
+      } else {
+        log('⚠ 「天啓強化」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      break;
+    }
+
+    case 'oc_skill_04': {
+      // 天啓聖魔: 3ターン間ランダム行動（召喚中）
+      if (game.oracleSpiritActive) {
+        // 聖魔暴走：MP×2消費で3ターン分の効果を一括発動
+        if (player.mp < skill.mpCost) {
+          log('⚠ 聖魔暴走のMP追加消費が足りません！', 'system');
+          player.mp += skill.mpCost;
+          setButtonsEnabled(true);
+          return;
+        }
+        player.mp -= skill.mpCost; // 追加消費
+        log(`🔮⚡ 「聖魔暴走」発動！3ターン分の効果を一括実行！`, 'player-action');
+        let bursTotal = 0;
+        let burstHeal = 0;
+        for (let i = 0; i < 3; i++) {
+          const pat = randInt(1, 3);
+          if (pat === 1) {
+            const bh = Math.floor(player.effectiveAttack * 3.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+            const bd = applyEquipmentEffects(Math.max(1, bh), 'deal');
+            enemy.takeDamage(bd); game.turnDamageDealt += bd; bursTotal += bd;
+          } else if (pat === 2) {
+            const bh2 = Math.floor(player.maxHp * 0.10);
+            player.heal(bh2); burstHeal += bh2;
+          } else {
+            const bh3 = Math.floor(player.effectiveAttack * 5.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+            const bd3 = applyEquipmentEffects(Math.max(1, bh3), 'deal');
+            enemy.takeDamage(bd3); game.turnDamageDealt += bd3; bursTotal += bd3;
+          }
+        }
+        log(`🔮 聖魔暴走：合計 ${bursTotal} ダメージ＋HP +${burstHeal} 回復！`, 'player-action');
+        game.oracleSpiritActive = null;
+        renderPlayerStatus();
+        renderEnemyStatus();
+      } else {
+        // 通常召喚
+        game.oracleSpiritActive = { turnsLeft: 3, pattern: 0 };
+        log(`🔮 ${player.name} は「天啓聖魔」を召喚！3ターン間ランダム行動する…`, 'system');
+      }
+      break;
+    }
+
+    case 'oc_skill_05': {
+      // 予言の崩壊: 予言魔法待機中→ATK×50強化・即時発動、終末予言待機中→HP30%消費・ATK×400即時発動、通常→ATK×20＋HP20%回復
+      // 予言の奔流発動中は全効果×2
+      const ocColFlowMult = game.oracleProphecyFlowActive ? 2.0 : 1.0;
+      if (game.prophecyActive && game.prophecyActive.type === 'oc_skill_01') {
+        // 予言魔法強化→即時発動
+        const ocColMult = 50.0 * ocColFlowMult;
+        const ocColDmgRaw = Math.floor(player.effectiveAttack * ocColMult) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const ocColDmg = applyEquipmentEffects(Math.max(1, ocColDmgRaw + randInt(-10, 20)), 'deal');
+        enemy.takeDamage(ocColDmg);
+        game.turnDamageDealt += ocColDmg;
+        // pendingEffectsから予言を削除
+        game.pendingEffects = game.pendingEffects.filter(e => e.skillId !== 'oc_skill_01');
+        game.prophecyActive = null;
+        log(`🔮💥 ${player.name} は「予言の崩壊」で予言魔法を強化！ATK×${ocColMult}の即時ダメージ！ → ${enemy.name} に ${ocColDmg} ダメージ！`, 'player-action');
+        renderEnemyStatus();
+      } else if (game.prophecyActive && game.prophecyActive.type === 'oc_skill_08') {
+        // 終末予言：HP30%消費＋ATK×400即時発動
+        const ocColHpCost = Math.floor(player.maxHp * 0.30);
+        player.hp = Math.max(1, player.hp - ocColHpCost);
+        renderPlayerStatus();
+        const ocColOmegaMult = 400.0 * ocColFlowMult;
+        const ocColOmegaDmg = applyEquipmentEffects(Math.max(1, Math.floor(player.effectiveAttack * ocColOmegaMult)), 'deal');
+        enemy.takeDamage(ocColOmegaDmg);
+        game.turnDamageDealt += ocColOmegaDmg;
+        game.pendingEffects = game.pendingEffects.filter(e => e.skillId !== 'oc_skill_08');
+        game.prophecyActive = null;
+        log(`🔮💀 ${player.name} は「予言の崩壊」で終末予言を即時発動！HP -${ocColHpCost}消費 → ${enemy.name} に ${ocColOmegaDmg} ダメージ！`, 'player-action');
+        renderPlayerStatus();
+        renderEnemyStatus();
+      } else {
+        // 通常：ATK×20＋HP20%回復
+        const ocColNormMult = 20.0 * ocColFlowMult;
+        const ocColNormRaw = Math.floor(player.effectiveAttack * ocColNormMult) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        const ocColNormDmg = applyEquipmentEffects(Math.max(1, ocColNormRaw + randInt(-8, 15)), 'deal');
+        enemy.takeDamage(ocColNormDmg);
+        game.turnDamageDealt += ocColNormDmg;
+        const ocColNormHeal = Math.floor(player.maxHp * 0.20);
+        player.heal(ocColNormHeal);
+        log(`🔮 ${player.name} は「予言の崩壊」を放った！ → ${enemy.name} に ${ocColNormDmg} ダメージ＋HP +${ocColNormHeal} 回復！`, 'player-action');
+        renderPlayerStatus();
+        renderEnemyStatus();
+      }
+      break;
+    }
+
+    case 'oc_skill_06': {
+      // 予言の奔流: バトル中予言系スキル効果×2（永続）
+      if (!game.oracleProphecyFlowActive) {
+        game.oracleProphecyFlowActive = true;
+        log(`🔮🌊 ${player.name} は「予言の奔流」を解放！予言系スキルの効果が×2になる（バトル終了まで）`, 'player-action');
+      } else {
+        log('⚠ 「予言の奔流」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      break;
+    }
+
+    case 'oc_skill_07': {
+      // オラクルバースト: バトル中ATK×3・DEF×2バフ＋MP消費×1.2デバフ
+      if (!game.oracleBurstActive) {
+        game.oracleBurstActive = { atkMult: 3.0, defMult: 2.0, mpCostMult: 1.2, permanent: true };
+        log(`🔮💥 ${player.name} は「オラクルバースト」を解放！ATK×3・DEF×2バフ＋MP消費×1.2（バトル終了まで）`, 'player-action');
+        renderPlayerStatus();
+      } else {
+        log('⚠ 「オラクルバースト」はすでに発動中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      break;
+    }
+
+    case 'oc_skill_08': {
+      // 終末予言: 即時最大HP30%回復＋3ターン後ATK×200防御無視（予言系）
+      // 予言の奔流発動中は効果×2（ATK×400）
+      if (game.prophecyActive) {
+        log('⚠ すでに予言が待機中です！', 'system');
+        player.mp += skill.mpCost;
+        setButtonsEnabled(true);
+        return;
+      }
+      const ocOMFlowMult = game.oracleProphecyFlowActive ? 2.0 : 1.0;
+      const ocOMHeal = Math.floor(player.maxHp * 0.30 * ocOMFlowMult);
+      player.heal(ocOMHeal);
+      log(`🔮✨ ${player.name} は「終末予言」を詠唱！即時HP +${ocOMHeal} 回復！3ターン後にATK×${200 * ocOMFlowMult}の防御無視ダメージ…`, 'system');
+      const ocOMDmgVal = Math.floor(player.effectiveAttack * 200.0 * ocOMFlowMult);
+      game.prophecyActive = { type: 'oc_skill_08', dmgVal: ocOMDmgVal, turnsLeft: 3, mult: ocOMFlowMult };
+      game.pendingEffects.push({ type: 'damage_noDef', turnsLeft: 3, value: ocOMDmgVal, skillId: 'oc_skill_08', msgTemplate: '終末予言' });
+      renderPlayerStatus();
+      break;
+    }
+
+    /* ── カタストロフスキル ── */
+
+    case 'ct_skill_01': {
+      // 血の災厄: ATK×6.0ダメージ＋最大HP10%消費
+      const ctBC1Raw = Math.floor(player.effectiveAttack * 6.0) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+      const ctBC1Dmg = applyEquipmentEffects(Math.max(1, ctBC1Raw + randInt(-8, 12)), 'deal');
+      enemy.takeDamage(ctBC1Dmg);
+      game.turnDamageDealt += ctBC1Dmg;
+      const ctBC1HpCost = Math.floor(player.maxHp * 0.10);
+      player.hp = Math.max(1, player.hp - ctBC1HpCost);
+      log(`💀🔥 ${player.name} は「血の災厄」を解放！HP -${ctBC1HpCost}消費 → ${enemy.name} に ${ctBC1Dmg} ダメージ！`, 'player-action');
+      renderPlayerStatus();
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ct_skill_02': {
+      // 災厄の咆哮: 30%でスタン＋3ターン間敵被ダメ×1.5（重複なし）
+      const ctHowlStun = Math.random() < 0.30;
+      if (ctHowlStun) {
+        game.enemyStunned = true;
+        log(`⚡ ${enemy.name} はスタンした！`, 'player-action');
+      }
+      if (!game.enemyAmpDmgActive) {
+        game.enemyAmpDmgActive = { factor: 1.5, turnsLeft: 3, source: 'ct_skill_02' };
+        log(`💥 ${player.name} は「災厄の咆哮」！3ターン間敵が受けるダメージ×1.5！`, 'player-action');
+      } else {
+        log(`💥 ${player.name} は「災厄の咆哮」！（被ダメ増加効果はすでに発動中）`, 'player-action');
+      }
+      break;
+    }
+
+    case 'ct_skill_03': {
+      // 破滅の傷: 3ターン間毎ターン最大HP10%自傷＋バトル中ATK×5バフ＋確定会心付与
+      game.pendingEffects.push({ type: 'self_damage_pct', turnsLeft: 1, value: 0.10, skillId: 'ct_skill_03_t1' });
+      game.pendingEffects.push({ type: 'self_damage_pct', turnsLeft: 2, value: 0.10, skillId: 'ct_skill_03_t2' });
+      game.pendingEffects.push({ type: 'self_damage_pct', turnsLeft: 3, value: 0.10, skillId: 'ct_skill_03_t3' });
+      if (!game.ctRuinousWoundBuff) {
+        game.ctRuinousWoundBuff = { atkMult: 5.0, guaranteedCrit: true, permanent: true };
+        log(`💀✨ ${player.name} は「破滅の傷」を刻んだ！3ターン間毎ターン最大HP10%自傷＋ATK×5バフ＋確定会心付与！`, 'player-action');
+      } else {
+        log(`💀 ${player.name} は「破滅の傷」を重ねた！（バフはすでに発動中）`, 'player-action');
+      }
+      break;
+    }
+
+    case 'ct_skill_04': {
+      // 滅びの刃: ATK×(最大HP－現在HP)÷最大HP×2倍ダメージ（HPが低いほど強力）
+      const ctDBHpRatio = (player.maxHp - player.hp) / player.maxHp;
+      const ctDBMult = Math.max(0.5, ctDBHpRatio * 2.0);
+      const ctDBRaw = Math.floor(player.effectiveAttack * ctDBMult * (game.ctRuinousWoundBuff ? game.ctRuinousWoundBuff.atkMult : 1.0));
+      const ctDBDmg = applyEquipmentEffects(Math.max(1, ctDBRaw + randInt(-10, 20)), 'deal');
+      enemy.takeDamage(ctDBDmg);
+      game.turnDamageDealt += ctDBDmg;
+      log(`💀⚔ ${player.name} は「滅びの刃」を振り下ろした！（HP損失率: ${Math.floor(ctDBHpRatio * 100)}%）→ ${enemy.name} に ${ctDBDmg} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ct_skill_05': {
+      // 狂血蹂躙: ATK×4.0＋最大HP10%減少ごとに2連撃追加＋会心率+30%
+      const ctRB = game.ctRuinousWoundBuff;
+      const ctRBBase = 4.0 * (ctRB ? ctRB.atkMult : 1.0);
+      const ctRBCrit = (ctRB && ctRB.guaranteedCrit) ? true : Math.random() < 0.30;
+      const hpLostPct = Math.floor((player.maxHp - player.hp) / player.maxHp * 10);
+      const hitCount = 1 + Math.min(hpLostPct, 5) * 2; // 最大11連撃
+      let ctRBTotal = 0;
+      for (let i = 0; i < hitCount; i++) {
+        if (!enemy.isAlive()) break;
+        let ctRBHit = Math.floor(player.effectiveAttack * ctRBBase) - Math.floor(enemy.defense * SKILL_DEFENSE_FACTOR);
+        if (ctRBCrit) ctRBHit = Math.floor(ctRBHit * 1.5);
+        ctRBHit = applyEquipmentEffects(Math.max(1, ctRBHit + randInt(-5, 10)), 'deal');
+        enemy.takeDamage(ctRBHit);
+        game.turnDamageDealt += ctRBHit;
+        ctRBTotal += ctRBHit;
+      }
+      const ctRBCritMsg = ctRBCrit ? '（確定会心！）' : '';
+      log(`💀🌪 ${player.name} は「狂血蹂躙」で${hitCount}連撃！${ctRBCritMsg} → ${enemy.name} に合計 ${ctRBTotal} ダメージ！`, 'player-action');
+      renderEnemyStatus();
+      break;
+    }
+
+    case 'ct_skill_06': {
+      // 滅亡の眼光: 2ターン間敵ATK×0.2・DEF×0.5デバフ
+      game.enemyAtkDebuff = { factor: 0.2, turnsLeft: 2 };
+      game.enemyDefDebuff = { factor: 0.5, turnsLeft: 2, source: 'ct_skill_06' };
+      log(`💀👁 ${player.name} は「滅亡の眼光」を放った！2ターン間敵ATK×0.2・DEF×0.5デバフ！`, 'player-action');
+      break;
+    }
+
+    case 'ct_skill_07': {
+      // 破滅の絶撃: 現在HPの50%消費＋HP残量に応じてATK×50〜300
+      const ctAbHpCost = Math.floor(player.hp * 0.50);
+      player.hp = Math.max(1, player.hp - ctAbHpCost);
+      renderPlayerStatus();
+      const ctAbHpPct = player.hp / player.maxHp;
+      let ctAbMult;
+      if (ctAbHpPct >= 1.0)       ctAbMult = 300.0;
+      else if (ctAbHpPct >= 0.75) ctAbMult = 200.0;
+      else if (ctAbHpPct >= 0.50) ctAbMult = 100.0;
+      else                         ctAbMult = 50.0;
+      if (game.ctRuinousWoundBuff) ctAbMult *= game.ctRuinousWoundBuff.atkMult;
+      const ctAbDmg = applyEquipmentEffects(Math.max(1, Math.floor(player.effectiveAttack * ctAbMult)), 'deal');
+      enemy.takeDamage(ctAbDmg);
+      game.turnDamageDealt += ctAbDmg;
+      log(`💀🌌 ${player.name} は「破滅の絶撃」を解放！HP -${ctAbHpCost}消費（残HP: ${Math.floor(ctAbHpPct * 100)}%）→ ATK×${ctAbMult}で ${enemy.name} に ${ctAbDmg} ダメージ！`, 'player-action');
       renderEnemyStatus();
       break;
     }
