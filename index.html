@@ -433,10 +433,11 @@
 
       <div class="sp-remaining" id="st-remaining">残りポイント: 0 pt</div>
 
-      <!-- Part1 / Part2 タブ切り替え -->
+      <!-- Part1 / Part2 / Part3 タブ切り替え -->
       <div class="st-part-tabs" id="st-part-tabs">
         <button class="st-part-btn active" id="st-part-btn-1" onclick="switchSkillTreePart(1)">◆ Part 1</button>
         <button class="st-part-btn" id="st-part-btn-2" onclick="switchSkillTreePart(2)">◇ Part 2</button>
+        <button class="st-part-btn" id="st-part-btn-3" onclick="switchSkillTreePart(3)" style="display:none">◇ Part 3</button>
       </div>
 
       <!-- Part1 ルートタブ（剣士・魔法・僧侶・戦士） -->
@@ -454,6 +455,15 @@
         <button class="st-tab-btn tab-locked" id="st-tab-assassin"  data-route="assassin"  onclick="switchSkillTreeTab('assassin')">🔒 暗殺者</button>
         <button class="st-tab-btn tab-locked" id="st-tab-sage"      data-route="sage"      onclick="switchSkillTreeTab('sage')">🔒 賢者</button>
         <button class="st-tab-btn tab-locked" id="st-tab-berserker" data-route="berserker" onclick="switchSkillTreeTab('berserker')">🔒 狂戦士</button>
+      </div>
+
+      <!-- Part3 ルートタブ（特級職：クルセイダー・ファントム・オラクル・カタストロフ・ルーンナイト） -->
+      <div class="st-tabs" id="st-tabs-part3" style="display:none">
+        <button class="st-tab-btn tab-locked" id="st-tab-crusader"    data-route="crusader"    onclick="switchSkillTreeTab('crusader')">🔒 クルセイダー</button>
+        <button class="st-tab-btn tab-locked" id="st-tab-phantom"     data-route="phantom"     onclick="switchSkillTreeTab('phantom')">🔒 ファントム</button>
+        <button class="st-tab-btn tab-locked" id="st-tab-oracle"      data-route="oracle"      onclick="switchSkillTreeTab('oracle')">🔒 オラクル</button>
+        <button class="st-tab-btn tab-locked" id="st-tab-catastrophe" data-route="catastrophe" onclick="switchSkillTreeTab('catastrophe')">🔒 カタストロフ</button>
+        <button class="st-tab-btn tab-locked" id="st-tab-rune_knight" data-route="rune_knight" onclick="switchSkillTreeTab('rune_knight')">🔒 ルーンナイト</button>
       </div>
 
       <!-- ルート説明 -->

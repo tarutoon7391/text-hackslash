@@ -111,9 +111,28 @@ function applyLoadedSave(saved) {
   // currentJob 以外の職業のスキルツリーに習得済みノードが残っている場合、
   // またはアンロックフラグが残っている場合はリセットして SP を返還する
   const p = game.player;
+
+  // 特級職ルートのノードが存在しない場合は空配列で自動補完（セーブデータ互換性）
+  const ELITE_JOB_IDS = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  ELITE_JOB_IDS.forEach(jobId => {
+    if (!p.skillTreeNodes[jobId]) p.skillTreeNodes[jobId] = [];
+  });
+
+  // 現在が特級職の場合は対応する上級職を特定する（クリーンアップから除外するため）
+  const ELITE_TO_PARENT = {
+    crusader:    'paladin',
+    phantom:     'assassin',
+    oracle:      'sage',
+    catastrophe: 'berserker',
+    rune_knight: 'makenshi',
+  };
+  const currentJobParent = ELITE_TO_PARENT[p.currentJob] || null;
+
   let cleanupDone = false;
   JOB_IDS.forEach(jobId => {
     if (jobId === p.currentJob) return;
+    // 現在の特級職の親となる上級職はリセットしない
+    if (jobId === currentJobParent) return;
     const flag = getJobUnlockFlag(jobId);
     const hasNodes = (p.skillTreeNodes[jobId] || []).length > 0;
     if (p.permanentItems[flag] || hasNodes) {
@@ -123,7 +142,7 @@ function applyLoadedSave(saved) {
     }
   });
   // makenshiルートのクリーンアップ
-  if (p.currentJob !== 'makenshi') {
+  if (p.currentJob !== 'makenshi' && currentJobParent !== 'makenshi') {
     const makenshiFlag = getJobUnlockFlag('makenshi');
     const hasMakenshiNodes = (p.skillTreeNodes['makenshi'] || []).length > 0;
     if (p.permanentItems[makenshiFlag] || hasMakenshiNodes) {
@@ -132,6 +151,24 @@ function applyLoadedSave(saved) {
       cleanupDone = true;
     }
   }
+  // 特級職ルートのクリーンアップ（currentJobが対応する上級職でも特級職でもない場合のみ削除）
+  ELITE_JOB_IDS.forEach(eliteId => {
+    if (eliteId === p.currentJob) return;  // 現在の特級職はリセットしない
+    const parentOfElite = ELITE_TO_PARENT[eliteId];
+    if (p.currentJob === parentOfElite) return;  // 親の上級職就任中はリセットしない（閲覧モードで参照可能）
+    const hasEliteNodes = (p.skillTreeNodes[eliteId] || []).length > 0;
+    if (hasEliteNodes) {
+      // resetJobSkillTree が親上級職経由でリセットされていない場合のフォールバック
+      const eliteRoute   = SKILL_TREE_DEFINITIONS.find(r => r.id === eliteId);
+      const eliteSkillIds = eliteRoute
+        ? eliteRoute.nodes.filter(n => n.type === 'skill' && n.skillId).map(n => n.skillId)
+        : [];
+      p.learnedSkills  = p.learnedSkills.filter(s => !eliteSkillIds.includes(s));
+      p.favoriteSkills = p.favoriteSkills.filter(s => !eliteSkillIds.includes(s));
+      p.skillTreeNodes[eliteId] = [];
+      cleanupDone = true;
+    }
+  });
   // クリーンアップが行われた場合はステータスを再計算し、永続効果を確実に除去する
   if (cleanupDone) {
     p.recalcStats();

@@ -1294,6 +1294,181 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'bk_22', name: '絶滅の一撃', type: 'skill', skillId: 'annihilation_strike', description: '最大HPの50%を消費して究極爆発（ATK×12.0 防御完全無視 / MP:100）', mpCost: 100, bonuses: {}, cost: 3, requires: 'bk_21' },
     ],
   },
+
+  /* ──────────────────────────────────────────────────────────
+     クルセイダールート（聖騎士の特級職）
+     聖騎士の上位特級職。さらなる堅守と神聖な力を極めた究極の守護者。
+     スキル詳細は Phase 3 で実装予定。
+     ────────────────────────────────────────────────────────── */
+  {
+    id: 'crusader',
+    name: 'クルセイダー',
+    description: '聖騎士の特級職。絶対的な守護と神聖なる剣技を極めた究極の守護者。（スキル詳細はPhase 3で実装予定）',
+    nodes: [
+      { id: 'cr_01', name: 'クルセイダーの刻印', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: null },
+      { id: 'cr_02', name: '神聖な防壁', type: 'stat', description: 'DEF +5', bonuses: { def: 5 }, cost: 1, requires: 'cr_01' },
+      { id: 'cr_03', name: '聖盾の強化', type: 'stat', description: 'HP +20', bonuses: { hp: 20 }, cost: 1, requires: 'cr_02' },
+      { id: 'cr_04', name: '神聖の誓い', type: 'stat', description: 'DEF +8 / HP +15', bonuses: { def: 8, hp: 15 }, cost: 1, requires: 'cr_03' },
+      { id: 'cr_05', name: '天守の加護', type: 'stat', description: 'ATK +5 / DEF +5', bonuses: { atk: 5, def: 5 }, cost: 1, requires: 'cr_04' },
+      { id: 'cr_06', name: '聖域の守護', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'cr_05' },
+      { id: 'cr_07', name: '神撃の腕力', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 2, requires: 'cr_06' },
+      { id: 'cr_08', name: '鉄壁の聖鎧', type: 'stat', description: 'DEF +10 / HP +25', bonuses: { def: 10, hp: 25 }, cost: 2, requires: 'cr_07' },
+      { id: 'cr_09', name: 'クルセイダーの技I', type: 'skill', skillId: 'cr_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'cr_08' },
+      { id: 'cr_10', name: '聖騎士の極意', type: 'stat', description: 'ATK +8 / DEF +8', bonuses: { atk: 8, def: 8 }, cost: 2, requires: 'cr_09' },
+      { id: 'cr_11', name: '天盾の守り', type: 'stat', description: 'DEF +15 / HP +35', bonuses: { def: 15, hp: 35 }, cost: 3, requires: 'cr_10' },
+      { id: 'cr_12', name: '聖なる反撃', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'cr_11' },
+      { id: 'cr_13', name: '神聖なる剛腕', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 3, requires: 'cr_12' },
+      { id: 'cr_14', name: 'クルセイダーの技II', type: 'skill', skillId: 'cr_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'cr_13' },
+      { id: 'cr_15', name: '絶対防壁', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'cr_14' },
+      { id: 'cr_16', name: '聖域の覚醒', type: 'stat', description: 'ATK +10 / DEF +12', bonuses: { atk: 10, def: 12 }, cost: 2, requires: 'cr_15' },
+      { id: 'cr_17', name: 'クルセイダーの技III', type: 'skill', skillId: 'cr_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'cr_16' },
+      { id: 'cr_18', name: '天守の真髄', type: 'stat', description: 'ATK +12 / DEF +18 / HP +40', bonuses: { atk: 12, def: 18, hp: 40 }, cost: 2, requires: 'cr_17' },
+      { id: 'cr_19', name: 'クルセイダーの技IV', type: 'skill', skillId: 'cr_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'cr_18' },
+      { id: 'cr_20', name: '神聖なる究極守護', type: 'stat', description: 'DEF +20 / HP +50', bonuses: { def: 20, hp: 50 }, cost: 3, requires: 'cr_19' },
+      { id: 'cr_21', name: 'クルセイダーの至高', type: 'stat', description: 'ATK +15 / DEF +25 / HP +60', bonuses: { atk: 15, def: 25, hp: 60 }, cost: 3, requires: 'cr_20' },
+      { id: 'cr_22', name: '神聖無双・極', type: 'skill', skillId: 'cr_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'cr_21' },
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────────
+     ファントムルート（暗殺者の特級職）
+     暗殺者の上位特級職。影の極致に達した絶対的な暗殺者。
+     スキル詳細は Phase 3 で実装予定。
+     ────────────────────────────────────────────────────────── */
+  {
+    id: 'phantom',
+    name: 'ファントム',
+    description: '暗殺者の特級職。影の極致に達した絶対的な暗殺者。（スキル詳細はPhase 3で実装予定）',
+    nodes: [
+      { id: 'ph_01', name: 'ファントムの刻印', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: null },
+      { id: 'ph_02', name: '幻影の速さ', type: 'stat', description: 'ATK +8', bonuses: { atk: 8 }, cost: 1, requires: 'ph_01' },
+      { id: 'ph_03', name: '闇の技法', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'ph_02' },
+      { id: 'ph_04', name: '影の刃', type: 'stat', description: 'ATK +10', bonuses: { atk: 10 }, cost: 1, requires: 'ph_03' },
+      { id: 'ph_05', name: '幻影の切れ味', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 1, requires: 'ph_04' },
+      { id: 'ph_06', name: '完全幻影', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'ph_05' },
+      { id: 'ph_07', name: '闇の覇気', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'ph_06' },
+      { id: 'ph_08', name: '幻影強化', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 2, requires: 'ph_07' },
+      { id: 'ph_09', name: 'ファントムの技I', type: 'skill', skillId: 'ph_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ph_08' },
+      { id: 'ph_10', name: '暗殺極意', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 2, requires: 'ph_09' },
+      { id: 'ph_11', name: '幻影の鋭刃', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'ph_10' },
+      { id: 'ph_12', name: '影の極致', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ph_11' },
+      { id: 'ph_13', name: '暗黒の刃', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 3, requires: 'ph_12' },
+      { id: 'ph_14', name: 'ファントムの技II', type: 'skill', skillId: 'ph_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ph_13' },
+      { id: 'ph_15', name: '完全暗殺', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ph_14' },
+      { id: 'ph_16', name: '幻影の真髄', type: 'stat', description: 'ATK +22', bonuses: { atk: 22 }, cost: 2, requires: 'ph_15' },
+      { id: 'ph_17', name: 'ファントムの技III', type: 'skill', skillId: 'ph_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ph_16' },
+      { id: 'ph_18', name: '影の覚醒', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 2, requires: 'ph_17' },
+      { id: 'ph_19', name: 'ファントムの技IV', type: 'skill', skillId: 'ph_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ph_18' },
+      { id: 'ph_20', name: '暗殺神の覚醒', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 3, requires: 'ph_19' },
+      { id: 'ph_21', name: 'ファントムの至高', type: 'stat', description: 'ATK +35', bonuses: { atk: 35 }, cost: 3, requires: 'ph_20' },
+      { id: 'ph_22', name: '幻影絶殺', type: 'skill', skillId: 'ph_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ph_21' },
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────────
+     オラクルルート（賢者の特級職）
+     賢者の上位特級職。神の啓示を受けた全知全能の術者。
+     スキル詳細は Phase 3 で実装予定。
+     ────────────────────────────────────────────────────────── */
+  {
+    id: 'oracle',
+    name: 'オラクル',
+    description: '賢者の特級職。神の啓示を受けた全知全能の術者。（スキル詳細はPhase 3で実装予定）',
+    nodes: [
+      { id: 'oc_01', name: 'オラクルの刻印', type: 'stat', description: 'ATK +5 / MP +10', bonuses: { atk: 5, mp: 10 }, cost: 1, requires: null },
+      { id: 'oc_02', name: '神託の知識', type: 'stat', description: 'ATK +5 / MP +8', bonuses: { atk: 5, mp: 8 }, cost: 1, requires: 'oc_01' },
+      { id: 'oc_03', name: '啓示の力', type: 'stat', description: 'ATK +6 / MP +10', bonuses: { atk: 6, mp: 10 }, cost: 1, requires: 'oc_02' },
+      { id: 'oc_04', name: '神の眼', type: 'stat', description: 'HP +20 / MP +12', bonuses: { hp: 20, mp: 12 }, cost: 1, requires: 'oc_03' },
+      { id: 'oc_05', name: '全知の慧眼', type: 'stat', description: 'ATK +6 / DEF +4', bonuses: { atk: 6, def: 4 }, cost: 1, requires: 'oc_04' },
+      { id: 'oc_06', name: '神の摂理', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'oc_05' },
+      { id: 'oc_07', name: '啓示の魔力', type: 'stat', description: 'ATK +8 / MP +15', bonuses: { atk: 8, mp: 15 }, cost: 2, requires: 'oc_06' },
+      { id: 'oc_08', name: '神の恵み', type: 'stat', description: 'HP +25 / MP +15', bonuses: { hp: 25, mp: 15 }, cost: 2, requires: 'oc_07' },
+      { id: 'oc_09', name: 'オラクルの技I', type: 'skill', skillId: 'oc_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'oc_08' },
+      { id: 'oc_10', name: '全知の光', type: 'stat', description: 'ATK +8 / HP +25 / MP +12', bonuses: { atk: 8, hp: 25, mp: 12 }, cost: 2, requires: 'oc_09' },
+      { id: 'oc_11', name: '神託の極意', type: 'stat', description: 'ATK +10 / MP +20', bonuses: { atk: 10, mp: 20 }, cost: 3, requires: 'oc_10' },
+      { id: 'oc_12', name: '啓示の奇跡', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'oc_11' },
+      { id: 'oc_13', name: '神の知恵', type: 'stat', description: 'ATK +10 / MP +25', bonuses: { atk: 10, mp: 25 }, cost: 3, requires: 'oc_12' },
+      { id: 'oc_14', name: 'オラクルの技II', type: 'skill', skillId: 'oc_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'oc_13' },
+      { id: 'oc_15', name: '全能の法則', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'oc_14' },
+      { id: 'oc_16', name: '神の覚醒', type: 'stat', description: 'ATK +12 / MP +25', bonuses: { atk: 12, mp: 25 }, cost: 2, requires: 'oc_15' },
+      { id: 'oc_17', name: 'オラクルの技III', type: 'skill', skillId: 'oc_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'oc_16' },
+      { id: 'oc_18', name: '啓示の真髄', type: 'stat', description: 'ATK +15 / HP +35 / MP +20', bonuses: { atk: 15, hp: 35, mp: 20 }, cost: 2, requires: 'oc_17' },
+      { id: 'oc_19', name: 'オラクルの技IV', type: 'skill', skillId: 'oc_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'oc_18' },
+      { id: 'oc_20', name: '全知全能の力', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 3, requires: 'oc_19' },
+      { id: 'oc_21', name: 'オラクルの至高', type: 'stat', description: 'ATK +18 / HP +40 / MP +30', bonuses: { atk: 18, hp: 40, mp: 30 }, cost: 3, requires: 'oc_20' },
+      { id: 'oc_22', name: '神の啓示・極', type: 'skill', skillId: 'oc_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'oc_21' },
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────────
+     カタストロフルート（狂戦士の特級職）
+     狂戦士の上位特級職。全てを破壊する終末の化身。
+     スキル詳細は Phase 3 で実装予定。
+     ────────────────────────────────────────────────────────── */
+  {
+    id: 'catastrophe',
+    name: 'カタストロフ',
+    description: '狂戦士の特級職。全てを破壊する終末の化身。（スキル詳細はPhase 3で実装予定）',
+    nodes: [
+      { id: 'ct_01', name: 'カタストロフの刻印', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 1, requires: null },
+      { id: 'ct_02', name: '終末の咆哮', type: 'stat', description: 'ATK +12', bonuses: { atk: 12 }, cost: 1, requires: 'ct_01' },
+      { id: 'ct_03', name: '破壊の怒り', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 1, requires: 'ct_02' },
+      { id: 'ct_04', name: '滅亡本能', type: 'stat', description: 'ATK +15', bonuses: { atk: 15 }, cost: 1, requires: 'ct_03' },
+      { id: 'ct_05', name: '終焉の瞳', type: 'stat', description: 'ATK +18', bonuses: { atk: 18 }, cost: 1, requires: 'ct_04' },
+      { id: 'ct_06', name: '絶滅の本能', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'ct_05' },
+      { id: 'ct_07', name: '破壊神の腕力', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 2, requires: 'ct_06' },
+      { id: 'ct_08', name: '終末の嵐', type: 'stat', description: 'ATK +20', bonuses: { atk: 20 }, cost: 2, requires: 'ct_07' },
+      { id: 'ct_09', name: 'カタストロフの技I', type: 'skill', skillId: 'ct_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ct_08' },
+      { id: 'ct_10', name: '破壊の炎', type: 'stat', description: 'ATK +22', bonuses: { atk: 22 }, cost: 2, requires: 'ct_09' },
+      { id: 'ct_11', name: '終末の鼓動', type: 'stat', description: 'ATK +25', bonuses: { atk: 25 }, cost: 3, requires: 'ct_10' },
+      { id: 'ct_12', name: '破滅の意志', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ct_11' },
+      { id: 'ct_13', name: '終焉の刃', type: 'stat', description: 'ATK +28', bonuses: { atk: 28 }, cost: 3, requires: 'ct_12' },
+      { id: 'ct_14', name: 'カタストロフの技II', type: 'skill', skillId: 'ct_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ct_13' },
+      { id: 'ct_15', name: '完全破壊', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'ct_14' },
+      { id: 'ct_16', name: '終末の極意', type: 'stat', description: 'ATK +30', bonuses: { atk: 30 }, cost: 2, requires: 'ct_15' },
+      { id: 'ct_17', name: 'カタストロフの技III', type: 'skill', skillId: 'ct_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ct_16' },
+      { id: 'ct_18', name: '破壊神の真髄', type: 'stat', description: 'ATK +32', bonuses: { atk: 32 }, cost: 2, requires: 'ct_17' },
+      { id: 'ct_19', name: 'カタストロフの技IV', type: 'skill', skillId: 'ct_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'ct_18' },
+      { id: 'ct_20', name: '終末の力', type: 'stat', description: 'ATK +35', bonuses: { atk: 35 }, cost: 3, requires: 'ct_19' },
+      { id: 'ct_21', name: 'カタストロフの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 3, requires: 'ct_20' },
+      { id: 'ct_22', name: '絶滅の一撃・極', type: 'skill', skillId: 'ct_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'ct_21' },
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────────
+     ルーンナイトルート（魔剣士の特級職）
+     魔剣士の上位特級職。魔法と剣の究極融合を極めた存在。
+     スキル詳細は Phase 3 で実装予定。
+     ────────────────────────────────────────────────────────── */
+  {
+    id: 'rune_knight',
+    name: 'ルーンナイト',
+    description: '魔剣士の特級職。魔法と剣の究極融合を極めた存在。（スキル詳細はPhase 3で実装予定）',
+    nodes: [
+      { id: 'rk_01', name: 'ルーンナイトの刻印', type: 'stat', description: 'ATK +5 / MP +10', bonuses: { atk: 5, mp: 10 }, cost: 1, requires: null },
+      { id: 'rk_02', name: 'ルーン刻印', type: 'stat', description: 'ATK +5 / MP +8', bonuses: { atk: 5, mp: 8 }, cost: 1, requires: 'rk_01' },
+      { id: 'rk_03', name: '魔力の鎖', type: 'stat', description: 'ATK +6 / MP +12', bonuses: { atk: 6, mp: 12 }, cost: 1, requires: 'rk_02' },
+      { id: 'rk_04', name: '剣魔の極意', type: 'stat', description: 'ATK +8 / MP +10', bonuses: { atk: 8, mp: 10 }, cost: 1, requires: 'rk_03' },
+      { id: 'rk_05', name: 'ルーンの力', type: 'stat', description: 'ATK +8 / MP +8', bonuses: { atk: 8, mp: 8 }, cost: 1, requires: 'rk_04' },
+      { id: 'rk_06', name: '魔法剣の真髄', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 2, requires: 'rk_05' },
+      { id: 'rk_07', name: 'ルーン強化', type: 'stat', description: 'ATK +10 / MP +15', bonuses: { atk: 10, mp: 15 }, cost: 2, requires: 'rk_06' },
+      { id: 'rk_08', name: '魔剣の蓄積', type: 'stat', description: 'ATK +10 / MP +18', bonuses: { atk: 10, mp: 18 }, cost: 2, requires: 'rk_07' },
+      { id: 'rk_09', name: 'ルーンナイトの技I', type: 'skill', skillId: 'rk_09', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_08' },
+      { id: 'rk_10', name: '魔剣の極限', type: 'stat', description: 'ATK +12 / MP +20', bonuses: { atk: 12, mp: 20 }, cost: 2, requires: 'rk_09' },
+      { id: 'rk_11', name: '深淵の魔力', type: 'stat', description: 'ATK +14 / MP +25', bonuses: { atk: 14, mp: 25 }, cost: 3, requires: 'rk_10' },
+      { id: 'rk_12', name: 'ルーンの奥義', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'rk_11' },
+      { id: 'rk_13', name: '究極の剣技', type: 'stat', description: 'ATK +16 / MP +20', bonuses: { atk: 16, mp: 20 }, cost: 3, requires: 'rk_12' },
+      { id: 'rk_14', name: 'ルーンナイトの技II', type: 'skill', skillId: 'rk_14', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'rk_13' },
+      { id: 'rk_15', name: '魔法剣の覚醒', type: 'passive', description: 'パッシブ：（Phase 3で実装予定）', bonuses: {}, cost: 3, requires: 'rk_14' },
+      { id: 'rk_16', name: 'ルーンの海', type: 'stat', description: 'ATK +15 / MP +30', bonuses: { atk: 15, mp: 30 }, cost: 2, requires: 'rk_15' },
+      { id: 'rk_17', name: 'ルーンナイトの技III', type: 'skill', skillId: 'rk_17', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_16' },
+      { id: 'rk_18', name: '魔剣士の至境', type: 'stat', description: 'ATK +18 / MP +25', bonuses: { atk: 18, mp: 25 }, cost: 2, requires: 'rk_17' },
+      { id: 'rk_19', name: 'ルーンナイトの技IV', type: 'skill', skillId: 'rk_19', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 2, requires: 'rk_18' },
+      { id: 'rk_20', name: '無限のルーン', type: 'stat', description: 'ATK +20 / MP +35', bonuses: { atk: 20, mp: 35 }, cost: 3, requires: 'rk_19' },
+      { id: 'rk_21', name: 'ルーンナイトの至高', type: 'stat', description: 'ATK +22 / MP +40', bonuses: { atk: 22, mp: 40 }, cost: 3, requires: 'rk_20' },
+      { id: 'rk_22', name: '絶界ルーン斬', type: 'skill', skillId: 'rk_22', description: '（Phase 3で実装予定）', mpCost: 0, bonuses: {}, cost: 3, requires: 'rk_21' },
+    ],
+  },
 ];
 
 /**
@@ -1485,6 +1660,39 @@ function resetJobSkillTree(jobId) {
   // 魔剣士ルートリセット時はシナジーフラグを削除
   if (jobId === 'makenshi' && p.permanentItems) {
     delete p.permanentItems.hasMakenshiSynergy;
+  }
+
+  // 上級職リセット時は紐づく特級職もリセットする
+  const advancedToEliteJob = {
+    paladin:    'crusader',
+    assassin:   'phantom',
+    sage:       'oracle',
+    berserker:  'catastrophe',
+    makenshi:   'rune_knight',
+  };
+  const linkedEliteId = advancedToEliteJob[jobId];
+  if (linkedEliteId) {
+    const eliteRoute    = SKILL_TREE_DEFINITIONS.find(r => r.id === linkedEliteId);
+    const eliteAcquired = p.skillTreeNodes[linkedEliteId] || [];
+    if (eliteRoute && eliteAcquired.length > 0) {
+      // SP返還
+      eliteAcquired.forEach(nodeId => {
+        const node = eliteRoute.nodes.find(n => n.id === nodeId);
+        if (node) spRefund += node.cost;
+      });
+      // スキルを learnedSkills / favoriteSkills から削除
+      const eliteSkillIds = eliteRoute.nodes
+        .filter(n => n.type === 'skill' && n.skillId)
+        .map(n => n.skillId);
+      p.learnedSkills   = p.learnedSkills.filter(s => !eliteSkillIds.includes(s));
+      p.favoriteSkills  = p.favoriteSkills.filter(s => !eliteSkillIds.includes(s));
+    }
+    // ノードをクリア
+    p.skillTreeNodes[linkedEliteId] = [];
+    // 特級職に就いていた場合はcurrentJobをnullにリセット
+    if (p.currentJob === linkedEliteId) {
+      p.currentJob = null;
+    }
   }
 
   // SP返還
@@ -1765,8 +1973,8 @@ let skillTreeCurrentRoute = 'swordsman';
 let skillTreeCurrentPart = 1;
 
 /**
- * スキルツリーのパートタブ（Part1 / Part2）を切り替える
- * @param {number} part - 1 または 2
+ * スキルツリーのパートタブ（Part1 / Part2 / Part3）を切り替える
+ * @param {number} part - 1, 2, または 3
  */
 function switchSkillTreePart(part) {
   skillTreeCurrentPart = part;
@@ -1774,8 +1982,26 @@ function switchSkillTreePart(part) {
   // パートに応じてデフォルトルートを変更する
   if (part === 1) {
     skillTreeCurrentRoute = 'swordsman';
-  } else {
+  } else if (part === 2) {
     skillTreeCurrentRoute = 'makenshi';
+  } else if (part === 3) {
+    // 現在の特級職 or 対応する特級職をデフォルトとして選択する
+    const p = game.player;
+    const parentToElite = {
+      paladin:    'crusader',
+      assassin:   'phantom',
+      sage:       'oracle',
+      berserker:  'catastrophe',
+      makenshi:   'rune_knight',
+    };
+    const eliteIds = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+    if (eliteIds.includes(p.currentJob)) {
+      skillTreeCurrentRoute = p.currentJob;
+    } else if (parentToElite[p.currentJob]) {
+      skillTreeCurrentRoute = parentToElite[p.currentJob];
+    } else {
+      skillTreeCurrentRoute = 'crusader';
+    }
   }
 
   renderSkillTree();
@@ -1785,21 +2011,60 @@ function switchSkillTreePart(part) {
 function renderSkillTree() {
   const p = game.player;
 
+  // 特級職・上級職の定数
+  const ELITE_JOB_IDS     = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  const ADVANCED_JOB_IDS  = ['paladin', 'assassin', 'sage', 'berserker', 'makenshi'];
+  const ELITE_TO_PARENT   = {
+    crusader:    'paladin',
+    phantom:     'assassin',
+    oracle:      'sage',
+    catastrophe: 'berserker',
+    rune_knight: 'makenshi',
+  };
+  const ELITE_NAMES = {
+    crusader:    'クルセイダー',
+    phantom:     'ファントム',
+    oracle:      'オラクル',
+    catastrophe: 'カタストロフ',
+    rune_knight: 'ルーンナイト',
+  };
+  const ELITE_BOOK_FLAGS = {
+    crusader:    'hasBookCrusader',
+    phantom:     'hasBookPhantom',
+    oracle:      'hasBookOracle',
+    catastrophe: 'hasBookCatastrophe',
+    rune_knight: 'hasBookRuneKnight',
+  };
+  // 上級職名マップ（特級職ロック表示でも参照する）
+  const JOB_NAMES_MAP = {
+    paladin: '聖騎士', assassin: '暗殺者', sage: '賢者', berserker: '狂戦士', makenshi: '魔剣士',
+  };
+
   // 残りポイント表示
   const remaining = document.getElementById('st-remaining');
   if (remaining) remaining.textContent = `残りポイント: ${p.skillPoints} pt`;
 
-  // Part1/Part2 ボタンのアクティブ状態を更新する
+  // Part3 タブの表示/非表示（上級職または特級職に就いている場合のみ表示）
+  const isAdvancedOrElite = ADVANCED_JOB_IDS.includes(p.currentJob) || ELITE_JOB_IDS.includes(p.currentJob);
+  const partBtn3 = document.getElementById('st-part-btn-3');
+  if (partBtn3) {
+    partBtn3.style.display = isAdvancedOrElite ? '' : 'none';
+  }
+
+  // Part1/Part2/Part3 ボタンのアクティブ状態を更新する
   const partBtn1 = document.getElementById('st-part-btn-1');
   const partBtn2 = document.getElementById('st-part-btn-2');
   if (partBtn1) partBtn1.classList.toggle('active', skillTreeCurrentPart === 1);
   if (partBtn2) partBtn2.classList.toggle('active', skillTreeCurrentPart === 2);
+  if (partBtn3) partBtn3.classList.toggle('active', skillTreeCurrentPart === 3);
 
   // パートに応じてルートタブを切り替える
   const tabsPart1 = document.getElementById('st-tabs-part1');
   const tabsPart2 = document.getElementById('st-tabs-part2');
+  const tabsPart3 = document.getElementById('st-tabs-part3');
   if (tabsPart1) tabsPart1.style.display = skillTreeCurrentPart === 1 ? '' : 'none';
   if (tabsPart2) tabsPart2.style.display = skillTreeCurrentPart === 2 ? '' : 'none';
+  if (tabsPart3) tabsPart3.style.display = skillTreeCurrentPart === 3 ? '' : 'none';
 
   // タブのアクティブ状態を更新
   document.querySelectorAll('.st-tab-btn').forEach(btn => {
@@ -1832,6 +2097,31 @@ function renderSkillTree() {
     } else {
       btn.textContent = unlocked ? `${icon} ${label}` : `🔒 ${label}`;
       btn.classList.toggle('tab-locked', !unlocked);
+    }
+  });
+
+  // 特級職タブのロック/解放状態を更新する
+  const eliteTabConfig = [
+    { id: 'crusader',    parent: 'paladin',   icon: '✝',  label: 'クルセイダー' },
+    { id: 'phantom',     parent: 'assassin',  icon: '👻', label: 'ファントム'   },
+    { id: 'oracle',      parent: 'sage',      icon: '🔮', label: 'オラクル'     },
+    { id: 'catastrophe', parent: 'berserker', icon: '💥', label: 'カタストロフ' },
+    { id: 'rune_knight', parent: 'makenshi',  icon: '⚡', label: 'ルーンナイト' },
+  ];
+  eliteTabConfig.forEach(({ id, parent, icon, label }) => {
+    const btn = document.getElementById(`st-tab-${id}`);
+    if (!btn) return;
+    const isCurrent  = p.currentJob === id;
+    const isParent   = p.currentJob === parent;
+    if (isCurrent) {
+      btn.textContent = `🌟 ${label}`;
+      btn.classList.remove('tab-locked');
+    } else if (isParent) {
+      btn.textContent = `🔓 ${label}`;
+      btn.classList.remove('tab-locked');
+    } else {
+      btn.textContent = `🔒 ${label}`;
+      btn.classList.add('tab-locked');
     }
   });
 
@@ -1882,7 +2172,7 @@ function renderSkillTree() {
 
   // 4職業のロック表示
   const newJobs = ['paladin', 'assassin', 'sage', 'berserker'];
-  const jobNames4 = { paladin: '聖騎士', assassin: '暗殺者', sage: '賢者', berserker: '狂戦士' };
+  const jobNames4 = JOB_NAMES_MAP;
   const jobBookNames = { paladin: '聖騎士の書', assassin: '暗殺者の書', sage: '賢者の書', berserker: '狂戦士の書' };
   if (newJobs.includes(skillTreeCurrentRoute)) {
     const jobId    = skillTreeCurrentRoute;
@@ -1945,6 +2235,59 @@ function renderSkillTree() {
     }
   }
 
+  // 特級職ルートの表示処理
+  if (ELITE_JOB_IDS.includes(skillTreeCurrentRoute)) {
+    const eliteId   = skillTreeCurrentRoute;
+    const parentId  = ELITE_TO_PARENT[eliteId];
+    const eliteName = ELITE_NAMES[eliteId];
+    const bookFlag  = ELITE_BOOK_FLAGS[eliteId];
+    const descElE   = document.getElementById('st-route-desc');
+    const nodeListE = document.getElementById('st-node-list');
+
+    if (p.currentJob !== eliteId) {
+      // 特級職に就いていない場合
+      if (descElE) descElE.textContent = '';
+      if (nodeListE) {
+        if (p.currentJob === parentId) {
+          // 対応する上級職就任中：閲覧モード + 昇格ボタン
+          const stoneCount = p.materials['スキルストーン'] || 0;
+          const hasBook    = !!p.permanentItems[bookFlag];
+          const hasLevel   = p.level >= 100;
+          const canPromote = hasLevel && hasBook && stoneCount >= 10;
+          const condHtml = `
+            <ul class="st-locked-list">
+              <li>${hasLevel   ? '✅' : '❌'} Lv100以上（現在 Lv${p.level}）</li>
+              <li>${hasBook    ? '✅' : '❌'} 「${eliteName}の書」を入手済み</li>
+              <li>${stoneCount >= 10 ? '✅' : '❌'} スキルストーン×10所持（現在: ${stoneCount}個）</li>
+            </ul>
+            <button class="st-unlock-btn" onclick="unlockEliteJobRoute('${eliteId}')" ${canPromote ? '' : 'disabled'}>
+              ✨ ${eliteName}に昇格する（スキルストーン×10消費）
+            </button>`;
+          // 閲覧用ノードHTMLを生成（disabled）
+          const previewHtml = buildNodeListHtml(eliteId, true);
+          nodeListE.innerHTML = `
+            <div class="st-locked-msg">
+              <div class="st-locked-title">🔓 ${eliteName}ルート（閲覧モード）</div>
+              <div class="st-locked-cond">特級職に就職すると解放されます</div>
+              <div class="st-locked-cond">昇格条件：</div>
+              ${condHtml}
+            </div>
+            <div class="st-elite-preview">${previewHtml}</div>`;
+        } else {
+          // 別の職業に就いている → ロックメッセージ
+          const advancedName = JOB_NAMES_MAP[parentId] || parentId;
+          nodeListE.innerHTML = `
+            <div class="st-locked-msg">
+              <div class="st-locked-icon">🔒</div>
+              <div class="st-locked-title">${eliteName}ルートは未解放です</div>
+              <div class="st-locked-cond">${advancedName}に就職してから昇格できます</div>
+            </div>`;
+        }
+      }
+      return;
+    }
+  }
+
   // ルート説明
   const descEl = document.getElementById('st-route-desc');
   if (descEl) descEl.textContent = route.description;
@@ -1953,9 +2296,29 @@ function renderSkillTree() {
   const nodeList = document.getElementById('st-node-list');
   if (!nodeList) return;
 
-  const acquiredIds = p.skillTreeNodes[skillTreeCurrentRoute] || [];
+  // 全解放ボタンのHTML生成
+  const allUnlockBtnHtml = buildAllUnlockButtonHtml(skillTreeCurrentRoute);
 
-  const html = route.nodes.map((node, idx) => {
+  // ノードリストのHTML生成
+  const nodesHtml = buildNodeListHtml(skillTreeCurrentRoute, false);
+
+  nodeList.innerHTML = allUnlockBtnHtml + nodesHtml;
+}
+
+/**
+ * ノードリストのHTMLを生成する
+ * @param {string} routeId - ルートID
+ * @param {boolean} previewMode - trueの場合はノード取得不可（閲覧のみ）
+ * @returns {string} HTML文字列
+ */
+function buildNodeListHtml(routeId, previewMode) {
+  const p = game.player;
+  const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
+  if (!route) return '';
+
+  const acquiredIds = p.skillTreeNodes[routeId] || [];
+
+  return route.nodes.map((node, idx) => {
     const isAcquired   = acquiredIds.includes(node.id);
     const prevAcquired = !node.requires || acquiredIds.includes(node.requires);
     const canAfford    = p.skillPoints >= node.cost;
@@ -1965,31 +2328,40 @@ function renderSkillTree() {
     else if (prevAcquired) stateClass = 'available';
     else                   stateClass = 'locked';
 
-    const clickable   = !isAcquired && prevAcquired;
+    const clickable   = !previewMode && !isAcquired && prevAcquired;
     const onclickAttr = clickable
-      ? `onclick="acquireSkillNode('${skillTreeCurrentRoute}', '${node.id}')"`
+      ? `onclick="acquireSkillNode('${routeId}', '${node.id}')"`
       : '';
 
     // パッシブノードは🔮アイコンで表示する
     const typeIcon = node.type === 'skill' ? '✨' : node.type === 'passive' ? '🔮' : '📈';
 
     let statusText;
-    if (isAcquired)         statusText = '✓ 取得済み';
-    else if (!prevAcquired) statusText = '🔒 前のノードを取得してください';
-    else if (!canAfford)    statusText = `⚠ SP が足りません（必要 ${node.cost} pt）`;
-    else                    statusText = `▶ クリックして取得（${node.cost} SP 消費）`;
+    if (previewMode && !isAcquired) {
+      statusText = '🔒 特級職に就職すると解放されます';
+    } else if (isAcquired) {
+      statusText = '✓ 取得済み';
+    } else if (!prevAcquired) {
+      statusText = '🔒 前のノードを取得してください';
+    } else if (!canAfford) {
+      statusText = `⚠ SP が足りません（必要 ${node.cost} pt）`;
+    } else {
+      statusText = `▶ クリックして取得（${node.cost} SP 消費）`;
+    }
 
     const arrow = idx < route.nodes.length - 1 ? '<div class="st-node-arrow">↓</div>' : '';
 
-    // スキルマスのみお気に入りボタンを表示する
+    // スキルマスのみお気に入りボタンを表示する（プレビューモードでは非表示）
     let favoriteBtn = '';
-    if (node.type === 'skill' && node.skillId) {
+    if (!previewMode && node.type === 'skill' && node.skillId) {
       const isFav = p.favoriteSkills.includes(node.skillId);
       favoriteBtn = `<button class="st-favorite-btn${isFav ? ' active' : ''}" onclick="event.stopPropagation(); toggleFavoriteSkill('${node.skillId}')" title="${isFav ? 'お気に入りを解除' : 'お気に入りに登録'}">${isFav ? '★' : '☆'}</button>`;
     }
 
+    const previewClass = previewMode && !isAcquired ? ' st-node-preview' : '';
+
     return `
-      <div class="st-node ${stateClass}" ${onclickAttr}>
+      <div class="st-node ${stateClass}${previewClass}" ${onclickAttr}>
         <div class="st-node-header">
           <span class="st-node-icon">${typeIcon}</span>
           <span class="st-node-name">${node.name}</span>
@@ -2000,8 +2372,74 @@ function renderSkillTree() {
         <div class="st-node-status">${statusText}</div>
       </div>${arrow}`;
   }).join('');
+}
 
-  nodeList.innerHTML = html;
+/**
+ * 全解放ボタンのHTMLを生成する
+ * @param {string} routeId - ルートID
+ * @returns {string} HTML文字列
+ */
+function buildAllUnlockButtonHtml(routeId) {
+  const p = game.player;
+  const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
+  if (!route) return '';
+
+  const ELITE_JOB_IDS   = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  const ELITE_TO_PARENT = {
+    crusader:    'paladin',
+    phantom:     'assassin',
+    oracle:      'sage',
+    catastrophe: 'berserker',
+    rune_knight: 'makenshi',
+  };
+
+  const acquiredIds = p.skillTreeNodes[routeId] || [];
+
+  // 取得可能なノードを requires 順に算出する
+  const acquirable = [];
+  const tempAcquired = [...acquiredIds];
+
+  if (ELITE_JOB_IDS.includes(routeId)) {
+    // 特級職：上級職ノード数による上限あり
+    const parentId           = ELITE_TO_PARENT[routeId];
+    const parentAcquiredCnt  = (p.skillTreeNodes[parentId] || []).length;
+    const maxMoreElite       = parentAcquiredCnt - acquiredIds.length;
+    let added = 0;
+    for (const node of route.nodes) {
+      if (added >= maxMoreElite) break;
+      if (tempAcquired.includes(node.id)) continue;
+      if (node.requires && !tempAcquired.includes(node.requires)) break;
+      acquirable.push(node);
+      tempAcquired.push(node.id);
+      added++;
+    }
+  } else {
+    // 通常ルート：requires 連鎖で取得可能なノードを全て列挙する
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const node of route.nodes) {
+        if (tempAcquired.includes(node.id)) continue;
+        if (node.requires && !tempAcquired.includes(node.requires)) continue;
+        acquirable.push(node);
+        tempAcquired.push(node.id);
+        changed = true;
+      }
+    }
+  }
+
+  // 取得可能なノードがない場合はボタンを表示しない
+  if (acquirable.length === 0) return '';
+
+  const totalCost = acquirable.reduce((sum, n) => sum + n.cost, 0);
+  const canAfford = p.skillPoints >= totalCost;
+
+  return `
+    <div class="st-all-unlock">
+      <button class="st-all-unlock-btn" onclick="acquireAllSkillNodes('${routeId}')" ${canAfford ? '' : 'disabled'}>
+        ${canAfford ? `🔓 全解放（${totalCost} SP消費）` : `🔒 SP不足（必要: ${totalCost} pt）`}
+      </button>
+    </div>`;
 }
 
 /**
@@ -2029,6 +2467,95 @@ function toggleFavoriteSkill(skillId) {
 }
 
 /**
+ * 指定ルートの取得可能なノードを全て解放する
+ * @param {string} routeId - ルートID
+ */
+function acquireAllSkillNodes(routeId) {
+  const p = game.player;
+  const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
+  if (!route) return;
+
+  const ELITE_JOB_IDS   = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  const ELITE_TO_PARENT = {
+    crusader:    'paladin',
+    phantom:     'assassin',
+    oracle:      'sage',
+    catastrophe: 'berserker',
+    rune_knight: 'makenshi',
+  };
+
+  const acquiredIds = p.skillTreeNodes[routeId] || [];
+
+  // 取得可能なノードを requires 順に算出する
+  const acquirable = [];
+  const tempAcquired = [...acquiredIds];
+
+  if (ELITE_JOB_IDS.includes(routeId)) {
+    // 特級職：上級職ノード数による上限あり
+    const parentId           = ELITE_TO_PARENT[routeId];
+    const parentAcquiredCnt  = (p.skillTreeNodes[parentId] || []).length;
+    const maxMoreElite       = parentAcquiredCnt - acquiredIds.length;
+    let added = 0;
+    for (const node of route.nodes) {
+      if (added >= maxMoreElite) break;
+      if (tempAcquired.includes(node.id)) continue;
+      if (node.requires && !tempAcquired.includes(node.requires)) break;
+      acquirable.push(node);
+      tempAcquired.push(node.id);
+      added++;
+    }
+  } else {
+    // 通常ルート：requires 連鎖で取得可能なノードを全て列挙する
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const node of route.nodes) {
+        if (tempAcquired.includes(node.id)) continue;
+        if (node.requires && !tempAcquired.includes(node.requires)) continue;
+        acquirable.push(node);
+        tempAcquired.push(node.id);
+        changed = true;
+      }
+    }
+  }
+
+  if (acquirable.length === 0) return;
+
+  const totalCost = acquirable.reduce((sum, n) => sum + n.cost, 0);
+  if (p.skillPoints < totalCost) {
+    alert('スキルポイントが足りません！');
+    return;
+  }
+
+  if (!confirm('全ノードを解放しますか？')) return;
+
+  // 初期化
+  if (!p.skillTreeNodes[routeId]) p.skillTreeNodes[routeId] = [];
+
+  for (const node of acquirable) {
+    p.skillPoints -= node.cost;
+    p.skillTreeNodes[routeId].push(node.id);
+
+    // mk_01 取得時にシナジーフラグを設定
+    if (routeId === 'makenshi' && node.id === 'mk_01') {
+      if (!p.permanentItems) p.permanentItems = {};
+      p.permanentItems.hasMakenshiSynergy = true;
+    }
+
+    // スキルマスの場合は learnedSkills に追加
+    if (node.type === 'skill' && node.skillId) {
+      if (!p.learnedSkills.includes(node.skillId)) {
+        p.learnedSkills.push(node.skillId);
+      }
+    }
+  }
+
+  p.recalcStats();
+  renderSkillTree();
+  renderLobbyStatus();
+}
+
+/**
  * スキルツリーのノードを取得する
  * @param {string} routeId - ルート ID
  * @param {string} nodeId  - ノード ID
@@ -2048,6 +2575,28 @@ function acquireSkillNode(routeId, nodeId) {
   // 4職業ルートは「現在の職業」でないとノード取得不可（排他制を保証する）
   const newJobRoutes = ['paladin', 'assassin', 'sage', 'berserker'];
   if (newJobRoutes.includes(routeId) && p.currentJob !== routeId) return;
+
+  // 特級職ルートの制限チェック
+  const eliteJobRoutes = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  const eliteJobToParent = {
+    crusader:    'paladin',
+    phantom:     'assassin',
+    oracle:      'sage',
+    catastrophe: 'berserker',
+    rune_knight: 'makenshi',
+  };
+  if (eliteJobRoutes.includes(routeId)) {
+    // 特級職に就いていないとノード取得不可
+    if (p.currentJob !== routeId) return;
+    // 対応する上級職の取得済みノード数 >= 特級職の取得済みノード数 + 1 の条件チェック
+    const parentJobId     = eliteJobToParent[routeId];
+    const parentAcquired  = (p.skillTreeNodes[parentJobId] || []).length;
+    const eliteAcquired   = (p.skillTreeNodes[routeId]    || []).length;
+    if (parentAcquired < eliteAcquired + 1) {
+      alert('上級職のスキルツリーを先に進める必要があります');
+      return;
+    }
+  }
 
   // 既に取得済みか確認
   if (!p.skillTreeNodes[routeId]) p.skillTreeNodes[routeId] = [];
