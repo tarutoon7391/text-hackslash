@@ -166,10 +166,9 @@ async function apiRequest(body) {
   // 手動でパースする。BOM や前後の空白も除去して対応する。
   const text = await response.text();
   try {
-    const parsed = JSON.parse(text.replace(/^\uFEFF/, '').trim());
     // サーバーが 4xx/5xx を返した場合でも JSON が取れた場合はそのまま返す
     // （呼び出し側で success / status を確認して処理する）
-    return parsed;
+    return JSON.parse(text.replace(/^\uFEFF/, '').trim());
   } catch (_e) {
     console.error('JSON パース失敗:', _e, 'レスポンス冒頭:', text.substring(0, 200));
     // HTTP ステータスに応じて分かりやすいメッセージを返す
@@ -309,6 +308,12 @@ let autoSaveFailCount = 0;
 let autoSaveFailNotified = false;
 
 /**
+ * 連続でこの回数以上の自動セーブ失敗が発生した場合にユーザーへ警告する。
+ * 30秒間隔の自動セーブが3回連続して失敗 = 約90秒間保存できていない状態。
+ */
+const AUTO_SAVE_FAIL_THRESHOLD = 3;
+
+/**
  * 現在のゲームデータをサーバーにセーブする（サイレント）。
  * ログインしていない場合は何もしない。
  * 連続して失敗した場合はゲームログに警告を表示する。
@@ -326,8 +331,8 @@ async function autoSave() {
     if (result && (result.status === 'ok' || result.success)) {
       autoSaveFailCount = 0;
       autoSaveFailNotified = false;
-    } else if (result && (result.status === 'error' || result.message)) {
-      // サーバーがエラーを返した場合
+    } else if (result && (result.status === 'error' || result.success === false)) {
+      // サーバーが明示的にエラーを返した場合
       autoSaveFailCount++;
       _notifyAutoSaveFailureIfNeeded(result.message);
     }
@@ -342,8 +347,7 @@ async function autoSave() {
  * @param {string} [serverMessage] - サーバーから返ってきたエラーメッセージ（任意）
  */
 function _notifyAutoSaveFailureIfNeeded(serverMessage) {
-  const FAIL_THRESHOLD = 3;
-  if (autoSaveFailCount >= FAIL_THRESHOLD && !autoSaveFailNotified) {
+  if (autoSaveFailCount >= AUTO_SAVE_FAIL_THRESHOLD && !autoSaveFailNotified) {
     autoSaveFailNotified = true;
     const msg = serverMessage
       ? `⚠ 自動セーブに失敗し続けています。データが保存されていない可能性があります。（${serverMessage}）`
