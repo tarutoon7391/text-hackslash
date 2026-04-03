@@ -1034,8 +1034,12 @@ function getEnhanceCost(eq, nextLevel) {
   // 各武器のレシピ素材名を使い、強化後レベル数ずつ消費する
   if (eq.isSpecialEnhance) {
     const cost = {};
-    if (eq.recipe) {
+    if (eq.recipe && Object.keys(eq.recipe).length > 0) {
       Object.keys(eq.recipe).forEach(mat => { cost[mat] = nextLevel; });
+    } else {
+      // レシピ未定義の場合のフォールバック（蒼銀の剣互換）
+      cost['ミスリル'] = nextLevel;
+      cost['蒼天晶']  = nextLevel;
     }
     return cost;
   }
