@@ -457,13 +457,13 @@ function doPlayerAttack() {
   const kokuyouExtraTurn   = player.currentJob === 'assassin' && hasKokuyouNoTanken && Math.random() < 0.30;
 
   if (hasMpRecovery) {
-    // 通常攻撃の0.6倍ダメージ・MP +30 回復（maxMp を超えない）
+    // 通常攻撃の0.6倍ダメージ・蒼銀の剣の段階式計算に基づくMP回復（maxMp を超えない）
     const rawDmg = player.calcAttackDamage(enemy);
     const dmg    = Math.max(1, Math.floor(rawDmg * 0.6));
     enemy.takeDamage(dmg);
     game.turnDamageDealt += dmg;
     const mpBefore = player.mp;
-    player.mp = Math.min(player.maxMp, player.mp + 30);
+    player.mp = Math.min(player.maxMp, player.mp + calcAoginMpRegen(player.level));
     const mpGained = player.mp - mpBefore;
     log(`⚔✨ ${player.name} の「MP回復攻撃」！ → ${enemy.name} に ${dmg} ダメージ！MP +${mpGained} 回復！`, 'player-action');
     renderPlayerStatus();
