@@ -1942,6 +1942,17 @@ footer {
   to   { opacity: 1; transform: translateX(0); }
 }
 
+/* Part2 排出アイテム一覧 */
+.gacha-part2-item-list {
+  border: 1px solid #444;
+  background-color: #050505;
+  padding: 10px 12px;
+  max-height: 260px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
 /* 限定レアリティバッジ */
 .rarity-badge.rarity-limited {
   color: #ffdd00;
