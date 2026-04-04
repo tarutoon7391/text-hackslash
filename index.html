@@ -533,21 +533,46 @@
         🎫 所持ガチャチケット: <strong>0</strong> 枚
       </div>
 
-      <!-- 永続品の入手状況 -->
-      <div id="gacha-perm-status" class="gacha-perm-status">
+      <!-- Part1 / Part2 タブ切り替え -->
+      <div class="st-part-tabs" id="gacha-part-tabs">
+        <button class="st-part-btn active" id="gacha-part-btn-1" onclick="switchGachaPart(1)">◆ Part 1</button>
+        <button class="st-part-btn" id="gacha-part-btn-2" onclick="switchGachaPart(2)">◇ Part 2</button>
       </div>
 
-      <!-- 操作ボタン -->
-      <div class="gacha-btn-row">
-        <button class="nav-btn gacha-draw-btn" id="btn-gacha-1" onclick="executeGachaOnce()">
-          🎲 1回引く（チケット×1）
-        </button>
-        <button class="nav-btn gacha-draw-btn" id="btn-gacha-10" onclick="executeGachaTen()">
-          🎲 10連引く（チケット×10）
-        </button>
-        <button class="nav-btn" onclick="showGachaRates()">
-          📊 排出率
-        </button>
+      <!-- Part1 コンテンツ -->
+      <div id="gacha-content-part1">
+        <!-- 永続品の入手状況 -->
+        <div id="gacha-perm-status" class="gacha-perm-status">
+        </div>
+
+        <!-- 操作ボタン -->
+        <div class="gacha-btn-row">
+          <button class="nav-btn gacha-draw-btn" id="btn-gacha-1" onclick="executeGachaOnce()">
+            🎲 1回引く（チケット×1）
+          </button>
+          <button class="nav-btn gacha-draw-btn" id="btn-gacha-10" onclick="executeGachaTen()">
+            🎲 10連引く（チケット×10）
+          </button>
+          <button class="nav-btn" onclick="showGachaRates()">
+            📊 排出率
+          </button>
+        </div>
+      </div>
+
+      <!-- Part2 コンテンツ -->
+      <div id="gacha-content-part2" style="display:none">
+        <!-- 操作ボタン -->
+        <div class="gacha-btn-row">
+          <button class="nav-btn gacha-draw-btn" id="btn-gacha-part2" onclick="executeGachaTenPart2()">
+            🎲 1回引く（チケット×10）
+          </button>
+          <button class="nav-btn" onclick="showGachaRatesPart2()">
+            📊 排出率
+          </button>
+        </div>
+
+        <!-- 排出アイテム一覧 -->
+        <div id="gacha-part2-item-list" class="gacha-part2-item-list"></div>
       </div>
 
       <!-- 演出ログエリア -->

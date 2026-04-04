@@ -147,6 +147,148 @@ const GACHA_TABLE = [
   },
 ];
 
+/**
+ * ガチャ排出テーブル Part2
+ * D13〜D24の素材・ダンジョン鍵（×10）・特級職のスキルの書
+ */
+const GACHA_TABLE_PART2 = [
+  /* ── D13 神々の試練場 素材 ── */
+  { id: 'p2_d13_common',   name: '神々の試練石',     type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d13_rare1',    name: '神話の羽根',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d13_rare2',    name: '試練の結晶',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d13_boss',     name: '試練神の心臓',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d13_bossRare', name: '神々の加護',         type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D14 永劫の氷獄 素材 ── */
+  { id: 'p2_d14_common',   name: '永劫の氷塊',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d14_rare1',    name: 'ニブルヘイムの氷晶', type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d14_rare2',    name: '氷獄の破片',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d14_boss',     name: '氷獄番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d14_bossRare', name: '永劫の凍結核',       type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D15 業火の煉獄 素材 ── */
+  { id: 'p2_d15_common',   name: '煉獄の炎石',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d15_rare1',    name: '業火の灰',           type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d15_rare2',    name: '煉獄の魔核',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d15_boss',     name: '炎獄番人の炎核',     type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d15_bossRare', name: '業火の意志',         type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D16 冥界の回廊 素材 ── */
+  { id: 'p2_d16_common',   name: '冥界の黒晶',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d16_rare1',    name: '亡者の涙',           type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d16_rare2',    name: '冥王の破片',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d16_boss',     name: '冥界の扉の鍵',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d16_bossRare', name: '冥王の魂石',         type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D17 神域の迷宮 素材 ── */
+  { id: 'p2_d17_common',   name: '神域の聖石',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d17_rare1',    name: '神域の羽衣',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d17_rare2',    name: '聖域の魔法陣',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d17_boss',     name: '神域番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d17_bossRare', name: '神域の威光',         type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D18 天上の聖域 素材 ── */
+  { id: 'p2_d18_common',   name: '天上の光晶',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d18_rare1',    name: '天使の翼',           type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d18_rare2',    name: '聖域の光核',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d18_boss',     name: '聖域守護者の心臓',   type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d18_bossRare', name: '天上の祝福',         type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D19 虚無の断層 素材 ── */
+  { id: 'p2_d19_common',   name: '虚無の断層石',       type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d19_rare1',    name: '消滅の核',           type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d19_rare2',    name: '断層の破片',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d19_boss',     name: '断層番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d19_bossRare', name: '虚無の消滅核',       type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D20 時の終焉 素材 ── */
+  { id: 'p2_d20_common',   name: '崩壊の時計石',       type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d20_rare1',    name: '終焉の砂時計',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d20_rare2',    name: '時崩の破片',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d20_boss',     name: '終焉番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d20_bossRare', name: '時の終焉の欠片',     type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D21 創世の地 素材 ── */
+  { id: 'p2_d21_common',   name: '創世の原子',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d21_rare1',    name: '宇宙誕生の光',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d21_rare2',    name: '原初の魔核',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d21_boss',     name: '創世神の結晶',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d21_bossRare', name: '宇宙の始まりの欠片', type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D22 魂の審判場 素材 ── */
+  { id: 'p2_d22_common',   name: '審判の結晶石',       type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d22_rare1',    name: '次元の魂片',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d22_rare2',    name: '審判の炎核',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d22_boss',     name: '審判神の証',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d22_bossRare', name: '魂の審判印',         type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D23 神域の頂 素材 ── */
+  { id: 'p2_d23_common',   name: '頂の神聖核',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d23_rare1',    name: '全次元の光片',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d23_rare2',    name: '頂点の結晶',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d23_boss',     name: '頂神の心臓',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d23_bossRare', name: '神域の頂の欠片',     type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── D24 絶対なる混沌 素材 ── */
+  { id: 'p2_d24_common',   name: '絶対混沌の核片',     type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d24_rare1',    name: '終焉の混沌核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d24_rare2',    name: '絶対の破壊石',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d24_boss',     name: '混沌絶対神の証',     type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d24_bossRare', name: '絶対なる混沌の力',   type: 'material', rarity: 'bossRare', weight: 15 },
+
+  /* ── ダンジョンの鍵3種（排出数×10） ── */
+  { id: 'p2_key_xp',       name: 'XPダンジョンの鍵',       type: 'key', rarity: 'key', weight: 25, count: 10 },
+  { id: 'p2_key_raremon',  name: 'レアモンダンジョンの鍵', type: 'key', rarity: 'key', weight: 25, count: 10 },
+  { id: 'p2_key_skill',    name: 'スキルダンジョンの鍵',   type: 'key', rarity: 'key', weight: 25, count: 10 },
+
+  /* ── 特級職のスキルの書（永続品） ── */
+  {
+    id: 'book_crusader',
+    name: 'クルセイダーの書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookCrusader',
+    weight: 10,
+  },
+  {
+    id: 'book_phantom',
+    name: 'ファントムの書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookPhantom',
+    weight: 10,
+  },
+  {
+    id: 'book_oracle',
+    name: 'オラクルの書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookOracle',
+    weight: 10,
+  },
+  {
+    id: 'book_catastrophe',
+    name: 'カタストロフの書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookCatastrophe',
+    weight: 10,
+  },
+  {
+    id: 'book_runeknight',
+    name: 'ルーンナイトの書',
+    type: 'book',
+    rarity: 'book',
+    permanent: true,
+    flag: 'hasBookRuneKnight',
+    weight: 10,
+  },
+];
+
 /** レアリティ別の演出色 */
 const GACHA_RARITY_COLORS = {
   common:   '#00ff41',
@@ -179,11 +321,28 @@ const GACHA_RARITY_LABELS = {
  * @returns {Array<object>}
  */
 function buildGachaPool() {
+  return _buildPool(GACHA_TABLE);
+}
+
+/**
+ * ガチャpart2の排出プールを構築する
+ * @returns {Array<object>}
+ */
+function buildGachaPool2() {
+  return _buildPool(GACHA_TABLE_PART2);
+}
+
+/**
+ * 指定テーブルから排出プールを構築する内部ヘルパー
+ * @param {Array<object>} table
+ * @returns {Array<object>}
+ */
+function _buildPool(table) {
   const p = game.player;
   const pool          = [];
   let   removedWeight = 0;
 
-  GACHA_TABLE.forEach(item => {
+  table.forEach(item => {
     if (item.permanent && p.permanentItems[item.flag]) {
       removedWeight += item.weight;
       return;
@@ -236,6 +395,19 @@ function drawGacha(times) {
 }
 
 /**
+ * ガチャpart2を1回引いて結果配列を返す
+ * @returns {Array<object>}
+ */
+function drawGachaPart2() {
+  const pool = buildGachaPool2();
+  const item = weightedPick(pool);
+  if (item.permanent) {
+    game.player.permanentItems[item.flag] = true;
+  }
+  return [item];
+}
+
+/**
  * ガチャ結果をインベントリに反映する
  * @param {Array<object>} results
  */
@@ -243,7 +415,8 @@ function applyGachaResults(results) {
   const p = game.player;
   results.forEach(item => {
     if (item.type === 'material' || item.type === 'limitedMaterial' || item.type === 'key') {
-      p.materials[item.name] = (p.materials[item.name] || 0) + 1;
+      const qty = item.count || 1;
+      p.materials[item.name] = (p.materials[item.name] || 0) + qty;
     }
     // recipe / book は drawGacha 内でフラグ設定済みのためここでは処理不要
   });
@@ -297,6 +470,60 @@ function renderGachaScreen() {
   const btn10 = document.getElementById('btn-gacha-10');
   if (btn1)  btn1.disabled  = tickets < 1;
   if (btn10) btn10.disabled = tickets < 10;
+
+  // Part2ボタンの活性制御（チケット×10必要）
+  const btnPart2 = document.getElementById('btn-gacha-part2');
+  if (btnPart2) btnPart2.disabled = tickets < 10;
+
+  // Part2アイテム一覧を描画する
+  renderGachaPart2ItemList();
+}
+
+/** Part2の排出アイテム一覧を描画する */
+function renderGachaPart2ItemList() {
+  if (!game.player) return;
+  const p      = game.player;
+  const listEl = document.getElementById('gacha-part2-item-list');
+  if (!listEl) return;
+
+  let html = '';
+  GACHA_TABLE_PART2.forEach(item => {
+    const color    = GACHA_RARITY_COLORS[item.rarity] || '#00ff41';
+    const label    = GACHA_RARITY_LABELS[item.rarity] || '';
+    const obtained = item.permanent && p.permanentItems[item.flag];
+    const style    = obtained
+      ? 'color:#555555; text-decoration:line-through;'
+      : `color:${color};`;
+    const suffix   = obtained ? ' 【入手済み】' : (item.count ? ` ×${item.count}` : '');
+    html += `<div class="gacha-result-line" style="${style}">[${label}] ${item.name}${suffix}</div>`;
+  });
+  listEl.innerHTML = html;
+}
+
+/** ガチャPart1/Part2を切り替える */
+function switchGachaPart(part) {
+  const content1 = document.getElementById('gacha-content-part1');
+  const content2 = document.getElementById('gacha-content-part2');
+  const btn1     = document.getElementById('gacha-part-btn-1');
+  const btn2     = document.getElementById('gacha-part-btn-2');
+
+  if (part === 1) {
+    if (content1) content1.style.display = '';
+    if (content2) content2.style.display = 'none';
+    if (btn1) { btn1.classList.add('active'); }
+    if (btn2) { btn2.classList.remove('active'); }
+  } else {
+    if (content1) content1.style.display = 'none';
+    if (content2) content2.style.display = '';
+    if (btn1) { btn1.classList.remove('active'); }
+    if (btn2) { btn2.classList.add('active'); }
+    // Part2表示時にアイテム一覧を最新化する
+    renderGachaPart2ItemList();
+  }
+
+  // ログをクリアする
+  const logEl = document.getElementById('gacha-log');
+  if (logEl) logEl.innerHTML = '';
 }
 
 /** 1回ガチャを引く */
@@ -316,6 +543,17 @@ function executeGachaTen() {
   if ((p.gachaTickets || 0) < 10) return;
   p.gachaTickets -= 10;
   const results = drawGacha(10);
+  applyGachaResults(results);
+  renderGachaScreen();
+  showGachaAnimation(results);
+}
+
+/** Part2ガチャを引く（チケット×10消費・1回抽選） */
+function executeGachaTenPart2() {
+  const p = game.player;
+  if ((p.gachaTickets || 0) < 10) return;
+  p.gachaTickets -= 10;
+  const results = drawGachaPart2();
   applyGachaResults(results);
   renderGachaScreen();
   showGachaAnimation(results);
@@ -351,7 +589,8 @@ function showGachaAnimation(results) {
       } else if (item.type === 'book') {
         line.textContent = `✦ スキルの書「${item.name}」を入手！`;
       } else if (item.type === 'key') {
-        line.textContent = `🗝 [${rarityLabel}] ${item.name} を入手！`;
+        const qty = item.count || 1;
+        line.textContent = `🗝 [${rarityLabel}] ${item.name} ×${qty} を入手！`;
       } else if (item.type === 'limitedMaterial') {
         line.textContent = `💎 [${rarityLabel}] ${item.name} × 1 を入手！`;
       } else {
@@ -420,3 +659,50 @@ function showGachaRates() {
   });
 }
 
+/**
+ * Part2の排出率一覧をガチャログエリアに表示する
+ */
+function showGachaRatesPart2() {
+  const logEl = document.getElementById('gacha-log');
+  if (!logEl) return;
+  if (!game.player) return;
+
+  const p = game.player;
+
+  // 現在のプールで合計重みを計算する（入手済み永続品は除外済み）
+  const pool        = buildGachaPool2();
+  const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+
+  logEl.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className   = 'gacha-summoning';
+  header.textContent = '--- Part2 排出率一覧 ---';
+  logEl.appendChild(header);
+
+  GACHA_TABLE_PART2.forEach(item => {
+    const line = document.createElement('div');
+    line.className  = 'gacha-result-line';
+    line.style.color = GACHA_RARITY_COLORS[item.rarity] || '#00ff41';
+
+    const rarityLabel = GACHA_RARITY_LABELS[item.rarity] || '';
+
+    // 入手済み永続品かどうか判定する
+    const isObtained = item.permanent && p.permanentItems[item.flag];
+
+    if (isObtained) {
+      line.textContent = `[${rarityLabel}] ${item.name} - 入手済み`;
+    } else {
+      const poolItem = pool.find(pi => pi.id === item.id);
+      if (poolItem) {
+        const percent  = (poolItem.weight / totalWeight * 100).toFixed(2);
+        const countStr = item.count ? ` ×${item.count}` : '';
+        line.textContent = `[${rarityLabel}] ${item.name}${countStr} - ${percent}%`;
+      } else {
+        line.textContent = `[${rarityLabel}] ${item.name} - 0.00%`;
+      }
+    }
+
+    logEl.appendChild(line);
+  });
+}
