@@ -1215,7 +1215,7 @@ function doEnemyTurn() {
         log(`✝ 「クルセイドカウンター」発動！ダメージを無効化した！`, 'player-action');
       }
       if (Math.random() < 0.30 && game.enemy.isAlive()) {
-        const ctrDmg = Math.max(1, Math.floor(game.player.attack * 2.0));
+        const ctrDmg = Math.max(1, Math.floor(game.player.effectiveAttack * 2.0));
         game.enemy.takeDamage(ctrDmg);
         log(`✝ 「クルセイドカウンター」反撃！ → ${game.enemy.name} に ${ctrDmg} ダメージ！（ATK×2）`, 'player-action');
         renderEnemyStatus();
