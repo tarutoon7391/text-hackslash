@@ -243,34 +243,55 @@ class Player {
       this.maxMp = Math.floor(this.maxMp * 1.3);
     }
 
-    // 特級職: クルセイダー（paladin の上位職）
-    // Phase 4 のパッシブ実装時にステータス補正を追加予定
-    if (this.currentJob === 'crusader') {
-      // 特級職ステータス補正（Phase 4 で追加）
+    // オラクルパッシブ oc_passive_03 (オラクルマナ): 最大MPを1.5倍にする
+    if (this.currentJob === 'oracle' && (this.skillTreeNodes['oracle'] || []).includes('oc_passive_03')) {
+      this.maxMp = Math.floor(this.maxMp * 1.5);
     }
 
-    // 特級職: ファントム（assassin の上位職）
-    // Phase 4 のパッシブ実装時にステータス補正を追加予定
-    if (this.currentJob === 'phantom') {
-      // 特級職ステータス補正（Phase 4 で追加）
+    // 特級職刻印系パッシブ：専用武器装備時に全ステータス×1.2（上級職シナジーと同一パターン）
+    // クルセイダー cr_passive_01 ＋ 神聖の穿槍（seisou_no_sou）
+    const hasCrusaderSynergy    = this.currentJob === 'crusader'    && (this.skillTreeNodes['crusader']    || []).includes('cr_passive_01');
+    if (hasCrusaderSynergy && hasSeisouNoSou) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
-    // 特級職: オラクル（sage の上位職）
-    // Phase 4 のパッシブ実装時にステータス補正を追加予定
-    if (this.currentJob === 'oracle') {
-      // 特級職ステータス補正（Phase 4 で追加）
+    // ファントム ph_passive_01 ＋ 黒曜の短剣（kokuyou_no_tanken）
+    const hasPhantomSynergy     = this.currentJob === 'phantom'     && (this.skillTreeNodes['phantom']     || []).includes('ph_passive_01');
+    if (hasPhantomSynergy && hasKokuyouNoTanken) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
-    // 特級職: カタストロフ（berserker の上位職）
-    // Phase 4 のパッシブ実装時にステータス補正を追加予定
-    if (this.currentJob === 'catastrophe') {
-      // 特級職ステータス補正（Phase 4 で追加）
+    // オラクル oc_passive_01 ＋ 翠賢の杖（suiken_no_tsue）
+    const hasOracleSynergy      = this.currentJob === 'oracle'      && (this.skillTreeNodes['oracle']      || []).includes('oc_passive_01');
+    if (hasOracleSynergy && hasSuikenNoTsue) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
-    // 特級職: ルーンナイト（makenshi の上位職）
-    // Phase 4 のパッシブ実装時にステータス補正を追加予定
-    if (this.currentJob === 'rune_knight') {
-      // 特級職ステータス補正（Phase 4 で追加）
+    // カタストロフ ct_passive_01 ＋ 狂血斧（kyouketsu_no_ono）
+    const hasCatastropheSynergy = this.currentJob === 'catastrophe' && (this.skillTreeNodes['catastrophe'] || []).includes('ct_passive_01');
+    if (hasCatastropheSynergy && hasKyouketsuNoOno) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
+    }
+
+    // ルーンナイト rk_passive_01 ＋ 蒼銀の剣（aogin_no_ken）
+    const hasRuneKnightSynergy  = this.currentJob === 'rune_knight' && (this.skillTreeNodes['rune_knight'] || []).includes('rk_passive_01');
+    if (hasRuneKnightSynergy && hasAoginNoKen) {
+      this.attack  = Math.floor(this.attack  * 1.2);
+      this.defense = Math.floor(this.defense * 1.2);
+      this.maxHp   = Math.floor(this.maxHp   * 1.2);
+      this.maxMp   = Math.floor(this.maxMp   * 1.2);
     }
 
     // 最大HPが増加した場合は現在HPも差分だけ増加させる
@@ -318,6 +339,10 @@ class Player {
     if (game.runeStrikeAtkBuff) atkMult *= game.runeStrikeAtkBuff.factor;
     // 特級職バフ：ファントム攻撃回避後ATKバフ（影の極致）
     if (game.phantomAvoidBuff && game.phantomAvoidBuff.turnsLeft > 0) atkMult *= game.phantomAvoidBuff.factor;
+    // 特級職パッシブ：神聖の要塞スタン後ATK×1.5バフ（クルセイダー）
+    if (game.crusaderStunAtkBuff && game.crusaderStunAtkBuff.turnsLeft > 0) atkMult *= game.crusaderStunAtkBuff.factor;
+    // 特級職パッシブ：ルーン獲得当ターン限定ATK倍率（ルーンナイト）
+    if (game.runeKnightPassiveAtkMult !== 1.0) atkMult *= game.runeKnightPassiveAtkMult;
     if (atkMult !== 1.0) base = Math.floor(base * atkMult);
     // 魔力凝縮が有効（かつ発動ターン以降）であれば攻撃力を倍増する
     if (game.playerCondense && !game.playerCondense.justSet) {
@@ -478,6 +503,10 @@ let game = {
   divineJudgmentDebuff:     null,  // 神罰魔法敵デバフ
   ctRuinousWoundBuff:       null,  // 破滅の傷バフ（カタストロフ）
   phantomAvoidBuff:         null,  // ファントム無効化後ATKバフ
+  crusaderStunAtkBuff:      null,  // クルセイダー：神聖の要塞スタン後ATK×1.5バフ { factor: 1.5, turnsLeft: 1 }
+  oracleManaNotified:       false, // オラクルマナ初回発動通知フラグ
+  phantomEyeAutoAttackReady: false, // 亡霊の眼（ph_passive_04）：次ターン自動攻撃フラグ
+  runeKnightPassiveAtkMult: 1.0,  // ルーン獲得（rk_passive_02）：当ターン限定ATK倍率（使用後1.0にリセット）
 };
 
 /* ==============================================================
@@ -515,6 +544,57 @@ function doPlayerAttack() {
   const player = game.player;
   const enemy  = game.enemy;
 
+  // === 特級職パッシブ: 亡霊の眼（ph_passive_04）自動攻撃（前のターン回避成功時に発動） ===
+  if (game.phantomEyeAutoAttackReady) {
+    game.phantomEyeAutoAttackReady = false;
+    if (enemy.isAlive()) {
+      const eyeDmg = Math.max(1, Math.floor(player.effectiveAttack * 4.0));
+      enemy.takeDamage(eyeDmg);
+      game.turnDamageDealt += eyeDmg;
+      log(`👁 「亡霊の眼」発動！ATK×4自動攻撃 → ${enemy.name} に ${eyeDmg} ダメージ！（防御無視）`, 'player-action');
+      renderEnemyStatus();
+      if (!enemy.isAlive()) {
+        afterPlayerTurn();
+        return;
+      }
+    }
+  }
+
+  // === 特級職パッシブ: ルーン獲得（rk_passive_02） / ルーン強化（rk_passive_03） ===
+  const runeKnightNodes = player.skillTreeNodes['rune_knight'] || [];
+  if (player.currentJob === 'rune_knight' && runeKnightNodes.includes('rk_passive_02')) {
+    // rk_passive_03 有効時: 1/2の確率で2回実施、各回1/3の確率で発動
+    // rk_passive_02 のみ: 1/3の確率で1回実施
+    const hasBoostedRune = runeKnightNodes.includes('rk_passive_03');
+    const maxTries = (hasBoostedRune && Math.random() < 0.5) ? 2 : 1;
+    let atkMultAcc = 1.0;
+    for (let t = 0; t < maxTries; t++) {
+      if (Math.random() < (1 / 3)) {
+        const roll = randInt(1, 3);
+        if (roll === 1) {
+          atkMultAcc *= 1.2;
+          log(`✨ 「ルーン獲得」発動！このターンATK×1.2！`, 'player-action');
+        } else if (roll === 2) {
+          const rkHeal = Math.floor(player.maxHp * 0.10);
+          player.heal(rkHeal);
+          log(`✨ 「ルーン獲得」発動！HP +${rkHeal} 回復！`, 'player-action');
+          renderPlayerStatus();
+        } else {
+          const rkMpHeal = Math.floor(player.maxMp * 0.05);
+          player.mp = Math.min(player.maxMp, player.mp + rkMpHeal);
+          log(`✨ 「ルーン獲得」発動！MP +${rkMpHeal} 回復！`, 'player-action');
+          renderPlayerStatus();
+        }
+      }
+    }
+    if (atkMultAcc > 1.0) {
+      game.runeKnightPassiveAtkMult = atkMultAcc;
+      if (atkMultAcc > 1.2) {
+        log(`💎 ルーン強化！ATK×${atkMultAcc.toFixed(2)}倍`, 'player-action');
+      }
+    }
+  }
+
   // MP回復攻撃パッシブ（魔剣士 mk_06）が有効かチェック
   const hasMpRecovery = (player.skillTreeNodes['makenshi'] || []).includes('mk_06');
 
@@ -534,6 +614,16 @@ function doPlayerAttack() {
   // 黒曜の短剣: 暗殺者装備中のみ30%の確率で追加ターン獲得（攻撃前に判定）
   const hasKokuyouNoTanken = Object.values(player.equipment).includes('kokuyou_no_tanken');
   const kokuyouExtraTurn   = player.currentJob === 'assassin' && hasKokuyouNoTanken && Math.random() < 0.30;
+
+  // ファントムパッシブチェック
+  const phantomNodes     = player.skillTreeNodes['phantom'] || [];
+  const hasPhantomCrit40 = player.currentJob === 'phantom' && phantomNodes.includes('ph_passive_04');
+  const hasPhantomCrit20 = player.currentJob === 'phantom' && phantomNodes.includes('ph_passive_02');
+  const hasPhantomPierce = player.currentJob === 'phantom' && phantomNodes.includes('ph_passive_03');
+  let phantomCritChance  = 0;
+  if (hasPhantomCrit40)      phantomCritChance = 0.40;
+  else if (hasPhantomCrit20) phantomCritChance = 0.20;
+  const isPhantomCrit    = phantomCritChance > 0 && Math.random() < phantomCritChance;
 
   if (hasMpRecovery) {
     // 通常攻撃の0.6倍ダメージ・蒼銀の剣の段階式計算に基づくMP回復（maxMp を超えない）
@@ -564,6 +654,21 @@ function doPlayerAttack() {
       game.turnDamageDealt += dmg;
       log(`🪄 ${player.name} は「翠賢の杖」で殴った！ → ${enemy.name} に ${dmg} ダメージ！（MP不足）`, 'player-action');
     }
+  } else if (isPhantomCrit) {
+    // ファントム会心（虚影の鋭気 or 亡霊の眼）: 防御完全無視の会心攻撃
+    const raw = Math.floor(player.effectiveAttack * 1.5);
+    const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 2)), 'deal');
+    enemy.takeDamage(dmg);
+    game.turnDamageDealt += dmg;
+    const critSrc = hasPhantomCrit40 ? '亡霊の眼' : '虚影の鋭気';
+    log(`💥 「${critSrc}」会心発動！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
+  } else if (hasPhantomPierce) {
+    // ファントムピアース（ph_passive_03）: 通常攻撃が常に防御無視
+    const raw = Math.floor(player.effectiveAttack);
+    const dmg = applyEquipmentEffects(Math.max(1, raw + randInt(-2, 2)), 'deal');
+    enemy.takeDamage(dmg);
+    game.turnDamageDealt += dmg;
+    log(`👻 「ファントムピアース」発動！ → ${enemy.name} に ${dmg} ダメージ！（防御無視）`, 'player-action');
   } else if (isCrit) {
     // 暗殺者会心: 防御完全無視の会心攻撃
     const raw = Math.floor(player.effectiveAttack * 1.5);
@@ -585,7 +690,23 @@ function doPlayerAttack() {
     log(`▶ ${player.name} の攻撃！ → ${enemy.name} に ${dmg} ダメージ！`, 'player-action');
   }
 
+  // ルーン獲得ATK倍率をリセット
+  game.runeKnightPassiveAtkMult = 1.0;
+
   renderEnemyStatus();
+
+  // === 特級職パッシブ: オラクルマナ（oc_passive_03）：MP<130なら最大MPの15%回復 ===
+  const oracleNodes = player.skillTreeNodes['oracle'] || [];
+  if (player.currentJob === 'oracle' && oracleNodes.includes('oc_passive_03') && player.mp < 130) {
+    if (!game.oracleManaNotified) {
+      game.oracleManaNotified = true;
+      log(`🔮 オラクルマナが発動可能になった！`, 'player-action');
+    }
+    const ocMpHeal = Math.floor(player.maxMp * 0.15);
+    player.mp = Math.min(player.maxMp, player.mp + ocMpHeal);
+    log(`🔮 「オラクルマナ」発動！MP +${ocMpHeal} 回復！`, 'player-action');
+    renderPlayerStatus();
+  }
 
   // 黒曜の短剣: 追加ターン処理（暗殺者装備中のみ・敵が生存時に発動）
   if (kokuyouExtraTurn && enemy.isAlive()) {
@@ -660,6 +781,18 @@ function afterPlayerTurn() {
     }
   }
 
+  // ファントムパッシブ: ターン終了時に攻撃無効化確率を加算する
+  // ph_passive_02 (虚影の鋭気): +10%、ph_passive_03 (ファントムピアース): +5%
+  if (game.player.currentJob === 'phantom') {
+    const phNodes = game.player.skillTreeNodes['phantom'] || [];
+    if (phNodes.includes('ph_passive_02')) {
+      game.phantomAvoidChance += 10;
+    }
+    if (phNodes.includes('ph_passive_03')) {
+      game.phantomAvoidChance += 5;
+    }
+  }
+
   renderPlayerStatus();
 
   if (!game.enemy.isAlive()) {
@@ -706,6 +839,14 @@ function tickPlayerBuffs() {
     if (game.divineJudgmentActive.turnsLeft <= 0) {
       game.divineJudgmentActive = null;
       log('🌟 神聖無双の反撃強化効果が切れた。', 'system');
+    }
+  }
+  // 特級職バフ：クルセイダー神聖の要塞スタン後ATK×1.5バフのターン管理
+  if (game.crusaderStunAtkBuff && game.crusaderStunAtkBuff.turnsLeft > 0) {
+    game.crusaderStunAtkBuff.turnsLeft--;
+    if (game.crusaderStunAtkBuff.turnsLeft <= 0) {
+      game.crusaderStunAtkBuff = null;
+      log('✝ 「神聖の要塞」ATKバフの効果が切れた。', 'system');
     }
   }
   // 敵DEFデバフのターン管理（スキルによる設定）
@@ -839,6 +980,15 @@ function processPendingEffects() {
             enemy.takeDamage(pDmg);
             log(`🔮 「予言魔法」発動！ → ${enemy.name} に ${pDmg} ダメージ！`, 'player-action');
             renderEnemyStatus();
+            // オラクルパッシブ oc_passive_02 (予言の加護): 予言魔法ダメージ後に最大HP・MP各5%回復
+            if (player.currentJob === 'oracle' && (player.skillTreeNodes['oracle'] || []).includes('oc_passive_02')) {
+              const ocHpHeal = Math.floor(player.maxHp * 0.05);
+              const ocMpHeal = Math.floor(player.maxMp * 0.05);
+              player.heal(ocHpHeal);
+              player.mp = Math.min(player.maxMp, player.mp + ocMpHeal);
+              log(`✨ 「予言の加護」発動！HP +${ocHpHeal}・MP +${ocMpHeal} 回復！`, 'player-action');
+              renderPlayerStatus();
+            }
           }
           const pHeal = eff.value.heal;
           player.heal(pHeal);
@@ -946,6 +1096,11 @@ function doEnemyTurn() {
           game.phantomAvoidBuff = { factor: 1.5, turnsLeft: 1 };
           log(`🌟 「影の極致」発動！次ターンATK×1.5バフ！`, 'player-action');
         }
+        // 亡霊の眼（ph_passive_04）：無効化成功後次ターンATK×4自動攻撃セット
+        if (phantomNodes.includes('ph_passive_04')) {
+          game.phantomEyeAutoAttackReady = true;
+          log(`👁 「亡霊の眼」感知！次ターンにATK×4自動攻撃が発動する！`, 'player-action');
+        }
       }
       tickPlayerBuffs();
       tickPlayerRegen(true);
@@ -1035,6 +1190,37 @@ function doEnemyTurn() {
     if (crNodes.includes('cr_06')) {
       rawDmg = Math.max(1, Math.floor(rawDmg * 0.85));
     }
+    // 神聖障壁（cr_passive_02）：被ダメージ5%軽減＋攻撃してきた敵を10%でスタン
+    if (crNodes.includes('cr_passive_02')) {
+      rawDmg = Math.max(1, Math.floor(rawDmg * 0.95));
+      const stunChance = crNodes.includes('cr_passive_04') ? 0.15 : 0.10;
+      if (Math.random() < stunChance) {
+        game.enemyStunned = true;
+        const stunSrc = crNodes.includes('cr_passive_04') ? 'クルセイドカウンター' : '神聖障壁';
+        log(`✝ 「${stunSrc}」発動！${game.enemy.name} をスタンさせた！`, 'player-action');
+      }
+    }
+    // 神聖の要塞（cr_passive_03）：被ダメージさらに10%軽減、敵スタン時ATK×1.5バフ付与
+    if (crNodes.includes('cr_passive_03')) {
+      rawDmg = Math.max(1, Math.floor(rawDmg * 0.90));
+      if (game.enemyStunned) {
+        game.crusaderStunAtkBuff = { factor: 1.5, turnsLeft: 1 };
+        log(`✝ 「神聖の要塞」発動！次ターンATK×1.5バフ！`, 'player-action');
+      }
+    }
+    // クルセイドカウンター（cr_passive_04）：被攻撃時10%でダメージ無効化、30%でATK×2反撃（独立判定）
+    if (crNodes.includes('cr_passive_04')) {
+      if (Math.random() < 0.10) {
+        rawDmg = 0;
+        log(`✝ 「クルセイドカウンター」発動！ダメージを無効化した！`, 'player-action');
+      }
+      if (Math.random() < 0.30 && game.enemy.isAlive()) {
+        const ctrDmg = Math.max(1, Math.floor(game.player.attack * 2.0));
+        game.enemy.takeDamage(ctrDmg);
+        log(`✝ 「クルセイドカウンター」反撃！ → ${game.enemy.name} に ${ctrDmg} ダメージ！（ATK×2）`, 'player-action');
+        renderEnemyStatus();
+      }
+    }
   }
 
   // カタストロフ被ダメ増加（disaster_howl）
@@ -1049,6 +1235,17 @@ function doEnemyTurn() {
   if (rawDmg > 0) {
     const actualDmg = game.player.takeDamage(rawDmg);
     log(`◀ ${game.enemy.name} の攻撃！ → ${game.player.name} に ${actualDmg} ダメージ！`, 'enemy-action');
+    renderPlayerStatus();
+  }
+
+  // カタストロフパッシブ：死線の執念（ct_passive_02）：致死ダメージをHP1で生存（探索中1回限り）
+  if (!game.player.isAlive() &&
+      game.player.currentJob === 'catastrophe' &&
+      (game.player.skillTreeNodes['catastrophe'] || []).includes('ct_passive_02') &&
+      !game.player.deathDefied) {
+    game.player.hp = 1;
+    game.player.deathDefied = true;
+    log(`💀 「死線の執念」が発動！HP1で生き残った！`, 'player-action');
     renderPlayerStatus();
   }
 
@@ -1389,6 +1586,10 @@ function initGame() {
   game.divineJudgmentDebuff     = null;
   game.ctRuinousWoundBuff       = null;
   game.phantomAvoidBuff         = null;
+  game.crusaderStunAtkBuff      = null;
+  game.oracleManaNotified       = false;
+  game.phantomEyeAutoAttackReady = false;
+  game.runeKnightPassiveAtkMult = 1.0;
 
   // メンテナンスモードチェック
   if (MAINTENANCE.enabled) {
