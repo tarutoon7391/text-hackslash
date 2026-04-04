@@ -1330,6 +1330,11 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'cr_21', name: 'クルセイダーの至高', type: 'stat', description: 'ATK +15 / DEF +25 / HP +60', bonuses: { atk: 15, def: 25, hp: 60 }, cost: 6, requires: 'cr_20' },
       // 最終奥義
       { id: 'cr_22', name: 'クルセイドアポカリプス', type: 'skill', skillId: 'cr_skill_05', description: '即時HP50%回復＋敵ATK・DEF段階デバフ＋3ターン後ATK×20防御無視ダメージ（MP:450 / バトル中3ターンに1回）', mpCost: 450, bonuses: {}, cost: 9, requires: 'cr_21' },
+      // 特級職専用パッシブ（Phase 4 追加）
+      { id: 'cr_passive_01', name: 'クルセイダーの刻印強化', type: 'passive', description: 'パッシブ：神聖の穿槍装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'cr_22' },
+      { id: 'cr_passive_02', name: '神聖障壁', type: 'passive', description: 'パッシブ：被ダメージ5%軽減＋攻撃してきた敵を10%でスタン', bonuses: {}, cost: 7, requires: 'cr_passive_01' },
+      { id: 'cr_passive_03', name: '神聖の要塞', type: 'passive', description: 'パッシブ：被ダメージさらに10%軽減（計15%）＋敵スタン時に次ターンATK×1.5バフ', bonuses: {}, cost: 8, requires: 'cr_passive_02' },
+      { id: 'cr_passive_04', name: 'クルセイドカウンター', type: 'passive', description: 'パッシブ：スタン確率15%に強化＋被攻撃時10%でダメージ無効化＋30%でATK×2反撃', bonuses: {}, cost: 9, requires: 'cr_passive_03' },
     ],
   },
 
@@ -1368,6 +1373,11 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'ph_21', name: 'ファントムの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 6, requires: 'ph_20' },
       // 最終奥義
       { id: 'ph_22', name: 'ファントムアビス', type: 'skill', skillId: 'ph_skill_07', description: '使用ターン攻撃無効化+100%→その後2ターン+30%→3ターン後ATK×100防御完全無視（MP:800）', mpCost: 800, bonuses: {}, cost: 9, requires: 'ph_21' },
+      // 特級職専用パッシブ（Phase 4 追加）
+      { id: 'ph_passive_01', name: 'ファントムの刻印強化', type: 'passive', description: 'パッシブ：黒曜の短剣装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'ph_22' },
+      { id: 'ph_passive_02', name: '虚影の鋭気', type: 'passive', description: 'パッシブ：攻撃時20%で会心発動＋ターン終了時に攻撃無効化確率+10%加算', bonuses: {}, cost: 7, requires: 'ph_passive_01' },
+      { id: 'ph_passive_03', name: 'ファントムピアース', type: 'passive', description: 'パッシブ：通常攻撃が常に防御無視＋ターン終了時に攻撃無効化確率+5%加算', bonuses: {}, cost: 8, requires: 'ph_passive_02' },
+      { id: 'ph_passive_04', name: '亡霊の眼', type: 'passive', description: 'パッシブ：攻撃時40%で会心発動＋回避成功後の次ターンにATK×4自動攻撃', bonuses: {}, cost: 9, requires: 'ph_passive_03' },
     ],
   },
 
@@ -1406,6 +1416,10 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'oc_21', name: 'オラクルの至高', type: 'stat', description: 'ATK +18 / HP +40 / MP +30', bonuses: { atk: 18, hp: 40, mp: 30 }, cost: 6, requires: 'oc_20' },
       // 最終奥義
       { id: 'oc_22', name: '終末予言', type: 'skill', skillId: 'oc_skill_08', description: '即時最大HP30%回復＋3ターン後ATK×200防御無視（予言系 / MP:1500）', mpCost: 1500, bonuses: {}, cost: 9, requires: 'oc_21' },
+      // 特級職専用パッシブ（Phase 4 追加）
+      { id: 'oc_passive_01', name: 'オラクルの刻印強化', type: 'passive', description: 'パッシブ：翠賢の杖装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'oc_22' },
+      { id: 'oc_passive_02', name: '予言の加護', type: 'passive', description: 'パッシブ：予言魔法（oc_skill_01）でダメージを与えた際、最大HP・MP各5%回復', bonuses: {}, cost: 7, requires: 'oc_passive_01' },
+      { id: 'oc_passive_03', name: 'オラクルマナ', type: 'passive', description: 'パッシブ：最大MP×1.5倍＋現在MP130未満の時、通常攻撃で最大MPの15%回復', bonuses: {}, cost: 8, requires: 'oc_passive_02' },
     ],
   },
 
@@ -1444,6 +1458,9 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'ct_21', name: 'カタストロフの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 6, requires: 'ct_20' },
       // 最終奥義
       { id: 'ct_22', name: '破滅の絶撃', type: 'skill', skillId: 'ct_skill_07', description: '現在HP50%消費＋HP残量に応じてATK×50〜300（HP100%時→ATK×300）（MP:1000）', mpCost: 1000, bonuses: {}, cost: 9, requires: 'ct_21' },
+      // 特級職専用パッシブ（Phase 4 追加）
+      { id: 'ct_passive_01', name: 'カタストロフの刻印強化', type: 'passive', description: 'パッシブ：狂血斧装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'ct_22' },
+      { id: 'ct_passive_02', name: '死線の執念', type: 'passive', description: 'パッシブ：致死ダメージを受けた際にHP1で生存（探索中1回限り）', bonuses: {}, cost: 9, requires: 'ct_passive_01' },
     ],
   },
 
@@ -1482,6 +1499,10 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'rk_21', name: 'ルーンナイトの至高', type: 'stat', description: 'ATK +22 / MP +40', bonuses: { atk: 22, mp: 40 }, cost: 6, requires: 'rk_20' },
       // 最終奥義
       { id: 'rk_22', name: 'ルーンカタクリズム', type: 'skill', skillId: 'rk_skill_06', description: '自身次ターンATK・DEF×0.5＋ATK×4.0の5連撃＋バトル中敵DEF永続0（MP:300）', mpCost: 300, bonuses: {}, cost: 9, requires: 'rk_21' },
+      // 特級職専用パッシブ（Phase 4 追加）
+      { id: 'rk_passive_01', name: 'ルーンナイトの刻印強化', type: 'passive', description: 'パッシブ：蒼銀の剣装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'rk_22' },
+      { id: 'rk_passive_02', name: 'ルーン獲得', type: 'passive', description: 'パッシブ：毎ターン1/3の確率でATK×1.2・HP10%回復・MP5%回復のいずれか1つ発動', bonuses: {}, cost: 7, requires: 'rk_passive_01' },
+      { id: 'rk_passive_03', name: 'ルーン強化', type: 'passive', description: 'パッシブ：ルーン獲得の抽選を1/2の確率で2回実施（ATK強化重複可）', bonuses: {}, cost: 8, requires: 'rk_passive_02' },
     ],
   },
 ];

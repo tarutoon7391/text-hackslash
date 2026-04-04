@@ -204,6 +204,9 @@ function enterDungeon(dungeonId) {
   // 戦闘開始前に MP を最大値まで回復する
   game.player.mp = game.player.maxMp;
 
+  // カタストロフ死線の執念フラグを探索開始時にリセット
+  game.player.deathDefied = false;
+
   startNextDungeonBattle();
 }
 
@@ -302,6 +305,10 @@ function startNextDungeonBattle() {
   game.divinePunishmentDoT      = null;
   game.divineJudgmentDebuff     = null;
   game.ctRuinousWoundBuff       = null;
+  game.crusaderStunAtkBuff      = null;
+  game.oracleManaNotified       = false;
+  game.phantomEyeAutoAttackReady = false;
+  game.runeKnightPassiveAtkMult = 1.0;
 
   // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
   recordMonsterEncounter(game.enemy.name);
@@ -667,6 +674,9 @@ function enterGachaDungeon(difficulty) {
   // 入場時に MP を最大値まで回復する
   game.player.mp = game.player.maxMp;
 
+  // カタストロフ死線の執念フラグを探索開始時にリセット
+  game.player.deathDefied = false;
+
   startNextDungeonBattle();
 }
 
@@ -742,6 +752,10 @@ function startNextGachaDungeonBattle() {
   game.divinePunishmentDoT      = null;
   game.divineJudgmentDebuff     = null;
   game.ctRuinousWoundBuff       = null;
+  game.crusaderStunAtkBuff      = null;
+  game.oracleManaNotified       = false;
+  game.phantomEyeAutoAttackReady = false;
+  game.runeKnightPassiveAtkMult = 1.0;
 
   // 図鑑: 遭遇を記録する
   recordMonsterEncounter(game.enemy.name);
@@ -927,6 +941,8 @@ function enterXpDungeon(difficulty) {
 
   showScreen('battle');
   game.player.mp = game.player.maxMp;
+  // カタストロフ死線の執念フラグを探索開始時にリセット
+  game.player.deathDefied = false;
   startNextDungeonBattle();
 }
 
@@ -1004,6 +1020,10 @@ function startNextXpDungeonBattle() {
   game.divinePunishmentDoT      = null;
   game.divineJudgmentDebuff     = null;
   game.ctRuinousWoundBuff       = null;
+  game.crusaderStunAtkBuff      = null;
+  game.oracleManaNotified       = false;
+  game.phantomEyeAutoAttackReady = false;
+  game.runeKnightPassiveAtkMult = 1.0;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1130,6 +1150,8 @@ function enterRaremonDungeon(variant) {
 
   showScreen('battle');
   game.player.mp = game.player.maxMp;
+  // カタストロフ死線の執念フラグを探索開始時にリセット
+  game.player.deathDefied = false;
   startNextDungeonBattle();
 }
 
@@ -1213,6 +1235,10 @@ function startNextRaremonDungeonBattle() {
   game.divinePunishmentDoT      = null;
   game.divineJudgmentDebuff     = null;
   game.ctRuinousWoundBuff       = null;
+  game.crusaderStunAtkBuff      = null;
+  game.oracleManaNotified       = false;
+  game.phantomEyeAutoAttackReady = false;
+  game.runeKnightPassiveAtkMult = 1.0;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1381,6 +1407,8 @@ function enterSkillDungeon(difficulty) {
 
   showScreen('battle');
   game.player.mp = game.player.maxMp;
+  // カタストロフ死線の執念フラグを探索開始時にリセット
+  game.player.deathDefied = false;
   startNextDungeonBattle();
 }
 
@@ -1451,6 +1479,10 @@ function startNextSkillDungeonBattle() {
   game.divinePunishmentDoT      = null;
   game.divineJudgmentDebuff     = null;
   game.ctRuinousWoundBuff       = null;
+  game.crusaderStunAtkBuff      = null;
+  game.oracleManaNotified       = false;
+  game.phantomEyeAutoAttackReady = false;
+  game.runeKnightPassiveAtkMult = 1.0;
 
   recordMonsterEncounter(game.enemy.name);
 
