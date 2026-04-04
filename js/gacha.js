@@ -475,29 +475,20 @@ function renderGachaScreen() {
   const btnPart2 = document.getElementById('btn-gacha-part2');
   if (btnPart2) btnPart2.disabled = tickets < 10;
 
-  // Part2アイテム一覧を描画する
-  renderGachaPart2ItemList();
-}
-
-/** Part2の排出アイテム一覧を描画する */
-function renderGachaPart2ItemList() {
-  if (!game.player) return;
-  const p      = game.player;
-  const listEl = document.getElementById('gacha-part2-item-list');
-  if (!listEl) return;
-
-  let html = '';
-  GACHA_TABLE_PART2.forEach(item => {
-    const color    = GACHA_RARITY_COLORS[item.rarity] || '#00ff41';
-    const label    = GACHA_RARITY_LABELS[item.rarity] || '';
-    const obtained = item.permanent && p.permanentItems[item.flag];
-    const style    = obtained
-      ? 'color:#555555; text-decoration:line-through;'
-      : `color:${color};`;
-    const suffix   = obtained ? ' 【入手済み】' : (item.count ? ` ×${item.count}` : '');
-    html += `<div class="gacha-result-line" style="${style}">[${label}] ${item.name}${suffix}</div>`;
-  });
-  listEl.innerHTML = html;
+  const permEl2 = document.getElementById('gacha-perm-status-part2');
+  if (permEl2) {
+    const hasBookCrusader    = p.permanentItems.hasBookCrusader    ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookPhantom     = p.permanentItems.hasBookPhantom     ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookOracle      = p.permanentItems.hasBookOracle      ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookCatastrophe = p.permanentItems.hasBookCatastrophe ? '✅ 入手済み' : '❌ 未入手';
+    const hasBookRuneKnight  = p.permanentItems.hasBookRuneKnight  ? '✅ 入手済み' : '❌ 未入手';
+    permEl2.innerHTML =
+      `<span>📖 クルセイダーの書: ${hasBookCrusader}</span>` +
+      `<span>📖 ファントムの書: ${hasBookPhantom}</span>` +
+      `<span>📖 オラクルの書: ${hasBookOracle}</span>` +
+      `<span>📖 カタストロフの書: ${hasBookCatastrophe}</span>` +
+      `<span>📖 ルーンナイトの書: ${hasBookRuneKnight}</span>`;
+  }
 }
 
 /** ガチャPart1/Part2を切り替える */
@@ -517,8 +508,6 @@ function switchGachaPart(part) {
     if (content2) content2.style.display = '';
     if (btn1) { btn1.classList.remove('active'); }
     if (btn2) { btn2.classList.add('active'); }
-    // Part2表示時にアイテム一覧を最新化する
-    renderGachaPart2ItemList();
   }
 
   // ログをクリアする
