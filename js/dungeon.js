@@ -309,6 +309,13 @@ function startNextDungeonBattle() {
   game.oracleManaNotified       = false;
   game.phantomEyeAutoAttackReady = false;
   game.runeKnightPassiveAtkMult = 1.0;
+  game.phantomAvoidSuccessFlag  = false;
+  game.oracleSummonActive       = false;
+  game.oracleSummonTurns        = 0;
+  game.oracleSummonEffects      = [];
+  game.oracleMpNotified         = false;
+  game.berserkFuryActive        = false;
+  game.doomEyeActive            = false;
 
   // 図鑑: 遭遇を記録する（勝敗・逃げを問わず）
   recordMonsterEncounter(game.enemy.name);
@@ -756,6 +763,13 @@ function startNextGachaDungeonBattle() {
   game.oracleManaNotified       = false;
   game.phantomEyeAutoAttackReady = false;
   game.runeKnightPassiveAtkMult = 1.0;
+  game.phantomAvoidSuccessFlag  = false;
+  game.oracleSummonActive       = false;
+  game.oracleSummonTurns        = 0;
+  game.oracleSummonEffects      = [];
+  game.oracleMpNotified         = false;
+  game.berserkFuryActive        = false;
+  game.doomEyeActive            = false;
 
   // 図鑑: 遭遇を記録する
   recordMonsterEncounter(game.enemy.name);
@@ -1024,6 +1038,13 @@ function startNextXpDungeonBattle() {
   game.oracleManaNotified       = false;
   game.phantomEyeAutoAttackReady = false;
   game.runeKnightPassiveAtkMult = 1.0;
+  game.phantomAvoidSuccessFlag  = false;
+  game.oracleSummonActive       = false;
+  game.oracleSummonTurns        = 0;
+  game.oracleSummonEffects      = [];
+  game.oracleMpNotified         = false;
+  game.berserkFuryActive        = false;
+  game.doomEyeActive            = false;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1239,6 +1260,13 @@ function startNextRaremonDungeonBattle() {
   game.oracleManaNotified       = false;
   game.phantomEyeAutoAttackReady = false;
   game.runeKnightPassiveAtkMult = 1.0;
+  game.phantomAvoidSuccessFlag  = false;
+  game.oracleSummonActive       = false;
+  game.oracleSummonTurns        = 0;
+  game.oracleSummonEffects      = [];
+  game.oracleMpNotified         = false;
+  game.berserkFuryActive        = false;
+  game.doomEyeActive            = false;
 
   recordMonsterEncounter(game.enemy.name);
 
@@ -1483,6 +1511,13 @@ function startNextSkillDungeonBattle() {
   game.oracleManaNotified       = false;
   game.phantomEyeAutoAttackReady = false;
   game.runeKnightPassiveAtkMult = 1.0;
+  game.phantomAvoidSuccessFlag  = false;
+  game.oracleSummonActive       = false;
+  game.oracleSummonTurns        = 0;
+  game.oracleSummonEffects      = [];
+  game.oracleMpNotified         = false;
+  game.berserkFuryActive        = false;
+  game.doomEyeActive            = false;
 
   recordMonsterEncounter(game.enemy.name);
 

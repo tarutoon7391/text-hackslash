@@ -507,6 +507,13 @@ let game = {
   oracleManaNotified:       false, // オラクルマナ初回発動通知フラグ
   phantomEyeAutoAttackReady: false, // 亡霊の眼（ph_passive_04）：次ターン自動攻撃フラグ
   runeKnightPassiveAtkMult: 1.0,  // ルーン獲得（rk_passive_02）：当ターン限定ATK倍率（使用後1.0にリセット）
+  phantomAvoidSuccessFlag:  false, // 亡霊攻撃回避成功フラグ
+  oracleSummonActive:       false, // 天啓聖魔召喚中フラグ
+  oracleSummonTurns:        0,     // 天啓聖魔残りターン数
+  oracleSummonEffects:      [],    // 3ターン分の効果記録
+  oracleMpNotified:         false, // オラクルマナ通知済みフラグ
+  berserkFuryActive:        false, // 破滅の傷バフ用フラグ
+  doomEyeActive:            false, // 滅亡の眼光デバフ用フラグ
 };
 
 /* ==============================================================
@@ -854,6 +861,47 @@ function tickPlayerBuffs() {
     game.enemyDefDebuff.turnsLeft--;
     if (game.enemyDefDebuff.turnsLeft <= 0) {
       game.enemyDefDebuff = null;
+    }
+  }
+  // クルセイドアポカリプスのクールダウン管理
+  if (game.crusaderApocCooldown > 0) {
+    game.crusaderApocCooldown--;
+    if (game.crusaderApocCooldown === 0) {
+      log('✝ 「クルセイドアポカリプス」が再使用可能になった！', 'system');
+      const _spEl = document.getElementById('skill-panel');
+      if (_spEl && _spEl.style.display !== 'none') {
+        showSkillPanel(_skillPanelRoute);
+      }
+    }
+  }
+  // 天啓聖魔のターン管理
+  if (game.oracleSummonTurns > 0) {
+    game.oracleSummonTurns--;
+    if (game.oracleSummonTurns === 0) {
+      log('✨ 聖魔暴走が使用可能になった！', 'player-action');
+      const _spEl = document.getElementById('skill-panel');
+      if (_spEl && _spEl.style.display !== 'none') {
+        showSkillPanel(_skillPanelRoute);
+      }
+    }
+  }
+  // 予言系スキルのターン管理
+  if (game.prophecyActive && game.prophecyActive.turnsLeft > 0) {
+    game.prophecyActive.turnsLeft--;
+    if (game.prophecyActive.turnsLeft <= 0) {
+      game.prophecyActive = null;
+    }
+  }
+  // 滅亡の眼光のターン管理
+  if (game.doomEyeActive && game.doomEyeActive.turnsLeft > 0) {
+    game.doomEyeActive.turnsLeft--;
+    if (game.doomEyeActive.turnsLeft <= 0) {
+      if (game.enemy) {
+        game.enemy.attack  = game.doomEyeActive.origAtk;
+        game.enemy.defense = game.doomEyeActive.origDef;
+        renderEnemyStatus();
+      }
+      game.doomEyeActive = null;
     }
   }
 }
@@ -1319,14 +1367,6 @@ function doEnemyTurn() {
     }
   }
 
-  // クルセイドアポカリプスのクールダウン
-  if (game.crusaderApocCooldown > 0) {
-    game.crusaderApocCooldown--;
-    if (game.crusaderApocCooldown <= 0) {
-      log(`✝ 「クルセイドアポカリプス」が再使用可能になった！`, 'system');
-    }
-  }
-
   // 天啓聖魔：召喚中のランダム行動
   if (game.oracleSpiritActive && game.oracleSpiritActive.turnsLeft > 0 && game.enemy.isAlive()) {
     const pat = randInt(1, 3);
@@ -1504,6 +1544,25 @@ function showSkillPanel(route) {
     // スキルボタン HTML
     listHtml = displaySkills
       .map(s => {
+        // クルセイドアポカリプスのクールダウン中表示
+        if (s.id === 'cr_skill_05' && game.crusaderApocCooldown > 0) {
+          return `<button class="skill-btn disabled" disabled>
+            ${s.name}（MP:${s.mpCost}）<br><small>あと${game.crusaderApocCooldown}ターンで使用可能</small>
+          </button>`;
+        }
+        // ルーン解放の使用済み表示
+        if (s.id === 'rk_skill_05' && game.runeReleaseUsed) {
+          return `<button class="skill-btn disabled" disabled>
+            ${s.name}（MP:${s.mpCost}）<br><small>このバトルでは使用済み</small>
+          </button>`;
+        }
+        // 天啓聖魔の状態に応じたボタン切り替え（召喚中かつ暴走可能）
+        if (s.id === 'oc_skill_04' && game.oracleSummonActive && game.oracleSummonTurns === 0) {
+          const noMpRampage = player.mp < s.mpCost * 2;
+          return `<button class="skill-btn${noMpRampage ? ' disabled' : ''}" ${noMpRampage ? 'disabled' : ''} onclick="useSkill('${s.id}')">
+            聖魔暴走（MP:${s.mpCost * 2}）<br><small>天啓聖魔が暴走して全力攻撃（MP×2消費）</small>
+          </button>`;
+        }
         const noMp = player.mp < s.mpCost;
         const noHp = (() => {
           // HP消費スキルの使用条件チェック
@@ -1512,6 +1571,9 @@ function showSkillPanel(route) {
             case 'self_harm_strike':   return player.hp / player.maxHp <= 0.20;
             case 'berserk_rampage':    return player.hp / player.maxHp <= 0.30;
             case 'annihilation_strike': return player.hp / player.maxHp <= 0.50;
+            case 'ct_skill_01':        return player.hp / player.maxHp <= 0.10;
+            case 'ct_skill_07':        return player.hp / player.maxHp <= 0.50;
+            case 'ph_skill_06':        return false;
             default: return false;
           }
         })();
@@ -1590,6 +1652,13 @@ function initGame() {
   game.oracleManaNotified       = false;
   game.phantomEyeAutoAttackReady = false;
   game.runeKnightPassiveAtkMult = 1.0;
+  game.phantomAvoidSuccessFlag  = false;
+  game.oracleSummonActive       = false;
+  game.oracleSummonTurns        = 0;
+  game.oracleSummonEffects      = [];
+  game.oracleMpNotified         = false;
+  game.berserkFuryActive        = false;
+  game.doomEyeActive            = false;
 
   // メンテナンスモードチェック
   if (MAINTENANCE.enabled) {
