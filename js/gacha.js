@@ -685,10 +685,10 @@ function showGachaRates() {
   addRateLineByIds(`レア素材（${rareIds.length}種）`,         rareIds,     GACHA_RARITY_COLORS.rare);
   addRateLineByIds(`ボスレア素材（${bossRareIds.length}種）`, bossRareIds, GACHA_RARITY_COLORS.bossRare);
 
-  // 【限定素材】（重み30以上が蒼銀系限定素材、重み30未満が上級職武器素材）
+  // 【限定素材】（weight===30の2種が蒼銀系限定素材、weight===15の8種が上級職武器素材）
   addCatHeader('【限定素材】');
-  const limitedBasicIds    = GACHA_TABLE.filter(i => i.type === 'limitedMaterial' && i.weight >= 20).map(i => i.id);
-  const limitedAdvancedIds = GACHA_TABLE.filter(i => i.type === 'limitedMaterial' && i.weight <  20).map(i => i.id);
+  const limitedBasicIds    = GACHA_TABLE.filter(i => i.type === 'limitedMaterial' && i.weight >= 30).map(i => i.id);
+  const limitedAdvancedIds = GACHA_TABLE.filter(i => i.type === 'limitedMaterial' && i.weight <  30).map(i => i.id);
   addRateLineByIds(`限定素材（${limitedBasicIds.length}種）`,       limitedBasicIds,    GACHA_RARITY_COLORS.limited);
   addRateLineByIds(`上級職武器素材（${limitedAdvancedIds.length}種）`, limitedAdvancedIds, GACHA_RARITY_COLORS.limited);
 
