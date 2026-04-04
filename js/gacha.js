@@ -611,8 +611,7 @@ function showGachaAnimation(results) {
 
 /**
  * 排出率一覧をガチャログエリアに表示する
- * 永続品はフラグにより確率が変動するため、現在のプール状態で計算する
- * 入手済みの永続品は「入手済み」と表示する
+ * 素材はレアリティカテゴリ別にまとめて表示し、永続品は入手済み判定付きで表示する
  */
 function showGachaRates() {
   const logEl = document.getElementById('gacha-log');
@@ -632,35 +631,110 @@ function showGachaRates() {
   header.textContent = '--- 排出率一覧 ---';
   logEl.appendChild(header);
 
-  GACHA_TABLE.forEach(item => {
-    const line = document.createElement('div');
-    line.className  = 'gacha-result-line';
-    line.style.color = GACHA_RARITY_COLORS[item.rarity] || '#00ff41';
+  /** カテゴリヘッダー行を追加する */
+  function addCatHeader(text) {
+    const el = document.createElement('div');
+    el.className   = 'gacha-result-line';
+    el.style.color = '#ffffff';
+    el.textContent = text;
+    logEl.appendChild(el);
+  }
 
-    const rarityLabel = GACHA_RARITY_LABELS[item.rarity] || '';
+  /** IDリストの合計確率行を追加する */
+  function addRateLineByIds(label, ids, color) {
+    const totalW = ids.reduce((sum, id) => {
+      const pi = pool.find(item => item.id === id);
+      return sum + (pi ? pi.weight : 0);
+    }, 0);
+    const percent = (totalW / totalWeight * 100).toFixed(2);
+    const el = document.createElement('div');
+    el.className   = 'gacha-result-line';
+    el.style.color = color;
+    el.textContent = `  ${label}: ${percent}%`;
+    logEl.appendChild(el);
+  }
 
-    // 入手済み永続品かどうか判定する
-    const isObtained = item.permanent && p.permanentItems[item.flag];
-
-    if (isObtained) {
-      line.textContent = `[${rarityLabel}] ${item.name} - 入手済み`;
+  /** 永続品グループ行を追加する（全入手済みなら「入手済み」表示） */
+  function addPermGroupLine(label, ids, color) {
+    const allObtained = ids.every(id => {
+      const item = GACHA_TABLE.find(i => i.id === id);
+      return item && p.permanentItems[item.flag];
+    });
+    const el = document.createElement('div');
+    el.className   = 'gacha-result-line';
+    el.style.color = color;
+    if (allObtained) {
+      el.textContent = `  ${label} - 入手済み`;
     } else {
-      // 有効プール内でのこのアイテムの現在重みを取得する
-      const poolItem = pool.find(pi => pi.id === item.id);
-      if (poolItem) {
-        const percent = (poolItem.weight / totalWeight * 100).toFixed(2);
-        line.textContent = `[${rarityLabel}] ${item.name} - ${percent}%`;
-      } else {
-        line.textContent = `[${rarityLabel}] ${item.name} - 0.00%`;
-      }
+      const totalW = ids.reduce((sum, id) => {
+        const pi = pool.find(item => item.id === id);
+        return sum + (pi ? pi.weight : 0);
+      }, 0);
+      const percent = (totalW / totalWeight * 100).toFixed(2);
+      el.textContent = `  ${label} - ${percent}%`;
     }
+    logEl.appendChild(el);
+  }
 
-    logEl.appendChild(line);
-  });
+  // 【素材】
+  addCatHeader('【素材】');
+  const commonIds   = GACHA_TABLE.filter(i => i.rarity === 'common'   && i.type === 'material').map(i => i.id);
+  const rareIds     = GACHA_TABLE.filter(i => i.rarity === 'rare'     && i.type === 'material').map(i => i.id);
+  const bossRareIds = GACHA_TABLE.filter(i => i.rarity === 'bossRare' && i.type === 'material').map(i => i.id);
+  addRateLineByIds(`コモン素材（${commonIds.length}種）`,    commonIds,   GACHA_RARITY_COLORS.common);
+  addRateLineByIds(`レア素材（${rareIds.length}種）`,         rareIds,     GACHA_RARITY_COLORS.rare);
+  addRateLineByIds(`ボスレア素材（${bossRareIds.length}種）`, bossRareIds, GACHA_RARITY_COLORS.bossRare);
+
+  // 【限定素材】（重み30以上が蒼銀系限定素材、重み30未満が上級職武器素材）
+  addCatHeader('【限定素材】');
+  const limitedBasicIds    = GACHA_TABLE.filter(i => i.type === 'limitedMaterial' && i.weight >= 20).map(i => i.id);
+  const limitedAdvancedIds = GACHA_TABLE.filter(i => i.type === 'limitedMaterial' && i.weight <  20).map(i => i.id);
+  addRateLineByIds(`限定素材（${limitedBasicIds.length}種）`,       limitedBasicIds,    GACHA_RARITY_COLORS.limited);
+  addRateLineByIds(`上級職武器素材（${limitedAdvancedIds.length}種）`, limitedAdvancedIds, GACHA_RARITY_COLORS.limited);
+
+  // 【ダンジョンの鍵】
+  addCatHeader('【ダンジョンの鍵】');
+  const keyIds    = GACHA_TABLE.filter(i => i.type === 'key').map(i => i.id);
+  const totalKeyW = keyIds.reduce((sum, id) => {
+    const pi = pool.find(item => item.id === id);
+    return sum + (pi ? pi.weight : 0);
+  }, 0);
+  const keyPercent = (totalKeyW / totalWeight * 100).toFixed(2);
+  const keyLine = document.createElement('div');
+  keyLine.className   = 'gacha-result-line';
+  keyLine.style.color = GACHA_RARITY_COLORS.key;
+  keyLine.textContent = `  XP鍵 / レアモン鍵 / スキル鍵（各1個）: ${keyPercent}%`;
+  logEl.appendChild(keyLine);
+
+  // 【永続品】
+  addCatHeader('【永続品】');
+  // 蒼銀の剣レシピは個別表示
+  const aoginItem = GACHA_TABLE.find(i => i.id === 'recipe_aogin');
+  if (aoginItem) {
+    const isObtained = p.permanentItems[aoginItem.flag];
+    const el = document.createElement('div');
+    el.className   = 'gacha-result-line';
+    el.style.color = GACHA_RARITY_COLORS.recipe;
+    if (isObtained) {
+      el.textContent = `  ${aoginItem.name} - 入手済み`;
+    } else {
+      const poolItem = pool.find(pi => pi.id === aoginItem.id);
+      const percent  = poolItem ? (poolItem.weight / totalWeight * 100).toFixed(2) : '0.00';
+      el.textContent = `  ${aoginItem.name} - ${percent}%`;
+    }
+    logEl.appendChild(el);
+  }
+  // 上級職武器レシピ4種をまとめて表示
+  const recipeIds = ['recipe_seisou', 'recipe_kokuyou', 'recipe_suiken', 'recipe_kyouketsu'];
+  addPermGroupLine(`各種レシピ（${recipeIds.length}種）`, recipeIds, GACHA_RARITY_COLORS.recipe);
+  // スキルの書5種をまとめて表示
+  const bookIds = GACHA_TABLE.filter(i => i.type === 'book').map(i => i.id);
+  addPermGroupLine(`各種スキルの書（${bookIds.length}種）`, bookIds, GACHA_RARITY_COLORS.book);
 }
 
 /**
  * Part2の排出率一覧をガチャログエリアに表示する
+ * 素材はレアリティカテゴリ別にまとめて表示し、永続品はグループ表示する
  */
 function showGachaRatesPart2() {
   const logEl = document.getElementById('gacha-log');
@@ -680,29 +754,71 @@ function showGachaRatesPart2() {
   header.textContent = '--- Part2 排出率一覧 ---';
   logEl.appendChild(header);
 
-  GACHA_TABLE_PART2.forEach(item => {
-    const line = document.createElement('div');
-    line.className  = 'gacha-result-line';
-    line.style.color = GACHA_RARITY_COLORS[item.rarity] || '#00ff41';
+  /** カテゴリヘッダー行を追加する */
+  function addCatHeader(text) {
+    const el = document.createElement('div');
+    el.className   = 'gacha-result-line';
+    el.style.color = '#ffffff';
+    el.textContent = text;
+    logEl.appendChild(el);
+  }
 
-    const rarityLabel = GACHA_RARITY_LABELS[item.rarity] || '';
+  /** IDリストの合計確率行を追加する */
+  function addRateLineByIds(label, ids, color) {
+    const totalW = ids.reduce((sum, id) => {
+      const pi = pool.find(item => item.id === id);
+      return sum + (pi ? pi.weight : 0);
+    }, 0);
+    const percent = (totalW / totalWeight * 100).toFixed(2);
+    const el = document.createElement('div');
+    el.className   = 'gacha-result-line';
+    el.style.color = color;
+    el.textContent = `  ${label}: ${percent}%`;
+    logEl.appendChild(el);
+  }
 
-    // 入手済み永続品かどうか判定する
-    const isObtained = item.permanent && p.permanentItems[item.flag];
+  // 【素材】
+  addCatHeader('【素材】');
+  const commonIds   = GACHA_TABLE_PART2.filter(i => i.rarity === 'common'   && i.type === 'material').map(i => i.id);
+  const rareIds     = GACHA_TABLE_PART2.filter(i => i.rarity === 'rare'     && i.type === 'material').map(i => i.id);
+  const bossRareIds = GACHA_TABLE_PART2.filter(i => i.rarity === 'bossRare' && i.type === 'material').map(i => i.id);
+  addRateLineByIds(`コモン素材（${commonIds.length}種）`,    commonIds,   GACHA_RARITY_COLORS.common);
+  addRateLineByIds(`レア素材（${rareIds.length}種）`,         rareIds,     GACHA_RARITY_COLORS.rare);
+  addRateLineByIds(`ボスレア素材（${bossRareIds.length}種）`, bossRareIds, GACHA_RARITY_COLORS.bossRare);
 
-    if (isObtained) {
-      line.textContent = `[${rarityLabel}] ${item.name} - 入手済み`;
-    } else {
-      const poolItem = pool.find(pi => pi.id === item.id);
-      if (poolItem) {
-        const percent  = (poolItem.weight / totalWeight * 100).toFixed(2);
-        const countStr = item.count ? ` ×${item.count}` : '';
-        line.textContent = `[${rarityLabel}] ${item.name}${countStr} - ${percent}%`;
-      } else {
-        line.textContent = `[${rarityLabel}] ${item.name} - 0.00%`;
-      }
-    }
+  // 【ダンジョンの鍵】
+  addCatHeader('【ダンジョンの鍵】');
+  const keyIds    = GACHA_TABLE_PART2.filter(i => i.type === 'key').map(i => i.id);
+  const totalKeyW = keyIds.reduce((sum, id) => {
+    const pi = pool.find(item => item.id === id);
+    return sum + (pi ? pi.weight : 0);
+  }, 0);
+  const keyPercent = (totalKeyW / totalWeight * 100).toFixed(2);
+  const keyLine = document.createElement('div');
+  keyLine.className   = 'gacha-result-line';
+  keyLine.style.color = GACHA_RARITY_COLORS.key;
+  keyLine.textContent = `  XP鍵 / レアモン鍵 / スキル鍵（各×10）: ${keyPercent}%`;
+  logEl.appendChild(keyLine);
 
-    logEl.appendChild(line);
+  // 【永続品】
+  addCatHeader('【永続品】');
+  const bookIds     = GACHA_TABLE_PART2.filter(i => i.type === 'book').map(i => i.id);
+  const allObtained = bookIds.every(id => {
+    const item = GACHA_TABLE_PART2.find(i => i.id === id);
+    return item && p.permanentItems[item.flag];
   });
+  const permEl = document.createElement('div');
+  permEl.className   = 'gacha-result-line';
+  permEl.style.color = GACHA_RARITY_COLORS.book;
+  if (allObtained) {
+    permEl.textContent = `  各種スキルの書（${bookIds.length}種） - 入手済み`;
+  } else {
+    const totalW = bookIds.reduce((sum, id) => {
+      const pi = pool.find(item => item.id === id);
+      return sum + (pi ? pi.weight : 0);
+    }, 0);
+    const percent = (totalW / totalWeight * 100).toFixed(2);
+    permEl.textContent = `  各種スキルの書（${bookIds.length}種） - ${percent}%`;
+  }
+  logEl.appendChild(permEl);
 }
