@@ -153,88 +153,88 @@ const GACHA_TABLE = [
  */
 const GACHA_TABLE_PART2 = [
   /* ── D13 神々の試練場 素材 ── */
-  { id: 'p2_d13_common',   name: '神々の試練石',     type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d13_common',   name: '神々の試練石',     type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d13_rare1',    name: '神話の羽根',         type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d13_rare2',    name: '試練の結晶',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d13_boss',     name: '試練神の心臓',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d13_bossRare', name: '神々の加護',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d13_boss',     name: '試練神の心臓',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d13_bossRare', name: '神々の加護',         type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D14 永劫の氷獄 素材 ── */
-  { id: 'p2_d14_common',   name: '永劫の氷塊',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d14_common',   name: '永劫の氷塊',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d14_rare1',    name: 'ニブルヘイムの氷晶', type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d14_rare2',    name: '氷獄の破片',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d14_boss',     name: '氷獄番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d14_bossRare', name: '永劫の凍結核',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d14_boss',     name: '氷獄番人の核',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d14_bossRare', name: '永劫の凍結核',       type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D15 業火の煉獄 素材 ── */
-  { id: 'p2_d15_common',   name: '煉獄の炎石',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d15_common',   name: '煉獄の炎石',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d15_rare1',    name: '業火の灰',           type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d15_rare2',    name: '煉獄の魔核',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d15_boss',     name: '炎獄番人の炎核',     type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d15_bossRare', name: '業火の意志',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d15_boss',     name: '炎獄番人の炎核',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d15_bossRare', name: '業火の意志',         type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D16 冥界の回廊 素材 ── */
-  { id: 'p2_d16_common',   name: '冥界の黒晶',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d16_common',   name: '冥界の黒晶',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d16_rare1',    name: '亡者の涙',           type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d16_rare2',    name: '冥王の破片',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d16_boss',     name: '冥界の扉の鍵',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d16_bossRare', name: '冥王の魂石',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d16_boss',     name: '冥界の扉の鍵',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d16_bossRare', name: '冥王の魂石',         type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D17 神域の迷宮 素材 ── */
-  { id: 'p2_d17_common',   name: '神域の聖石',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d17_common',   name: '神域の聖石',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d17_rare1',    name: '神域の羽衣',         type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d17_rare2',    name: '聖域の魔法陣',       type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d17_boss',     name: '神域番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d17_bossRare', name: '神域の威光',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d17_boss',     name: '神域番人の核',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d17_bossRare', name: '神域の威光',         type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D18 天上の聖域 素材 ── */
-  { id: 'p2_d18_common',   name: '天上の光晶',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d18_common',   name: '天上の光晶',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d18_rare1',    name: '天使の翼',           type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d18_rare2',    name: '聖域の光核',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d18_boss',     name: '聖域守護者の心臓',   type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d18_bossRare', name: '天上の祝福',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d18_boss',     name: '聖域守護者の心臓',   type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d18_bossRare', name: '天上の祝福',         type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D19 虚無の断層 素材 ── */
-  { id: 'p2_d19_common',   name: '虚無の断層石',       type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d19_common',   name: '虚無の断層石',       type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d19_rare1',    name: '消滅の核',           type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d19_rare2',    name: '断層の破片',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d19_boss',     name: '断層番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d19_bossRare', name: '虚無の消滅核',       type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d19_boss',     name: '断層番人の核',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d19_bossRare', name: '虚無の消滅核',       type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D20 時の終焉 素材 ── */
-  { id: 'p2_d20_common',   name: '崩壊の時計石',       type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d20_common',   name: '崩壊の時計石',       type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d20_rare1',    name: '終焉の砂時計',       type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d20_rare2',    name: '時崩の破片',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d20_boss',     name: '終焉番人の核',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d20_bossRare', name: '時の終焉の欠片',     type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d20_boss',     name: '終焉番人の核',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d20_bossRare', name: '時の終焉の欠片',     type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D21 創世の地 素材 ── */
-  { id: 'p2_d21_common',   name: '創世の原子',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d21_common',   name: '創世の原子',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d21_rare1',    name: '宇宙誕生の光',       type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d21_rare2',    name: '原初の魔核',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d21_boss',     name: '創世神の結晶',       type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d21_bossRare', name: '宇宙の始まりの欠片', type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d21_boss',     name: '創世神の結晶',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d21_bossRare', name: '宇宙の始まりの欠片', type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D22 魂の審判場 素材 ── */
-  { id: 'p2_d22_common',   name: '審判の結晶石',       type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d22_common',   name: '審判の結晶石',       type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d22_rare1',    name: '次元の魂片',         type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d22_rare2',    name: '審判の炎核',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d22_boss',     name: '審判神の証',         type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d22_bossRare', name: '魂の審判印',         type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d22_boss',     name: '審判神の証',         type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d22_bossRare', name: '魂の審判印',         type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D23 神域の頂 素材 ── */
-  { id: 'p2_d23_common',   name: '頂の神聖核',         type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d23_common',   name: '頂の神聖核',         type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d23_rare1',    name: '全次元の光片',       type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d23_rare2',    name: '頂点の結晶',         type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d23_boss',     name: '頂神の心臓',         type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d23_bossRare', name: '神域の頂の欠片',     type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d23_boss',     name: '頂神の心臓',         type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d23_bossRare', name: '神域の頂の欠片',     type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── D24 絶対なる混沌 素材 ── */
-  { id: 'p2_d24_common',   name: '絶対混沌の核片',     type: 'material', rarity: 'common',   weight: 15 },
+  { id: 'p2_d24_common',   name: '絶対混沌の核片',     type: 'material', rarity: 'common',   weight: 80 },
   { id: 'p2_d24_rare1',    name: '終焉の混沌核',       type: 'material', rarity: 'rare',     weight: 15 },
   { id: 'p2_d24_rare2',    name: '絶対の破壊石',       type: 'material', rarity: 'rare',     weight: 15 },
-  { id: 'p2_d24_boss',     name: '混沌絶対神の証',     type: 'material', rarity: 'bossRare', weight: 15 },
-  { id: 'p2_d24_bossRare', name: '絶対なる混沌の力',   type: 'material', rarity: 'bossRare', weight: 15 },
+  { id: 'p2_d24_boss',     name: '混沌絶対神の証',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d24_bossRare', name: '絶対なる混沌の力',   type: 'material', rarity: 'bossRare', weight: 5 },
 
   /* ── ダンジョンの鍵3種（排出数×10） ── */
   { id: 'p2_key_xp',       name: 'XPダンジョンの鍵',       type: 'key', rarity: 'key', weight: 25, count: 10 },
