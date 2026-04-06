@@ -1530,6 +1530,49 @@ const SKILL_DEFINITIONS = (() => {
 })();
 
 /**
+ * 特級職スキル上書きマップ
+ * 特級職スキルノード取得時に対応する上級職スキルIDをlearnedSkillsから削除する（パッシブ上書き）
+ * resetJobSkillTree() 時の逆操作（上級職スキル復元）にも使用する
+ */
+const ELITE_SKILL_OVERRIDE_MAP = {
+  crusader:    { cr_skill_01: 'paladin_heal', cr_skill_02: 'paladin_big_heal', cr_skill_03: 'shield_bash', cr_skill_04: 'holy_slash', cr_skill_05: 'divine_judgment' },
+  phantom:     { ph_skill_01: 'quad_slash', ph_skill_02: 'shadow_stab', ph_skill_03: 'penta_slash', ph_skill_04: 'killing_edge', ph_skill_05: 'shadow_flurry', ph_skill_06: 'death_reaper', ph_skill_07: 'abyss_drop' },
+  oracle:      { oc_skill_01: 'sage_blast', oc_skill_02: 'sage_debuff', oc_skill_03: 'sage_buff', oc_skill_04: 'holy_magic_fusion', oc_skill_05: 'magic_collapse', oc_skill_06: 'wisdom_wave', oc_skill_07: 'sage_mega_buff', oc_skill_08: 'absolute_magic' },
+  catastrophe: { ct_skill_01: 'blood_price', ct_skill_02: 'berserk_stab', ct_skill_03: 'self_harm_strike', ct_skill_04: 'lethal_blade', ct_skill_05: 'blood_rampage', ct_skill_06: 'berserk_rampage', ct_skill_07: 'annihilation_strike' },
+  rune_knight: { rk_skill_01: 'magic_condense', rk_skill_02: 'magic_sword_strike', rk_skill_03: 'magic_burst_slash', rk_skill_04: 'magic_gale_slash', rk_skill_05: 'makenshi_awakening', rk_skill_06: 'absolute_magic_slash' },
+};
+
+/**
+ * 特級職パッシブ上書きマップ
+ * 特級職転職時（unlockEliteJobRoute）に自動付与されるパッシブが上書きする親上級職のパッシブノードIDを定義
+ * resetJobSkillTree() 時の逆操作（親上級職パッシブノード復元）にも使用する
+ */
+const ELITE_PASSIVE_OVERRIDE_MAP = {
+  crusader: {
+    cr_passive_02: { parentJob: 'paladin',   parentNodeId: 'pl_06' },  // 神聖障壁 → 聖盾
+    cr_passive_03: { parentJob: 'paladin',   parentNodeId: 'pl_12' },  // 神聖の要塞 → 神聖防壁
+    cr_passive_04: { parentJob: 'paladin',   parentNodeId: 'pl_15' },  // クルセイドカウンター → 反撃の構え
+  },
+  phantom: {
+    ph_passive_02: { parentJob: 'assassin',  parentNodeId: 'as_06' },  // 虚影の鋭気 → 会心強化
+    ph_passive_03: { parentJob: 'assassin',  parentNodeId: 'as_08' },  // ファントムピアース → 防御貫通
+    ph_passive_04: { parentJob: 'assassin',  parentNodeId: 'as_11' },  // 亡霊の眼 → 超会心
+  },
+  oracle: {
+    oc_passive_02: { parentJob: 'sage',      parentNodeId: 'sg_06' },  // 予言の加護 → 吸魔
+    oc_passive_03: { parentJob: 'sage',      parentNodeId: 'sg_12' },  // オラクルマナ → 魔力増幅
+  },
+  catastrophe: {
+    // ct_passive_01：刻印強化→上書きなし
+    // ct_passive_02：死線の執念→上書きなし（新規追加のみ）
+  },
+  rune_knight: {
+    rk_passive_02: { parentJob: 'makenshi',  parentNodeId: 'mk_06' },  // ルーン獲得 → MP回復攻撃
+    rk_passive_03: { parentJob: 'makenshi',  parentNodeId: 'mk_10' },  // ルーン強化 → 魔剣の極意
+  },
+};
+
+/**
  * 魔剣士ルートの解放条件を満たしているか判定する
  * 条件: アンロック済み AND 全4ルート（剣士・魔法・僧侶・戦士）の全ノードを取得済み AND 魔剣士の書を入手済み
  * @returns {boolean}
@@ -1705,14 +1748,7 @@ function resetJobSkillTree(jobId) {
     });
 
     // (新規) ELITE_SKILL_OVERRIDE_MAPによる上級職スキル復元（スキルノード上書き系）
-    const ELITE_SKILL_OVERRIDE_MAP_FOR_RESET = {
-      crusader:    { cr_skill_01: 'paladin_heal', cr_skill_02: 'paladin_big_heal', cr_skill_03: 'shield_bash', cr_skill_04: 'holy_slash', cr_skill_05: 'divine_judgment' },
-      phantom:     { ph_skill_01: 'quad_slash', ph_skill_02: 'shadow_stab', ph_skill_03: 'penta_slash', ph_skill_04: 'killing_edge', ph_skill_05: 'shadow_flurry', ph_skill_06: 'death_reaper', ph_skill_07: 'abyss_drop' },
-      oracle:      { oc_skill_01: 'sage_blast', oc_skill_02: 'sage_debuff', oc_skill_03: 'sage_buff', oc_skill_04: 'holy_magic_fusion', oc_skill_05: 'magic_collapse', oc_skill_06: 'wisdom_wave', oc_skill_07: 'sage_mega_buff', oc_skill_08: 'absolute_magic' },
-      catastrophe: { ct_skill_01: 'blood_price', ct_skill_02: 'berserk_stab', ct_skill_03: 'self_harm_strike', ct_skill_04: 'lethal_blade', ct_skill_05: 'blood_rampage', ct_skill_06: 'berserk_rampage', ct_skill_07: 'annihilation_strike' },
-      rune_knight: { rk_skill_01: 'magic_condense', rk_skill_02: 'magic_sword_strike', rk_skill_03: 'magic_burst_slash', rk_skill_04: 'magic_gale_slash', rk_skill_05: 'makenshi_awakening', rk_skill_06: 'absolute_magic_slash' },
-    };
-    const eliteSkillMap = ELITE_SKILL_OVERRIDE_MAP_FOR_RESET[jobId] || {};
+    const eliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[jobId] || {};
     acquired.forEach(nodeId => {
       const node = route.nodes.find(n => n.id === nodeId);
       if (node && node.type === 'skill' && node.skillId && eliteSkillMap[node.skillId]) {
@@ -1724,14 +1760,7 @@ function resetJobSkillTree(jobId) {
     });
 
     // (新規) パッシブ上書きで削除した親上級職パッシブノードを復元
-    const ELITE_PASSIVE_OVERRIDE_MAP_FOR_RESET = {
-      crusader:    { cr_passive_02: { parentJob: 'paladin',   parentNodeId: 'pl_06' }, cr_passive_03: { parentJob: 'paladin',   parentNodeId: 'pl_12' }, cr_passive_04: { parentJob: 'paladin',   parentNodeId: 'pl_15' } },
-      phantom:     { ph_passive_02: { parentJob: 'assassin',  parentNodeId: 'as_06' }, ph_passive_03: { parentJob: 'assassin',  parentNodeId: 'as_08' }, ph_passive_04: { parentJob: 'assassin',  parentNodeId: 'as_11' } },
-      oracle:      { oc_passive_02: { parentJob: 'sage',      parentNodeId: 'sg_06' }, oc_passive_03: { parentJob: 'sage',      parentNodeId: 'sg_12' } },
-      catastrophe: {},
-      rune_knight: { rk_passive_02: { parentJob: 'makenshi',  parentNodeId: 'mk_06' }, rk_passive_03: { parentJob: 'makenshi', parentNodeId: 'mk_10' } },
-    };
-    const elitePassiveMap = ELITE_PASSIVE_OVERRIDE_MAP_FOR_RESET[jobId] || {};
+    const elitePassiveMap = ELITE_PASSIVE_OVERRIDE_MAP[jobId] || {};
     acquired.forEach(nodeId => {
       const override = elitePassiveMap[nodeId];
       if (override) {
@@ -1787,14 +1816,7 @@ function resetJobSkillTree(jobId) {
       });
 
       // (新規) ELITE_SKILL_OVERRIDE_MAPによる上級職スキル復元（スキルノード上書き系）
-      const ELITE_SKILL_OVERRIDE_MAP_LINKED = {
-        crusader:    { cr_skill_01: 'paladin_heal', cr_skill_02: 'paladin_big_heal', cr_skill_03: 'shield_bash', cr_skill_04: 'holy_slash', cr_skill_05: 'divine_judgment' },
-        phantom:     { ph_skill_01: 'quad_slash', ph_skill_02: 'shadow_stab', ph_skill_03: 'penta_slash', ph_skill_04: 'killing_edge', ph_skill_05: 'shadow_flurry', ph_skill_06: 'death_reaper', ph_skill_07: 'abyss_drop' },
-        oracle:      { oc_skill_01: 'sage_blast', oc_skill_02: 'sage_debuff', oc_skill_03: 'sage_buff', oc_skill_04: 'holy_magic_fusion', oc_skill_05: 'magic_collapse', oc_skill_06: 'wisdom_wave', oc_skill_07: 'sage_mega_buff', oc_skill_08: 'absolute_magic' },
-        catastrophe: { ct_skill_01: 'blood_price', ct_skill_02: 'berserk_stab', ct_skill_03: 'self_harm_strike', ct_skill_04: 'lethal_blade', ct_skill_05: 'blood_rampage', ct_skill_06: 'berserk_rampage', ct_skill_07: 'annihilation_strike' },
-        rune_knight: { rk_skill_01: 'magic_condense', rk_skill_02: 'magic_sword_strike', rk_skill_03: 'magic_burst_slash', rk_skill_04: 'magic_gale_slash', rk_skill_05: 'makenshi_awakening', rk_skill_06: 'absolute_magic_slash' },
-      };
-      const linkedEliteSkillMap = ELITE_SKILL_OVERRIDE_MAP_LINKED[linkedEliteId] || {};
+      const linkedEliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[linkedEliteId] || {};
       eliteAcquired.forEach(nodeId => {
         const node = eliteRoute.nodes.find(n => n.id === nodeId);
         if (node && node.type === 'skill' && node.skillId && linkedEliteSkillMap[node.skillId]) {
@@ -1806,14 +1828,7 @@ function resetJobSkillTree(jobId) {
       });
 
       // (新規) パッシブ上書きで削除した親上級職パッシブノードを復元
-      const ELITE_PASSIVE_OVERRIDE_MAP_LINKED = {
-        crusader:    { cr_passive_02: { parentJob: 'paladin',   parentNodeId: 'pl_06' }, cr_passive_03: { parentJob: 'paladin',   parentNodeId: 'pl_12' }, cr_passive_04: { parentJob: 'paladin',   parentNodeId: 'pl_15' } },
-        phantom:     { ph_passive_02: { parentJob: 'assassin',  parentNodeId: 'as_06' }, ph_passive_03: { parentJob: 'assassin',  parentNodeId: 'as_08' }, ph_passive_04: { parentJob: 'assassin',  parentNodeId: 'as_11' } },
-        oracle:      { oc_passive_02: { parentJob: 'sage',      parentNodeId: 'sg_06' }, oc_passive_03: { parentJob: 'sage',      parentNodeId: 'sg_12' } },
-        catastrophe: {},
-        rune_knight: { rk_passive_02: { parentJob: 'makenshi',  parentNodeId: 'mk_06' }, rk_passive_03: { parentJob: 'makenshi', parentNodeId: 'mk_10' } },
-      };
-      const linkedElitePassiveMap = ELITE_PASSIVE_OVERRIDE_MAP_LINKED[linkedEliteId] || {};
+      const linkedElitePassiveMap = ELITE_PASSIVE_OVERRIDE_MAP[linkedEliteId] || {};
       eliteAcquired.forEach(nodeId => {
         const override = linkedElitePassiveMap[nodeId];
         if (override) {
@@ -1985,32 +2000,7 @@ function unlockEliteJobRoute(jobId) {
   p.currentJob = jobId;
 
   // 7.5. 特級職パッシブを全て自動付与（SP消費なし）
-  // パッシブ上書きマッピング：特級職パッシブが上書きする親上級職のパッシブノードID
-  const ELITE_PASSIVE_OVERRIDE_MAP = {
-    crusader: {
-      cr_passive_02: { parentJob: 'paladin',    parentNodeId: 'pl_06'  },  // 神聖障壁 → 聖盾
-      cr_passive_03: { parentJob: 'paladin',    parentNodeId: 'pl_12'  },  // 神聖の要塞 → 神聖防壁
-      cr_passive_04: { parentJob: 'paladin',    parentNodeId: 'pl_15'  },  // クルセイドカウンター → 反撃の構え
-    },
-    phantom: {
-      ph_passive_02: { parentJob: 'assassin',   parentNodeId: 'as_06'  },  // 虚影の鋭気 → 会心強化
-      ph_passive_03: { parentJob: 'assassin',   parentNodeId: 'as_08'  },  // ファントムピアース → 防御貫通
-      ph_passive_04: { parentJob: 'assassin',   parentNodeId: 'as_11'  },  // 亡霊の眼 → 超会心
-    },
-    oracle: {
-      oc_passive_02: { parentJob: 'sage',       parentNodeId: 'sg_06'  },  // 予言の加護 → 吸魔
-      oc_passive_03: { parentJob: 'sage',       parentNodeId: 'sg_12'  },  // オラクルマナ → 魔力増幅
-    },
-    catastrophe: {
-      // ct_passive_01：刻印強化→上書きなし
-      // ct_passive_02：死線の執念→上書きなし
-    },
-    rune_knight: {
-      rk_passive_02: { parentJob: 'makenshi',   parentNodeId: 'mk_06'  },  // ルーン獲得 → MP回復攻撃
-      rk_passive_03: { parentJob: 'makenshi',   parentNodeId: 'mk_10'  },  // ルーン強化 → 魔剣の極意
-    },
-  };
-
+  // モジュールレベルの ELITE_PASSIVE_OVERRIDE_MAP を参照（パッシブ上書き処理）
   const eliteRoute = SKILL_TREE_DEFINITIONS.find(r => r.id === jobId);
   if (eliteRoute) {
     const passiveNodes = eliteRoute.nodes.filter(n => n.type === 'passive');
@@ -2752,14 +2742,7 @@ function acquireAllSkillNodes(routeId) {
     // スキルマスの場合は learnedSkills に追加
     // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（パッシブ上書き）
     if (node.type === 'skill' && node.skillId) {
-      const ELITE_SKILL_OVERRIDE_MAP_ALL = {
-        crusader:    { cr_skill_01: 'paladin_heal', cr_skill_02: 'paladin_big_heal', cr_skill_03: 'shield_bash', cr_skill_04: 'holy_slash', cr_skill_05: 'divine_judgment' },
-        phantom:     { ph_skill_01: 'quad_slash', ph_skill_02: 'shadow_stab', ph_skill_03: 'penta_slash', ph_skill_04: 'killing_edge', ph_skill_05: 'shadow_flurry', ph_skill_06: 'death_reaper', ph_skill_07: 'abyss_drop' },
-        oracle:      { oc_skill_01: 'sage_blast', oc_skill_02: 'sage_debuff', oc_skill_03: 'sage_buff', oc_skill_04: 'holy_magic_fusion', oc_skill_05: 'magic_collapse', oc_skill_06: 'wisdom_wave', oc_skill_07: 'sage_mega_buff', oc_skill_08: 'absolute_magic' },
-        catastrophe: { ct_skill_01: 'blood_price', ct_skill_02: 'berserk_stab', ct_skill_03: 'self_harm_strike', ct_skill_04: 'lethal_blade', ct_skill_05: 'blood_rampage', ct_skill_06: 'berserk_rampage', ct_skill_07: 'annihilation_strike' },
-        rune_knight: { rk_skill_01: 'magic_condense', rk_skill_02: 'magic_sword_strike', rk_skill_03: 'magic_burst_slash', rk_skill_04: 'magic_gale_slash', rk_skill_05: 'makenshi_awakening', rk_skill_06: 'absolute_magic_slash' },
-      };
-      const eliteSkillMapAll = ELITE_SKILL_OVERRIDE_MAP_ALL[routeId];
+      const eliteSkillMapAll = ELITE_SKILL_OVERRIDE_MAP[routeId];
       if (eliteSkillMapAll && eliteSkillMapAll[node.skillId]) {
         const overriddenSkillId = eliteSkillMapAll[node.skillId];
         p.learnedSkills  = p.learnedSkills.filter(s => s !== overriddenSkillId);
@@ -2856,52 +2839,6 @@ function acquireSkillNode(routeId, nodeId) {
 
   // スキルマスの場合は learnedSkills に追加
   // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（パッシブ上書き）
-  const ELITE_SKILL_OVERRIDE_MAP = {
-    crusader: {
-      cr_skill_01: 'paladin_heal',
-      cr_skill_02: 'paladin_big_heal',
-      cr_skill_03: 'shield_bash',
-      cr_skill_04: 'holy_slash',
-      cr_skill_05: 'divine_judgment',
-    },
-    phantom: {
-      ph_skill_01: 'quad_slash',
-      ph_skill_02: 'shadow_stab',
-      ph_skill_03: 'penta_slash',
-      ph_skill_04: 'killing_edge',
-      ph_skill_05: 'shadow_flurry',
-      ph_skill_06: 'death_reaper',
-      ph_skill_07: 'abyss_drop',
-    },
-    oracle: {
-      oc_skill_01: 'sage_blast',
-      oc_skill_02: 'sage_debuff',
-      oc_skill_03: 'sage_buff',
-      oc_skill_04: 'holy_magic_fusion',
-      oc_skill_05: 'magic_collapse',
-      oc_skill_06: 'wisdom_wave',
-      oc_skill_07: 'sage_mega_buff',
-      oc_skill_08: 'absolute_magic',
-    },
-    catastrophe: {
-      ct_skill_01: 'blood_price',
-      ct_skill_02: 'berserk_stab',
-      ct_skill_03: 'self_harm_strike',
-      ct_skill_04: 'lethal_blade',
-      ct_skill_05: 'blood_rampage',
-      ct_skill_06: 'berserk_rampage',
-      ct_skill_07: 'annihilation_strike',
-    },
-    rune_knight: {
-      rk_skill_01: 'magic_condense',
-      rk_skill_02: 'magic_sword_strike',
-      rk_skill_03: 'magic_burst_slash',
-      rk_skill_04: 'magic_gale_slash',
-      rk_skill_05: 'makenshi_awakening',
-      rk_skill_06: 'absolute_magic_slash',
-    },
-  };
-
   if (node.type === 'skill' && node.skillId) {
     // 特級職スキルノード取得時：対応する上級職スキルIDをlearnedSkills／favoriteSkillsから削除する
     const eliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[routeId];
