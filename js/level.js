@@ -1531,7 +1531,7 @@ const SKILL_DEFINITIONS = (() => {
 
 /**
  * 特級職スキル上書きマップ
- * 特級職スキルノード取得時に対応する上級職スキルIDをlearnedSkillsから削除する（パッシブ上書き）
+ * 特級職スキルノード取得時に対応する上級職スキルIDをlearnedSkillsから削除してから特級職スキルを追加（スキル上書き）
  * resetJobSkillTree() 時の逆操作（上級職スキル復元）にも使用する
  */
 const ELITE_SKILL_OVERRIDE_MAP = {
@@ -1545,7 +1545,8 @@ const ELITE_SKILL_OVERRIDE_MAP = {
 /**
  * 特級職パッシブ上書きマップ
  * 特級職転職時（unlockEliteJobRoute）に自動付与されるパッシブが上書きする親上級職のパッシブノードIDを定義
- * resetJobSkillTree() 時の逆操作（親上級職パッシブノード復元）にも使用する
+ * parentNodeId は転職時に skillTreeNodes[parentJob] から削除（上書き）される対象のノードID
+ * resetJobSkillTree() 時の逆操作（削除した親上級職パッシブノードの復元）にも使用する
  */
 const ELITE_PASSIVE_OVERRIDE_MAP = {
   crusader: {
@@ -2740,7 +2741,7 @@ function acquireAllSkillNodes(routeId) {
     }
 
     // スキルマスの場合は learnedSkills に追加
-    // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（パッシブ上書き）
+    // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（スキル上書き）
     if (node.type === 'skill' && node.skillId) {
       const eliteSkillMapAll = ELITE_SKILL_OVERRIDE_MAP[routeId];
       if (eliteSkillMapAll && eliteSkillMapAll[node.skillId]) {
@@ -2838,7 +2839,7 @@ function acquireSkillNode(routeId, nodeId) {
   }
 
   // スキルマスの場合は learnedSkills に追加
-  // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（パッシブ上書き）
+  // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（スキル上書き）
   if (node.type === 'skill' && node.skillId) {
     // 特級職スキルノード取得時：対応する上級職スキルIDをlearnedSkills／favoriteSkillsから削除する
     const eliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[routeId];

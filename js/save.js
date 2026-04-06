@@ -113,7 +113,7 @@ function applyLoadedSave(saved) {
   const p = game.player;
 
   // ── マイグレーション：ノード数バグによる特級職専用パッシブが含まれている場合のリセット ──
-  // 修正④でパッシブコストが0に変更される前のバグノードIDが含まれていた場合にSPを返還してリセットする
+  // 旧バージョンでSPを消費して取得した特級職パッシブノードIDが残っている場合にSPを返還してリセットする
   {
     const BUGGY_PASSIVE_NODES = {
       crusader:    ['cr_passive_01', 'cr_passive_02', 'cr_passive_03', 'cr_passive_04'],
