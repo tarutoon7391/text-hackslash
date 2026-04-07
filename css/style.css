@@ -1637,6 +1637,16 @@ footer {
   padding-top: 8px;
 }
 
+/* 特級職スキルツリーのセクションヘッダー（パッシブ / スキルツリー） */
+.st-passive-section-header {
+  font-size: 0.82rem;
+  color: #556677;
+  letter-spacing: 1px;
+  padding: 6px 0 4px 4px;
+  border-bottom: 1px solid #1a2a1a;
+  margin-bottom: 2px;
+}
+
 /* ===== 装備強化ボタン ===== */
 .enhance-btn {
   color: #ffaa00;
