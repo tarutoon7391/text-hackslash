@@ -112,6 +112,52 @@ function applyLoadedSave(saved) {
   // またはアンロックフラグが残っている場合はリセットして SP を返還する
   const p = game.player;
 
+  // ── マイグレーション：ノード数バグによる特級職専用パッシブが含まれている場合のリセット ──
+  // 旧バージョンでSPを消費して取得した特級職パッシブノードIDが残っている場合にSPを返還してリセットする
+  {
+    const BUGGY_PASSIVE_NODES = {
+      crusader:    ['cr_passive_01', 'cr_passive_02', 'cr_passive_03', 'cr_passive_04'],
+      phantom:     ['ph_passive_01', 'ph_passive_02', 'ph_passive_03', 'ph_passive_04'],
+      oracle:      ['oc_passive_01', 'oc_passive_02', 'oc_passive_03'],
+      catastrophe: ['ct_passive_01', 'ct_passive_02'],
+      rune_knight: ['rk_passive_01', 'rk_passive_02', 'rk_passive_03'],
+    };
+
+    let migrationDone = false;
+    Object.entries(BUGGY_PASSIVE_NODES).forEach(([routeId, buggyIds]) => {
+      const nodes = p.skillTreeNodes[routeId] || [];
+      const hasBuggyNode = buggyIds.some(id => nodes.includes(id));
+      if (!hasBuggyNode) return;
+
+      // バグノードを含む場合はそのルートのノードを全リセットしてSPを返還する
+      const eliteRoute = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
+      if (eliteRoute) {
+        // 消費したSPを返還（ノードのcost合計）
+        nodes.forEach(nodeId => {
+          const node = eliteRoute.nodes.find(n => n.id === nodeId);
+          if (node) p.skillPoints += node.cost;
+        });
+        // learnedSkills・favoriteSkillsから当該特級職スキルIDを削除
+        const eliteSkillIds = eliteRoute.nodes
+          .filter(n => n.type === 'skill' && n.skillId)
+          .map(n => n.skillId);
+        p.learnedSkills  = p.learnedSkills.filter(s => !eliteSkillIds.includes(s));
+        p.favoriteSkills = p.favoriteSkills.filter(s => !eliteSkillIds.includes(s));
+        // currentJobが特級職だった場合はnullにリセット
+        if (p.currentJob === routeId) {
+          p.currentJob = null;
+        }
+      }
+      // ノード全リセット
+      p.skillTreeNodes[routeId] = [];
+      migrationDone = true;
+    });
+
+    if (migrationDone) {
+      log('特級職スキルツリーをリセットしました。SPを返還しました。', 'system');
+    }
+  }
+
   // 特級職ルートのノードが存在しない場合は空配列で自動補完（セーブデータ互換性）
   const ELITE_JOB_IDS = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
   ELITE_JOB_IDS.forEach(jobId => {

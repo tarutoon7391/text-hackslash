@@ -1330,11 +1330,11 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'cr_21', name: 'クルセイダーの至高', type: 'stat', description: 'ATK +15 / DEF +25 / HP +60', bonuses: { atk: 15, def: 25, hp: 60 }, cost: 6, requires: 'cr_20' },
       // 最終奥義
       { id: 'cr_22', name: 'クルセイドアポカリプス', type: 'skill', skillId: 'cr_skill_05', description: '即時HP50%回復＋敵ATK・DEF段階デバフ＋3ターン後ATK×20防御無視ダメージ（MP:450 / バトル中3ターンに1回）', mpCost: 450, bonuses: {}, cost: 9, requires: 'cr_21' },
-      // 特級職専用パッシブ（Phase 4 追加）
-      { id: 'cr_passive_01', name: 'クルセイダーの刻印強化', type: 'passive', description: 'パッシブ：神聖の穿槍装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'cr_22' },
-      { id: 'cr_passive_02', name: '神聖障壁', type: 'passive', description: 'パッシブ：被ダメージ5%軽減＋攻撃してきた敵を10%でスタン', bonuses: {}, cost: 7, requires: 'cr_passive_01' },
-      { id: 'cr_passive_03', name: '神聖の要塞', type: 'passive', description: 'パッシブ：被ダメージさらに10%軽減（計15%）＋敵スタン時に次ターンATK×1.5バフ', bonuses: {}, cost: 8, requires: 'cr_passive_02' },
-      { id: 'cr_passive_04', name: 'クルセイドカウンター', type: 'passive', description: 'パッシブ：スタン確率15%に強化＋被攻撃時10%でダメージ無効化＋30%でATK×2反撃', bonuses: {}, cost: 9, requires: 'cr_passive_03' },
+      // 特級職専用パッシブ（Phase 4 追加）転職時に自動付与・SP消費なし
+      { id: 'cr_passive_01', name: 'クルセイダーの刻印強化', type: 'passive', description: 'パッシブ：神聖の穿槍装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 0, requires: 'cr_22' },
+      { id: 'cr_passive_02', name: '神聖障壁', type: 'passive', description: 'パッシブ：被ダメージ5%軽減＋攻撃してきた敵を10%でスタン', bonuses: {}, cost: 0, requires: 'cr_passive_01' },
+      { id: 'cr_passive_03', name: '神聖の要塞', type: 'passive', description: 'パッシブ：被ダメージさらに10%軽減（計15%）＋敵スタン時に次ターンATK×1.5バフ', bonuses: {}, cost: 0, requires: 'cr_passive_02' },
+      { id: 'cr_passive_04', name: 'クルセイドカウンター', type: 'passive', description: 'パッシブ：スタン確率15%に強化＋被攻撃時10%でダメージ無効化＋30%でATK×2反撃', bonuses: {}, cost: 0, requires: 'cr_passive_03' },
     ],
   },
 
@@ -1373,11 +1373,11 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'ph_21', name: 'ファントムの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 6, requires: 'ph_20' },
       // 最終奥義
       { id: 'ph_22', name: 'ファントムアビス', type: 'skill', skillId: 'ph_skill_07', description: '使用ターン攻撃無効化+100%→その後2ターン+30%→3ターン後ATK×100防御完全無視（MP:800）', mpCost: 800, bonuses: {}, cost: 9, requires: 'ph_21' },
-      // 特級職専用パッシブ（Phase 4 追加）
-      { id: 'ph_passive_01', name: 'ファントムの刻印強化', type: 'passive', description: 'パッシブ：黒曜の短剣装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'ph_22' },
-      { id: 'ph_passive_02', name: '虚影の鋭気', type: 'passive', description: 'パッシブ：攻撃時20%で会心発動＋ターン終了時に攻撃無効化確率+10%加算', bonuses: {}, cost: 7, requires: 'ph_passive_01' },
-      { id: 'ph_passive_03', name: 'ファントムピアース', type: 'passive', description: 'パッシブ：通常攻撃が常に防御無視＋ターン終了時に攻撃無効化確率+5%加算', bonuses: {}, cost: 8, requires: 'ph_passive_02' },
-      { id: 'ph_passive_04', name: '亡霊の眼', type: 'passive', description: 'パッシブ：攻撃時40%で会心発動＋回避成功後の次ターンにATK×4自動攻撃', bonuses: {}, cost: 9, requires: 'ph_passive_03' },
+      // 特級職専用パッシブ（Phase 4 追加）転職時に自動付与・SP消費なし
+      { id: 'ph_passive_01', name: 'ファントムの刻印強化', type: 'passive', description: 'パッシブ：黒曜の短剣装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 0, requires: 'ph_22' },
+      { id: 'ph_passive_02', name: '虚影の鋭気', type: 'passive', description: 'パッシブ：攻撃時20%で会心発動＋ターン終了時に攻撃無効化確率+10%加算', bonuses: {}, cost: 0, requires: 'ph_passive_01' },
+      { id: 'ph_passive_03', name: 'ファントムピアース', type: 'passive', description: 'パッシブ：通常攻撃が常に防御無視＋ターン終了時に攻撃無効化確率+5%加算', bonuses: {}, cost: 0, requires: 'ph_passive_02' },
+      { id: 'ph_passive_04', name: '亡霊の眼', type: 'passive', description: 'パッシブ：攻撃時40%で会心発動＋回避成功後の次ターンにATK×4自動攻撃', bonuses: {}, cost: 0, requires: 'ph_passive_03' },
     ],
   },
 
@@ -1416,10 +1416,10 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'oc_21', name: 'オラクルの至高', type: 'stat', description: 'ATK +18 / HP +40 / MP +30', bonuses: { atk: 18, hp: 40, mp: 30 }, cost: 6, requires: 'oc_20' },
       // 最終奥義
       { id: 'oc_22', name: '終末予言', type: 'skill', skillId: 'oc_skill_08', description: '即時最大HP30%回復＋3ターン後ATK×200防御無視（予言系 / MP:1500）', mpCost: 1500, bonuses: {}, cost: 9, requires: 'oc_21' },
-      // 特級職専用パッシブ（Phase 4 追加）
-      { id: 'oc_passive_01', name: 'オラクルの刻印強化', type: 'passive', description: 'パッシブ：翠賢の杖装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'oc_22' },
-      { id: 'oc_passive_02', name: '予言の加護', type: 'passive', description: 'パッシブ：予言魔法（oc_skill_01）でダメージを与えた際、最大HP・MP各5%回復', bonuses: {}, cost: 7, requires: 'oc_passive_01' },
-      { id: 'oc_passive_03', name: 'オラクルマナ', type: 'passive', description: 'パッシブ：最大MP×1.5倍＋現在MP130未満の時、通常攻撃で最大MPの15%回復', bonuses: {}, cost: 8, requires: 'oc_passive_02' },
+      // 特級職専用パッシブ（Phase 4 追加）転職時に自動付与・SP消費なし
+      { id: 'oc_passive_01', name: 'オラクルの刻印強化', type: 'passive', description: 'パッシブ：翠賢の杖装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 0, requires: 'oc_22' },
+      { id: 'oc_passive_02', name: '予言の加護', type: 'passive', description: 'パッシブ：予言魔法（oc_skill_01）でダメージを与えた際、最大HP・MP各5%回復', bonuses: {}, cost: 0, requires: 'oc_passive_01' },
+      { id: 'oc_passive_03', name: 'オラクルマナ', type: 'passive', description: 'パッシブ：最大MP×1.5倍＋現在MP130未満の時、通常攻撃で最大MPの15%回復', bonuses: {}, cost: 0, requires: 'oc_passive_02' },
     ],
   },
 
@@ -1458,9 +1458,9 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'ct_21', name: 'カタストロフの至高', type: 'stat', description: 'ATK +40', bonuses: { atk: 40 }, cost: 6, requires: 'ct_20' },
       // 最終奥義
       { id: 'ct_22', name: '破滅の絶撃', type: 'skill', skillId: 'ct_skill_07', description: '現在HP50%消費＋HP残量に応じてATK×50〜300（HP100%時→ATK×300）（MP:1000）', mpCost: 1000, bonuses: {}, cost: 9, requires: 'ct_21' },
-      // 特級職専用パッシブ（Phase 4 追加）
-      { id: 'ct_passive_01', name: 'カタストロフの刻印強化', type: 'passive', description: 'パッシブ：狂血斧装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'ct_22' },
-      { id: 'ct_passive_02', name: '死線の執念', type: 'passive', description: 'パッシブ：致死ダメージを受けた際にHP1で生存（探索中1回限り）', bonuses: {}, cost: 9, requires: 'ct_passive_01' },
+      // 特級職専用パッシブ（Phase 4 追加）転職時に自動付与・SP消費なし
+      { id: 'ct_passive_01', name: 'カタストロフの刻印強化', type: 'passive', description: 'パッシブ：狂血斧装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 0, requires: 'ct_22' },
+      { id: 'ct_passive_02', name: '死線の執念', type: 'passive', description: 'パッシブ：致死ダメージを受けた際にHP1で生存（探索中1回限り）', bonuses: {}, cost: 0, requires: 'ct_passive_01' },
     ],
   },
 
@@ -1499,10 +1499,10 @@ const SKILL_TREE_DEFINITIONS = [
       { id: 'rk_21', name: 'ルーンナイトの至高', type: 'stat', description: 'ATK +22 / MP +40', bonuses: { atk: 22, mp: 40 }, cost: 6, requires: 'rk_20' },
       // 最終奥義
       { id: 'rk_22', name: 'ルーンカタクリズム', type: 'skill', skillId: 'rk_skill_06', description: '自身次ターンATK・DEF×0.5＋ATK×4.0の5連撃＋バトル中敵DEF永続0（MP:300）', mpCost: 300, bonuses: {}, cost: 9, requires: 'rk_21' },
-      // 特級職専用パッシブ（Phase 4 追加）
-      { id: 'rk_passive_01', name: 'ルーンナイトの刻印強化', type: 'passive', description: 'パッシブ：蒼銀の剣装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 7, requires: 'rk_22' },
-      { id: 'rk_passive_02', name: 'ルーン獲得', type: 'passive', description: 'パッシブ：毎ターン1/3の確率でATK×1.2・HP10%回復・MP5%回復のいずれか1つ発動', bonuses: {}, cost: 7, requires: 'rk_passive_01' },
-      { id: 'rk_passive_03', name: 'ルーン強化', type: 'passive', description: 'パッシブ：ルーン獲得の抽選を1/2の確率で2回実施（ATK強化重複可）', bonuses: {}, cost: 8, requires: 'rk_passive_02' },
+      // 特級職専用パッシブ（Phase 4 追加）転職時に自動付与・SP消費なし
+      { id: 'rk_passive_01', name: 'ルーンナイトの刻印強化', type: 'passive', description: 'パッシブ：蒼銀の剣装備時に全ステータス×1.2倍（専用武器シナジー）', bonuses: {}, cost: 0, requires: 'rk_22' },
+      { id: 'rk_passive_02', name: 'ルーン獲得', type: 'passive', description: 'パッシブ：毎ターン1/3の確率でATK×1.2・HP10%回復・MP5%回復のいずれか1つ発動', bonuses: {}, cost: 0, requires: 'rk_passive_01' },
+      { id: 'rk_passive_03', name: 'ルーン強化', type: 'passive', description: 'パッシブ：ルーン獲得の抽選を1/2の確率で2回実施（ATK強化重複可）', bonuses: {}, cost: 0, requires: 'rk_passive_02' },
     ],
   },
 ];
@@ -1528,6 +1528,50 @@ const SKILL_DEFINITIONS = (() => {
   });
   return defs;
 })();
+
+/**
+ * 特級職スキル上書きマップ
+ * 特級職スキルノード取得時に対応する上級職スキルIDをlearnedSkillsから削除してから特級職スキルを追加（スキル上書き）
+ * resetJobSkillTree() 時の逆操作（上級職スキル復元）にも使用する
+ */
+const ELITE_SKILL_OVERRIDE_MAP = {
+  crusader:    { cr_skill_01: 'paladin_heal', cr_skill_02: 'paladin_big_heal', cr_skill_03: 'shield_bash', cr_skill_04: 'holy_slash', cr_skill_05: 'divine_judgment' },
+  phantom:     { ph_skill_01: 'quad_slash', ph_skill_02: 'shadow_stab', ph_skill_03: 'penta_slash', ph_skill_04: 'killing_edge', ph_skill_05: 'shadow_flurry', ph_skill_06: 'death_reaper', ph_skill_07: 'abyss_drop' },
+  oracle:      { oc_skill_01: 'sage_blast', oc_skill_02: 'sage_debuff', oc_skill_03: 'sage_buff', oc_skill_04: 'holy_magic_fusion', oc_skill_05: 'magic_collapse', oc_skill_06: 'wisdom_wave', oc_skill_07: 'sage_mega_buff', oc_skill_08: 'absolute_magic' },
+  catastrophe: { ct_skill_01: 'blood_price', ct_skill_02: 'berserk_stab', ct_skill_03: 'self_harm_strike', ct_skill_04: 'lethal_blade', ct_skill_05: 'blood_rampage', ct_skill_06: 'berserk_rampage', ct_skill_07: 'annihilation_strike' },
+  rune_knight: { rk_skill_01: 'magic_condense', rk_skill_02: 'magic_sword_strike', rk_skill_03: 'magic_burst_slash', rk_skill_04: 'magic_gale_slash', rk_skill_05: 'makenshi_awakening', rk_skill_06: 'absolute_magic_slash' },
+};
+
+/**
+ * 特級職パッシブ上書きマップ
+ * 特級職転職時（unlockEliteJobRoute）に自動付与されるパッシブが上書きする親上級職のパッシブノードIDを定義
+ * parentNodeId は転職時に skillTreeNodes[parentJob] から削除（上書き）される対象のノードID
+ * resetJobSkillTree() 時の逆操作（削除した親上級職パッシブノードの復元）にも使用する
+ */
+const ELITE_PASSIVE_OVERRIDE_MAP = {
+  crusader: {
+    cr_passive_02: { parentJob: 'paladin',   parentNodeId: 'pl_06' },  // 神聖障壁 → 聖盾
+    cr_passive_03: { parentJob: 'paladin',   parentNodeId: 'pl_12' },  // 神聖の要塞 → 神聖防壁
+    cr_passive_04: { parentJob: 'paladin',   parentNodeId: 'pl_15' },  // クルセイドカウンター → 反撃の構え
+  },
+  phantom: {
+    ph_passive_02: { parentJob: 'assassin',  parentNodeId: 'as_06' },  // 虚影の鋭気 → 会心強化
+    ph_passive_03: { parentJob: 'assassin',  parentNodeId: 'as_08' },  // ファントムピアース → 防御貫通
+    ph_passive_04: { parentJob: 'assassin',  parentNodeId: 'as_11' },  // 亡霊の眼 → 超会心
+  },
+  oracle: {
+    oc_passive_02: { parentJob: 'sage',      parentNodeId: 'sg_06' },  // 予言の加護 → 吸魔
+    oc_passive_03: { parentJob: 'sage',      parentNodeId: 'sg_12' },  // オラクルマナ → 魔力増幅
+  },
+  catastrophe: {
+    // ct_passive_01：刻印強化→上書きなし
+    // ct_passive_02：死線の執念→上書きなし（新規追加のみ）
+  },
+  rune_knight: {
+    rk_passive_02: { parentJob: 'makenshi',  parentNodeId: 'mk_06' },  // ルーン獲得 → MP回復攻撃
+    rk_passive_03: { parentJob: 'makenshi',  parentNodeId: 'mk_10' },  // ルーン強化 → 魔剣の極意
+  },
+};
 
 /**
  * 魔剣士ルートの解放条件を満たしているか判定する
@@ -1690,15 +1734,40 @@ function resetJobSkillTree(jobId) {
   // お気に入りからも削除
   p.favoriteSkills = p.favoriteSkills.filter(s => !jobSkillIds.includes(s));
 
-  // 特級職ルートリセット時：パッシブ②③が上書きした上級職スキルを復元する
+  // 特級職ルートリセット時：上書きした上級職スキル・パッシブノードを復元する
   const eliteJobIdsList = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
   if (eliteJobIdsList.includes(jobId)) {
+    // (既存) overridesSkillIdによる上級職スキル復元（パッシブ上書き系）
     acquired.forEach(nodeId => {
       const node = route.nodes.find(n => n.id === nodeId);
       if (node && node.type === 'passive' && node.overridesSkillId) {
         // 上書きされた上級職スキルを復元（まだlearnedSkillsにない場合のみ）
         if (!p.learnedSkills.includes(node.overridesSkillId)) {
           p.learnedSkills.push(node.overridesSkillId);
+        }
+      }
+    });
+
+    // (新規) ELITE_SKILL_OVERRIDE_MAPによる上級職スキル復元（スキルノード上書き系）
+    const eliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[jobId] || {};
+    acquired.forEach(nodeId => {
+      const node = route.nodes.find(n => n.id === nodeId);
+      if (node && node.type === 'skill' && node.skillId && eliteSkillMap[node.skillId]) {
+        const restoredSkillId = eliteSkillMap[node.skillId];
+        if (!p.learnedSkills.includes(restoredSkillId)) {
+          p.learnedSkills.push(restoredSkillId);
+        }
+      }
+    });
+
+    // (新規) パッシブ上書きで削除した親上級職パッシブノードを復元
+    const elitePassiveMap = ELITE_PASSIVE_OVERRIDE_MAP[jobId] || {};
+    acquired.forEach(nodeId => {
+      const override = elitePassiveMap[nodeId];
+      if (override) {
+        const parentNodes = p.skillTreeNodes[override.parentJob] || [];
+        if (!parentNodes.includes(override.parentNodeId)) {
+          p.skillTreeNodes[override.parentJob] = [...parentNodes, override.parentNodeId];
         }
       }
     });
@@ -1737,12 +1806,36 @@ function resetJobSkillTree(jobId) {
       p.learnedSkills   = p.learnedSkills.filter(s => !eliteSkillIds.includes(s));
       p.favoriteSkills  = p.favoriteSkills.filter(s => !eliteSkillIds.includes(s));
 
-      // 特級職パッシブ②③が上書きした上級職スキルを復元する
+      // (既存) 特級職パッシブ②③が上書きした上級職スキルを復元する（パッシブ上書き系）
       eliteAcquired.forEach(nodeId => {
         const node = eliteRoute.nodes.find(n => n.id === nodeId);
         if (node && node.type === 'passive' && node.overridesSkillId) {
           if (!p.learnedSkills.includes(node.overridesSkillId)) {
             p.learnedSkills.push(node.overridesSkillId);
+          }
+        }
+      });
+
+      // (新規) ELITE_SKILL_OVERRIDE_MAPによる上級職スキル復元（スキルノード上書き系）
+      const linkedEliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[linkedEliteId] || {};
+      eliteAcquired.forEach(nodeId => {
+        const node = eliteRoute.nodes.find(n => n.id === nodeId);
+        if (node && node.type === 'skill' && node.skillId && linkedEliteSkillMap[node.skillId]) {
+          const restoredSkillId = linkedEliteSkillMap[node.skillId];
+          if (!p.learnedSkills.includes(restoredSkillId)) {
+            p.learnedSkills.push(restoredSkillId);
+          }
+        }
+      });
+
+      // (新規) パッシブ上書きで削除した親上級職パッシブノードを復元
+      const linkedElitePassiveMap = ELITE_PASSIVE_OVERRIDE_MAP[linkedEliteId] || {};
+      eliteAcquired.forEach(nodeId => {
+        const override = linkedElitePassiveMap[nodeId];
+        if (override) {
+          const parentNodes = p.skillTreeNodes[override.parentJob] || [];
+          if (!parentNodes.includes(override.parentNodeId)) {
+            p.skillTreeNodes[override.parentJob] = [...parentNodes, override.parentNodeId];
           }
         }
       });
@@ -1906,6 +1999,29 @@ function unlockEliteJobRoute(jobId) {
 
   // 7. 特級職をセット
   p.currentJob = jobId;
+
+  // 7.5. 特級職パッシブを全て自動付与（SP消費なし）
+  // モジュールレベルの ELITE_PASSIVE_OVERRIDE_MAP を参照（パッシブ上書き処理）
+  const eliteRoute = SKILL_TREE_DEFINITIONS.find(r => r.id === jobId);
+  if (eliteRoute) {
+    const passiveNodes = eliteRoute.nodes.filter(n => n.type === 'passive');
+    const overrideMap  = ELITE_PASSIVE_OVERRIDE_MAP[jobId] || {};
+
+    if (!p.skillTreeNodes[jobId]) p.skillTreeNodes[jobId] = [];
+    passiveNodes.forEach(node => {
+      // 未取得の場合のみ付与（SP消費なし）
+      if (!p.skillTreeNodes[jobId].includes(node.id)) {
+        p.skillTreeNodes[jobId].push(node.id);
+      }
+      // パッシブ上書き：対応する親上級職のパッシブノードを削除
+      const override = overrideMap[node.id];
+      if (override) {
+        const parentNodes = p.skillTreeNodes[override.parentJob] || [];
+        p.skillTreeNodes[override.parentJob] = parentNodes.filter(n => n !== override.parentNodeId);
+      }
+    });
+    log('✨ 特級職パッシブが全て付与されました！', 'system');
+  }
 
   // 8. ステータス再計算
   p.recalcStats();
@@ -2565,12 +2681,20 @@ function acquireAllSkillNodes(routeId) {
   const tempAcquired = [...acquiredIds];
 
   if (ELITE_JOB_IDS.includes(routeId)) {
-    // 特級職：上級職ノード数による上限あり
-    const parentId           = ELITE_TO_PARENT[routeId];
-    const parentAcquiredCnt  = (p.skillTreeNodes[parentId] || []).length;
-    const maxMoreElite       = parentAcquiredCnt - acquiredIds.length;
+    // 特級職：上級職ノード数による上限あり（cost=0 の自動付与パッシブはカウント対象外）
+    const parentId          = ELITE_TO_PARENT[routeId];
+    const parentAcquiredCnt = (p.skillTreeNodes[parentId] || []).length;
+    const paidAcquiredCnt   = acquiredIds.filter(nid => {
+      const n = route.nodes.find(n2 => n2.id === nid);
+      return n && n.cost > 0;
+    }).length;
+    const maxMoreElite = parentAcquiredCnt - paidAcquiredCnt;
     let added = 0;
     for (const node of route.nodes) {
+      if (node.cost === 0) {
+        // cost=0 のノードは既取得済みのはず（自動付与）。未取得の場合はスキップ
+        continue;
+      }
       if (added >= maxMoreElite) break;
       if (tempAcquired.includes(node.id)) continue;
       if (node.requires && !tempAcquired.includes(node.requires)) break;
@@ -2617,13 +2741,20 @@ function acquireAllSkillNodes(routeId) {
     }
 
     // スキルマスの場合は learnedSkills に追加
+    // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（スキル上書き）
     if (node.type === 'skill' && node.skillId) {
+      const eliteSkillMapAll = ELITE_SKILL_OVERRIDE_MAP[routeId];
+      if (eliteSkillMapAll && eliteSkillMapAll[node.skillId]) {
+        const overriddenSkillId = eliteSkillMapAll[node.skillId];
+        p.learnedSkills  = p.learnedSkills.filter(s => s !== overriddenSkillId);
+        p.favoriteSkills = p.favoriteSkills.filter(s => s !== overriddenSkillId);
+      }
       if (!p.learnedSkills.includes(node.skillId)) {
         p.learnedSkills.push(node.skillId);
       }
     }
 
-    // 特級職パッシブ②③：対応する上級職スキルIDをlearnedSkillsから削除（上書き）
+    // 特級職パッシブ②③：対応する上級職スキルIDをlearnedSkillsから削除（パッシブ上書き）
     const eliteJobRoutesListAll = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
     if (eliteJobRoutesListAll.includes(routeId) && node.type === 'passive' && node.overridesSkillId) {
       p.learnedSkills  = p.learnedSkills.filter(s => s !== node.overridesSkillId);
@@ -2669,10 +2800,14 @@ function acquireSkillNode(routeId, nodeId) {
   if (eliteJobRoutes.includes(routeId)) {
     // 特級職に就いていないとノード取得不可
     if (p.currentJob !== routeId) return;
-    // 対応する上級職の取得済みノード数 >= 特級職の取得済みノード数 + 1 の条件チェック
-    const parentJobId     = eliteJobToParent[routeId];
-    const parentAcquired  = (p.skillTreeNodes[parentJobId] || []).length;
-    const eliteAcquired   = (p.skillTreeNodes[routeId]    || []).length;
+    // 対応する上級職の取得済みノード数 >= 特級職の取得済みノード数（自動付与パッシブ除く）+ 1 の条件チェック
+    const parentJobId    = eliteJobToParent[routeId];
+    const parentAcquired = (p.skillTreeNodes[parentJobId] || []).length;
+    // cost=0 のノード（転職時自動付与パッシブ）はゲーティング対象外にする
+    const eliteAcquired  = (p.skillTreeNodes[routeId] || []).filter(nid => {
+      const n = route.nodes.find(n2 => n2.id === nid);
+      return n && n.cost > 0;
+    }).length;
     if (parentAcquired < eliteAcquired + 1) {
       const needed = (eliteAcquired + 1) - parentAcquired;
       alert(`あと${needed}ノード上級職を進めると解放できます`);
@@ -2704,13 +2839,21 @@ function acquireSkillNode(routeId, nodeId) {
   }
 
   // スキルマスの場合は learnedSkills に追加
+  // 特級職スキルノード取得時は対応する上級職スキルIDをlearnedSkillsから削除してから追加（スキル上書き）
   if (node.type === 'skill' && node.skillId) {
+    // 特級職スキルノード取得時：対応する上級職スキルIDをlearnedSkills／favoriteSkillsから削除する
+    const eliteSkillMap = ELITE_SKILL_OVERRIDE_MAP[routeId];
+    if (eliteSkillMap && eliteSkillMap[node.skillId]) {
+      const overriddenSkillId = eliteSkillMap[node.skillId];
+      p.learnedSkills  = p.learnedSkills.filter(s => s !== overriddenSkillId);
+      p.favoriteSkills = p.favoriteSkills.filter(s => s !== overriddenSkillId);
+    }
     if (!p.learnedSkills.includes(node.skillId)) {
       p.learnedSkills.push(node.skillId);
     }
   }
 
-  // 特級職パッシブ②③：対応する上級職スキルIDをlearnedSkillsから削除（上書き）
+  // 特級職パッシブ②③：対応する上級職スキルIDをlearnedSkillsから削除（パッシブ上書き）
   const eliteJobRoutesList = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
   if (eliteJobRoutesList.includes(routeId) && node.type === 'passive' && node.overridesSkillId) {
     p.learnedSkills    = p.learnedSkills.filter(s => s !== node.overridesSkillId);
