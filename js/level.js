@@ -2495,9 +2495,13 @@ function buildNodeListHtml(routeId, previewMode, parentNodeCount = -1) {
   const route = SKILL_TREE_DEFINITIONS.find(r => r.id === routeId);
   if (!route) return '';
 
+  const ELITE_JOB_IDS = ['crusader', 'phantom', 'oracle', 'catastrophe', 'rune_knight'];
+  const isEliteRoute  = ELITE_JOB_IDS.includes(routeId);
+
   const acquiredIds = p.skillTreeNodes[routeId] || [];
 
-  return route.nodes.map((node, idx) => {
+  // ノード1件分のHTMLを生成するヘルパー
+  function renderNode(node, idx, totalNodes) {
     const isAcquired   = acquiredIds.includes(node.id);
     const prevAcquired = !node.requires || acquiredIds.includes(node.requires);
     const canAfford    = p.skillPoints >= node.cost;
@@ -2539,7 +2543,7 @@ function buildNodeListHtml(routeId, previewMode, parentNodeCount = -1) {
       statusText = `▶ クリックして取得（${node.cost} SP 消費）`;
     }
 
-    const arrow = idx < route.nodes.length - 1 ? '<div class="st-node-arrow">↓</div>' : '';
+    const arrow = idx < totalNodes - 1 ? '<div class="st-node-arrow">↓</div>' : '';
 
     // スキルマスのみお気に入りボタンを表示する（プレビューモードでは非表示）
     let favoriteBtn = '';
@@ -2561,7 +2565,44 @@ function buildNodeListHtml(routeId, previewMode, parentNodeCount = -1) {
         <div class="st-node-desc">${node.description}</div>
         <div class="st-node-status">${statusText}</div>
       </div>${arrow}`;
-  }).join('');
+  }
+
+  // 特級職ルート：自動付与パッシブを先頭にまとめて表示する
+  if (isEliteRoute) {
+    const autoPassives = route.nodes.filter(n => n.type === 'passive' && n.cost === 0);
+    const regularNodes = route.nodes.filter(n => !(n.type === 'passive' && n.cost === 0));
+
+    // パッシブセクション
+    let passiveHtml = '';
+    if (autoPassives.length > 0) {
+      const passiveNodesHtml = autoPassives.map(node => {
+        const statusText = previewMode
+          ? '✨ 転職時に自動付与されます'
+          : '✓ 取得済み（自動付与）';
+        return `
+      <div class="st-node acquired">
+        <div class="st-node-header">
+          <span class="st-node-icon">🔮</span>
+          <span class="st-node-name">${node.name}</span>
+          <span class="st-node-cost">0 SP</span>
+        </div>
+        <div class="st-node-desc">${node.description}（自動付与）</div>
+        <div class="st-node-status">${statusText}</div>
+      </div>`;
+      }).join('');
+      passiveHtml = `<div class="st-passive-section-header">【パッシブ】</div>${passiveNodesHtml}`;
+    }
+
+    // スキルツリーセクション
+    const treeNodesHtml = regularNodes.map((node, idx) => renderNode(node, idx, regularNodes.length)).join('');
+    const treeSectionHtml = regularNodes.length > 0
+      ? `<div class="st-passive-section-header">【スキルツリー】</div>${treeNodesHtml}`
+      : '';
+
+    return passiveHtml + treeSectionHtml;
+  }
+
+  return route.nodes.map((node, idx) => renderNode(node, idx, route.nodes.length)).join('');
 }
 
 /**
