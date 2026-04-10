@@ -1030,6 +1030,12 @@ const DUNGEON_ENHANCE_BASES = [
 ];
 
 /**
+ * エンド・レジェンド装備の強化コスト計算に使用するダンジョンレンジのサイズ
+ * 6ダンジョンごとに1グループ（D1〜D6, D7〜D12, ..., D31〜D36）
+ */
+const DUNGEON_RANGE_SIZE = 6;
+
+/**
  * レア度ごとの強化加算値
  * ノーマル < レア < ボスレア < エンド < レジェンド の順で大きくなる
  * 各ランクごとに5ずつ増加（2ランク分=10 ≈ ダンジョン5段分=10）
@@ -1104,10 +1110,9 @@ function getEnhanceCost(eq, nextLevel) {
     // D36レジェンド → D31〜D36のボスレア素材を使用
     const dungeon  = getEquipmentDungeon(eq);
     const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
-    const rangeSize = 6;
-    const rangeIdx  = Math.floor(dIdx / rangeSize);
-    const start     = rangeIdx * rangeSize;
-    const end       = Math.min(start + rangeSize, DUNGEON_DEFINITIONS.length);
+    const rangeIdx  = Math.floor(dIdx / DUNGEON_RANGE_SIZE);
+    const start     = rangeIdx * DUNGEON_RANGE_SIZE;
+    const end       = Math.min(start + DUNGEON_RANGE_SIZE, DUNGEON_DEFINITIONS.length);
     const matCount  = nextLevel + 1;
     for (let i = start; i < end; i++) {
       cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = matCount;
@@ -1126,10 +1131,9 @@ function getEnhanceCost(eq, nextLevel) {
     // D31〜D36エンド → D31〜D36のボスレア素材 × nextLevel個
     const dungeon  = getEquipmentDungeon(eq);
     const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
-    const rangeSize = 6;
-    const rangeIdx  = Math.floor(dIdx / rangeSize);
-    const start     = rangeIdx * rangeSize;
-    const end       = Math.min(start + rangeSize, DUNGEON_DEFINITIONS.length);
+    const rangeIdx  = Math.floor(dIdx / DUNGEON_RANGE_SIZE);
+    const start     = rangeIdx * DUNGEON_RANGE_SIZE;
+    const end       = Math.min(start + DUNGEON_RANGE_SIZE, DUNGEON_DEFINITIONS.length);
     for (let i = start; i < end; i++) {
       cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = nextLevel;
     }
