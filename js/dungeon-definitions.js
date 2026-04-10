@@ -662,6 +662,330 @@ const DUNGEON_DEFINITIONS = [
     },
   },
 
+  /* ────────────────────────────────────────
+     ダンジョン 25: 創造の揺籃（推奨 Lv 200〜）
+     ──────────────────────────────────────── */
+  {
+    id: 25,
+    name: '創造の揺籃',
+    recommendedLevel: 200,
+    normalEnemies: [
+      { name: '揺籃の守護者', hp: 21600, maxHp: 21600, attack: 6370, defense: 2850, expReward: 11760 },
+      { name: '原初の生命体', hp: 23000, maxHp: 23000, attack: 6695, defense: 3300, expReward: 12000 },
+      { name: '創造の番人', hp: 18400, maxHp: 18400, attack: 6955, defense: 2700, expReward: 11640 },
+    ],
+    rareEnemy: { name: '揺籃の使者', hp: 22000, maxHp: 22000, attack: 7150, defense: 4500, expReward: 24000 },
+    boss: { name: '創造神プリモルディア', hp: 250000, maxHp: 250000, attack: 15000, defense: 7000, expReward: 150000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '揺籃の創造石',
+      commonDropRate:    0.50,
+      rares:            ['原初の生命核', '創造の息吹'],
+      rareDropRate:      0.75,
+      boss:             '揺籃守護者の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '創造の揺籃の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 26: 滅却の荒野（推奨 Lv 220〜）
+     ──────────────────────────────────────── */
+  {
+    id: 26,
+    name: '滅却の荒野',
+    recommendedLevel: 220,
+    normalEnemies: [
+      { name: '滅却の荒者', hp: 28800, maxHp: 28800, attack: 7514, defense: 3484, expReward: 14374 },
+      { name: '荒野の破壊兵', hp: 30667, maxHp: 30667, attack: 7893, defense: 4032, expReward: 14667 },
+      { name: '滅却の魔将', hp: 24533, maxHp: 24533, attack: 8200, defense: 3300, expReward: 14213 },
+    ],
+    rareEnemy: { name: '滅却の使者', hp: 29333, maxHp: 29333, attack: 8233, defense: 5225, expReward: 28747 },
+    boss: { name: '滅却神デバステーター', hp: 333333, maxHp: 333333, attack: 18333, defense: 8667, expReward: 183333 },
+    rareChance: 0.15,
+    drops: {
+      common:           '滅却の荒野石',
+      commonDropRate:    0.50,
+      rares:            ['滅却の灰塵', '荒野の破滅核'],
+      rareDropRate:      0.75,
+      boss:             '滅却番人の証',
+      bossDropRate:      0.25,
+      bossRare:         '滅却の荒野の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 27: 虚空の迷宮（推奨 Lv 240〜）
+     ──────────────────────────────────────── */
+  {
+    id: 27,
+    name: '虚空の迷宮',
+    recommendedLevel: 240,
+    normalEnemies: [
+      { name: '虚空の迷子', hp: 36000, maxHp: 36000, attack: 8656, defense: 4116, expReward: 16986 },
+      { name: '迷宮の幻影', hp: 38333, maxHp: 38333, attack: 9091, defense: 4767, expReward: 17333 },
+      { name: '虚空の番人', hp: 30667, maxHp: 30667, attack: 9445, defense: 3900, expReward: 16786 },
+    ],
+    rareEnemy: { name: '虚空の使者', hp: 36667, maxHp: 36667, attack: 9316, defense: 6175, expReward: 33973 },
+    boss: { name: '虚空神ラビリンドラ', hp: 416667, maxHp: 416667, attack: 21667, defense: 10333, expReward: 216667 },
+    rareChance: 0.15,
+    drops: {
+      common:           '虚空の迷宮石',
+      commonDropRate:    0.50,
+      rares:            ['虚空の断片', '迷宮の虚無核'],
+      rareDropRate:      0.75,
+      boss:             '虚空番人の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '虚空の迷宮の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 28: 神話の戦場（推奨 Lv 260〜）
+     ──────────────────────────────────────── */
+  {
+    id: 28,
+    name: '神話の戦場',
+    recommendedLevel: 260,
+    normalEnemies: [
+      { name: '神話の戦士', hp: 43200, maxHp: 43200, attack: 9800, defense: 4750, expReward: 19600 },
+      { name: '戦場の英雄兵', hp: 46000, maxHp: 46000, attack: 10300, defense: 5500, expReward: 20000 },
+      { name: '神話の将軍', hp: 36800, maxHp: 36800, attack: 10700, defense: 4500, expReward: 19400 },
+    ],
+    rareEnemy: { name: '神話の使者', hp: 44000, maxHp: 44000, attack: 11000, defense: 7500, expReward: 40000 },
+    boss: { name: '神話神エピカロス', hp: 500000, maxHp: 500000, attack: 25000, defense: 12000, expReward: 250000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '神話の戦場石',
+      commonDropRate:    0.50,
+      rares:            ['神話の血晶', '戦場の英雄核'],
+      rareDropRate:      0.75,
+      boss:             '神話番人の証',
+      bossDropRate:      0.25,
+      bossRare:         '神話の戦場の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 29: 因果の螺旋（推奨 Lv 280〜）
+     ──────────────────────────────────────── */
+  {
+    id: 29,
+    name: '因果の螺旋',
+    recommendedLevel: 280,
+    normalEnemies: [
+      { name: '因果の番人', hp: 59400, maxHp: 59400, attack: 12250, defense: 5938, expReward: 24500 },
+      { name: '螺旋の運命体', hp: 63250, maxHp: 63250, attack: 12873, defense: 6875, expReward: 25000 },
+      { name: '因果の魔将', hp: 50600, maxHp: 50600, attack: 13375, defense: 5625, expReward: 24250 },
+    ],
+    rareEnemy: { name: '因果の使者', hp: 60500, maxHp: 60500, attack: 13475, defense: 8906, expReward: 50000 },
+    boss: { name: '因果神カウザリス', hp: 650000, maxHp: 650000, attack: 30000, defense: 14500, expReward: 325000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '因果の螺旋石',
+      commonDropRate:    0.50,
+      rares:            ['因果の結晶', '螺旋の運命核'],
+      rareDropRate:      0.75,
+      boss:             '因果守護者の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '因果の螺旋の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 30: 永劫の試練（推奨 Lv 300〜）
+     ──────────────────────────────────────── */
+  {
+    id: 30,
+    name: '永劫の試練',
+    recommendedLevel: 300,
+    normalEnemies: [
+      { name: '永劫の試練兵', hp: 75600, maxHp: 75600, attack: 14700, defense: 7125, expReward: 29400 },
+      { name: '試練の守護者', hp: 80500, maxHp: 80500, attack: 15450, defense: 8250, expReward: 30000 },
+      { name: '永劫の番人', hp: 64400, maxHp: 64400, attack: 16050, defense: 6750, expReward: 29100 },
+    ],
+    rareEnemy: { name: '永劫の使者', hp: 77000, maxHp: 77000, attack: 16500, defense: 11250, expReward: 60000 },
+    boss: { name: '永劫神エターニア', hp: 800000, maxHp: 800000, attack: 35000, defense: 17000, expReward: 400000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '永劫の試練石',
+      commonDropRate:    0.50,
+      rares:            ['永劫の試練核', '試練の永久晶'],
+      rareDropRate:      0.75,
+      boss:             '永劫番人の証',
+      bossDropRate:      0.25,
+      bossRare:         '永劫の試練の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 31: 絶対零域（推奨 Lv 320〜）
+     ──────────────────────────────────────── */
+  {
+    id: 31,
+    name: '絶対零域',
+    recommendedLevel: 320,
+    normalEnemies: [
+      { name: '零域の氷兵', hp: 102600, maxHp: 102600, attack: 18130, defense: 8788, expReward: 39200 },
+      { name: '絶対零度の番人', hp: 109250, maxHp: 109250, attack: 19040, defense: 10175, expReward: 40000 },
+      { name: '零域の魔将', hp: 87400, maxHp: 87400, attack: 19795, defense: 8325, expReward: 38800 },
+    ],
+    rareEnemy: { name: '零域の使者', hp: 104500, maxHp: 104500, attack: 19943, defense: 13181, expReward: 78400 },
+    boss: { name: '零域神アブソリュート・フリーズ', hp: 1000000, maxHp: 1000000, attack: 42500, defense: 21000, expReward: 500000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '絶対零域の氷晶',
+      commonDropRate:    0.50,
+      rares:            ['絶対零度の核', '零域の永久氷'],
+      rareDropRate:      0.75,
+      boss:             '零域番人の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '絶対零域の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 32: 天地崩壊（推奨 Lv 350〜）
+     ──────────────────────────────────────── */
+  {
+    id: 32,
+    name: '天地崩壊',
+    recommendedLevel: 350,
+    normalEnemies: [
+      { name: '崩壊の天空兵', hp: 129600, maxHp: 129600, attack: 21560, defense: 10450, expReward: 49000 },
+      { name: '大地崩壊の番人', hp: 138000, maxHp: 138000, attack: 22660, defense: 12100, expReward: 50000 },
+      { name: '天地の魔将', hp: 110400, maxHp: 110400, attack: 23540, defense: 9900, expReward: 48500 },
+    ],
+    rareEnemy: { name: '崩壊の使者', hp: 132000, maxHp: 132000, attack: 24200, defense: 16500, expReward: 100000 },
+    boss: { name: '崩壊神カタクリズマ', hp: 1200000, maxHp: 1200000, attack: 50000, defense: 25000, expReward: 600000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '天地崩壊の核片',
+      commonDropRate:    0.50,
+      rares:            ['崩壊の天空核', '大地崩壊の破片'],
+      rareDropRate:      0.75,
+      boss:             '天地崩壊番人の証',
+      bossDropRate:      0.25,
+      bossRare:         '天地崩壊の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 33: 無限の深淵（推奨 Lv 380〜）
+     ──────────────────────────────────────── */
+  {
+    id: 33,
+    name: '無限の深淵',
+    recommendedLevel: 380,
+    normalEnemies: [
+      { name: '深淵の番人', hp: 172800, maxHp: 172800, attack: 27930, defense: 13300, expReward: 63700 },
+      { name: '無限の奈落兵', hp: 184000, maxHp: 184000, attack: 29340, defense: 15400, expReward: 65000 },
+      { name: '深淵の魔将', hp: 147200, maxHp: 147200, attack: 30480, defense: 12600, expReward: 63050 },
+    ],
+    rareEnemy: { name: '深淵の使者', hp: 176000, maxHp: 176000, attack: 30723, defense: 19950, expReward: 127400 },
+    boss: { name: '深淵神インフィニ・アビス', hp: 1400000, maxHp: 1400000, attack: 52500, defense: 27500, expReward: 700000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '無限の深淵石',
+      commonDropRate:    0.50,
+      rares:            ['深淵の無限核', '無限の奈落晶'],
+      rareDropRate:      0.75,
+      boss:             '深淵番人の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '無限の深淵の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 34: 神滅の地（推奨 Lv 420〜）
+     ──────────────────────────────────────── */
+  {
+    id: 34,
+    name: '神滅の地',
+    recommendedLevel: 420,
+    normalEnemies: [
+      { name: '神滅の破壊兵', hp: 216000, maxHp: 216000, attack: 34300, defense: 16150, expReward: 78400 },
+      { name: '滅神の番人', hp: 230000, maxHp: 230000, attack: 36050, defense: 18700, expReward: 80000 },
+      { name: '神滅の魔将', hp: 184000, maxHp: 184000, attack: 37450, defense: 15300, expReward: 77600 },
+    ],
+    rareEnemy: { name: '神滅の使者', hp: 220000, maxHp: 220000, attack: 38500, defense: 25500, expReward: 160000 },
+    boss: { name: '神滅神ゴッドスレイヤー', hp: 1600000, maxHp: 1600000, attack: 55000, defense: 30000, expReward: 800000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '神滅の地の核片',
+      commonDropRate:    0.50,
+      rares:            ['神滅の破壊核', '滅神の証明石'],
+      rareDropRate:      0.75,
+      boss:             '神滅番人の証',
+      bossDropRate:      0.25,
+      bossRare:         '神滅の地の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 35: 終焉の彼方（推奨 Lv 460〜）
+     ──────────────────────────────────────── */
+  {
+    id: 35,
+    name: '終焉の彼方',
+    recommendedLevel: 460,
+    normalEnemies: [
+      { name: '終焉の番人', hp: 297000, maxHp: 297000, attack: 44100, defense: 20900, expReward: 98000 },
+      { name: '彼方の終焉兵', hp: 316250, maxHp: 316250, attack: 46305, defense: 24200, expReward: 100000 },
+      { name: '終焉の魔将', hp: 253000, maxHp: 253000, attack: 48070, defense: 19800, expReward: 97000 },
+    ],
+    rareEnemy: { name: '終焉の使者', hp: 302500, maxHp: 302500, attack: 49500, defense: 33000, expReward: 196000 },
+    boss: { name: '終焉神エンドレス・オメガ', hp: 1800000, maxHp: 1800000, attack: 57500, defense: 32500, expReward: 900000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '終焉彼方の核片',
+      commonDropRate:    0.50,
+      rares:            ['彼方の終焉核', '終焉の彼方晶'],
+      rareDropRate:      0.75,
+      boss:             '終焉番人の心臓',
+      bossDropRate:      0.25,
+      bossRare:         '終焉の彼方の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
+  /* ────────────────────────────────────────
+     ダンジョン 36: 絶対なる頂点（推奨 Lv 500〜）
+     ──────────────────────────────────────── */
+  {
+    id: 36,
+    name: '絶対なる頂点',
+    recommendedLevel: 500,
+    normalEnemies: [
+      { name: '頂点の絶対兵', hp: 378000, maxHp: 378000, attack: 53900, defense: 25650, expReward: 117600 },
+      { name: '絶対頂点の番人', hp: 402500, maxHp: 402500, attack: 56650, defense: 29700, expReward: 120000 },
+      { name: '至高の魔将', hp: 322000, maxHp: 322000, attack: 58850, defense: 24300, expReward: 116400 },
+    ],
+    rareEnemy: { name: '頂点の使者', hp: 385000, maxHp: 385000, attack: 60500, defense: 40500, expReward: 240000 },
+    boss: { name: '絶対頂点神アルティメット・ゼロ', hp: 2000000, maxHp: 2000000, attack: 60000, defense: 35000, expReward: 1000000 },
+    rareChance: 0.15,
+    drops: {
+      common:           '絶対頂点の核片',
+      commonDropRate:    0.50,
+      rares:            ['頂点の絶対核', '絶対なる至高晶'],
+      rareDropRate:      0.75,
+      boss:             '絶対頂点神の証',
+      bossDropRate:      0.25,
+      bossRare:         '絶対なる頂点の欠片',
+      bossRareDropRate:  0.08,
+    },
+  },
+
 ];
 
 /** 1 ダンジョンあたりの敵数（ボス含む） */
