@@ -6576,6 +6576,206 @@ const EQUIPMENT_DEFINITIONS = [
     recipe: { '虚無の断層石': 20, '消滅の核': 5, '断層の破片': 5, '虚無の消滅核': 2, '崩壊の時計石': 20, '終焉の砂時計': 5, '時崩の破片': 5, '時の終焉の欠片': 2, '創世の原子': 20, '宇宙誕生の光': 5, '原初の魔核': 5, '宇宙の始まりの欠片': 2, '審判の結晶石': 20, '次元の魂片': 5, '審判の炎核': 5, '魂の審判印': 2, '頂の神聖核': 20, '全次元の光片': 5, '頂点の結晶': 5, '神域の頂の欠片': 2, '絶対混沌の核片': 20, '終焉の混沌核': 5, '絶対の破壊石': 5, '絶対なる混沌の力': 2 },
   },
 
+  /* ─── エンドアイテム（D25〜D36対応、各1種） ─── */
+
+  /* D25: 武器 — 揺籃の創造石×25 + 原初の生命核×3 + 創造の息吹×3 + 創造の揺籃の欠片×1 */
+  {
+    id: 'end_weapon_d25',
+    name: '揺籃創造の覇剣',
+    slot: '武器',
+    rarity: 'end',
+    stats: { attack: 1806, defense: 115, maxHp: 0, maxMp: 284 },
+    effectType: 'critChance',
+    effectValue: 0.47,
+    effectDesc: '会心率+47%',
+    recipe: { '原初の生命核': 3, '創造の息吹': 3, '創造の揺籃の欠片': 1, '揺籃の創造石': 25 },
+  },
+
+  /* D26: 頭 — 滅却の荒野石×25 + 滅却の灰塵×3 + 荒野の破滅核×3 + 滅却の荒野の欠片×1 */
+  {
+    id: 'end_helm_d26',
+    name: '滅却荒野の覇者兜',
+    slot: '頭',
+    rarity: 'end',
+    stats: { attack: 0, defense: 1462, maxHp: 2477, maxMp: 564 },
+    effectType: 'damageReduction',
+    effectValue: 0.43,
+    effectDesc: 'ダメージ軽減(43%の確率)',
+    recipe: { '滅却の灰塵': 3, '荒野の破滅核': 3, '滅却の荒野の欠片': 1, '滅却の荒野石': 25 },
+  },
+
+  /* D27: 胴 — 虚空の迷宮石×25 + 虚空の断片×3 + 迷宮の虚無核×3 + 虚空の迷宮の欠片×1 */
+  {
+    id: 'end_armor_d27',
+    name: '虚空迷宮の覇者鎧',
+    slot: '胴',
+    rarity: 'end',
+    stats: { attack: 0, defense: 3012, maxHp: 2483, maxMp: 739 },
+    effectType: 'damageReduction',
+    effectValue: 0.44,
+    effectDesc: 'ダメージ軽減(44%の確率)',
+    recipe: { '虚空の断片': 3, '迷宮の虚無核': 3, '虚空の迷宮の欠片': 1, '虚空の迷宮石': 25 },
+  },
+
+  /* D28: 足 — 神話の戦場石×25 + 神話の血晶×3 + 戦場の英雄核×3 + 神話の戦場の欠片×1 */
+  {
+    id: 'end_legs_d28',
+    name: '神話戦場の覇者脚甲',
+    slot: '足',
+    rarity: 'end',
+    stats: { attack: 0, defense: 2768, maxHp: 2952, maxMp: 0 },
+    effectType: 'damageReduction',
+    effectValue: 0.45,
+    effectDesc: 'ダメージ軽減(45%の確率)',
+    recipe: { '神話の血晶': 3, '戦場の英雄核': 3, '神話の戦場の欠片': 1, '神話の戦場石': 25 },
+  },
+
+  /* D29: 靴 — 因果の螺旋石×25 + 因果の結晶×3 + 螺旋の運命核×3 + 因果の螺旋の欠片×1 */
+  {
+    id: 'end_boots_d29',
+    name: '因果螺旋の覇者靴',
+    slot: '靴',
+    rarity: 'end',
+    stats: { attack: 0, defense: 2668, maxHp: 2931, maxMp: 0 },
+    effectType: 'damageReduction',
+    effectValue: 0.46,
+    effectDesc: 'ダメージ軽減(46%の確率)',
+    recipe: { '因果の結晶': 3, '螺旋の運命核': 3, '因果の螺旋の欠片': 1, '因果の螺旋石': 25 },
+  },
+
+  /* D30: アクセサリー — 永劫の試練石×25 + 永劫の試練核×3 + 試練の永久晶×3 + 永劫の試練の欠片×1 */
+  {
+    id: 'end_acc_d30',
+    name: '永劫試練の覇者護符',
+    slot: 'アクセサリー',
+    rarity: 'end',
+    stats: { attack: 2722, defense: 1850, maxHp: 3528, maxMp: 1568 },
+    effectType: 'critChance',
+    effectValue: 0.50,
+    effectDesc: '会心率+50%',
+    recipe: { '永劫の試練核': 3, '試練の永久晶': 3, '永劫の試練の欠片': 1, '永劫の試練石': 25 },
+  },
+
+  /* D31: 武器 — 絶対零域の氷晶×25 + 絶対零度の核×3 + 零域の永久氷×3 + 絶対零域の欠片×1 */
+  {
+    id: 'end_weapon_d31',
+    name: '絶対零域の覇剣',
+    slot: '武器',
+    rarity: 'end',
+    stats: { attack: 3612, defense: 230, maxHp: 0, maxMp: 569 },
+    effectType: 'critChance',
+    effectValue: 0.53,
+    effectDesc: '会心率+53%',
+    recipe: { '絶対零度の核': 3, '零域の永久氷': 3, '絶対零域の欠片': 1, '絶対零域の氷晶': 25 },
+  },
+
+  /* D32: 頭 — 天地崩壊の核片×25 + 崩壊の天空核×3 + 大地崩壊の破片×3 + 天地崩壊の欠片×1 */
+  {
+    id: 'end_helm_d32',
+    name: '天地崩壊の覇者兜',
+    slot: '頭',
+    rarity: 'end',
+    stats: { attack: 0, defense: 3071, maxHp: 5198, maxMp: 1184 },
+    effectType: 'damageReduction',
+    effectValue: 0.49,
+    effectDesc: 'ダメージ軽減(49%の確率)',
+    recipe: { '崩壊の天空核': 3, '大地崩壊の破片': 3, '天地崩壊の欠片': 1, '天地崩壊の核片': 25 },
+  },
+
+  /* D33: 胴 — 無限の深淵石×25 + 深淵の無限核×3 + 無限の奈落晶×3 + 無限の深淵の欠片×1 */
+  {
+    id: 'end_armor_d33',
+    name: '無限深淵の覇者鎧',
+    slot: '胴',
+    rarity: 'end',
+    stats: { attack: 0, defense: 6781, maxHp: 5588, maxMp: 1663 },
+    effectType: 'damageReduction',
+    effectValue: 0.50,
+    effectDesc: 'ダメージ軽減(50%の確率)',
+    recipe: { '深淵の無限核': 3, '無限の奈落晶': 3, '無限の深淵の欠片': 1, '無限の深淵石': 25 },
+  },
+
+  /* D34: 足 — 神滅の地の核片×25 + 神滅の破壊核×3 + 滅神の証明石×3 + 神滅の地の欠片×1 */
+  {
+    id: 'end_legs_d34',
+    name: '神滅の地の覇者脚甲',
+    slot: '足',
+    rarity: 'end',
+    stats: { attack: 0, defense: 6573, maxHp: 7011, maxMp: 0 },
+    effectType: 'damageReduction',
+    effectValue: 0.51,
+    effectDesc: 'ダメージ軽減(51%の確率)',
+    recipe: { '神滅の破壊核': 3, '滅神の証明石': 3, '神滅の地の欠片': 1, '神滅の地の核片': 25 },
+  },
+
+  /* D35: 靴 — 終焉彼方の核片×25 + 彼方の終焉核×3 + 終焉の彼方晶×3 + 終焉の彼方の欠片×1 */
+  {
+    id: 'end_boots_d35',
+    name: '終焉彼方の覇者靴',
+    slot: '靴',
+    rarity: 'end',
+    stats: { attack: 0, defense: 6520, maxHp: 7162, maxMp: 0 },
+    effectType: 'damageReduction',
+    effectValue: 0.52,
+    effectDesc: 'ダメージ軽減(52%の確率)',
+    recipe: { '彼方の終焉核': 3, '終焉の彼方晶': 3, '終焉の彼方の欠片': 1, '終焉彼方の核片': 25 },
+  },
+
+  /* D36: アクセサリー — 絶対頂点の核片×25 + 頂点の絶対核×3 + 絶対なる至高晶×3 + 絶対なる頂点の欠片×1 */
+  {
+    id: 'end_acc_d36',
+    name: '絶対頂点の覇者護符',
+    slot: 'アクセサリー',
+    rarity: 'end',
+    stats: { attack: 6805, defense: 4625, maxHp: 8820, maxMp: 3920 },
+    effectType: 'critChance',
+    effectValue: 0.56,
+    effectDesc: '会心率+56%',
+    recipe: { '頂点の絶対核': 3, '絶対なる至高晶': 3, '絶対なる頂点の欠片': 1, '絶対頂点の核片': 25 },
+  },
+
+  /* ─── レジェンドアクセサリー（D30・D36） ─── */
+
+  /* D30: アクセサリー（レジェンドランク） — D25〜D30の全素材を大量消費 */
+  {
+    id: 'legend_acc_d30',
+    name: '永劫試練の超越護符',
+    slot: 'アクセサリー',
+    rarity: 'legend',
+    stats: { attack: 3024, defense: 2218, maxHp: 5040, maxMp: 2090 },
+    effectType: 'critChance',
+    effectValue: 0.50,
+    effectDesc: '会心率+50%',
+    recipe: {
+      '揺籃の創造石': 20, '原初の生命核': 5, '創造の息吹': 5, '創造の揺籃の欠片': 2,
+      '滅却の荒野石': 20, '滅却の灰塵': 5, '荒野の破滅核': 5, '滅却の荒野の欠片': 2,
+      '虚空の迷宮石': 20, '虚空の断片': 5, '迷宮の虚無核': 5, '虚空の迷宮の欠片': 2,
+      '神話の戦場石': 20, '神話の血晶': 5, '戦場の英雄核': 5, '神話の戦場の欠片': 2,
+      '因果の螺旋石': 20, '因果の結晶': 5, '螺旋の運命核': 5, '因果の螺旋の欠片': 2,
+      '永劫の試練石': 20, '永劫の試練核': 5, '試練の永久晶': 5, '永劫の試練の欠片': 2,
+    },
+  },
+
+  /* D36: アクセサリー（レジェンドランク） — D31〜D36の全素材を大量消費 */
+  {
+    id: 'legend_acc_d36',
+    name: '絶対頂点の超越護符',
+    slot: 'アクセサリー',
+    rarity: 'legend',
+    stats: { attack: 7560, defense: 5545, maxHp: 12600, maxMp: 5225 },
+    effectType: 'critChance',
+    effectValue: 0.55,
+    effectDesc: '会心率+55%',
+    recipe: {
+      '絶対零域の氷晶': 20, '絶対零度の核': 5, '零域の永久氷': 5, '絶対零域の欠片': 2,
+      '天地崩壊の核片': 20, '崩壊の天空核': 5, '大地崩壊の破片': 5, '天地崩壊の欠片': 2,
+      '無限の深淵石': 20, '深淵の無限核': 5, '無限の奈落晶': 5, '無限の深淵の欠片': 2,
+      '神滅の地の核片': 20, '神滅の破壊核': 5, '滅神の証明石': 5, '神滅の地の欠片': 2,
+      '終焉彼方の核片': 20, '彼方の終焉核': 5, '終焉の彼方晶': 5, '終焉の彼方の欠片': 2,
+      '絶対頂点の核片': 20, '頂点の絶対核': 5, '絶対なる至高晶': 5, '絶対なる頂点の欠片': 2,
+    },
+  },
+
   /* ─── チャーム（D13〜D24） ─── */
 
   /* D13: 神々の試練場 — 神々の試練石×100 */

@@ -367,6 +367,21 @@
             <button class="craft-filter-btn" id="craft-sort-stats-btn" onclick="toggleCraftSortByStats()">性能順</button>
           </div>
 
+          <!-- 絞り込みタブ（ダンジョン） -->
+          <div class="craft-filter-group">
+            <span class="craft-filter-label">ダンジョン：</span>
+            <div class="craft-filter-tabs" id="craft-dungeon-tabs">
+              <button class="craft-filter-btn active" data-filter="all"     onclick="setCraftDungeonFilter('all')">すべて</button>
+              <button class="craft-filter-btn"        data-filter="d1-6"    onclick="setCraftDungeonFilter('d1-6')">D1〜D6</button>
+              <button class="craft-filter-btn"        data-filter="d7-12"   onclick="setCraftDungeonFilter('d7-12')">D7〜D12</button>
+              <button class="craft-filter-btn"        data-filter="d13-18"  onclick="setCraftDungeonFilter('d13-18')">D13〜D18</button>
+              <button class="craft-filter-btn"        data-filter="d19-24"  onclick="setCraftDungeonFilter('d19-24')">D19〜D24</button>
+              <button class="craft-filter-btn"        data-filter="d25-30"  onclick="setCraftDungeonFilter('d25-30')">D25〜D30</button>
+              <button class="craft-filter-btn"        data-filter="d31-36"  onclick="setCraftDungeonFilter('d31-36')">D31〜D36</button>
+              <button class="craft-filter-btn"        data-filter="other"   onclick="setCraftDungeonFilter('other')">その他</button>
+            </div>
+          </div>
+
           <!-- 絞り込みタブ（部位） -->
           <div class="craft-filter-group">
             <span class="craft-filter-label">部位：</span>
