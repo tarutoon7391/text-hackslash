@@ -236,6 +236,90 @@ const GACHA_TABLE_PART2 = [
   { id: 'p2_d24_boss',     name: '混沌絶対神の証',     type: 'material', rarity: 'bossRare', weight: 5 },
   { id: 'p2_d24_bossRare', name: '絶対なる混沌の力',   type: 'material', rarity: 'bossRare', weight: 5 },
 
+  /* ── D25 創造の揺籃 素材 ── */
+  { id: 'p2_d25_common',   name: '揺籃の創造石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d25_rare1',    name: '原初の生命核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d25_rare2',    name: '創造の息吹',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d25_boss',     name: '揺籃守護者の心臓',   type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d25_bossRare', name: '創造の揺籃の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D26 滅却の荒野 素材 ── */
+  { id: 'p2_d26_common',   name: '滅却の荒野石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d26_rare1',    name: '滅却の灰塵',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d26_rare2',    name: '荒野の破滅核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d26_boss',     name: '滅却番人の証',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d26_bossRare', name: '滅却の荒野の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D27 虚空の迷宮 素材 ── */
+  { id: 'p2_d27_common',   name: '虚空の迷宮石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d27_rare1',    name: '虚空の断片',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d27_rare2',    name: '迷宮の虚無核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d27_boss',     name: '虚空番人の心臓',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d27_bossRare', name: '虚空の迷宮の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D28 神話の戦場 素材 ── */
+  { id: 'p2_d28_common',   name: '神話の戦場石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d28_rare1',    name: '神話の血晶',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d28_rare2',    name: '戦場の英雄核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d28_boss',     name: '神話番人の証',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d28_bossRare', name: '神話の戦場の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D29 因果の螺旋 素材 ── */
+  { id: 'p2_d29_common',   name: '因果の螺旋石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d29_rare1',    name: '因果の結晶',         type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d29_rare2',    name: '螺旋の運命核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d29_boss',     name: '因果守護者の心臓',   type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d29_bossRare', name: '因果の螺旋の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D30 永劫の試練 素材 ── */
+  { id: 'p2_d30_common',   name: '永劫の試練石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d30_rare1',    name: '永劫の試練核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d30_rare2',    name: '試練の永久晶',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d30_boss',     name: '永劫番人の証',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d30_bossRare', name: '永劫の試練の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D31 絶対零域 素材 ── */
+  { id: 'p2_d31_common',   name: '絶対零域の氷晶',     type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d31_rare1',    name: '絶対零度の核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d31_rare2',    name: '零域の永久氷',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d31_boss',     name: '零域番人の心臓',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d31_bossRare', name: '絶対零域の欠片',     type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D32 天地崩壊 素材 ── */
+  { id: 'p2_d32_common',   name: '天地崩壊の核片',     type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d32_rare1',    name: '崩壊の天空核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d32_rare2',    name: '大地崩壊の破片',     type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d32_boss',     name: '天地崩壊番人の証',   type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d32_bossRare', name: '天地崩壊の欠片',     type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D33 無限の深淵 素材 ── */
+  { id: 'p2_d33_common',   name: '無限の深淵石',       type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d33_rare1',    name: '深淵の無限核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d33_rare2',    name: '無限の奈落晶',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d33_boss',     name: '深淵番人の心臓',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d33_bossRare', name: '無限の深淵の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D34 神滅の地 素材 ── */
+  { id: 'p2_d34_common',   name: '神滅の地の核片',     type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d34_rare1',    name: '神滅の破壊核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d34_rare2',    name: '滅神の証明石',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d34_boss',     name: '神滅番人の証',       type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d34_bossRare', name: '神滅の地の欠片',     type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D35 終焉の彼方 素材 ── */
+  { id: 'p2_d35_common',   name: '終焉彼方の核片',     type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d35_rare1',    name: '彼方の終焉核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d35_rare2',    name: '終焉の彼方晶',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d35_boss',     name: '終焉番人の心臓',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d35_bossRare', name: '終焉の彼方の欠片',   type: 'material', rarity: 'bossRare', weight: 5 },
+
+  /* ── D36 絶対なる頂点 素材 ── */
+  { id: 'p2_d36_common',   name: '絶対頂点の核片',     type: 'material', rarity: 'common',   weight: 80 },
+  { id: 'p2_d36_rare1',    name: '頂点の絶対核',       type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d36_rare2',    name: '絶対なる至高晶',     type: 'material', rarity: 'rare',     weight: 15 },
+  { id: 'p2_d36_boss',     name: '絶対頂点神の証',     type: 'material', rarity: 'bossRare', weight: 5 },
+  { id: 'p2_d36_bossRare', name: '絶対なる頂点の欠片', type: 'material', rarity: 'bossRare', weight: 5 },
+
   /* ── ダンジョンの鍵3種（排出数×10） ── */
   { id: 'p2_key_xp',       name: 'XPダンジョンの鍵',       type: 'key', rarity: 'key', weight: 25, count: 10 },
   { id: 'p2_key_raremon',  name: 'レアモンダンジョンの鍵', type: 'key', rarity: 'key', weight: 25, count: 10 },
