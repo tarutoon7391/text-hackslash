@@ -10,8 +10,9 @@
    ============================================================== */
 
 /** クラフトリストの絞り込みフィルタ状態 */
-let craftFilterSlot   = 'all';
-let craftFilterRarity = 'all';
+let craftFilterSlot    = 'all';
+let craftFilterRarity  = 'all';
+let craftFilterDungeon = 'all';
 
 /** 所持素材タブフィルタ */
 let materialTabFilter = 'all';
@@ -54,6 +55,8 @@ function getMaterialDungeonGroup(name) {
     { key: 'd7-12',   start: 6,  end: 12 },
     { key: 'd13-18',  start: 12, end: 18 },
     { key: 'd19-24',  start: 18, end: 24 },
+    { key: 'd25-30',  start: 24, end: 30 },
+    { key: 'd31-36',  start: 30, end: 36 },
   ];
   for (const { key, start, end } of groups) {
     for (let i = start; i < end && i < DUNGEON_DEFINITIONS.length; i++) {
@@ -82,13 +85,15 @@ function renderMaterialTabButtons() {
   if (!bar) return;
 
   const tabs = [
-    { key: 'all',     label: 'すべて'   },
-    { key: 'd1-6',    label: 'D1〜D6'  },
-    { key: 'd7-12',   label: 'D7〜D12' },
+    { key: 'all',     label: 'すべて'    },
+    { key: 'd1-6',    label: 'D1〜D6'   },
+    { key: 'd7-12',   label: 'D7〜D12'  },
     { key: 'd13-18',  label: 'D13〜D18' },
     { key: 'd19-24',  label: 'D19〜D24' },
-    { key: 'limited', label: '限定'     },
-    { key: 'other',   label: 'その他'   },
+    { key: 'd25-30',  label: 'D25〜D30' },
+    { key: 'd31-36',  label: 'D31〜D36' },
+    { key: 'limited', label: '限定'      },
+    { key: 'other',   label: 'その他'    },
   ];
 
   bar.innerHTML = tabs.map(t =>
@@ -170,6 +175,7 @@ function renderCraftFilterTabs() {
   const slotTabs      = document.getElementById('craft-slot-tabs');
   const rarityTabs    = document.getElementById('craft-rarity-tabs');
   const ownershipTabs = document.getElementById('craft-ownership-tabs');
+  const dungeonTabs   = document.getElementById('craft-dungeon-tabs');
   const sortBtn       = document.getElementById('craft-sort-stats-btn');
 
   if (slotTabs) {
@@ -187,9 +193,43 @@ function renderCraftFilterTabs() {
       btn.classList.toggle('active', btn.dataset.filter === craftOwnershipFilter);
     });
   }
+  if (dungeonTabs) {
+    dungeonTabs.querySelectorAll('.craft-filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === craftFilterDungeon);
+    });
+  }
   if (sortBtn) {
     sortBtn.classList.toggle('active', craftSortByStats);
   }
+}
+
+/**
+ * 装備のダンジョングループを返す
+ * @param {object} eq - 装備定義
+ * @returns {'d1-6'|'d7-12'|'d13-18'|'d19-24'|'d25-30'|'d31-36'|'other'}
+ */
+function getEquipmentDungeonGroup(eq) {
+  const dungeon = getEquipmentDungeon(eq);
+  if (!dungeon) return 'other';
+  const idx = DUNGEON_DEFINITIONS.indexOf(dungeon);
+  if (idx < 0)  return 'other';
+  if (idx < 6)  return 'd1-6';
+  if (idx < 12) return 'd7-12';
+  if (idx < 18) return 'd13-18';
+  if (idx < 24) return 'd19-24';
+  if (idx < 30) return 'd25-30';
+  if (idx < 36) return 'd31-36';
+  return 'other';
+}
+
+/**
+ * クラフトリストのダンジョンフィルタを設定する
+ * @param {string} dungeon - 'all' | 'd1-6' | 'd7-12' | 'd13-18' | 'd19-24' | 'd25-30' | 'd31-36' | 'other'
+ */
+function setCraftDungeonFilter(dungeon) {
+  craftFilterDungeon = dungeon;
+  renderCraftFilterTabs();
+  renderCraftList();
 }
 
 /**
@@ -311,6 +351,7 @@ function renderCraftList() {
     }
     if (craftFilterSlot !== 'all' && eq.slot !== craftFilterSlot) return false;
     if (craftFilterRarity !== 'all' && eqRarity !== craftFilterRarity) return false;
+    if (craftFilterDungeon !== 'all' && getEquipmentDungeonGroup(eq) !== craftFilterDungeon) return false;
     return true;
   });
 
@@ -985,7 +1026,14 @@ function getEquipmentDungeon(eq) {
 const DUNGEON_ENHANCE_BASES = [
   2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24,  // D1〜D12
   26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, // D13〜D24
+  50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, // D25〜D36
 ];
+
+/**
+ * エンド・レジェンド装備の強化コスト計算に使用するダンジョンレンジのサイズ
+ * 6ダンジョンごとに1グループ（D1〜D6, D7〜D12, ..., D31〜D36）
+ */
+const DUNGEON_RANGE_SIZE = 6;
 
 /**
  * レア度ごとの強化加算値
@@ -1053,17 +1101,18 @@ function getEnhanceCost(eq, nextLevel) {
   if (rarity === 'legend') {
     // レジェンドアイテム: 対応ダンジョン範囲のボスレア素材のみ消費
     // 強化後レベル+1個からスタート（例: レベル1→2個, レベル2→3個）
-    // 各レジェンドはダンジョン総数の1/4ずつのレンジに対応する（動的計算）
+    // 各レジェンドはダンジョン6個ずつのレンジに対応する
     // D6レジェンド → D1〜D6のボスレア素材を使用
     // D12レジェンド → D7〜D12のボスレア素材を使用
     // D18レジェンド → D13〜D18のボスレア素材を使用
     // D24レジェンド → D19〜D24のボスレア素材を使用
+    // D30レジェンド → D25〜D30のボスレア素材を使用
+    // D36レジェンド → D31〜D36のボスレア素材を使用
     const dungeon  = getEquipmentDungeon(eq);
     const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
-    const rangeSize = Math.ceil(DUNGEON_DEFINITIONS.length / 4);
-    const rangeIdx  = Math.floor(dIdx / rangeSize);
-    const start     = rangeIdx * rangeSize;
-    const end       = Math.min(start + rangeSize, DUNGEON_DEFINITIONS.length);
+    const rangeIdx  = Math.floor(dIdx / DUNGEON_RANGE_SIZE);
+    const start     = rangeIdx * DUNGEON_RANGE_SIZE;
+    const end       = Math.min(start + DUNGEON_RANGE_SIZE, DUNGEON_DEFINITIONS.length);
     const matCount  = nextLevel + 1;
     for (let i = start; i < end; i++) {
       cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = matCount;
@@ -1073,17 +1122,18 @@ function getEnhanceCost(eq, nextLevel) {
 
   if (rarity === 'end') {
     // エンドアイテム: 対応ダンジョン範囲のボスレア素材のみ消費（レジェンドより少ない量）
-    // ダンジョン総数を4等分した各レンジに対応する（動的計算）
+    // ダンジョン6個ずつのレンジに対応する
     // D1〜D6エンド → D1〜D6のボスレア素材 × nextLevel個
     // D7〜D12エンド → D7〜D12のボスレア素材 × nextLevel個
     // D13〜D18エンド → D13〜D18のボスレア素材 × nextLevel個
     // D19〜D24エンド → D19〜D24のボスレア素材 × nextLevel個
+    // D25〜D30エンド → D25〜D30のボスレア素材 × nextLevel個
+    // D31〜D36エンド → D31〜D36のボスレア素材 × nextLevel個
     const dungeon  = getEquipmentDungeon(eq);
     const dIdx     = dungeon ? DUNGEON_DEFINITIONS.indexOf(dungeon) : DUNGEON_DEFINITIONS.length - 1;
-    const rangeSize = Math.ceil(DUNGEON_DEFINITIONS.length / 4);
-    const rangeIdx  = Math.floor(dIdx / rangeSize);
-    const start     = rangeIdx * rangeSize;
-    const end       = Math.min(start + rangeSize, DUNGEON_DEFINITIONS.length);
+    const rangeIdx  = Math.floor(dIdx / DUNGEON_RANGE_SIZE);
+    const start     = rangeIdx * DUNGEON_RANGE_SIZE;
+    const end       = Math.min(start + DUNGEON_RANGE_SIZE, DUNGEON_DEFINITIONS.length);
     for (let i = start; i < end; i++) {
       cost[DUNGEON_DEFINITIONS[i].drops.bossRare] = nextLevel;
     }
