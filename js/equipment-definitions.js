@@ -5159,6 +5159,27 @@ const EQUIPMENT_DEFINITIONS = [
     effectDesc: 'ダメージ軽減(44%の確率)',
     recipe: { '頂点の絶対核': 1, '絶対なる至高晶': 1 },
   },
+  {
+    id: 'd36_rare_legs',
+    name: '頂点の覇脚甲',
+    slot: '足',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 5845, maxHp: 6370, maxMp: 0 },
+    effectType: 'damageReduction',
+    effectValue: 0.44,
+    effectDesc: 'ダメージ軽減(44%の確率)',
+    recipe: { '頂点の絶対核': 1, '絶対なる至高晶': 1 },
+  },
+  {
+    id: 'd36_rare_boots',
+    name: '頂点の覇靴',
+    slot: '靴',
+    rarity: 'rare',
+    stats: { attack: 0, defense: 5240, maxHp: 5725, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '頂点の絶対核': 1, '絶対なる至高晶': 1 },
+  },
 
   /* ─── D13〜D24 ボスレア装備 ─── */
 
@@ -6386,6 +6407,27 @@ const EQUIPMENT_DEFINITIONS = [
     effectValue: 0.56,
     effectDesc: 'ダメージ軽減(56%の確率)',
     recipe: { '絶対なる頂点の欠片': 1, '絶対頂点神の証': 1 },
+  },
+  {
+    id: 'd36_boss_legs',
+    name: '絶対頂点神アルティメット・ゼロの脚甲',
+    slot: '足',
+    rarity: 'bossRare',
+    stats: { attack: 0, defense: 9070, maxHp: 9675, maxMp: 0 },
+    effectType: 'damageReduction',
+    effectValue: 0.56,
+    effectDesc: 'ダメージ軽減(56%の確率)',
+    recipe: { '絶対頂点神の証': 1, '絶対なる頂点の欠片': 1 },
+  },
+  {
+    id: 'd36_boss_boots',
+    name: '絶対頂点神アルティメット・ゼロの靴',
+    slot: '靴',
+    rarity: 'bossRare',
+    stats: { attack: 0, defense: 6530, maxHp: 7175, maxMp: 0 },
+    effectType: 'none',
+    effectDesc: '---',
+    recipe: { '絶対頂点神の証': 1, '絶対なる頂点の欠片': 1 },
   },
 
   /* ─── エンドアイテム（D13〜D24対応、各1種） ─── */
