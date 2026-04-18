@@ -107,7 +107,7 @@ const GACHA_TABLE = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookMakenshi',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_paladin',
@@ -116,7 +116,7 @@ const GACHA_TABLE = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookPaladin',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_assassin',
@@ -125,7 +125,7 @@ const GACHA_TABLE = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookAssassin',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_sage',
@@ -134,7 +134,7 @@ const GACHA_TABLE = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookSage',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_berserker',
@@ -143,7 +143,7 @@ const GACHA_TABLE = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookBerserker',
-    weight: 10,
+    weight: 20,
   },
 ];
 
@@ -333,7 +333,7 @@ const GACHA_TABLE_PART2 = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookCrusader',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_phantom',
@@ -342,7 +342,7 @@ const GACHA_TABLE_PART2 = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookPhantom',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_oracle',
@@ -351,7 +351,7 @@ const GACHA_TABLE_PART2 = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookOracle',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_catastrophe',
@@ -360,7 +360,7 @@ const GACHA_TABLE_PART2 = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookCatastrophe',
-    weight: 10,
+    weight: 20,
   },
   {
     id: 'book_runeknight',
@@ -369,7 +369,7 @@ const GACHA_TABLE_PART2 = [
     rarity: 'book',
     permanent: true,
     flag: 'hasBookRuneKnight',
-    weight: 10,
+    weight: 20,
   },
 ];
 
