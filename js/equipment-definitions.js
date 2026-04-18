@@ -6417,7 +6417,7 @@ const EQUIPMENT_DEFINITIONS = [
     effectType: 'damageReduction',
     effectValue: 0.56,
     effectDesc: 'ダメージ軽減(56%の確率)',
-    recipe: { '絶対頂点神の証': 1, '絶対なる頂点の欠片': 1 },
+    recipe: { '絶対なる頂点の欠片': 1, '絶対頂点神の証': 1 },
   },
   {
     id: 'd36_boss_boots',
@@ -6427,7 +6427,7 @@ const EQUIPMENT_DEFINITIONS = [
     stats: { attack: 0, defense: 6530, maxHp: 7175, maxMp: 0 },
     effectType: 'none',
     effectDesc: '---',
-    recipe: { '絶対頂点神の証': 1, '絶対なる頂点の欠片': 1 },
+    recipe: { '絶対なる頂点の欠片': 1, '絶対頂点神の証': 1 },
   },
 
   /* ─── エンドアイテム（D13〜D24対応、各1種） ─── */
