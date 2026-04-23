@@ -133,7 +133,7 @@ function renderEnemyStatus() {
 
 /** アクションボタンの有効 / 無効を切り替える */
 function setButtonsEnabled(enabled) {
-  ['btn-attack', 'btn-skill', 'btn-flee'].forEach(id => {
+  ['btn-attack', 'btn-skill', 'btn-flee', 'btn-debug-hp0'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.disabled = !enabled;
   });
